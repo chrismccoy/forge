@@ -1,0 +1,104 @@
+================================================================================
+  FORGE  -  DevOps & Data          ( /forge-devops )          4 tools
+================================================================================
+  Compose, Kubernetes, PowerShell, jq.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  docker-compose stack                    -> /docker-compose-architect |
+  |         Production stack: networks, healthchecks, secrets as env refs,       |
+  |         .env template.                                                       |
+  |                                                                              |
+  |  ( 2 )  Kubernetes manifests                        -> /kubernetes-architect |
+  |         Deployment, HPA, Service/Ingress, probes, limits, security ctx.      |
+  |                                                                              |
+  |  ( 3 )  PowerShell script                        -> /powershell-script-engine|
+  |         PSScriptAnalyzer-clean script: help, logging, validation, notes.     |
+  |                                                                              |
+  |  ( 4 )  jq filter                                          -> /jq            |
+  |         One copy-paste-ready jq command, explained stage by stage.           |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+
+--------------------------------------------------- /docker-compose-architect -
+  .--[Tech stack]-- application runtime/framework(s) --------------------------.
+  |  ( ) Node.js + React   ( ) Django + Celery   ( ) Go API + Vue              |
+  |  ( ) WordPress + PHP-FPM   [Other] ___ (expected path)                     |
+  '----------------------------------------------------------------------------'
+  .--[Database]-- data layer + persistence ------------------------------------.
+  |  ( ) PostgreSQL   ( ) MySQL/MariaDB   ( ) MongoDB                          |
+  |  ( ) Redis cache only   [Other]                                            |
+  '----------------------------------------------------------------------------'
+  .--[Network]-- tier topology  (optional, default tier isolation) ------------.
+  |  ( ) frontend + database tiers   ( ) single bridge network                 |
+  |  ( ) frontend + backend + database tiers   [Other]                         |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- extra constraints  (optional) ----------------------------.
+  |  ___ resource limits / behind Traefik / no persistence / read-only root    |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------- /kubernetes-architect -
+  .--[App requirements]-- app type, image, port, replicas, probe paths --------.
+  |  ___ e.g. "Node API, port 3000, 3 replicas" / "Python Flask, port 8000"    |
+  '----------------------------------------------------------------------------'
+  .--[Resource limits]-- CPU/memory requests and limits -----------------------.
+  |  ( ) req 250m/256Mi, lim 500m/512Mi   ( ) req 500m/512Mi, lim 1/1Gi        |
+  |  ( ) req 100m/128Mi, lim 250m/256Mi   [Other]                              |
+  '----------------------------------------------------------------------------'
+  .--[Exposure]-- how traffic reaches the workload ----------------------------.
+  |  ( ) ClusterIP   ( ) NodePort   ( ) LoadBalancer   ( ) Ingress (host)      |
+  |  [Other] ExternalName, headless, path-based Ingress                        |
+  '----------------------------------------------------------------------------'
+  .--[Target env]-- deployment target -----------------------------------------.
+  |  ( ) dev   ( ) staging   ( ) production   [Other] EKS, GKE, AKS            |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------- /powershell-script-engine -
+  .--[Task]-- one sentence: the concrete job the script performs --------------.
+  |  ___ e.g. "Audit local admin group membership across a server list, CSV"   |
+  '----------------------------------------------------------------------------'
+  .--[Requirements]-- params, inputs, outputs, modules, constraints -----------.
+  |  ___                                                                       |
+  '----------------------------------------------------------------------------'
+  .--[PS target]-- runtime target ---------------------------------------------.
+  |  ( ) PowerShell 7.x only   ( ) 7.x + note 5.1 fallbacks                    |
+  '----------------------------------------------------------------------------'
+  .--[Remote]-- remote execution mode -----------------------------------------.
+  |  ( ) Local only   ( ) Remote via PSSession                                 |
+  '----------------------------------------------------------------------------'
+  .--[Destructive]-- destructive-operation policy -----------------------------.
+  |  ( ) No destructive operations                                             |
+  |  ( ) Allow named destructive ops (gated via SupportsShouldProcess)         |
+  |  [Other] name permitted destructive ops                                    |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------------------- /jq ----
+  .--[JSON source]-- where the JSON comes from ---------------------------------.
+  |  ___ paste raw JSON / a file like data.json / piped from curl,gh,kubectl    |
+  '-----------------------------------------------------------------------------'
+  .--[Goal]-- what to do with the JSON -----------------------------------------.
+  |  ( ) filter/select matching records   ( ) extract specific fields           |
+  |  ( ) transform/reshape structure   ( ) aggregate (sum/count/group)   [Other]|
+  '-----------------------------------------------------------------------------'
+  .--[Output mode]-- optional  (default: pretty) -------------------------------.
+  |  ( ) raw -r (feed shell var/command)   ( ) compact -c (NDJSON)              |
+  |  ( ) pretty (default)   ( ) formatted @csv/@tsv   [Other]                   |
+  '-----------------------------------------------------------------------------'
+================================================================================

@@ -1,141 +1,124 @@
-# Plugin Marketplace Summary
+# Toolkit Summary - Tool Analysis
+
+A quick guide to what's in the `forge` plugin and how its 48 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+
+**At a glance:** 1 quick win · 31 guided helpers · 16 full toolkits.
+
+## Small Utils
+
+Small, focused, one-and-done. You give it something, it hands one clear answer straight back.
+
+| Tool | How you start it | What it does for you |
+|--------|------------------|----------------------|
+| `excel-formula-troubleshooter` | `/fix-formula` | Paste a broken Excel or Google Sheets formula and get the fixed version, with an explanation of what went wrong |
+
+## Guided helpers
+
+These ask you a few questions (or take a short description), then produce a complete, well-organized result in one go. Great when you know roughly what you want and want an expert to shape it.
+
+| Tool | How you start it | What it does for you |
+|--------|------------------|----------------------|
+| `jq` | `/jq` | Builds a ready-to-paste command for pulling data out of JSON, and explains each step |
+| `html-design-styles` | `/html-design-styles` | Restyles a web page in one of 53 named looks (bento, brutalist, glassmorphism, and more) |
+| `vgademo` | `/vgademo` | Walks you through a few choices, then writes a tiny retro 1990s-style graphics demo |
+| `tech-blog-article` | `/tech-blog-article` | Writes a polished technical blog post with a strong opening, clear examples, and honest trade-offs |
+| `language-tutor` | `/language-tutor` | Translates and explains a phrase, or corrects your writing with grammar and pronunciation tips |
+| `contract-framework` | `/draft-contract` | Writes a clear, fair freelance or consulting contract covering the work, the payment, and who owns the finished result, with anything legal flagged to check locally |
+| `readme-builder` | `/readme-builder` | Reads a whole project and writes one beginner friendly README in a fixed order, plain English, with hype words and long dashes kept out |
+| `tutorial-builder` | `/tutorial-builder` | Turns code or a topic into a step-by-step, hands-on tutorial that teaches, every code block runnable with its output shown, gated by a checklist and a 1-5 score |
+| `naming-strategist` | `/name-domains` | Brainstorms 10 brandable domain names, picks the best 3, and gives you a checklist to verify them |
+| `refactoring-analyst` | `/refactor` | Reviews your code and returns a prioritized clean-up plan, every issue tied to a real file and line |
+| `kubernetes-architect` | `/kubernetes-architect` | Turns your app details into ready-to-use Kubernetes setup files |
+| `docker-compose-architect` | `/docker-compose-architect` | Builds a secure Docker setup for your app - networks, storage, health checks, secrets kept safe |
+| `app-blueprint` | `/blueprint` | Turns a one-line app idea into a full plan: folders, data, APIs, libraries, tests, and deployment |
+| `wordpress-consultant` | `/wp-consult` | A senior WordPress audit across architecture, performance, security, and scaling, with a 0-100 scorecard |
+| `accessibility-audit` | `/accessibility-audit` | Checks a page, folder, or pasted component for accessibility problems, explains why each one matters, fixes them if you ask, and tells you which keys to test |
+| `system-design` | `/system-design` | Designs how a system should be built to handle real load - components, data flow, database choice, and what breaks first |
+| `terraform` | `/terraform` | Writes ready-to-apply Terraform split into three files, with tight permissions and somewhere safe to keep the state |
+| `cicd-pipeline` | `/cicd-pipeline` | Builds a build-and-deploy pipeline that caches properly, plus a checklist of every secret you need to add |
+| `data-pipeline` | `/data-pipeline` | Designs a data pipeline you can safely re-run - where the data comes from, how it's shaped, and what to do when it breaks |
+| `cloud-migration` | `/cloud-migration` | Plans a move out of your data center: what to lift, what to rebuild, the foundation to build first, and the risks |
+| `sre-audit` | `/sre-audit` | Works out what to measure and when to wake someone up - reliability targets, tracing, alerts that aren't noise, and logging |
+| `finops` | `/finops` | Finds where the cloud bill is leaking, what to fix now, what to restructure, and which discounts are actually worth buying |
+| `incident-report` | `/incident-report` | Turns your notes about an outage into a write-up that blames the system, not a person, and lists what to fix |
+| `threat-model` | `/threat-model` | Walks your system through all six kinds of attack, rates how bad each risk is, and pairs every one with a fix |
+| `devsecops` | `/devsecops` | Audits a pipeline, infrastructure file, or cloud permission set for security holes, and shows how to catch them next time |
+| `pentest-report` | `/pentest-report` | Turns notes from a security test you were authorized to run into a formal report with a score and a fix |
+| `design-system` | `/design-system` | Reverse-engineers a page's HTML and CSS into a reusable DESIGN.md - colors, type, spacing, components, and the signature motifs that define the look, all pulled from the real source |
+| `tailwind-gut` | `/tailwind-convert` | Strips a page's custom CSS and rewrites it in Tailwind utilities, pixel-identical, with a short report of what moved to config and what had to stay as CSS |
+| `mermaid-generator` | `/mermaid-sequence` | Turns a bullet-point list of process steps into one valid Mermaid sequence diagram |
+| `prompt-dummy` | `/explain-prompt` | Explains any AI prompt in plain beginner English across eight fixed sections |
+| `prompt-summary` | `/analyze-prompt` | Breaks an AI prompt down for review - anatomy, techniques, failure modes, and concrete improvements |
+
+## Full toolkits
+
+The biggest tools. They run multi-step workflows, generate whole sets of files, or include built-in scripts and checklists. Best for bigger jobs where you want production-ready results, not just a draft.
+
+| Tool | How you start it | What it does for you |
+|--------|------------------|----------------------|
+| `wp-builder-pro` | `/wp-build` | Builds and fixes custom WordPress code - themes, plugins, blocks, WooCommerce, and more |
+| `wordpress-plugin` | `/wp-plugin` | Generates a complete, ready-to-submit WordPress plugin from scratch, security and cleanup included |
+| `wordpress-architect-review` | `/wp-review` | Reviews a WordPress plugin or theme file by file, with a scorecard and the top fixes to make |
+| `wordpress-formatter` | `/wp-format` | Formats a theme's template files to the WordPress standard - tabs, spacing, arrays - without changing how any page renders, and checks its own work |
+| `powershell-script-engine` | `/powershell-script-engine` | Writes clean, production-ready PowerShell scripts with logging, error handling, and safe credential use |
+| `html-to-wordpress-theme` | `/wp-theme` | Converts your static HTML into an installable WordPress theme, checking its own work as it goes |
+| `unslop` | `/unslop` | Strips the AI-sounding voice out of your comments and names without changing how the code runs |
+| `strip-unicode` | `/strip-unicode` | Flattens messy Unicode - curly quotes, long dashes, invisible characters - down to plain ASCII, cleaning a file in place or handing back tidied text, with a table of what changed |
+| `docblock-rewrite` | `/docblock-rewrite` | Rewrites bulky code comments into short one-liners anyone can read, backing up the originals first |
+| `codebase-to-mermaid` | `/codebase-to-mermaid` | Reads a codebase you don't know and draws accurate diagrams, every box tied to a real file and line |
+| `mermaid-to-ascii` | `/mermaid-to-ascii` | Redraws a Mermaid diagram file as plain text-art and saves it next to the original, ready to paste into a comment, README, or terminal |
+| `explain-my-code` | `/explain-my-code` | Reads a whole codebase and writes one onboarding document - architecture, flow, patterns, and risks, with diagrams |
+| `changelog-generator` | `/changelog-generator` | Writes a changelog from a repo's whole history by reading the real code changes, not the commit messages, then sorts each change and saves the file |
+| `session-stats` | `/session-stats` | Turns a Claude Code session into a single shareable stats page - prompts, edits, cost, and files changed |
+| `page-cloner` | `/page-cloner` | Copies a live web page into one self-contained working HTML file that matches the original, built from the real rendered page and checked against it in a loop, no redesign (needs Claude in Chrome) |
+| `page-tailwindify` | `/page-tailwindify` | Rebuilds a live page's exact look in clean Tailwind, the framework's generated class hashes swapped for real utilities and every class traced to a real computed value (needs Claude in Chrome) |
+
+## A few extra notes
+
+**Fifteen tools have a command name that's different from the tool name:**
+
+All six WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+
+- `wordpress-plugin` → type `/wp-plugin`
+- `wp-builder-pro` → type `/wp-build`
+- `html-to-wordpress-theme` → type `/wp-theme`
+- `wordpress-architect-review` → type `/wp-review`
+- `wordpress-consultant` → type `/wp-consult`
+- `wordpress-formatter` → type `/wp-format`
+
+And nine others are shortened or renamed:
+
+- `excel-formula-troubleshooter` → type `/fix-formula`
+- `naming-strategist` → type `/name-domains`
+- `contract-framework` → type `/draft-contract`
+- `app-blueprint` → type `/blueprint`
+- `refactoring-analyst` → type `/refactor`
+- `tailwind-gut` → type `/tailwind-convert`
+- `mermaid-generator` → type `/mermaid-sequence`
+- `prompt-dummy` → type `/explain-prompt`
+- `prompt-summary` → type `/analyze-prompt`
+
+The other 33 use their own name as the command. Every tool has exactly one command.
 
-A guide to every plugin in my marketplace. Each entry explains what the tool does and who it helps.
+**Ten of the 58 commands are pickers, not tools:**
 
-## WordPress
+`/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
+`/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
+`/forge-cleanup`, `/forge-docs`, and `/forge-utils` skip the category step and go straight
+to one group. Lists longer than four
+are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
+skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
+against that path. A category command will not run a tool from another category; it names
+the right command and stops. Full walkthrough in the README under "Browsing the catalog".
 
-### wp-builder-pro
+**How each one gets what it needs from you:**
 
-This builds custom WordPress code for specific jobs, like adding a new feature, creating a custom design piece, or fixing something that broke. Unlike the full plugin builder, this is for focused, hands-on work on an existing site. It automatically applies safety and speed best practices to everything it writes. It can also help when your site is running slow or throwing errors. A good pick for targeted improvements rather than starting over.
+- **Asks multiple-choice questions** (just pick from a menu): 35 tools - the easiest way to start
+- **Asks a few questions directly:** 1 - `html-to-wordpress-theme`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 12 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `page-cloner`, `page-tailwindify`
 
-### wordpress-plugin
+**Every tool runs only when you type its command:**
 
-This builds a complete, professional WordPress plugin from scratch. You answer a few questions about what you want it to do, and it produces all the files, neatly organized and following the official best practices. The result is polished enough to use right away or even submit to the official WordPress library. Safety and clean code come built in. It saves an enormous amount of setup work that would otherwise take days.
+None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-### html-to-wordpress-theme
-
-This turns a plain web page design into a proper WordPress theme you can install and use. WordPress is the popular system that runs a huge share of websites, and this converts your design into the format it expects. It also makes sure the site works well for people with disabilities. The tool moves in clear stages and checks in with you before each step. Good for taking a finished design and getting it live on a real WordPress site.
-
-### wordpress-architect-review
-
-This acts like a senior expert giving your WordPress plugin or theme a thorough review. It goes through the code file by file and reports problems with safety, speed, and structure, marking how serious each one is. It points to the exact lines and lists the top five things to fix first. It even gives the work a score out of ten. A smart way to catch issues before they cause real trouble.
-
-### wordpress-consultant
-
-This is a full WordPress health check, much like hiring a seasoned consultant for your site. It reviews ten areas, from speed and security to planning for future growth, and for each one gives you the finding, why it matters, and what to do about it. It wraps up with scores and a clear list of priorities. It is best for site owners who want an expert opinion on the whole picture, not just one problem. You come away knowing exactly where you stand.
-
-### wordpress-formatter
-
-This tidies up the formatting of a WordPress theme's files so they follow the official coding standard. It fixes things like mixed tabs and spaces, uneven alignment, and inconsistent styling, all in one pass. The key point is that it only changes formatting, never how the site actually works, and it checks each file afterward to make sure nothing broke. It asks a few short questions first, installs the tools it needs into the project, and leaves anything that could change behavior for you to decide. Good for cleaning up a theme before you hand it off or commit it.
-
-## Plan and Design
-
-### app-blueprint
-
-This takes a one-line idea for an app and turns it into a full building plan. It lays out the whole project, lists the pieces you will need, shows how your information gets stored, and walks you through setting it up and launching it. Think of it as a detailed recipe handed to you before you start cooking. It is great for people who have a good idea but are not sure how to organize all the work. You answer a few questions and it does the planning for you.
-
-### html-design-styles
-
-This is a menu of 53 ready-made looks for websites, from clean and minimal to bold, retro, cute, and many more. You pick a style by name and it gives you the matching colors, fonts, and layout details to use. It takes the guesswork out of deciding how a site should feel. It also keeps everything looking consistent across your pages. Handy when you know the vibe you want but not how to pull it off.
-
-### accessibility-audit
-
-This checks whether a website actually works for people with disabilities, and can fix what it finds. It looks at things like whether a button can be reached with the keyboard alone, whether a screen reader can announce what an icon does, and whether the text has enough contrast to read. You choose up front whether you want a report, want it to make the changes for you, or just want to paste in one piece of a page and get a fixed version back with notes on how to test it. In report mode it will not touch a single file. Every problem it reports comes with a short note on why it matters to a real person, and repeated problems are grouped together instead of listed over and over. When it rebuilds something like a menu or a pop-up window, it follows the standard rules for which keys should do what, because people who navigate by keyboard already know what the arrow keys and the escape key are supposed to do. It is honest about its limits, so anything that still needs a human to sit down with a screen reader gets listed separately rather than counted as passing, and it will never tell you that you are legally in the clear, because that is a question for a lawyer and not for a tool. Unlike the other tools here, it only runs when you type the command, so it never starts on its own or gets confused with a similar tool you might already have installed.
-
-## Refactor, Map and Clean Up
-
-### refactoring-analyst
-
-This reviews code you already have and gives you a ranked to-do list for cleaning it up. It points to the exact lines that are messy, confusing, or risky, and explains what to tackle first. Every note is tied to a real spot in your files, so you get specific advice instead of vague tips. It is meant to help you improve code without accidentally breaking it. Useful for keeping a project tidy as it grows.
-
-### codebase-to-mermaid
-
-This looks at a pile of existing code and draws a clear picture of how all the parts connect. The diagram shows how the program flows from one step to the next, and every box on it points back to the exact place in the files. This is a big help when you join a project and need to understand it quickly. It only draws what is actually there, so nothing is made up or guessed. The result is a picture you can open and study instead of digging through files by hand.
-
-### mermaid-to-ascii
-
-Diagrams written in Mermaid only show up as a picture in tools that know how to draw them. This takes one of those diagram files and redraws it using plain keyboard characters, so the picture works anywhere, including a code comment, a plain text file, a chat message, or a terminal window. It asks which file to convert first, then saves the text version right next to the original without touching it. It keeps every name and label exactly as written, and if a diagram is too wide it splits it into stacked pieces instead of cutting anything off. Handy when you want to show a diagram somewhere that cannot display the real thing.
-
-### explain-my-code
-
-This reads through an entire codebase and writes a single document that explains how the whole thing works. It covers the big picture, how the parts fit together, how the program runs from start to finish, and where the weak spots are, with diagrams included. The idea is that anyone new to the project can read it and get up to speed without someone walking them through it. Every part it describes is real, pulled straight from your files, not made up. Handy when you inherit a project with no documentation and need to make sense of it.
-
-### docblock-rewrite
-
-Code files often contain little notes written for programmers, full of technical wording. This tool rewrites those notes into short, plain sentences that a normal person can actually read. It can work on a single file or hundreds of them at once, all in one pass. It keeps a backup copy of the originals, so nothing is lost if you change your mind. Good for teams who want their notes to make sense to everyone, not just the experts.
-
-### unslop
-
-This cleans up writing that sounds like it came from a machine, without changing how the code actually works. It only touches the notes and labels, swapping overused buzzwords and clunky phrasing for plain, natural language. It knows how to do this across many programming languages and tools. The result reads like a real person wrote it. Good for anyone who wants their code to feel human and clear.
-
-### strip-unicode
-
-This flattens fancy Unicode text down to plain, ordinary characters that work everywhere. Text copied from a word processor or a website is often full of curly quotes, long dashes, single-character ellipses, and invisible spaces that quietly break code, searches, and file comparisons. You give it a file or paste in some text, and it swaps every one of those for its plain equivalent, straight quotes, short dashes, three dots, and removes the invisible junk. Anything with no plain match, like an emoji or a currency sign, is dropped and noted for you. It only changes characters, never your actual words, so nothing is reworded or shortened. It can clean a file right where it sits or hand back a tidy copy, and either way it finishes with a small table of exactly what it changed. The same input always gives the same result. Good for anyone who wants text that pastes cleanly into code, a terminal, or a plain-text file without surprises.
-
-### changelog-generator
-
-This writes a changelog, the list of what changed in a project, by looking at the real code changes across the whole history instead of trusting the short notes people leave with each change. Those notes often skip things or get them wrong, so a list built from them can mislead. This reads the actual changes, sorts them into new features, improvements, security, breaking changes, and fixes, and writes each one in plain words your readers can follow. It covers everything from the first change to the latest, and it warns you if it only has a partial copy of the history to work from. When it is done it offers to save the list to a file and points out anywhere the code did not match what the note claimed. Good for anyone who needs honest release notes without combing through the history by hand.
-
-## Servers and Scripting
-
-### docker-compose-architect
-
-Apps are often made of several separate parts that need to run together, such as a website piece and a storage piece. This tool writes the setup file that starts all of those parts at once and keeps them talking to each other safely. It also hands you the exact commands to turn everything on and check that it is working. You just describe what your app is built from and what it needs. It saves you from a lot of trial and error getting a project up and running.
-
-### kubernetes-architect
-
-This designs the setup files for running apps on Kubernetes, a system many large companies use to keep their software online and handle heavy traffic. You describe what your app needs, and it produces the full plan plus the steps to launch it. Safety and reliability checks are built in from the start, so your app stays healthy. It is meant for people putting serious, large-scale software into production. The output is ready to use, not just a rough sketch.
-
-### powershell-script-engine
-
-This writes ready-to-use PowerShell scripts, which are small programs that automate chores on Windows computers. You say what you want done and it produces a clean, well-explained script complete with examples and safety notes. It refuses to leave passwords sitting in plain text and puts guardrails around anything that could delete or damage your system. It is built for people who manage Windows machines and want to stop doing the same tasks by hand. Everything comes ready to run.
-
-### jq
-
-This is a helper for digging through JSON, a common format that computer programs use to pass information around. You hand it a chunk of that data and say what you want pulled out or rearranged, and it writes the exact command to do it. It also adds a plain note explaining what each step does. It is aimed at people who work in a command window but find this kind of data tricky to handle. It saves you from writing the same fiddly commands over and over.
-
-## Domain Names
-
-### naming-strategist
-
-This comes up with catchy brand names and website addresses for a new business or product. You describe your market and who you are selling to, and it returns ten options with notes on why each one fits and any risks to watch for. It then picks a top three and gives you a checklist to confirm the name is actually free to use. It skips empty hype words and awkward spellings. A real time-saver when you are stuck on what to call something.
-
-## Creative
-
-### vgademo
-
-This creates tiny old-school computer demos in the style of 1990s programming, the kind that squeeze flashy visual effects into an incredibly small space. You pick the effect, the size limit, and a few other options, and it writes the low-level code for you. This is a playground for hobbyists and fans of retro computing. It is a niche tool, but a fun one if that is your scene. Not something most people will need, but beloved by those who do.
-
-## Data
-
-### excel-formula-troubleshooter
-
-This fixes broken formulas in Excel and Google Sheets. You paste in the formula that is not working, and it tells you exactly what went wrong in simple terms. Then it hands back a corrected version you can copy straight into your spreadsheet. It can also suggest a newer, cleaner way to do the same thing. Perfect for anyone who is stuck staring at an error message and does not know why.
-
-## Writing and language
-
-### tech-blog-article
-
-This writes high-quality technical blog posts for you. You give it a topic, who the readers are, and how long it should be, and it drafts a clear article with a strong opening, useful examples, and honest pros and cons. The writing is friendly and easy to read, not stiff or salesy. It is great for developers who want to share what they know but do not want to spend hours writing. You get a solid first draft to polish.
-
-### language-tutor
-
-This translates text and teaches you the language while it does. On top of the translation, it explains the grammar, shows you how to say the words out loud, and tells you when each phrasing is the right fit. It can also check your own writing and give you corrected versions in different tones, from formal to casual. When it is not certain about something, it says so instead of guessing. A solid companion for both quick translations and real learning.
-
-### contract-framework
-
-This writes a clear, fair contract for freelance or consulting work. You answer a few plain questions about your business, your client, what you are delivering, and how you get paid, and it hands back a ready-to-fill agreement in everyday English. Every contract covers the three things freelancers argue about most: work that grows past what was agreed, clients who pay late, and who owns the finished result. It never makes up names, numbers, or rules you did not give it, and anything that depends on where you live is flagged so you can check it with a local lawyer. A strong starting draft, not legal advice.
-
-### readme-builder
-
-This reads a whole project and writes one README file for it, aimed at complete beginners. It opens and reads the real files first to work out what the project is and what each file does, then writes the same set of sections every time: a title, a plain description, a feature list, a note on each file, a folder tree, and steps to use it. The writing stays in short, everyday English with no jargon. Hype words like "seamless" and "powerful" are banned, and so are long dashes and fancy symbols, so the result reads plain and honest. It only describes what is really in the project, so nothing is made up. Good for anyone who wants a clear README but does not enjoy writing one.
-
-### tutorial-builder
-
-This turns code or a topic into a proper step-by-step tutorial that actually teaches, not just a page of text with some code in the middle. You give it a subject and answer a few questions about who it is for and how long it should be, and it writes a lesson that builds up one idea at a time. Every piece of code it includes is meant to run and shows you the output to expect, and each section ends with a small exercise so the reader can check they got it. It never uses a concept before explaining it, and it finishes with a summary and clear next steps. Before handing the tutorial over it runs its own checklist and scores itself, so what you get is already reviewed. Good for turning something you know into a lesson other people can follow.
-
-## Session tools
-
-### session-stats
-
-This builds a simple report card for one of your Claude Code work sessions. It counts things like how many questions you asked, how many edits were made, how long it all took, and roughly what it cost. Then it puts everything on a clean, easy-to-read web page. It sticks to the numbers and skips opinions or advice. Handy for keeping an eye on your usage and spending.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 48 tools here.

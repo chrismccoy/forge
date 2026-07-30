@@ -1,0 +1,437 @@
+================================================================================
+  FORGE  -  command-only toolkit  -  screen map
+================================================================================
+  48 tools . 58 commands . 10 pickers . 0 skills . nothing auto-fires.
+  Every screen below is an AskUserQuestion menu (caps at 4 options; longer
+  lists page behind "More...").  The built-in [Other] field always lets you
+  type a tool name directly, which jumps straight to that tool.
+
+  LEGEND
+    +------+   a menu "screen"
+    ( n )      an option you can pick
+    -> cmd     what picking it runs / opens
+    [Other]    free-text box, type any tool name to skip the menus
+
+
+================================================================================
+  ENTRY:  /forge
+================================================================================
+
+  STEP 1 - pick a category  (3 pages, 9 categories)
+
+  .------------------------------------------------------------------------------.
+  | [Category]                                        Which category?  (pg 1/3)  |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  WordPress                                                            |
+  |         Build, review, and format WP plugins and themes.  6 tools.           |
+  |                                                                              |
+  |  ( 2 )  Design & Frontend                                                    |
+  |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6 tools.|
+  |                                                                              |
+  |  ( 3 )  Writing & Content                                                    |
+  |         Articles, tutorials, contracts, naming, language help.  5 tools.     |
+  |                                                                              |
+  |  ( 4 )  More...                          -> page 2                           |
+  |         DevOps, cloud, security, cleanup, docs, utilities.                   |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Category]                                        Which category?  (pg 2/3) |
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  DevOps & Data                                                       |
+  |         Compose, Kubernetes, PowerShell, jq.  4 tools.                      |
+  |                                                                             |
+  |  ( 2 )  Cloud & Architecture                                                |
+  |         Design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents.   |
+  |         8 tools.                                                            |
+  |                                                                             |
+  |  ( 3 )  Security                                                            |
+  |         STRIDE models, DevSecOps hardening, vuln reports.  3 tools.         |
+  |                                                                             |
+  |  ( 4 )  More...                          -> page 3                          |
+  |         Code cleanup, docs and diagrams, utilities.                         |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Category]                                        Which category?  (pg 3/3) |
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Code Cleanup                                                        |
+  |         Strip AI voice, strip Unicode, rewrite docblocks, plan refactors.   |
+  |         4 tools.                                                            |
+  |                                                                             |
+  |  ( 2 )  Docs & Diagrams                                                     |
+  |         Onboarding docs, Mermaid, README, changelog, prompts.  8 tools.     |
+  |                                                                             |
+  |  ( 3 )  Utilities                                                           |
+  |         App blueprints, session stats, VGA demos, Excel/Sheets formulas.    |
+  |         4 tools.                                                            |
+  |                                                                             |
+  |  ( 4 )  Back to page 1                    -> page 1                         |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+
+================================================================================
+  STEP 2 - pick a tool   (also the whole screen of each shortcut command)
+================================================================================
+
+
+--- WordPress  ( /forge-wordpress )  -  6 tools, 2 pages ----------------------
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Build a plugin from scratch                        -> /wp-plugin    |
+  |         Full WordPress.org-ready scaffold: OOP classes, blocks, REST,       |
+  |         i18n, uninstall.php.                                                |
+  |                                                                             |
+  |  ( 2 )  Targeted WordPress code                            -> /wp-build     |
+  |         Add a feature, settings page, block, or endpoint to a project.      |
+  |                                                                             |
+  |  ( 3 )  HTML to WordPress theme                            -> /wp-theme     |
+  |         Convert static HTML into an installable theme, Tailwind + WCAG AA.  |
+  |                                                                             |
+  |  ( 4 )  More...                                            -> page 2        |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Architect review                                   -> /wp-review    |
+  |         Security, performance, architecture review with a scorecard.        |
+  |                                                                             |
+  |  ( 2 )  Consulting audit                                   -> /wp-consult   |
+  |         10-section senior consulting audit, 0-100 scorecard.                |
+  |                                                                             |
+  |  ( 3 )  Coding-standards formatting                        -> /wp-format    |
+  |         Set up WPCS and apply auto-fixable formatting, no render change.    |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+
+--- Design & Frontend  ( /forge-design )  -  6 tools, 2 pages -----------------
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Apply a design style                        -> /html-design-styles   |
+  |         53 named styles - bento, brutalist, vaporwave, kawaii,               |
+  |         glassmorphism - with full specs.                                     |
+  |                                                                              |
+  |  ( 2 )  Accessibility audit                          -> /accessibility-audit |
+  |         Find, report, and fix WCAG issues in files, live pages, or a         |
+  |         pasted component.                                                    |
+  |                                                                              |
+  |  ( 3 )  Extract a design system                          -> /design-system   |
+  |         Reverse-engineer HTML/CSS into a reusable DESIGN.md: colors,         |
+  |         type, components, signature motifs.                                  |
+  |                                                                              |
+  |  ( 4 )  More...                                        -> page 2             |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .-------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2)  |
+  |-------------------------------------------------------------------------------|
+  |  ( 1 )  Convert CSS to Tailwind                        -> /tailwind-convert   |
+  |         Rip out custom CSS and rewrite a page in Tailwind utilities,          |
+  |         pixel-identical, with a change report.                                |
+  |                                                                               |
+  |  ( 2 )  Clone a web page                                    -> /page-cloner   |
+  |         Copy a live URL into one self-contained working HTML file,            |
+  |         faithful, no redesign.  Needs Claude in Chrome.                       |
+  |                                                                               |
+  |  ( 3 )  Rebuild a page in Tailwind                     -> /page-tailwindify   |
+  |         Reproduce a page's exact look in clean Tailwind, generated class      |
+  |         hashes replaced.  Needs Claude in Chrome.                             |
+  |                                                                               |
+  |  [Other] type a tool name ................................................    |
+  '-------------------------------------------------------------------------------'
+
+
+--- Writing & Content  ( /forge-writing )  -  5 tools, 2 pages ----------------
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Technical article                              -> /tech-blog-article|
+  |         Front-page-quality article from topic, audience, angle, length.     |
+  |                                                                             |
+  |  ( 2 )  Hands-on tutorial                              -> /tutorial-builder |
+  |         Step-by-step tutorial built from code or a topic.                   |
+  |                                                                             |
+  |  ( 3 )  Service contract                               -> /draft-contract   |
+  |         Plain-English eight-section service-agreement framework.            |
+  |                                                                             |
+  |  ( 4 )  More...                                        -> page 2            |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Name a product                                 -> /name-domains     |
+  |         10 brandable SaaS domain candidates, scored, locked A-D format.     |
+  |                                                                             |
+  |  ( 2 )  Translate or correct writing                   -> /language-tutor   |
+  |         Translate and explain a phrase, or correct and critique writing.    |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+
+--- DevOps & Data  ( /forge-devops )  -  4 tools ------------------------------
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  docker-compose stack                    -> /docker-compose-architect |
+  |         Production stack: networks, healthchecks, secrets as env refs,       |
+  |         .env template.                                                       |
+  |                                                                              |
+  |  ( 2 )  Kubernetes manifests                        -> /kubernetes-architect |
+  |         Deployment, HPA, Service/Ingress, probes, limits, security ctx.      |
+  |                                                                              |
+  |  ( 3 )  PowerShell script                        -> /powershell-script-engine|
+  |         PSScriptAnalyzer-clean script: help, logging, validation, notes.     |
+  |                                                                              |
+  |  ( 4 )  jq filter                                          -> /jq            |
+  |         One copy-paste-ready jq command, explained stage by stage.           |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+
+--- Cloud & Architecture  ( /forge-cloud )  -  8 tools, 3 pages ---------------
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  System architecture                            -> /system-design     |
+  |         Scalable blueprint: components, data flow, datastore, fault          |
+  |         tolerance. No code.                                                  |
+  |                                                                              |
+  |  ( 2 )  Terraform (IaC)                                -> /terraform         |
+  |         HCL split into main/variables/outputs, least-privilege IAM,          |
+  |         state backend.                                                       |
+  |                                                                              |
+  |  ( 3 )  CI/CD pipeline                                 -> /cicd-pipeline     |
+  |         Platform-native YAML, dependency+layer caching, secrets checklist.   |
+  |                                                                              |
+  |  ( 4 )  More...                                        -> page 2             |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Data pipeline (ETL)                            -> /data-pipeline     |
+  |         Idempotent ETL/ELT: extraction, medallion layers, DAG, tests,        |
+  |         backfill.                                                            |
+  |                                                                              |
+  |  ( 2 )  Cloud migration                                -> /cloud-migration   |
+  |         On-prem to cloud on the 6 R's: landing zone, wave roadmap,           |
+  |         risk/TCO tables.                                                     |
+  |                                                                              |
+  |  ( 3 )  SRE and observability                          -> /sre-audit         |
+  |         SLIs, SLOs, error budgets, tracing, burn-rate alerts, logging.       |
+  |                                                                              |
+  |  ( 4 )  More...                                        -> page 3             |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Cloud FinOps                                   -> /finops           |
+  |         Cost blueprint: quick wins, architectural shifts, commitments,      |
+  |         tagging, billing alarms.                                            |
+  |                                                                             |
+  |  ( 2 )  Incident report                                -> /incident-report  |
+  |         Blameless RCA: impact, timeline, 5 Whys, systemic action items.     |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+
+--- Security  ( /forge-security )  -  3 tools ---------------------------------
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  STRIDE threat model                            -> /threat-model      |
+  |         Trust boundaries, all six STRIDE categories, severity-rated          |
+  |         threats, mapped mitigations.                                         |
+  |                                                                              |
+  |  ( 2 )  DevSecOps hardening                             -> /devsecops        |
+  |         Audit pipelines, IaC, cloud config: blast radius, compliance,        |
+  |         scanning gates, runtime guardrails.                                  |
+  |                                                                              |
+  |  ( 3 )  Vulnerability report                            -> /pentest-report   |
+  |         Authorized finding: CVSS vector, technical context, sanitized        |
+  |         PoC, remediation.                                                    |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+
+--- Code Cleanup  ( /forge-cleanup )  -  4 tools ------------------------------
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Strip AI voice                                 -> /unslop            |
+  |         Remove AI-generated tone from comments, strings, names. No           |
+  |         behavior change.                                                     |
+  |                                                                              |
+  |  ( 2 )  Strip Unicode                                  -> /strip-unicode     |
+  |         Transliterate messy Unicode down to plain 7-bit ASCII.               |
+  |                                                                              |
+  |  ( 3 )  Rewrite docblocks                              -> /docblock-rewrite  |
+  |         Convert PHPDoc and JSDoc into one-line plain-English // comments.    |
+  |                                                                              |
+  |  ( 4 )  Refactoring plan                               -> /refactor          |
+  |         Evidence-first analysis with file:line citations. Read-only.         |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+
+--- Docs & Diagrams  ( /forge-docs )  -  8 tools, 3 pages ---------------------
+
+  .-------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/3)  |
+  |-------------------------------------------------------------------------------|
+  |  ( 1 )  Onboarding documentation                       -> /explain-my-code    |
+  |         One self-contained 13-section CODEBASE_DOCUMENTATION.md for a repo.   |
+  |                                                                               |
+  |  ( 2 )  Codebase to Mermaid                            -> /codebase-to-mermaid|
+  |         Validated Mermaid diagrams with file:line citations.                  |
+  |                                                                               |
+  |  ( 3 )  Mermaid to ASCII                               -> /mermaid-to-ascii   |
+  |         Convert a Mermaid file into a monospace ASCII diagram (.txt).         |
+  |                                                                               |
+  |  ( 4 )  More...                                        -> page 2              |
+  |  [Other] type a tool name ................................................    |
+  '-------------------------------------------------------------------------------'
+
+  .--------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/3)   |
+  |--------------------------------------------------------------------------------|
+  |  ( 1 )  Mermaid sequence diagram                       -> /mermaid-sequence    |
+  |         Turn bullet-point process steps into one valid Mermaid sequence        |
+  |         diagram.                                                               |
+  |                                                                                |
+  |  ( 2 )  Write a README                                 -> /readme-builder      |
+  |         Scan a repo and write a beginner-friendly README.md.                   |
+  |                                                                                |
+  |  ( 3 )  Generate a changelog                           -> /changelog-generator |
+  |         User-facing changelog built from actual diffs across git history.      |
+  |                                                                                |
+  |  ( 4 )  More...                                        -> page 3               |
+  |  [Other] type a tool name ................................................     |
+  '--------------------------------------------------------------------------------'
+
+  .--------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3)   |
+  |--------------------------------------------------------------------------------|
+  |  ( 1 )  Explain a prompt (plain English)               -> /explain-prompt      |
+  |         Describe any AI prompt in beginner-friendly plain English, eight       |
+  |         fixed sections.                                                        |
+  |                                                                                |
+  |  ( 2 )  Analyze a prompt (deep dive)                   -> /analyze-prompt      |
+  |         Rigorous review-ready breakdown: anatomy, techniques, failure          |
+  |         modes, improvements.                                                   |
+  |                                                                                |
+  |  [Other] type a tool name ................................................     |
+  '--------------------------------------------------------------------------------'
+
+
+--- Utilities  ( /forge-utils )  -  4 tools -----------------------------------
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  App blueprint                                  -> /blueprint         |
+  |         11-section senior-architect production blueprint for a new app.      |
+  |                                                                              |
+  |  ( 2 )  Session stats                                  -> /session-stats     |
+  |         Render this session's stats as a standalone dark-theme HTML page.    |
+  |                                                                              |
+  |  ( 3 )  VGA demo                                       -> /vgademo           |
+  |         Sizecoded 1990s-style assembly demoscene production.                 |
+  |                                                                              |
+  |  ( 4 )  Fix a spreadsheet formula                      -> /fix-formula       |
+  |         Debug and fix a broken Excel or Google Sheets formula.               |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+
+================================================================================
+  STEP 3 - run it   (every path ends the same way)
+================================================================================
+
+  On pick:  read commands/<command>.md  ->  follow its "Load first" banner
+            (reads lib/<tool>/SKILL.md)  ->  announce "Running /<command>."
+            ->  the tool runs its own intake.  Nothing auto-loads.
+
+
+================================================================================
+  NAVIGATION TREE  (whole thing on one screen)
+================================================================================
+
+  /forge
+   |
+   +-- WordPress ............ /forge-wordpress
+   |    +-- wp-plugin   wp-build   wp-theme
+   |    +-- wp-review   wp-consult wp-format
+   |
+   +-- Design & Frontend .... /forge-design
+   |    +-- html-design-styles   accessibility-audit   design-system
+   |    +-- tailwind-convert     page-cloner           page-tailwindify
+   |
+   +-- Writing & Content .... /forge-writing
+   |    +-- tech-blog-article  tutorial-builder  draft-contract
+   |    +-- name-domains       language-tutor
+   |
+   +-- DevOps & Data ........ /forge-devops
+   |    +-- docker-compose-architect  kubernetes-architect
+   |    +-- powershell-script-engine  jq
+   |
+   +-- Cloud & Architecture . /forge-cloud
+   |    +-- system-design  terraform      cicd-pipeline  data-pipeline
+   |    +-- cloud-migration sre-audit     finops         incident-report
+   |
+   +-- Security ............. /forge-security
+   |    +-- threat-model  devsecops  pentest-report
+   |
+   +-- Code Cleanup ......... /forge-cleanup
+   |    +-- unslop  strip-unicode  docblock-rewrite  refactor
+   |
+   +-- Docs & Diagrams ...... /forge-docs
+   |    +-- explain-my-code  codebase-to-mermaid  mermaid-to-ascii  mermaid-sequence
+   |    +-- readme-builder   changelog-generator  explain-prompt    analyze-prompt
+   |
+   +-- Utilities ............ /forge-utils
+        +-- blueprint  session-stats  vgademo  fix-formula
+
+  SHORTCUTS
+    Direct hit ...  /forge wp-format ~/themes/mytheme   (skips every menu)
+    Category jump . /forge-cloud                        (skips category step)
+    Alias  .......  naming-strategist -> name-domains,  excel -> fix-formula,
+                    app-blueprint -> blueprint,  contract-framework ->
+                    draft-contract,  refactoring-analyst -> refactor,
+                    tailwind-gut -> tailwind-convert,  mermaid-generator ->
+                    mermaid-sequence,  prompt-dummy -> explain-prompt,
+                    prompt-summary -> analyze-prompt, plus the long
+                    wordpress-* names -> their wp-* commands.
+
+================================================================================

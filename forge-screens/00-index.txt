@@ -1,0 +1,76 @@
+================================================================================
+  FORGE  -  screen map  -  INDEX
+================================================================================
+  48 tools . 58 commands . 10 pickers . 0 skills . nothing auto-fires.
+
+  Pick a category below, then open its file for that category's tool screens.
+  Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
+  The built-in [Other] field lets you type a tool name to skip the menus.
+
+  ENTRY:  /forge   ->   STEP 1 - pick a category
+
+
+  .------------------------------------------------------------------------------.
+  | [Category]                                        Which category?  (pg 1/3)  |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  WordPress                           -> open  01-wordpress.txt        |
+  |         Build, review, format WP plugins and themes.  6 tools.               |
+  |                                                                              |
+  |  ( 2 )  Design & Frontend                   -> open  02-design.txt           |
+  |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6 tools.|
+  |                                                                              |
+  |  ( 3 )  Writing & Content                   -> open  03-writing.txt          |
+  |         Articles, tutorials, contracts, naming, language help.  5 tools.     |
+  |                                                                              |
+  |  ( 4 )  More...                                            -> page 2         |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Category]                                        Which category?  (pg 2/3) |
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  DevOps & Data                       -> open  04-devops.txt          |
+  |         Compose, Kubernetes, PowerShell, jq.  4 tools.                      |
+  |                                                                             |
+  |  ( 2 )  Cloud & Architecture                -> open  05-cloud.txt           |
+  |         Design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents.   |
+  |         8 tools.                                                            |
+  |                                                                             |
+  |  ( 3 )  Security                            -> open  06-security.txt        |
+  |         STRIDE models, DevSecOps hardening, vuln reports.  3 tools.         |
+  |                                                                             |
+  |  ( 4 )  More...                                            -> page 3        |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Category]                                        Which category?  (pg 3/3) |
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Code Cleanup                        -> open  07-cleanup.txt         |
+  |         Strip AI voice, strip Unicode, docblocks, refactors.  4 tools.      |
+  |                                                                             |
+  |  ( 2 )  Docs & Diagrams                     -> open  08-docs.txt            |
+  |         Onboarding docs, Mermaid, README, changelog, prompts.  8 tools.     |
+  |                                                                             |
+  |  ( 3 )  Utilities                           -> open  09-utils.txt           |
+  |         App blueprints, session stats, VGA demos, formulas.  4 tools.       |
+  |                                                                             |
+  |  ( 4 )  Back to page 1                                     -> page 1        |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+
+  FILES IN THIS FOLDER
+    00-index.txt      you are here
+    01-wordpress.txt  /forge-wordpress  . 6 tools
+    02-design.txt     /forge-design     . 6 tools
+    03-writing.txt    /forge-writing    . 5 tools
+    04-devops.txt     /forge-devops     . 4 tools
+    05-cloud.txt      /forge-cloud      . 8 tools
+    06-security.txt   /forge-security   . 3 tools
+    07-cleanup.txt    /forge-cleanup    . 4 tools
+    08-docs.txt       /forge-docs       . 8 tools
+    09-utils.txt      /forge-utils      . 4 tools
+
+  Whole map on one screen: ../FORGE_MAP.txt
+================================================================================

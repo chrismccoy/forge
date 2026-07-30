@@ -1,0 +1,89 @@
+================================================================================
+  FORGE  -  Security          ( /forge-security )          3 tools
+================================================================================
+  STRIDE threat models, DevSecOps hardening, vulnerability reports.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  STRIDE threat model                            -> /threat-model      |
+  |         Trust boundaries, all six STRIDE categories, severity-rated          |
+  |         threats, mapped mitigations.                                         |
+  |                                                                              |
+  |  ( 2 )  DevSecOps hardening                             -> /devsecops        |
+  |         Audit pipelines, IaC, cloud config: blast radius, compliance,        |
+  |         scanning gates, runtime guardrails.                                  |
+  |                                                                              |
+  |  ( 3 )  Vulnerability report                            -> /pentest-report   |
+  |         Authorized finding: CVSS vector, technical context, sanitized        |
+  |         PoC, remediation.                                                    |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+
+------------------------------------------------------------- /threat-model ---
+  .--[System]-- what is being assessed? ---------------------------------------.
+  |  ( ) Web app with user accounts   ( ) Payment / fintech flow               |
+  |  ( ) Multi-tenant SaaS   ( ) Public API   [Other]                          |
+  '----------------------------------------------------------------------------'
+  .--[Tech stack]-- what it is built with -------------------------------------.
+  |  ( ) Node.js + React   ( ) Python / Django   ( ) Java / Spring             |
+  |  ( ) Serverless   [Other]                                                  |
+  '----------------------------------------------------------------------------'
+  .--[Data class]-- what data it handles  (optional) --------------------------.
+  |  ( ) PII   ( ) Payment / financial (PCI)   ( ) Health data (PHI)           |
+  |  ( ) Public / low-sensitivity   [Other]                                    |
+  '----------------------------------------------------------------------------'
+  .--[Compliance]-- what compliance applies  (optional) -----------------------.
+  |  ( ) GDPR   ( ) PCI-DSS   ( ) HIPAA   ( ) SOC 2   [Other/None]             |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /devsecops ----
+  .--[Domain]-- focus of the audit  (optional) --------------------------------.
+  |  ( ) CI/CD pipeline security   ( ) Cloud infrastructure (IaC)              |
+  |  ( ) Container / Kubernetes   ( ) Secrets management   [Other]             |
+  '----------------------------------------------------------------------------'
+  .--[Stack]-- the stack under audit ------------------------------------------.
+  |  ( ) AWS + Terraform   ( ) GitHub Actions pipeline                         |
+  |  ( ) Kubernetes cluster   ( ) Docker / containers   [Other]                |
+  '----------------------------------------------------------------------------'
+  .--[Config context]-- the config being audited  (may paste actual config) ---.
+  |  ( ) Terraform / IaC files   ( ) Pipeline YAML                             |
+  |  ( ) Dockerfile / compose   ( ) Cloud IAM policies   [Other]               |
+  '----------------------------------------------------------------------------'
+  .--[Compliance]-- which framework applies  (optional) -----------------------.
+  |  ( ) SOC 2   ( ) CIS Benchmarks   ( ) PCI-DSS   ( ) HIPAA   [Other/None]   |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /pentest-report --
+  .--[Target]-- what was tested -----------------------------------------------.
+  |  ( ) Public web app   ( ) Internal network / host                          |
+  |  ( ) Cloud environment (AWS/GCP/Azure)   ( ) API endpoint   [Other]        |
+  '----------------------------------------------------------------------------'
+  .--[Vulnerability]-- what was found -----------------------------------------.
+  |  ( ) SQL injection   ( ) Cross-site scripting (XSS)                        |
+  |  ( ) Broken access control (IDOR)   ( ) Authentication bypass   [Other]    |
+  '----------------------------------------------------------------------------'
+  .--[Exploit method]-- how it was exploited  (optional) ----------------------.
+  |  ( ) Malicious input / payload   ( ) Token / session manipulation          |
+  |  ( ) Privilege escalation   ( ) Chained request abuse   [Other]            |
+  '----------------------------------------------------------------------------'
+  .--[Business impact]-- the impact  (optional) -------------------------------.
+  |  ( ) PII / data exposure   ( ) Account takeover                            |
+  |  ( ) Financial loss   ( ) Service disruption   [Other]                     |
+  '----------------------------------------------------------------------------'
+================================================================================

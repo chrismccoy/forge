@@ -1,0 +1,128 @@
+================================================================================
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          8 tools, 3 pages
+================================================================================
+  Onboarding docs, Mermaid, README, changelog, prompt explainers.
+
+  STEP 2 - pick a tool
+
+  .-------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2)  |
+  |-------------------------------------------------------------------------------|
+  |  ( 1 )  Onboarding documentation                       -> /explain-my-code    |
+  |         One self-contained 13-section CODEBASE_DOCUMENTATION.md for a repo.   |
+  |                                                                               |
+  |  ( 2 )  Codebase to Mermaid                            -> /codebase-to-mermaid|
+  |         Validated Mermaid diagrams with file:line citations.                  |
+  |                                                                               |
+  |  ( 3 )  Mermaid to ASCII                               -> /mermaid-to-ascii   |
+  |         Convert a Mermaid file into a monospace ASCII diagram (.txt).         |
+  |                                                                               |
+  |  ( 4 )  More...                                        -> page 2              |
+  |  [Other] type a tool name ................................................    |
+  '-------------------------------------------------------------------------------'
+
+  .--------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/3)   |
+  |--------------------------------------------------------------------------------|
+  |  ( 1 )  Mermaid sequence diagram                       -> /mermaid-sequence    |
+  |         Turn bullet-point process steps into one valid Mermaid sequence        |
+  |         diagram.                                                               |
+  |                                                                                |
+  |  ( 2 )  Write a README                                 -> /readme-builder      |
+  |         Scan a repo and write a beginner-friendly README.md.                   |
+  |                                                                                |
+  |  ( 3 )  Generate a changelog                           -> /changelog-generator |
+  |         User-facing changelog built from actual diffs across git history.      |
+  |                                                                                |
+  |  ( 4 )  More...                                        -> page 3               |
+  |  [Other] type a tool name ................................................     |
+  '--------------------------------------------------------------------------------'
+
+  .--------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3)   |
+  |--------------------------------------------------------------------------------|
+  |  ( 1 )  Explain a prompt (plain English)               -> /explain-prompt      |
+  |         Describe any AI prompt in beginner-friendly plain English, eight       |
+  |         fixed sections.                                                        |
+  |                                                                                |
+  |  ( 2 )  Analyze a prompt (deep dive)                   -> /analyze-prompt      |
+  |         Rigorous review-ready breakdown: anatomy, techniques, failure          |
+  |         modes, improvements.                                                   |
+  |                                                                                |
+  |  [Other] type a tool name ................................................     |
+  '--------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    ___ free-text
+  Most of these run straight from a path - little or no intake.
+
+
+-------------------------------------------------------- /explain-my-code -----
+  NO questions when a path arg is given.  If empty, one routing question:
+
+  .--[Target]-- Which codebase should I document? -----------------------------.
+  |  ( ) Current working directory   ( ) Custom path (then asks path) ___      |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------- /codebase-to-mermaid ----
+  NO questions when a path arg is given.  If empty, one routing question:
+
+  .--[Target]-- Which codebase should I map? ----------------------------------.
+  |  ( ) Current working directory   ( ) Custom path (then asks path) ___      |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------- /mermaid-to-ascii -----
+  NO menu.  If no file arg, one plain prompt (STOP for reply):
+
+  .--[File]-- Which Mermaid file should I convert? (path or filename) ---------.
+  |  ___ e.g. flow.mmd, diagram.mermaid, /abs/path/flow.mmd                    |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /readme-builder -----
+  .--[Target]-- which project to document?  (skipped if a path arg passed) ----.
+  |  ( ) the current directory   ( ) a different folder (give path) ___        |
+  |  [Other]                                                                   |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- what to do with the result?  (optional) -----------------------.
+  |  ( ) write it to README.md in the project folder                           |
+  |  ( ) print the Markdown so I can save it myself (default)                  |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------ /changelog-generator ----
+  NO questions.  Runs from the path arg, or the current directory if empty.
+  Date/version ranges are rejected - always the full history.
+
+
+-------------------------------------------------------- /mermaid-sequence ----
+  NO menu.  If no bullet list, one plain prompt (STOP for reply):
+
+  .--[Steps]-- Paste your bullet-point process steps --------------------------.
+  |  ___ e.g. "* User submits form  * Server validates  * Server returns token"|
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /explain-prompt ----
+  NO menu.  If no prompt arg, one plain prompt (STOP for reply):
+
+  .--[Prompt]-- Paste the prompt to explain, or give a file path ---------------.
+  |  ___ the AI prompt you want described in plain, beginner English            |
+  '-----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /analyze-prompt ----
+  NO menu.  If no prompt arg, one plain prompt (STOP for reply):
+
+  .--[Prompt]-- Paste the prompt to analyze, or give a file path ---------------.
+  |  ___ the AI prompt you want a rigorous, review-ready breakdown of           |
+  '-----------------------------------------------------------------------------'
+================================================================================

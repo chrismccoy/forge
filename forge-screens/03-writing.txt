@@ -1,0 +1,155 @@
+================================================================================
+  FORGE  -  Writing & Content          ( /forge-writing )          5 tools, 2 pages
+================================================================================
+  Articles, tutorials, contracts, naming, language help.
+
+  STEP 2 - pick a tool
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Technical article                              -> /tech-blog-article|
+  |         Front-page-quality article from topic, audience, angle, length.     |
+  |                                                                             |
+  |  ( 2 )  Hands-on tutorial                              -> /tutorial-builder |
+  |         Step-by-step tutorial built from code or a topic.                   |
+  |                                                                             |
+  |  ( 3 )  Service contract                               -> /draft-contract   |
+  |         Plain-English eight-section service-agreement framework.            |
+  |                                                                             |
+  |  ( 4 )  More...                                        -> page 2            |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Name a product                                 -> /name-domains     |
+  |         10 brandable SaaS domain candidates, scored, locked A-D format.     |
+  |                                                                             |
+  |  ( 2 )  Translate or correct writing                   -> /language-tutor   |
+  |         Translate and explain a phrase, or correct and critique writing.    |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+
+------------------------------------------------------------ /tech-blog-article -
+  5 fields, asked one at a time.
+
+  .--[Topic]-- What is the article about? -------------------------------------.
+  |  ___ e.g. "Why your Postgres connection pool keeps exhausting"             |
+  '----------------------------------------------------------------------------'
+  .--[Audience level]-- reader technical level --------------------------------.
+  |  ( ) beginner   ( ) intermediate   ( ) advanced                            |
+  '----------------------------------------------------------------------------'
+  .--[Angle]-- framing --------------------------------------------------------.
+  |  ( ) tutorial   ( ) opinion   ( ) deep-dive   ( ) lessons-learned          |
+  '----------------------------------------------------------------------------'
+  .--[Primary language]-- language/framework for code examples ----------------.
+  |  ___ e.g. Python/FastAPI, TypeScript/React, Go, Rust                       |
+  '----------------------------------------------------------------------------'
+  .--[Word count]-- target length ---------------------------------------------.
+  |  ( ) 800   ( ) 1500   ( ) 2500   ( ) Other (custom int 300-5000)           |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------- /tutorial-builder -
+  Only TOPIC is required; the other 4 (optional) batch into one call.
+
+  .--[Topic]-- concept, feature, library, or codebase the tutorial covers -----.
+  |  ___ or a path.  e.g. "Debounce a search input in vanilla JS"              |
+  '----------------------------------------------------------------------------'
+  .--[Audience]-- optional  (default: intermediate) ---------------------------.
+  |  ( ) beginner   ( ) intermediate   ( ) advanced                            |
+  '----------------------------------------------------------------------------'
+  .--[Format]-- optional  (default: deep dive) --------------------------------.
+  |  ( ) quick start   ( ) deep dive   ( ) workshop series                     |
+  |  ( ) cookbook   ( ) interactive lab                                        |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- optional  (time / length / tools to use or avoid) --------.
+  |  ___ empty allowed                                                         |
+  '----------------------------------------------------------------------------'
+  .--[Distribution]-- optional  (default: technical blog/docs) ----------------.
+  |  ( ) blog   ( ) docs   ( ) course platform   ( ) internal wiki   [Other]   |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /draft-contract -
+  6 fields, asked one at a time.
+
+  .--[Your business]-- provider's name or business -----------------------------.
+  |  ___                                                                        |
+  '-----------------------------------------------------------------------------'
+  .--[Client name]-- client's name or company ----------------------------------.
+  |  ___                                                                        |
+  '-----------------------------------------------------------------------------'
+  .--[Service]-- what is being delivered? --------------------------------------.
+  |  ( ) Design/branding   ( ) Writing/content   ( ) Consulting/advisory        |
+  |  ( ) Development/technical   [Other]                                        |
+  '-----------------------------------------------------------------------------'
+  .--[Payment terms]-- amount, schedule, or milestone triggers -----------------.
+  |  ( ) 50% up front / 50% on delivery   ( ) Monthly retainer                  |
+  |  ( ) Fixed fee, net-14   ( ) Hourly, invoiced fortnightly   [Other]         |
+  '-----------------------------------------------------------------------------'
+  .--[Protections]-- optional  (empty = standard only) -------------------------.
+  |  ( ) Kill fee on cancellation   ( ) Usage/territory limits                  |
+  |  ( ) Confidentiality term   ( ) Late-payment interest   [Other]             |
+  '-----------------------------------------------------------------------------'
+  .--[Tone]-- optional  (default: PLAIN PROFESSIONAL) --------------------------.
+  |  ( ) PLAIN PROFESSIONAL   ( ) FORMAL CORPORATE   ( ) CREATIVE INDUSTRY      |
+  '-----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /name-domains -
+  5 fields split across TWO calls (call 1: 3 fields, call 2: 2 fields).
+
+  .--[Market topic]-- vertical or domain the product serves -------------------.
+  |  ___ e.g. "AI productivity tools for solo founders"                        |
+  '----------------------------------------------------------------------------'
+  .--[Target audience]-- who buys and uses ------------------------------------.
+  |  ___                                                                       |
+  '----------------------------------------------------------------------------'
+  .--[Offer type]-- product class ---------------------------------------------.
+  |  ( ) micro-SaaS   ( ) B2B SaaS platform   ( ) developer tool               |
+  |  ( ) consumer app   [Other] marketplace, agency                            |
+  '----------------------------------------------------------------------------'
+  .--[Brand tone]-- pick 2-3  (4 shown of 10, most relevant) ------------------.
+  |  [ ] modern  [ ] premium  [ ] bold  [ ] minimalist ...  [Other] any tone   |
+  |      full palette: modern premium bold minimalist friendly technical       |
+  |      luxury playful corporate edgy                                         |
+  '----------------------------------------------------------------------------'
+  .--[Extension priority]-- preferred TLD order -------------------------------.
+  |  ( ) .com > .io > .ai   ( ) .com > .co > .io > .net                        |
+  |  ( ) .com only   ( ) .ai > .com > .io                                      |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /language-tutor -
+  Asked one at a time; TARGET_LANGUAGE only in Translate mode.
+
+  .--[Mode]-- what to do? -----------------------------------------------------.
+  |  ( ) Translate   ( ) Analyze   ( ) Auto (detect from text)                 |
+  '----------------------------------------------------------------------------'
+  .--[Text]-- the phrase, sentence, or passage --------------------------------.
+  |  ___                                                                       |
+  '----------------------------------------------------------------------------'
+  .--[Target language]-- Translate mode only  (skipped in Analyze) ------------.
+  |  ( ) English   ( ) Spanish   ( ) Japanese   [Other] ___                    |
+  '----------------------------------------------------------------------------'
+  .--[Native language]-- optional  (default: English) -------------------------.
+  |  ( ) English   ( ) Spanish   ( ) Mandarin   [Other] ___                    |
+  '----------------------------------------------------------------------------'
+  .--[Depth]-- optional  (default: Full) --------------------------------------.
+  |  ( ) Full   ( ) Quick                                                      |
+  '----------------------------------------------------------------------------'
+================================================================================

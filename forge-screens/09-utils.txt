@@ -1,0 +1,120 @@
+================================================================================
+  FORGE  -  Utilities          ( /forge-utils )          4 tools
+================================================================================
+  App blueprints, session stats, VGA demos, Excel/Sheets formulas.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                     Which tool?       |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  App blueprint                                  -> /blueprint         |
+  |         11-section senior-architect production blueprint for a new app.      |
+  |                                                                              |
+  |  ( 2 )  Session stats                                  -> /session-stats     |
+  |         Render this session's stats as a standalone dark-theme HTML page.    |
+  |                                                                              |
+  |  ( 3 )  VGA demo                                       -> /vgademo           |
+  |         Sizecoded 1990s-style assembly demoscene production.                 |
+  |                                                                              |
+  |  ( 4 )  Fix a spreadsheet formula                      -> /fix-formula       |
+  |         Debug and fix a broken Excel or Google Sheets formula.               |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+
+---------------------------------------------------------------- /blueprint ---
+  5 fields, asked one at a time.  (arg seeds APP_DESCRIPTION, confirmed first.)
+
+  .--[App description]-- what the app does, domain, target users --------------.
+  |  ___                                                                       |
+  '----------------------------------------------------------------------------'
+  .--[App type]-- workload class  (4 shown of 6) ------------------------------.
+  |  ( ) web app   ( ) API service   ( ) mobile   ( ) CLI                      |
+  |      also: data pipeline, desktop                                          |
+  '----------------------------------------------------------------------------'
+  .--[Tech stack]-- primary frameworks, database, infra -----------------------.
+  |  ___ e.g. "Next.js + Postgres + Prisma + Vercel"                           |
+  '----------------------------------------------------------------------------'
+  .--[Language]-- implementation language  (4 shown of 6) ---------------------.
+  |  ( ) TypeScript   ( ) Python   ( ) Go   ( ) Rust                           |
+  |      also: Java, C#                                                        |
+  '----------------------------------------------------------------------------'
+  .--[Scale]-- concurrent users / req-per-sec / data volume -------------------.
+  |  ___ e.g. "100 tenants, ~5k DAU, 50 rps peak"                              |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /session-stats ---
+  NO questions.  Runs from the current session transcript (or a .jsonl path arg).
+
+
+------------------------------------------------------------------ /vgademo ---
+  14 fields across 4 batched rounds.  Every question has an [Other] free-text.
+
+  .--[Effect]-- What visual effect? -------------------------------------------.
+  |  ( ) Plasma   ( ) Fire effect   ( ) Tunnel   ( ) Rotozoomer                |
+  '----------------------------------------------------------------------------'
+  .--[Size]-- What size budget? -----------------------------------------------.
+  |  ( ) 256 bytes   ( ) 512 bytes   ( ) 1KB intro   ( ) 4KB or unrestricted   |
+  '----------------------------------------------------------------------------'
+  .--[Platform]-- What target platform? ---------------------------------------.
+  |  ( ) MS-DOS .COM file   ( ) Boot sector (raw binary)   ( ) BIOS only       |
+  '----------------------------------------------------------------------------'
+  .--[Video mode]-- What video mode? ------------------------------------------.
+  |  ( ) Mode 13h   ( ) Text mode (B800h)   ( ) VGA planar (Mode X)            |
+  '----------------------------------------------------------------------------'
+  .--[CPU mode]-- What CPU mode? ----------------------------------------------.
+  |  ( ) 16-bit real mode   ( ) 32-bit protected mode                          |
+  '----------------------------------------------------------------------------'
+  .--[Assembler]-- Which assembler syntax? ------------------------------------.
+  |  ( ) NASM   ( ) FASM   ( ) TASM   ( ) MASM                                 |
+  '----------------------------------------------------------------------------'
+  .--[Binary]-- What binary format? -------------------------------------------.
+  |  ( ) .COM file   ( ) Boot sector (raw + 0AA55h sig)   ( ) Raw binary       |
+  '----------------------------------------------------------------------------'
+  .--[Entry]-- What entry point? ----------------------------------------------.
+  |  ( ) org 100h   ( ) org 7C00h   ( ) org 0                                  |
+  '----------------------------------------------------------------------------'
+  .--[Priority]-- What performance priority? ----------------------------------.
+  |  ( ) Smallest size   ( ) Fastest execution   ( ) Balanced                  |
+  '----------------------------------------------------------------------------'
+  .--[Loop style]-- What loop style? ------------------------------------------.
+  |  ( ) Single loop (LOOP)   ( ) Unrolled loop   ( ) Self-modifying loop      |
+  '----------------------------------------------------------------------------'
+  .--[Tricks]-- Which tricks allowed?  (multi) --------------------------------.
+  |  [ ] Self-modifying code   [ ] Undocumented opcodes                        |
+  |  [ ] FPU instructions   [ ] Lookup tables                                  |
+  '----------------------------------------------------------------------------'
+  .--[Memory]-- What memory model? --------------------------------------------.
+  |  ( ) Segment reuse (CS=DS=ES=SS)   ( ) No stack setup   ( ) Flat segment   |
+  '----------------------------------------------------------------------------'
+  .--[Deps]-- What dependencies? ----------------------------------------------.
+  |  ( ) BIOS only (INT 10h/16h)   ( ) No DOS calls (INT 21h forbidden)        |
+  |  ( ) Direct hardware access                                                |
+  '----------------------------------------------------------------------------'
+  .--[Comments]-- Emit comments in code? --------------------------------------.
+  |  ( ) No - bare bytes only   ( ) Yes - annotate the asm                     |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------- /fix-formula ----
+  Only asks for whatever the arg didn't already provide.
+
+  .--[Broken formula]-- the formula that isn't working ------------------------.
+  |  ___ (asked only if absent from the argument)                              |
+  '----------------------------------------------------------------------------'
+  .--[Issue]-- what's going wrong  (error code, wrong result, expected) -------.
+  |  ___ (asked only if absent; never guessed)                                 |
+  '----------------------------------------------------------------------------'
+================================================================================

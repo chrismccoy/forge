@@ -1,0 +1,209 @@
+================================================================================
+  FORGE  -  Cloud & Architecture          ( /forge-cloud )          8 tools, 3 pages
+================================================================================
+  System design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  System architecture                            -> /system-design     |
+  |         Scalable blueprint: components, data flow, datastore, fault          |
+  |         tolerance. No code.                                                  |
+  |                                                                              |
+  |  ( 2 )  Terraform (IaC)                                -> /terraform         |
+  |         HCL split into main/variables/outputs, least-privilege IAM,          |
+  |         state backend.                                                       |
+  |                                                                              |
+  |  ( 3 )  CI/CD pipeline                                 -> /cicd-pipeline     |
+  |         Platform-native YAML, dependency+layer caching, secrets checklist.   |
+  |                                                                              |
+  |  ( 4 )  More...                                        -> page 2             |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Data pipeline (ETL)                            -> /data-pipeline     |
+  |         Idempotent ETL/ELT: extraction, medallion layers, DAG, tests,        |
+  |         backfill.                                                            |
+  |                                                                              |
+  |  ( 2 )  Cloud migration                                -> /cloud-migration   |
+  |         On-prem to cloud on the 6 R's: landing zone, wave roadmap,           |
+  |         risk/TCO tables.                                                     |
+  |                                                                              |
+  |  ( 3 )  SRE and observability                          -> /sre-audit         |
+  |         SLIs, SLOs, error budgets, tracing, burn-rate alerts, logging.       |
+  |                                                                              |
+  |  ( 4 )  More...                                        -> page 3             |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Cloud FinOps                                   -> /finops           |
+  |         Cost blueprint: quick wins, architectural shifts, commitments,      |
+  |         tagging, billing alarms.                                            |
+  |                                                                             |
+  |  ( 2 )  Incident report                                -> /incident-report  |
+  |         Blameless RCA: impact, timeline, 5 Whys, systemic action items.     |
+  |                                                                             |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+  Every tool below asks 4 single-pick questions.
+
+
+------------------------------------------------------------ /system-design ---
+  .--[Purpose]-- what the system is for ---------------------------------------.
+  |  ( ) Social feed / content platform   ( ) E-commerce / payments            |
+  |  ( ) Real-time messaging / chat   ( ) Data / analytics pipeline   [Other]  |
+  '----------------------------------------------------------------------------'
+  .--[Scale]-- how big it must get --------------------------------------------.
+  |  ( ) Startup (<10k users)   ( ) Growth (1M+ users)                         |
+  |  ( ) Hyperscale (100M+ DAU)   [Other]                                      |
+  '----------------------------------------------------------------------------'
+  .--[Cloud]-- target cloud ---------------------------------------------------.
+  |  ( ) AWS   ( ) GCP   ( ) Azure   ( ) Cloud-agnostic                        |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- what matters most ----------------------------------------.
+  |  ( ) Low latency (<100ms)   ( ) Strong consistency                         |
+  |  ( ) Cost-sensitive   ( ) High availability (99.99%)   [Other]             |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /terraform ----
+  .--[Cloud provider]-- exactly one supported cloud ---------------------------.
+  |  ( ) AWS   ( ) GCP   ( ) Azure                                             |
+  '----------------------------------------------------------------------------'
+  .--[Infrastructure]-- what needs provisioning -------------------------------.
+  |  ( ) VPC + networking   ( ) Compute + autoscaling                          |
+  |  ( ) Managed DB (RDS / Cloud SQL)   ( ) Serverless (Lambda+API GW)  [Other]|
+  '----------------------------------------------------------------------------'
+  .--[Security]-- posture that matters most -----------------------------------.
+  |  ( ) Least-privilege IAM   ( ) Encryption at rest+transit                  |
+  |  ( ) CIS Benchmarks   ( ) SOC 2   [Other]                                  |
+  '----------------------------------------------------------------------------'
+  .--[State]-- where Terraform state lives ------------------------------------.
+  |  ( ) S3 + DynamoDB lock   ( ) Terraform Cloud                              |
+  |  ( ) Azure Blob   ( ) GCS backend   [Other]                                |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /cicd-pipeline ---
+  .--[Repo stack]-- what the repo is built with -------------------------------.
+  |  ( ) Node.js / npm   ( ) Python / pip   ( ) Java / Maven   ( ) Go  [Other] |
+  '----------------------------------------------------------------------------'
+  .--[Testing]-- what the pipeline should run ---------------------------------.
+  |  ( ) Unit + lint   ( ) Unit + integration + e2e                            |
+  |  ( ) Security scanning (SAST/SCA)   ( ) Build only   [Other]               |
+  '----------------------------------------------------------------------------'
+  .--[Deploy target]-- where it deploys ---------------------------------------.
+  |  ( ) AWS (ECS/EKS)   ( ) Kubernetes   ( ) Serverless   ( ) VM/bare-metal   |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- platform or overriding constraint ------------------------.
+  |  ( ) GitHub Actions   ( ) GitLab CI   ( ) Jenkins                          |
+  |  ( ) Fastest build time   [Other]                                          |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /data-pipeline ---
+  .--[Source]-- where the data comes from -------------------------------------.
+  |  ( ) App DB (Postgres/MySQL)   ( ) Event stream (Kafka/Kinesis)            |
+  |  ( ) Third-party APIs / SaaS   ( ) Flat files (S3/CSV/JSON)   [Other]      |
+  '----------------------------------------------------------------------------'
+  .--[Destination]-- where it lands -------------------------------------------.
+  |  ( ) Snowflake   ( ) BigQuery   ( ) Redshift                               |
+  |  ( ) Databricks / Delta Lake   [Other]                                     |
+  '----------------------------------------------------------------------------'
+  .--[Transformation]-- what transformation is needed -------------------------.
+  |  ( ) Cleaning + dedup   ( ) Aggregation / rollups                          |
+  |  ( ) Slowly Changing Dimensions   ( ) Star schema modeling   [Other]       |
+  '----------------------------------------------------------------------------'
+  .--[Orchestration]-- what runs the pipeline ---------------------------------.
+  |  ( ) Airflow   ( ) dbt   ( ) Dagster   ( ) AWS Glue   [Other]              |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------------- /cloud-migration --
+  .--[Current infra]-- what runs on-prem today --------------------------------.
+  |  ( ) VMs + monolithic app   ( ) Bare-metal + databases                     |
+  |  ( ) Mixed VMs, DBs, file servers   ( ) Legacy mainframe   [Other]         |
+  '----------------------------------------------------------------------------'
+  .--[Goal]-- what drives the move --------------------------------------------.
+  |  ( ) Exit the data center   ( ) Cut cost / modernize                       |
+  |  ( ) Scale + high availability   ( ) Compliance / DR   [Other]             |
+  '----------------------------------------------------------------------------'
+  .--[Target cloud]-- which target cloud --------------------------------------.
+  |  ( ) AWS   ( ) Azure   ( ) GCP   ( ) Hybrid / multi-cloud                  |
+  '----------------------------------------------------------------------------'
+  .--[Compliance]-- what compliance applies -----------------------------------.
+  |  ( ) HIPAA   ( ) PCI-DSS   ( ) SOC 2   ( ) GDPR   [Other/None]             |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /sre-audit ----
+  .--[Architecture]-- the system shape ----------------------------------------.
+  |  ( ) Microservices on Kubernetes   ( ) Monolith + database                 |
+  |  ( ) Serverless / event-driven   [Other]                                   |
+  '----------------------------------------------------------------------------'
+  .--[Critical journeys]-- what must never break ------------------------------.
+  |  ( ) Login / auth   ( ) Checkout / payment   ( ) Search / browse           |
+  |  ( ) Core API request/response   [Other]                                   |
+  '----------------------------------------------------------------------------'
+  .--[Blind spots]-- what cannot be seen today --------------------------------.
+  |  ( ) No distributed tracing   ( ) Noisy or missing alerts                  |
+  |  ( ) No SLOs defined   ( ) Log volume and cost   [Other]                   |
+  '----------------------------------------------------------------------------'
+  .--[Telemetry]-- tooling in place -------------------------------------------.
+  |  ( ) Prometheus + Grafana   ( ) Datadog   ( ) OpenTelemetry + vendor       |
+  |  ( ) ELK / Loki   [Other]                                                  |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------------------- /finops -----
+  .--[Cloud provider]-- which cloud the bill is on ----------------------------.
+  |  ( ) AWS   ( ) GCP   ( ) Azure   [Other]                                   |
+  '----------------------------------------------------------------------------'
+  .--[Architecture]-- what runs today -----------------------------------------.
+  |  ( ) EC2 / VM-based monolith   ( ) Kubernetes / containers                 |
+  |  ( ) Serverless (Lambda/functions)   [Other]                               |
+  '----------------------------------------------------------------------------'
+  .--[Monthly spend]-- rough monthly cloud spend ------------------------------.
+  |  ( ) Under $10k   ( ) $10k-$100k   ( ) $100k-$1M   ( ) Over $1M            |
+  '----------------------------------------------------------------------------'
+  .--[Waste suspect]-- where the waste is suspected ---------------------------.
+  |  ( ) Idle / oversized compute   ( ) Storage and snapshots                  |
+  |  ( ) Data transfer / egress   ( ) No commitment discounts   [Other]        |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------- /incident-report -----
+  .--[Summary]-- what kind of incident it was ---------------------------------.
+  |  ( ) Service outage / downtime   ( ) Data loss / corruption                |
+  |  ( ) Performance degradation   ( ) Security breach   [Other]               |
+  '----------------------------------------------------------------------------'
+  .--[Root cause]-- what triggered it -----------------------------------------.
+  |  ( ) Bad deploy / config change   ( ) Resource exhaustion                  |
+  |  ( ) Dependency / third-party failure   ( ) Human / process gap   [Other]  |
+  '----------------------------------------------------------------------------'
+  .--[Impact]-- what it cost --------------------------------------------------.
+  |  ( ) Revenue loss   ( ) Users unable to access                             |
+  |  ( ) Data integrity / trust   ( ) SLA / contractual breach   [Other]       |
+  '----------------------------------------------------------------------------'
+  .--[Remediation]-- how it was resolved --------------------------------------.
+  |  ( ) Rollback / hotfix   ( ) Scale up / add capacity                       |
+  |  ( ) Failover / restore from backup   ( ) Manual intervention   [Other]    |
+  '----------------------------------------------------------------------------'
+================================================================================
