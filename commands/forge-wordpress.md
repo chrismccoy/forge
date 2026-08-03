@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 6 WordPress tools and run it. Build, review, and format WordPress plugins and themes.
+Route the user to one of the 8 WordPress tools and run it. Build, review, and format WordPress plugins and themes.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -48,6 +48,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
+| More... | - | The remaining WordPress tools. |
+
+**Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
+
+| Label | Command | Description |
+|---|---|---|
+| Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
+| Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 
 ## Step 2 - run it
 

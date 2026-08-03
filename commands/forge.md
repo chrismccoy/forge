@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 48 tools in this plugin and then run it. This command
+Route the user to one of the 50 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,7 +29,7 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 6 WordPress tools |
+| `/forge-wordpress` | 8 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 5 writing and content tools |
 | `/forge-devops` | 4 DevOps and data tools |
@@ -53,7 +53,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, and format WordPress plugins and themes. 6 tools. |
+| WordPress | Build, review, and format WordPress plugins and themes. 8 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help. 5 tools. |
 | More... | DevOps, cloud, security, code cleanup, docs and diagrams, utilities. |
@@ -82,20 +82,26 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (6 - page at 4)
+### WordPress (8 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Build a plugin from scratch | wp-plugin | Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, i18n, uninstall.php. |
 | Targeted WordPress code | wp-build | Add a feature, settings page, block, or endpoint to an existing project. |
 | HTML to WordPress theme | wp-theme | Convert static HTML into an installable theme with Tailwind and WCAG AA. |
-| More... | - | Review, consulting, and formatting tools. |
+| More... | - | The remaining WordPress tools. |
 
 | Label | Command | Description |
 |---|---|---|
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
+| More... | - | Menu-icon and report-card tools. |
+
+| Label | Command | Description |
+|---|---|---|
+| Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
+| Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 
 ### Design & Frontend (6 - page at 4)
 

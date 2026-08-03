@@ -69,7 +69,7 @@ Two ways to invoke it:
 /vgademo ← walks through all four intake rounds
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"write a 256 byte plasma intro in NASM for MS-DOS"*, *"make a fire effect demo in Mode 13h"*, *"build a 512 byte boot sector with color bars"*, *"sizecoded tunnel effect for .COM file"*, *"VGA assembly rotozoomer under 1KB"*, *"demoscene intro for the 8086"*
 

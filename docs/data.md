@@ -42,7 +42,7 @@ Output is locked to four sections so every answer reads the same: ❌ The Issue,
 /fix-formula                                               ← full intake (formula + issue)
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"fix my Excel formula"*, *"why does my formula return #REF!"*, *"debug this spreadsheet formula"*, *"troubleshoot a Google Sheets formula"*, *"my VLOOKUP isn't working"*, *"correct this formula"*
 

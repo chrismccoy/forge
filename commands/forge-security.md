@@ -107,6 +107,8 @@ answer as a Step 0 direct hit.
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
+| `wp-menu-icons` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
+| `wp-report-card` | `/forge-wordpress` |
 | `wp-review` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |

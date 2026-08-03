@@ -61,7 +61,7 @@ Two ways to invoke it:
 /refactor             ← prompts for the path
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"analyze code for refactoring"*, *"produce a refactoring plan for src/"*, *"find code smells in this project"*, *"architectural review of this codebase"*, *"SOLID/GRASP audit on auth/"*, *"find God classes"*, *"Martin Fowler refactoring catalog review"*, *"pre-merge architectural review"*
 
@@ -121,7 +121,7 @@ Two ways to invoke:
 /codebase-to-mermaid                        ← picker: current dir vs custom path
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"map this codebase"*, *"draw a diagram of this repo"*, *"generate a flow diagram"*, *"make a mermaid diagram"*, *"visualize this project"*, *"show how this code flows"*, *"diagram the architecture"*, *"sequence diagram of this endpoint"*, *"class diagram of these models"*, *"onboarding diagram"*, *"produce a flow.mmd"*
 
@@ -189,7 +189,7 @@ Two ways to invoke:
 /mermaid-to-ascii              ← asks which file to convert
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"convert this mermaid to ascii"*, *"turn diagram.mmd into ascii art"*, *"render this sequence diagram as text"*, *"make an ascii version of this flowchart"*, *"mermaid to txt"*
 
@@ -248,7 +248,7 @@ Two ways to invoke:
 /explain-my-code                        ← picker: current dir vs custom path
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"document this codebase"*, *"explain my code"*, *"generate architecture docs"*, *"write an onboarding doc"*, *"analyze this repo"*, *"help a new dev understand this whole codebase"*, *"write up how this project works"*, *"map out this code into a doc"*
 
@@ -320,7 +320,7 @@ Two ways to invoke:
 /docblock-rewrite src/ --no-backup --concurrency 8
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"rewrite docblocks in src/"*, *"convert my PHPDoc to plain English"*, *"strip jargon from comments in formatting.php"*, *"make these JSDoc blocks readable to a non-coder"*, *"turn my doc blocks into friendly one-liners"*
 
@@ -413,7 +413,7 @@ Slash command:
 /unslop src/ # skips picker, runs on the directory
 ```
 
-Natural language triggers (skill auto loads):
+Requests it handles (type the command to run it - it never auto-triggers):
 
 > *"unslop this file"*, *"deslop the repo"*, *"remove AI tells from `src/auth.ts`"*, *"strip em-dashes from comments"*, *"rename `orchestrateDataProvider` to something human"*, *"audit this file for AI slop"*, *"clean the AI voice out of these comments"*, *"kill the marketing words in this codebase"*
 
@@ -476,7 +476,7 @@ Slash command:
 /strip-unicode “Hi—bye”…       # pasted text, cleaned in a code block
 ```
 
-Natural language triggers (skill auto loads):
+Requests it handles (type the command to run it - it never auto-triggers):
 
 > *"strip the unicode from this"*, *"convert this to plain ASCII"*, *"remove the smart quotes"*, *"replace the em dashes"*, *"clean the zero-width characters out of this"*, *"normalize this text to ASCII"*
 
@@ -532,7 +532,7 @@ Two ways to invoke:
 /changelog-generator ../my-app  ← runs on a repo at that path
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"generate a changelog for this repo"*, *"write release notes from the git history"*, *"what actually shipped in this project?"*, *"changelog from the code changes, don't trust the commit messages"*, *"turn this repo's history into release notes my users can read"*
 

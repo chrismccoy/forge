@@ -48,7 +48,7 @@ Two ways to invoke:
 /session-stats path/to/session.jsonl ← a specific transcript
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"render my session stats as HTML"*, *"make an HTML stats card of my session"*, *"session stats html"*, *"export session metrics to a dark HTML page"*, *"session stats dashboard"*
 

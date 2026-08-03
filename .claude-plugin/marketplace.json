@@ -9,7 +9,7 @@
     {
       "name": "forge",
       "source": "./",
-      "description": "Forty-eight command-invoked toolkits in one plugin: WordPress engineering, design and accessibility, writing, DevOps and data, cloud and architecture, security, code cleanup, docs and diagrams. Nothing auto-triggers - every toolkit is reached by an explicit slash command, and each command loads its own procedure file on invocation. Run /forge for a category-then-item picker, or call any command directly.",
+      "description": "Fifty command-invoked toolkits in one plugin: WordPress engineering, design and accessibility, writing, DevOps and data, cloud and architecture, security, code cleanup, docs and diagrams. Nothing auto-triggers - every toolkit is reached by an explicit slash command, and each command loads its own procedure file on invocation. Run /forge for a category-then-item picker, or call any command directly.",
       "version": "1.0.0"
     }
   ]

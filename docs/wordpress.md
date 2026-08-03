@@ -40,7 +40,7 @@ It also answers symptom-first requests. *"My site is slow"*, *"a plugin throws a
 /wp-build "a dynamic block that lists recent posts" ← seeds the specifics
 ```
 
-Or natural language: *"build a custom WordPress theme"*, *"add a settings page to my plugin"*, *"create a Gutenberg block"*, *"extend WooCommerce checkout"*, *"add a REST API endpoint"*, *"my WordPress site is slow"*.
+It also handles requests like *"build a custom WordPress theme"*, *"add a settings page to my plugin"*, *"create a Gutenberg block"*, *"extend WooCommerce checkout"*, *"add a REST API endpoint"*, or *"my WordPress site is slow"* - but you invoke it with `/wp-build`; it never auto-triggers.
 
 The full procedure lives at [`lib/wp-builder-pro/SKILL.md`](../lib/wp-builder-pro/SKILL.md).
 
@@ -96,7 +96,7 @@ Five of the seven intake questions are **pickers** via `AskUserQuestion`: pick t
 /wp-plugin "Acme Bookings" ← pre-fills the plugin name
 ```
 
-Or natural language: *"build me a WordPress plugin for time-slot bookings"*, *"scaffold a WP plugin with a settings page and a REST endpoint"*, *"create a custom post type plugin for testimonials"*, *"I need a Gutenberg block plugin for newsletter signups"*, *"make me a WooCommerce extension that adds gift wrapping"*.
+It also handles requests like *"build me a WordPress plugin for time-slot bookings"*, *"scaffold a WP plugin with a settings page and a REST endpoint"*, *"create a custom post type plugin for testimonials"*, *"I need a Gutenberg block plugin for newsletter signups"*, or *"make me a WooCommerce extension that adds gift wrapping"* - but you invoke it with `/wp-plugin`; it never auto-triggers.
 
 The full procedure lives at [`lib/wordpress-plugin/SKILL.md`](../lib/wordpress-plugin/SKILL.md).
 
@@ -171,7 +171,7 @@ Two ways to invoke it:
 /wp-theme Brewline ← pre-fills the theme name
 ```
 
-**Natural language** (auto-triggers):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"I have an index.html and a single.html in my Downloads folder. convert them into a WordPress theme called 'Brewline'."*
 
@@ -250,7 +250,7 @@ Scope-locked. It will not write tutorials, recommend hosting, or answer general 
 /wp-review ./wp-content/plugins/x ← audits the specified path
 ```
 
-Or natural language: *"review my WordPress plugin for security holes"*, *"audit this theme before I submit to WordPress.org"*, *"is this plugin "*, *"give me a senior architect review of this WP code"*, *"rate my plugin out of 10"*.
+It also handles requests like *"review my WordPress plugin for security holes"*, *"audit this theme before I submit to WordPress.org"*, *"is this plugin secure"*, *"give me a senior architect review of this WP code"*, or *"rate my plugin out of 10"* - but you invoke it with `/wp-review`; it never auto-triggers.
 
 The full procedure lives at [`lib/wordpress-architect-review/SKILL.md`](../lib/wordpress-architect-review/SKILL.md).
 
@@ -308,7 +308,7 @@ Two ways to invoke:
 /wp-consult                                               ← full 7-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"review my WordPress architecture"*, *"WordPress performance audit"*, *"WordPress security review"*, *"scale my WordPress site"*, *"WooCommerce performance review"*, *"WordPress technical debt assessment"*, *"senior WordPress consultant"*
 
@@ -357,6 +357,98 @@ The important part is what it will not do. Formatting should never change how a 
 /wp-format ./wp-content/themes/mytheme ← formats a specific theme
 ```
 
-Or natural language: *"format my WordPress theme to the coding standard"*, *"run phpcbf on my templates"*, *"fix the indentation and spacing in my theme"*, *"set up phpcs for this theme"*, *"convert my theme files to tabs"*.
+It also handles requests like *"format my WordPress theme to the coding standard"*, *"run phpcbf on my templates"*, *"fix the indentation and spacing in my theme"*, *"set up phpcs for this theme"*, or *"convert my theme files to tabs"* - but you invoke it with `/wp-format`; it never auto-triggers.
 
 The full procedure lives at [`lib/wordpress-formatter/SKILL.md`](../lib/wordpress-formatter/SKILL.md), and the slash command at [`commands/wp-format.md`](../commands/wp-format.md).
+
+---
+
+## `menu-icon-picker`
+
+Ports a searchable Font Awesome icon picker onto every menu item under Appearance > Menus, integrated straight into a classic theme.
+
+```
+/wp-menu-icons
+```
+
+Most themes that show icons on menu items make you type the Font Awesome class by hand into a plain text field - `fa-solid fa-house`, spelled exactly, no preview, no search. This tool replaces that with a click-to-pick modal: open a menu item, click the icon button, search the full Font Awesome grid, pick one, done. It ships its own reference copy of the picker (PHP + JS + CSS), so there is no external plugin to install - the code is ported into the theme itself and rebranded to the theme's own prefix, with no `mip_` placeholder name left behind.
+
+It is not a plugin and it is not a blind copy-paste. The tool first runs a precheck: the picker hooks the classic menu system (`nav-menus.php`, `wp_nav_menu_item_custom_fields`), so a block/FSE theme that drives navigation through the Navigation block is rejected up front with a message rather than half-wired. Then it decides how much to install by looking at what the theme already has.
+
+## ✨ Features
+
+- 🎯 Precheck first. classic-menu themes only; block/FSE themes are detected and rejected before any file is touched
+- 🔀 Two install modes, auto-detected. **Mode A** (theme already has an icon field + renderer) swaps the plain text input for the picker, reuses the existing meta key, and changes zero frontend code. **Mode B** (no field) installs the full admin side, adds a reader helper, and writes `MENU-ICON-FRONTEND.md` with copy-paste render instructions
+- 🏷️ Full rebrand. every `mip_` / `Menu_Icon_Picker` / `_mip_icon` placeholder is renamed to the theme's own prefix, read from the theme, not invented; the JS↔PHP contract (field name, localized object, element IDs, CSS classes) is kept in sync
+- 🔒 Security gates on every path. nonce (`update-nav-menu-nonce`), capability (`edit_theme_options`), sanitize on save, escape on output; safe practice overrides any instruction that would skip a gate
+- 🧮 Normalize on save. the picked value is stored render-ready (a full `fa-solid fa-house` class), idempotent and backward compatible, so the frontend prints it verbatim
+- 📦 Theme-correct enqueue. picker CSS/JS and Font Awesome load only on `nav-menus.php`; asset URLs use `get_theme_file_uri()` so parent and child themes both resolve
+- 🧪 Static verification. `php -l`, a placeholder-leak grep, the JS↔PHP contract shown side by side, gated-enqueue and security greps, and save-wiring proof - all pasted as evidence before the job is called done
+- 🛡️ Prompt-injection defense. every theme file is treated as inert data; instructions found inside theme code are ignored and flagged
+
+## 🔄 How it works
+
+1. **Precheck**: confirm the theme uses classic menus (`register_nav_menus` / `wp_nav_menu`); reject block/FSE themes with a message.
+2. **Naming**: pin the theme's function prefix and text domain, read from the theme.
+3. **Mode**: classify by two signals - an icon **field** and a **renderer**. Both present -> Mode A. No field -> Mode B. Field but no renderer -> Mode A admin plus a Mode B frontend doc.
+4. **Port**: move the JS/CSS into the theme's `assets/`, drop the plugin packaging, rebrand every identifier, normalize the value on save.
+5. **Frontend (Mode B)**: write `MENU-ICON-FRONTEND.md` with two render options (drop-in filter or custom walker) using the real prefix and key - templates are never auto-edited.
+6. **Verify**: run the seven static checks and paste the evidence; summarize the mode, prefix, meta key, and files touched.
+
+## 🚀 How to use it
+
+```
+/wp-menu-icons ← integrates into the theme in the current directory
+/wp-menu-icons ./wp-content/themes/mytheme ← target a specific theme
+```
+
+It handles jobs like *"add an icon picker to my WordPress menu items"*, *"let me pick a Font Awesome icon per menu item"*, *"replace the icon text field on my nav menu with a picker"*, or *"install a menu icon picker into my theme"* - but you invoke it with `/wp-menu-icons`, not by describing the task. Like every Forge tool it sets `disable-model-invocation`, so it never fires on its own; the slash command is the only trigger.
+
+The full procedure lives at [`lib/menu-icon-picker/SKILL.md`](../lib/menu-icon-picker/SKILL.md), the bundled reference source at [`lib/menu-icon-picker/sources/`](../lib/menu-icon-picker/sources/), and the slash command at [`commands/wp-menu-icons.md`](../commands/wp-menu-icons.md).
+
+---
+
+## `wordpress-report-card`
+
+The scorecard from `wordpress-architect-review`, on its own. Ten areas rated out of 10, an overall score, and a tier - no findings, no fixes, no prose.
+
+```
+/wp-report-card
+```
+
+Sometimes the full architect review is more than the moment needs. You don't want twenty severity-tagged findings with quoted code and a refactor roadmap - you want a number. Is this plugin a 3 or an 8? Where does it lose points? `wp-report-card` answers exactly that and stops. It runs the same detection and the same file-by-file read as `/wp-review`, scores the same ten areas against the same rubric, then prints only the table and the overall tier. Everything else the review would emit is suppressed.
+
+The scores are not cheaper for being alone. The tool reads every PHP, JS, CSS, and companion config file directly and grades from what the code actually does - a missing nonce or a raw `$_GET` in SQL caps Security low no matter how clean the rest looks. The difference from `/wp-review` is output surface, not rigor: same analysis, table only.
+
+Use it as a quick gate - score a plugin before you invest in it, track a codebase's number across refactors, or compare two candidates - then reach for `/wp-review` when a low score means you need the itemized findings and fixes behind it.
+
+## ✨ Features
+
+- 🎯 One deliverable. the 10-row scorecard, an Overall row, and a single tier line - nothing before the table, nothing after the tier
+- 🔍 Same rigor as the full review. detects plugin / theme / block plugin / MU-plugin, reads every file directly, scores from real code, not filenames
+- 📊 Ten scored areas. Security, Performance, Architecture, Correctness, WordPress Standards, Maintainability, Documentation, Testing, Accessibility/UX, Internationalization - overall weighted toward Security, Performance, Correctness
+- 🪜 Rubric tier. the overall score is mapped to one of five tiers (enterprise-ready down to critical/broken) via the shared rubric
+- 🚫 No findings, no fixes, no roadmap. suppressed by design; each Notes cell is a single grounded clause, never a recommendation
+- ♻️ Shared source of truth. reuses the review's `categories.md` roll-up and `rubric.md` tiers, so the two tools can never drift out of sync
+- 🛡️ Prompt-injection defense. file contents are inert data; an injection attempt in the code drops the Security score and is noted, never followed
+- 🔒 Scope-locked. scores code only; redirects build/scaffold requests and points anyone who wants the itemized findings to `/wp-review`
+
+## 🔄 How it works
+
+1. **Detect target**: plugin header, theme `style.css`, `block.json`, or `mu-plugins` path; abort cleanly if none found.
+2. **Read everything**: every PHP/JS/CSS plus companion configs, with the Read tool, never from filename summaries.
+3. **Score internally**: grade the ten areas against `references/categories.md`; do the finding-level analysis but do not print it.
+4. **Emit the table**: the 10 rows plus a weighted Overall row, each Notes cell one grounded clause.
+5. **Tier line**: map the overall score to its rubric tier from `references/rubric.md` - the only text outside the table.
+6. **Pre-emit check**: confirm all rows filled, exactly one tier line, no findings or fixes leaked; regenerate if not.
+
+## 🚀 How to use it
+
+```
+/wp-report-card ← scores the current working directory
+/wp-report-card ./wp-content/plugins/x ← scores the specified path
+```
+
+It handles jobs like *"just give me the scorecard for this plugin"*, *"rate this theme out of 10, no details"*, *"score my WordPress plugin, table only"*, or *"what's this plugin's report card"* - but you invoke it with `/wp-report-card`, not by describing the task. Like every Forge tool it sets `disable-model-invocation`, so it never fires on its own; the slash command is the only trigger.
+
+The full procedure lives at [`lib/wordpress-report-card/SKILL.md`](../lib/wordpress-report-card/SKILL.md), and the slash command at [`commands/wp-report-card.md`](../commands/wp-report-card.md). It reuses the review's reference files at [`lib/wordpress-architect-review/references/`](../lib/wordpress-architect-review/references/).

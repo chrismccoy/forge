@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 48 tools behind 58 slash commands.
+One Claude Code plugin - `forge` - holding 50 tools behind 60 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -21,6 +21,8 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-review`](docs/wordpress.md#wordpress-architect-review). Reviews a WordPress plugin or theme file by file, then returns ranked findings, a scorecard, and the top fixes to make.
 - [`/wp-consult`](docs/wordpress.md#wordpress-consultant). A senior WordPress consulting audit covering architecture, performance, security, and scalability, ending with a 0-100 scorecard and summary.
 - [`/wp-format`](docs/wordpress.md#wordpress-formatter). Formats a theme's template files to the WordPress coding standard - tabs, spacing, and array style - without changing how any page renders. It installs the tools, runs the fixer, and checks the result.
+- [`/wp-menu-icons`](docs/wordpress.md#menu-icon-picker). Ports a searchable Font Awesome icon picker onto every Appearance > Menus item, integrated into a classic theme - click an icon instead of typing a class, with security gates and full rebranding.
+- [`/wp-report-card`](docs/wordpress.md#wordpress-report-card). Prints just the review scorecard - ten areas rated out of 10 plus an overall score and tier, no findings and no fixes. The scoring half of `/wp-review` on its own.
 
 **Plan and Design**
 
@@ -103,7 +105,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 58 commands, nothing running in the background.
+That is the whole install. One plugin, 60 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -114,7 +116,7 @@ Then either browse the whole catalog:
 which asks for a category, then a tool, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 6 WordPress tools
+/forge-wordpress    # 8 WordPress tools
 /forge-design       # 2 design and accessibility tools
 /forge-writing      # 5 writing and content tools
 /forge-devops       # 4 DevOps and data tools
@@ -135,6 +137,8 @@ Or call any tool directly:
 /wp-review                      # security, performance, architecture review
 /wp-consult                     # 10-section consulting audit
 /wp-format                      # apply WordPress Coding Standards formatting
+/wp-menu-icons                  # searchable icon picker for menu items
+/wp-report-card                 # scorecard-only review, /10 table plus tier
 
 # Design and frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -192,7 +196,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Ten of the 58 commands are pickers. They do no work themselves - they show you what is
+Ten of the 60 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -216,7 +220,7 @@ description each.
 
 | Command | Tools | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 6 | 3 + `More...`, then 3 |
+| `/forge-wordpress` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 2 | one |
 | `/forge-writing` | 5 | 3 + `More...`, then 2 |
 | `/forge-devops` | 4 | one |
@@ -284,7 +288,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              58 command files - 48 tools, 10 pickers
+commands/              60 command files - 50 tools, 10 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -300,7 +304,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 58 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 60 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -314,7 +318,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Tools | Reference |
 |---|---|---|
-| WordPress | 6 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 8 | [docs/wordpress.md](docs/wordpress.md) |
 | Plan and Design | 7 | [docs/plan-and-design.md](docs/plan-and-design.md) |
 | Refactor, Map and Clean Up | 9 | [docs/refactor-map-and-clean-up.md](docs/refactor-map-and-clean-up.md) |
 | Servers and Scripting | 4 | [docs/servers-and-scripting.md](docs/servers-and-scripting.md) |
@@ -333,7 +337,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 58 slash commands: 10 pickers + 48 tools
+├── commands/                 ← 60 slash commands: 10 pickers + 50 tools
 ├── lib/                      ← 48 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
@@ -341,7 +345,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 48 tools compared by how much each does
+├── SUMMARY.md                ← the 50 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

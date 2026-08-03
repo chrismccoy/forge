@@ -1,6 +1,6 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 48 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 50 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
 **At a glance:** 1 quick win · 31 guided helpers · 16 full toolkits.
 
@@ -59,7 +59,9 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `wp-builder-pro` | `/wp-build` | Builds and fixes custom WordPress code - themes, plugins, blocks, WooCommerce, and more |
 | `wordpress-plugin` | `/wp-plugin` | Generates a complete, ready-to-submit WordPress plugin from scratch, security and cleanup included |
 | `wordpress-architect-review` | `/wp-review` | Reviews a WordPress plugin or theme file by file, with a scorecard and the top fixes to make |
+| `wordpress-report-card` | `/wp-report-card` | Prints just the review scorecard - ten areas out of 10 plus an overall score and tier, no findings and no fixes |
 | `wordpress-formatter` | `/wp-format` | Formats a theme's template files to the WordPress standard - tabs, spacing, arrays - without changing how any page renders, and checks its own work |
+| `menu-icon-picker` | `/wp-menu-icons` | Ports a searchable Font Awesome icon picker onto every menu item into a classic theme, rebranded to the theme's prefix, with security gates and static verification |
 | `powershell-script-engine` | `/powershell-script-engine` | Writes clean, production-ready PowerShell scripts with logging, error handling, and safe credential use |
 | `html-to-wordpress-theme` | `/wp-theme` | Converts your static HTML into an installable WordPress theme, checking its own work as it goes |
 | `unslop` | `/unslop` | Strips the AI-sounding voice out of your comments and names without changing how the code runs |
@@ -75,9 +77,9 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 
 ## A few extra notes
 
-**Fifteen tools have a command name that's different from the tool name:**
+**Seventeen tools have a command name that's different from the tool name:**
 
-All six WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+All eight WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
 - `wordpress-plugin` → type `/wp-plugin`
 - `wp-builder-pro` → type `/wp-build`
@@ -85,6 +87,8 @@ All six WordPress tools share a short `wp-` command so they group together when 
 - `wordpress-architect-review` → type `/wp-review`
 - `wordpress-consultant` → type `/wp-consult`
 - `wordpress-formatter` → type `/wp-format`
+- `menu-icon-picker` → type `/wp-menu-icons`
+- `wordpress-report-card` → type `/wp-report-card`
 
 And nine others are shortened or renamed:
 
@@ -100,7 +104,7 @@ And nine others are shortened or renamed:
 
 The other 33 use their own name as the command. Every tool has exactly one command.
 
-**Ten of the 58 commands are pickers, not tools:**
+**Ten of the 60 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
@@ -121,4 +125,4 @@ the right command and stops. Full walkthrough in the README under "Browsing the 
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 48 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 50 tools here.

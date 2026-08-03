@@ -60,7 +60,7 @@ Two ways to invoke it:
 /blueprint ← walks through the five-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"design a production architecture for a dog walking marketplace"*, *"blueprint an app that tracks plant watering schedules"*, *"architect a tool for booking guitar lessons"*, *"give me a full system blueprint for a multi tenant SaaS"*, *"production architecture for a coffee subscription box"*
 
@@ -199,7 +199,7 @@ Two ways to invoke it:
  ← pre-fills both style + project
 ```
 
-**Natural language** (auto-triggers on style names). describe what you want:
+**Requests it handles** (type the command to run it - it never auto-triggers). Describe what you want:
 
 **From scratch. describe your product inline:**
 

@@ -53,7 +53,7 @@ Two ways to invoke:
 /docker-compose-architect                                           ← full intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"design a docker-compose stack"*, *"architect a containerized environment"*, *"write a production docker-compose.yml"*, *"multi-tier docker setup"*, *"docker compose with database and networks"*, *"containerize my app with compose"*
 
@@ -112,7 +112,7 @@ Two ways to invoke:
 /kubernetes-architect                                                       ← full intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"design Kubernetes manifests"*, *"architect a K8s deployment"*, *"write a Kubernetes Deployment YAML"*, *"Deployment with HPA and probes"*, *"Kubernetes Service and Ingress"*, *"create production K8s manifests"*
 
@@ -171,7 +171,7 @@ Two ways to invoke:
 /powershell-script-engine                                                                                ← full 5-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"write a PowerShell script"*, *"create a production PS module"*, *"PSScriptAnalyzer-clean script"*, *"PowerShell automation script"*, *"PowerShell remoting script"*, *"PowerShell with comment-based help"*
 
@@ -226,7 +226,7 @@ Two ways to invoke:
 /jq                                                            ← full intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"parse this JSON"*, *"extract X from this output"*, *"pull the field with jq"*, *"filter this API response"*, *"reshape this JSON"*, *"aggregate these records"*, *"explain this jq filter"*, or paste raw JSON or CLI output and ask to filter, transform, or summarize it
 

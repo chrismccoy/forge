@@ -53,7 +53,7 @@ Two ways to invoke:
 /tech-blog-article                                                        ← full 5-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"write a technical article"*, *"draft a blog post"*, *"write a dev blog"*, *"Hacker News style article"*, *"Dev.to article"*, *"technical write-up"*, *"engineering blog post"*
 
@@ -112,7 +112,7 @@ Two ways to invoke:
 /language-tutor                         ← full 5-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"translate this to Japanese"*, *"what does this mean in French"*, *"explain this grammar"*, *"analyze my writing"*, *"correct my essay"*, *"check my grammar"*, *"proofread this"*, *"how do I pronounce this"*
 
@@ -278,7 +278,7 @@ Two ways to invoke:
 /tutorial-builder                                            ← full 5-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"create a tutorial for X"*, *"write a step-by-step guide to Y"*, *"turn this code into a tutorial"*, *"make a walkthrough of Z"*, *"build a coding lesson"*, *"write onboarding docs"*
 

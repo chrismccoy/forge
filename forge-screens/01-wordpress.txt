@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          6 tools, 2 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          8 tools, 3 pages
 ================================================================================
   Build, review, and format WordPress plugins and themes.
 
   STEP 2 - pick a tool
 
   .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2)|
+  | [Tool]                                                 Which tool?  (pg 1/3)|
   |-----------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                        -> /wp-plugin    |
   |         Full WordPress.org-ready scaffold: OOP classes, blocks, REST,       |
@@ -23,7 +23,7 @@
   '-----------------------------------------------------------------------------'
 
   .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2)|
+  | [Tool]                                                 Which tool?  (pg 2/3)|
   |-----------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                   -> /wp-review    |
   |         Security, performance, architecture review with a scorecard.        |
@@ -33,6 +33,21 @@
   |                                                                             |
   |  ( 3 )  Coding-standards formatting                        -> /wp-format    |
   |         Set up WPCS and apply auto-fixable formatting, no render change.    |
+  |                                                                             |
+  |  ( 4 )  More...                                            -> page 3        |
+  |  [Other] type a tool name ................................................  |
+  '-----------------------------------------------------------------------------'
+
+  .-----------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3)|
+  |-----------------------------------------------------------------------------|
+  |  ( 1 )  Menu icon picker                                   -> /wp-menu-icons|
+  |         Searchable Font Awesome icon picker per menu item, ported into      |
+  |         the theme; classic menus only.                                      |
+  |                                                                             |
+  |  ( 2 )  Report card                                       -> /wp-report-card|
+  |         Scorecard-only review: 10-area /10 table + overall + tier.          |
+  |         No findings, no fixes.                                              |
   |                                                                             |
   |  [Other] type a tool name ................................................  |
   '-----------------------------------------------------------------------------'
@@ -187,5 +202,34 @@
   '----------------------------------------------------------------------------'
   .--[Exclude]-- any files to exclude?  optional ------------------------------.
   |  ___ e.g. a standalone non-WP Tailwind landing page                        |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /wp-menu-icons -
+  NO questions.  Runs from the current directory (or a theme path as arg),
+  auto-detects classic-vs-block and the install mode, then ports the picker.
+
+  Precheck first: block/FSE themes (Navigation block) are rejected before any
+  file is touched.  Mode is auto-picked, not asked:
+
+  .--[Mode A]-- theme already has an icon field + renderer --------------------.
+  |  swap the plain text input for the picker, reuse the meta key, no frontend |
+  |  change.                                                                   |
+  '----------------------------------------------------------------------------'
+  .--[Mode B]-- theme has no icon field ---------------------------------------.
+  |  install the full admin side, add a reader helper, write                   |
+  |  MENU-ICON-FRONTEND.md with two render options.  Templates NOT auto-edited.|
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /wp-report-card -
+  NO questions.  Runs from a file path (arg) or the current directory,
+  auto-detects target type, reads files directly.  Same detection and reading
+  as /wp-review, but the output is ONLY the scorecard:
+
+  .--[Output]-- one table, nothing else ---------------------------------------.
+  |  10 areas scored x/10 (Security, Performance, Architecture, Correctness,   |
+  |  WP Standards, Maintainability, Documentation, Testing, Accessibility/UX,  |
+  |  i18n) + an Overall row + one Tier line.  No findings, no fixes, no prose. |
   '----------------------------------------------------------------------------'
 ================================================================================

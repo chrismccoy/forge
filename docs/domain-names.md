@@ -53,7 +53,7 @@ Two ways to invoke:
 /name-domains                                              ← full 5-question intake
 ```
 
-**Natural language** (auto-triggers via the skill):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"name my SaaS"*, *"generate domain names"*, *"brand a startup"*, *"come up with domain candidates"*, *"name my micro-SaaS"*, *"domain name brainstorm"*, *"brandable startup name"*, *"SaaS naming"*, *"founder domain shortlist"*
 
