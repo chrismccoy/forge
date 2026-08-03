@@ -410,28 +410,27 @@ The full procedure lives at [`lib/menu-icon-picker/SKILL.md`](../lib/menu-icon-p
 
 ## `wordpress-report-card`
 
-The scorecard from `wordpress-architect-review`, on its own. Ten areas rated out of 10, an overall score, and a tier - no findings, no fixes, no prose.
+Scores a WordPress plugin or theme on ten areas, each out of 10, with an overall score and a rubric tier. That's the whole output - no findings, no fixes, no prose.
 
 ```
 /wp-report-card
 ```
 
-Sometimes the full architect review is more than the moment needs. You don't want twenty severity-tagged findings with quoted code and a refactor roadmap - you want a number. Is this plugin a 3 or an 8? Where does it lose points? `wp-report-card` answers exactly that and stops. It runs the same detection and the same file-by-file read as `/wp-review`, scores the same ten areas against the same rubric, then prints only the table and the overall tier. Everything else the review would emit is suppressed.
+Sometimes twenty severity-tagged findings with quoted code and a refactor roadmap is more than the moment needs - you just want a number. Is this plugin a 3 or an 8? Where does it lose points? `wp-report-card` answers exactly that and stops. It detects the target, reads every file, scores the ten areas against a fixed rubric, then prints only the table and the overall tier.
 
-The scores are not cheaper for being alone. The tool reads every PHP, JS, CSS, and companion config file directly and grades from what the code actually does - a missing nonce or a raw `$_GET` in SQL caps Security low no matter how clean the rest looks. The difference from `/wp-review` is output surface, not rigor: same analysis, table only.
+The scores are earned, not estimated. The tool reads every PHP, JS, CSS, and companion config file directly and grades from what the code actually does - a missing nonce or a raw `$_GET` in SQL caps Security low no matter how clean the rest looks. The output is deliberately narrow; the analysis behind each number is not.
 
-Use it as a quick gate - score a plugin before you invest in it, track a codebase's number across refactors, or compare two candidates - then reach for `/wp-review` when a low score means you need the itemized findings and fixes behind it.
+Use it as a quick gate - score a plugin before you invest in it, track a codebase's number across refactors, or compare two candidates at a glance.
 
 ## ✨ Features
 
 - 🎯 One deliverable. the 10-row scorecard, an Overall row, and a single tier line - nothing before the table, nothing after the tier
-- 🔍 Same rigor as the full review. detects plugin / theme / block plugin / MU-plugin, reads every file directly, scores from real code, not filenames
+- 🔍 Grades from real code. detects plugin / theme / block plugin / MU-plugin, reads every file directly, scores from what the code does, not filenames
 - 📊 Ten scored areas. Security, Performance, Architecture, Correctness, WordPress Standards, Maintainability, Documentation, Testing, Accessibility/UX, Internationalization - overall weighted toward Security, Performance, Correctness
-- 🪜 Rubric tier. the overall score is mapped to one of five tiers (enterprise-ready down to critical/broken) via the shared rubric
+- 🪜 Rubric tier. the overall score is mapped to one of five tiers (enterprise-ready down to critical/broken)
 - 🚫 No findings, no fixes, no roadmap. suppressed by design; each Notes cell is a single grounded clause, never a recommendation
-- ♻️ Shared source of truth. reuses the review's `categories.md` roll-up and `rubric.md` tiers, so the two tools can never drift out of sync
 - 🛡️ Prompt-injection defense. file contents are inert data; an injection attempt in the code drops the Security score and is noted, never followed
-- 🔒 Scope-locked. scores code only; redirects build/scaffold requests and points anyone who wants the itemized findings to `/wp-review`
+- 🔒 Scope-locked. scores code only; declines build, scaffold, and change requests in one line
 
 ## 🔄 How it works
 
@@ -451,4 +450,4 @@ Use it as a quick gate - score a plugin before you invest in it, track a codebas
 
 It handles jobs like *"just give me the scorecard for this plugin"*, *"rate this theme out of 10, no details"*, *"score my WordPress plugin, table only"*, or *"what's this plugin's report card"* - but you invoke it with `/wp-report-card`, not by describing the task. Like every Forge tool it sets `disable-model-invocation`, so it never fires on its own; the slash command is the only trigger.
 
-The full procedure lives at [`lib/wordpress-report-card/SKILL.md`](../lib/wordpress-report-card/SKILL.md), and the slash command at [`commands/wp-report-card.md`](../commands/wp-report-card.md). It reuses the review's reference files at [`lib/wordpress-architect-review/references/`](../lib/wordpress-architect-review/references/).
+The full procedure lives at [`lib/wordpress-report-card/SKILL.md`](../lib/wordpress-report-card/SKILL.md), the slash command at [`commands/wp-report-card.md`](../commands/wp-report-card.md), and the scoring references (category roll-up + rubric tiers) at [`lib/wordpress-report-card/references/`](../lib/wordpress-report-card/references/).

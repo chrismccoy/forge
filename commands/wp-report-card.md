@@ -16,17 +16,13 @@ Run the `wordpress-report-card` procedure. Detect target type (plugin / theme / 
 its rubric tier. No executive summary, no strengths, no findings, no fixes, no roadmap - just
 the table.
 
-This is the scoring half of `/wp-review` with everything else stripped. For the full review
-- findings with file:line, quoted code, impact, and prioritized fixes - use `/wp-review`
-instead.
-
 If a path was provided in the slash command arguments, score that path. Otherwise score the
 current working directory.
 
 If the given path does not exist, report it and stop. If the path exists but no plugin/theme
 is detected (no plugin header, `style.css` theme header, or `block.json`), follow the
-procedure file's abort response rather than scoring. If the request is to build or change
-code rather than score it, redirect: wp-builder-pro for existing-code changes, wordpress-plugin
-to scaffold from scratch.
+procedure file's abort response rather than scoring. If the request is to build, scaffold, or
+change code rather than score it, say so in one line and stop - this command scores, it does
+not build or write fixes.
 
 Target path (if provided): $ARGUMENTS

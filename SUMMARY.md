@@ -59,7 +59,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `wp-builder-pro` | `/wp-build` | Builds and fixes custom WordPress code - themes, plugins, blocks, WooCommerce, and more |
 | `wordpress-plugin` | `/wp-plugin` | Generates a complete, ready-to-submit WordPress plugin from scratch, security and cleanup included |
 | `wordpress-architect-review` | `/wp-review` | Reviews a WordPress plugin or theme file by file, with a scorecard and the top fixes to make |
-| `wordpress-report-card` | `/wp-report-card` | Prints just the review scorecard - ten areas out of 10 plus an overall score and tier, no findings and no fixes |
+| `wordpress-report-card` | `/wp-report-card` | Scores a plugin or theme on ten areas out of 10, with an overall score and tier - just the scorecard, no findings and no fixes |
 | `wordpress-formatter` | `/wp-format` | Formats a theme's template files to the WordPress standard - tabs, spacing, arrays - without changing how any page renders, and checks its own work |
 | `menu-icon-picker` | `/wp-menu-icons` | Ports a searchable Font Awesome icon picker onto every menu item into a classic theme, rebranded to the theme's prefix, with security gates and static verification |
 | `powershell-script-engine` | `/powershell-script-engine` | Writes clean, production-ready PowerShell scripts with logging, error handling, and safe credential use |

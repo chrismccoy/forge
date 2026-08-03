@@ -22,7 +22,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-consult`](docs/wordpress.md#wordpress-consultant). A senior WordPress consulting audit covering architecture, performance, security, and scalability, ending with a 0-100 scorecard and summary.
 - [`/wp-format`](docs/wordpress.md#wordpress-formatter). Formats a theme's template files to the WordPress coding standard - tabs, spacing, and array style - without changing how any page renders. It installs the tools, runs the fixer, and checks the result.
 - [`/wp-menu-icons`](docs/wordpress.md#menu-icon-picker). Ports a searchable Font Awesome icon picker onto every Appearance > Menus item, integrated into a classic theme - click an icon instead of typing a class, with security gates and full rebranding.
-- [`/wp-report-card`](docs/wordpress.md#wordpress-report-card). Prints just the review scorecard - ten areas rated out of 10 plus an overall score and tier, no findings and no fixes. The scoring half of `/wp-review` on its own.
+- [`/wp-report-card`](docs/wordpress.md#wordpress-report-card). Scores a WordPress plugin or theme on ten areas out of 10, with an overall score and tier - just the scorecard table, no findings and no fixes.
 
 **Plan and Design**
 
