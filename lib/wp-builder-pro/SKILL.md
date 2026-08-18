@@ -57,8 +57,8 @@ Load detailed guidance based on context (BUILD_TARGET → reference). Reference 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
 | Theme Development | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/theme-development.md` | Templates, hierarchy, child themes, FSE |
-| Plugin Architecture | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/plugin-architecture.md` | Structure, activation, settings API, updates |
-| Gutenberg Blocks | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/gutenberg-blocks.md` | Block dev, patterns, FSE, dynamic blocks |
+| Plugin Architecture | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/plugin-architecture.md` | Structure, activation, settings API, REST controllers, updates |
+| Gutenberg Blocks | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/gutenberg-blocks.md` | Block dev, patterns, FSE, dynamic blocks, InnerBlocks, deprecations, block troubleshooting |
 | Hooks & Filters | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/hooks-filters.md` | Actions, filters, custom hooks, priorities |
 | Performance & Security | `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/performance-security.md` | Caching, optimization, hardening, backups |
 

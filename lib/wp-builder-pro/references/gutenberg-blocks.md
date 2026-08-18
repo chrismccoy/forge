@@ -147,6 +147,31 @@ my-block/
 }
 ```
 
+### apiVersion 3 and the Iframed Editor
+
+WordPress 6.9 validates the `block.json` schema only for `apiVersion: 3`. Blocks
+registered at 2 or lower log a console warning when `SCRIPT_DEBUG` is on. WordPress 7.0
+runs the post editor in an iframe regardless of what any block declares, so apiVersion 3
+is the floor for new work.
+
+What the iframe changes:
+
+- **Styles must be declared in `block.json`.** Only handles listed in `editorStyle`,
+  `style`, or `viewStyle` are injected into the iframe document. A stylesheet enqueued
+  by hand on `enqueue_block_editor_assets` lands in the parent document and silently
+  does nothing to block content.
+- **Style isolation.** Admin CSS no longer leaks into block content, so a block that
+  accidentally inherited it will render differently.
+- **Viewport units and media queries resolve against the iframe**, not the browser
+  window - `vw`/`vh` and breakpoints finally behave the same as on the frontend.
+- **`window` scoping differs.** Third-party scripts attached to `window` in the parent
+  frame are not visible inside the iframe.
+- **Implicit dependencies must be explicit.** Dashicons and similar are no longer
+  present by default; declare them as dependencies of a block-registered handle.
+
+Migrating an apiVersion 2 block is usually the one-field change plus a pass over the
+points above.
+
 ### PHP Registration
 
 ```php
@@ -186,6 +211,46 @@ add_filter('block_categories_all', 'my_plugin_block_categories');
 ```
 
 ---
+
+### Block Script Translations
+
+`__()` inside block JavaScript resolves through a JSON translation file, not the PHP
+`.po`/`.mo` pair. Registering the block does not wire this up - do it explicitly.
+
+```php
+<?php
+declare(strict_types=1);
+
+/**
+ * Register blocks and attach JS translations
+ */
+function my_plugin_register_blocks(): void {
+    $block_type = register_block_type(__DIR__ . '/build/my-block');
+
+    if (!$block_type instanceof WP_Block_Type) {
+        return;
+    }
+
+    // Every editor script handle needs its own translation binding.
+    foreach ($block_type->editor_script_handles as $handle) {
+        wp_set_script_translations(
+            $handle,
+            'my-plugin',
+            plugin_dir_path(__FILE__) . 'languages'
+        );
+    }
+}
+add_action('init', 'my_plugin_register_blocks');
+```
+
+- The text domain passed here MUST match `textdomain` in `block.json`.
+- `editor_script_handles` (array) is WordPress 6.1+; older code used the singular
+  `editor_script` property.
+- Generate the JSON after the POT: `wp i18n make-pot . languages/my-plugin.pot`, then
+  `wp i18n make-json languages/ --no-purge`. `make-json` writes md5-named files that
+  `wp_set_script_translations()` resolves automatically.
+- Point `make-pot` at the source tree. Minified bundles can lose the `__()` call shape,
+  so strings extracted from `build/` may come back empty.
 
 ## Static Block Development
 
@@ -622,6 +687,215 @@ $wrapper_attributes = get_block_wrapper_attributes([
 
 ---
 
+## Nested Blocks (InnerBlocks)
+
+A container block holds other blocks as children. The children are real blocks in the
+document tree - the parent never stores their markup in its own attributes.
+
+### block.json for a Container Block
+
+```json
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "my-plugin/card",
+    "version": "1.0.0",
+    "title": "Card",
+    "category": "design",
+    "icon": "index-card",
+    "description": "A container that holds other blocks.",
+    "supports": {
+        "html": false,
+        "anchor": true,
+        "spacing": {
+            "padding": true,
+            "blockGap": true
+        }
+    },
+    "attributes": {
+        "columns": {
+            "type": "number",
+            "default": 2
+        }
+    },
+    "textdomain": "my-plugin",
+    "editorScript": "file:./index.js",
+    "style": "file:./style-index.css"
+}
+```
+
+A child block that may only live inside the container declares its parent:
+
+```json
+{
+    "name": "my-plugin/card-item",
+    "parent": ["my-plugin/card"]
+}
+```
+
+Use `"ancestor"` instead of `"parent"` when the child may sit at any depth below the
+container rather than as a direct child. `parent` also hides the child from the global
+inserter, which is usually what a container's sub-block wants.
+
+### edit.js with useInnerBlocksProps
+
+```javascript
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import {
+    useBlockProps,
+    useInnerBlocksProps,
+    InnerBlocks,
+    InspectorControls,
+} from '@wordpress/block-editor';
+import { PanelBody, RangeControl } from '@wordpress/components';
+import './editor.scss';
+
+/**
+ * Blocks allowed as children.
+ *
+ * @type {string[]}
+ */
+const ALLOWED_BLOCKS = ['my-plugin/card-item', 'core/paragraph', 'core/image'];
+
+/**
+ * Blocks inserted when the container is first added.
+ *
+ * @type {Array}
+ */
+const TEMPLATE = [
+    ['my-plugin/card-item', {}],
+    ['core/paragraph', { placeholder: __('Card body...', 'my-plugin') }],
+];
+
+/**
+ * Edit component
+ *
+ * @param {Object}   props                Block props
+ * @param {Object}   props.attributes     Block attributes
+ * @param {Function} props.setAttributes  Function to update attributes
+ * @return {JSX.Element} Block edit component
+ */
+export default function Edit({ attributes, setAttributes }) {
+    const { columns } = attributes;
+
+    const blockProps = useBlockProps({
+        className: `has-${columns}-columns`,
+    });
+
+    // Merge the inner-blocks props INTO the block props - do not render both wrappers.
+    const innerBlocksProps = useInnerBlocksProps(blockProps, {
+        allowedBlocks: ALLOWED_BLOCKS,
+        template: TEMPLATE,
+        templateLock: false,
+        orientation: 'horizontal',
+        renderAppender: InnerBlocks.ButtonBlockAppender,
+    });
+
+    return (
+        <>
+            <InspectorControls>
+                <PanelBody title={__('Layout', 'my-plugin')}>
+                    <RangeControl
+                        label={__('Columns', 'my-plugin')}
+                        value={columns}
+                        onChange={(value) => setAttributes({ columns: value })}
+                        min={1}
+                        max={4}
+                    />
+                </PanelBody>
+            </InspectorControls>
+
+            <div {...innerBlocksProps} />
+        </>
+    );
+}
+```
+
+### save.js for a Static Container
+
+```javascript
+/**
+ * WordPress dependencies
+ */
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+
+/**
+ * Save component
+ *
+ * @param {Object} props            Block props
+ * @param {Object} props.attributes Block attributes
+ * @return {JSX.Element} Block save component
+ */
+export default function save({ attributes }) {
+    const { columns } = attributes;
+
+    const blockProps = useBlockProps.save({
+        className: `has-${columns}-columns`,
+    });
+
+    const innerBlocksProps = useInnerBlocksProps.save(blockProps);
+
+    return <div {...innerBlocksProps} />;
+}
+```
+
+`useInnerBlocksProps.save()` is the modern equivalent of rendering
+`<InnerBlocks.Content />` inside a wrapper. Omit the children entirely and every child
+block is dropped from the saved markup, which invalidates the block on next load.
+
+### Dynamic Container (Server-Rendered)
+
+A dynamic container sets `"render": "file:./render.php"` in `block.json` and returns
+`null` from `save.js`. Core renders the children and passes the result in as `$content`
+- echo it, or the children disappear on the frontend.
+
+```php
+<?php
+/**
+ * Server-rendered container block.
+ *
+ * @var array    $attributes Block attributes.
+ * @var string   $content    Rendered inner blocks.
+ * @var WP_Block $block      Block instance.
+ */
+
+// Nothing to show if the editor left the container empty.
+if ('' === trim($content)) {
+    return;
+}
+
+$columns = isset($attributes['columns']) ? absint($attributes['columns']) : 2;
+
+$wrapper_attributes = get_block_wrapper_attributes([
+    'class' => 'has-' . $columns . '-columns',
+]);
+?>
+<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_block_wrapper_attributes() returns escaped output. ?>>
+    <?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Inner blocks are rendered and escaped by core. ?>
+</div>
+```
+
+To read the children server-side instead of echoing them wholesale, walk
+`$block->inner_blocks` (a `WP_Block_List`) and render each entry with `->render()`.
+
+### templateLock Values
+
+| Value | Effect on children |
+|-------|--------------------|
+| `false` | Insert, remove, reorder all allowed (default) |
+| `'insert'` | No insert or remove; reorder and edit allowed |
+| `'all'` | Fully locked - no insert, remove, or reorder |
+| `'contentOnly'` | Only text/media content editable; block controls hidden (WP 6.0+) |
+
+Children inherit the parent's lock unless they set `templateLock` themselves. Setting a
+`template` without a lock seeds the starting blocks but leaves the user free to change
+them.
+
+---
+
 ## Block Patterns
 
 ### Registering Patterns in PHP
@@ -753,6 +1027,167 @@ defined('ABSPATH') || exit;
 
 ---
 
+## Deprecations & Migrations
+
+Block validation compares the markup the current `save()` produces against the markup
+already stored in post content. Any mismatch produces *"This block contains unexpected
+or invalid content."* A `deprecated` entry hands the parser an older `save()` to try, so
+existing posts keep parsing after the block changes.
+
+### Rules
+
+- Deprecations are declared in JS registration, **newest first**.
+- Never edit or delete an existing entry - it describes markup already in the database.
+  Add a new one on top instead.
+- Treat `name` as stable API. Renaming a published block orphans every existing
+  instance; a block transform is the only clean rename path.
+- Only markup that `save()` emits matters. Editor-only changes (`edit.js`, inspector
+  controls, styles) never require a deprecation.
+
+### deprecated.js
+
+```javascript
+/**
+ * WordPress dependencies
+ */
+import { RichText, useBlockProps } from '@wordpress/block-editor';
+
+/**
+ * v1 - wrapper was a plain <div>, and the variant was stored as `color`.
+ *
+ * @type {Object}
+ */
+const v1 = {
+    attributes: {
+        text: {
+            type: 'string',
+            source: 'html',
+            selector: 'p',
+        },
+        color: {
+            type: 'string',
+            default: 'blue',
+        },
+    },
+    supports: {
+        html: false,
+    },
+    save({ attributes }) {
+        const { text, color } = attributes;
+
+        return (
+            <div className={`notice notice-${color}`}>
+                <RichText.Content tagName="p" value={text} />
+            </div>
+        );
+    },
+    // Rename the old `color` attribute onto the current `variant` attribute.
+    migrate(attributes) {
+        const { color, ...rest } = attributes;
+
+        return {
+            ...rest,
+            variant: color,
+        };
+    },
+};
+
+/**
+ * v2 - markup already matches the current save(); only the attribute shape moved.
+ *
+ * isEligible runs ONLY when the saved markup validated against this entry's save(),
+ * which makes it the right tool for attribute-only migrations.
+ *
+ * @type {Object}
+ */
+const v2 = {
+    attributes: {
+        text: {
+            type: 'string',
+            source: 'html',
+            selector: 'p',
+        },
+        variant: {
+            type: 'string',
+            default: 'info',
+        },
+        isDismissible: {
+            type: 'string',  // Was stored as the string 'yes'/'no'.
+        },
+    },
+    supports: {
+        html: false,
+        anchor: true,
+    },
+    isEligible({ isDismissible }) {
+        return typeof isDismissible === 'string';
+    },
+    migrate(attributes, innerBlocks) {
+        const { isDismissible, ...rest } = attributes;
+
+        // A container block returns [attributes, innerBlocks]; a leaf returns attributes.
+        return [
+            { ...rest, isDismissible: 'yes' === isDismissible },
+            innerBlocks,
+        ];
+    },
+    save({ attributes }) {
+        const { text, variant } = attributes;
+        const blockProps = useBlockProps.save({
+            className: `notice notice-${variant}`,
+        });
+
+        return (
+            <aside {...blockProps}>
+                <RichText.Content tagName="p" value={text} />
+            </aside>
+        );
+    },
+};
+
+// Newest first.
+export default [v2, v1];
+```
+
+### Wiring it into registration
+
+```javascript
+/**
+ * WordPress dependencies
+ */
+import { registerBlockType } from '@wordpress/blocks';
+
+/**
+ * Internal dependencies
+ */
+import metadata from './block.json';
+import deprecated from './deprecated';
+import Edit from './edit';
+import save from './save';
+
+registerBlockType(metadata.name, {
+    edit: Edit,
+    save,
+    deprecated,
+});
+```
+
+### Practical guardrails
+
+- `migrate` may return attributes alone, or `[attributes, innerBlocks]` when the block
+  nests other blocks.
+- For a **dynamic** block, output is not saved, so markup changes need no deprecation -
+  but a changed attribute shape still does, with `save: () => null`.
+- Keep a fixture per deprecated version: a saved post (or raw markup file) containing
+  that generation of the block. Re-open every fixture after any `save()` change.
+- Validation runs against the built bundle. Rebuild before testing, or the editor is
+  comparing against stale JS.
+- "Attempt Block Recovery" rewrites stored content with the current `save()`. It
+  discards anything the new `save()` does not keep - reach for it only after confirming
+  no deprecation path applies.
+
+---
+
 ## Interactivity API (WordPress 6.5+)
 
 For client-side interactivity without custom JavaScript build processes.
@@ -843,6 +1278,72 @@ store('my-plugin/counter', {
 
 ---
 
+## Troubleshooting Blocks
+
+### Block missing from the inserter
+
+- `register_block_type()` never ran - confirm it is hooked to `init` and that the file
+  making the call is actually loaded.
+- The path points at source instead of build. Register the directory holding the
+  **compiled** `block.json` (`build/my-block`), not `src/`.
+- `npm run build` was not re-run, or `block.json` has a JSON syntax error - a malformed
+  metadata file fails registration without a fatal.
+- Confirm what the server actually registered:
+
+```bash
+wp eval 'print_r( array_keys( WP_Block_Type_Registry::get_instance()->get_all_registered() ) );'
+```
+
+- If it is registered but still hidden, check for an `allowed_block_types_all` filter on
+  the site, or a `parent`/`ancestor` restriction in the block's own metadata (both hide
+  a block from the top-level inserter by design).
+
+### "This block contains unexpected or invalid content"
+
+- Saved markup no longer matches `save()`. Add a `deprecated` entry - see Deprecations &
+  Migrations above. Do not edit the old entry.
+- Usual silent causes: a changed wrapper element or class, an added or removed attribute
+  with a `source`, or a dependency bump that alters rendered markup.
+- With `SCRIPT_DEBUG` on, the browser console prints the expected-vs-actual markup diff.
+  Read that before guessing.
+- Reproduce against a fixture post containing the *previous* markup, not a freshly
+  inserted block - a new insert always validates.
+
+### Attributes not persisting
+
+- The attribute's `source`/`selector` no longer matches what `save()` emits, so the
+  parser finds nothing and falls back to the default.
+- Attributes with **no** `source` live in the block's comment delimiter. They persist
+  without any markup dependency, which makes them the safer default for anything not
+  visibly rendered.
+- Avoid `source: 'meta'` - it is deprecated. Read and write post meta with
+  `useEntityProp()` from `@wordpress/core-data` instead.
+- `setAttributes()` called with a value whose type conflicts with the schema is
+  discarded. A `RangeControl` handing back a string to a `"type": "number"` attribute
+  fails this way.
+- Meta written from a block only round-trips if the meta key is registered with
+  `show_in_rest => true` and `single => true`.
+
+### apiVersion warning in the console
+
+`The block "my-plugin/x" is registered with API version 2 or lower` appears only when
+`SCRIPT_DEBUG` is true. Fix per apiVersion 3 and the Iframed Editor above.
+
+### Styles apply on the frontend but not in the editor
+
+The iframed editor only loads stylesheets declared in `block.json`. See apiVersion 3 and
+the Iframed Editor above.
+
+### Editor breaks after a dependency bump
+
+- Never bundle React or `@wordpress/*` packages. `@wordpress/scripts` externalizes them
+  and emits `index.asset.php` with the correct `dependencies` array and version hash.
+- Registration must consume that file - `register_block_type()` on the build directory
+  does it automatically. Hand-rolled `wp_register_script()` calls that hardcode
+  dependencies drift and break.
+
+---
+
 ## Best Practices
 
 ### Do
@@ -857,6 +1358,9 @@ store('my-plugin/counter', {
 - Test blocks in isolation and within posts
 - Support align wide/full when appropriate
 - Use the Interactivity API for simple client-side logic
+- Add a `deprecated` entry before changing anything `save()` emits
+- Declare every stylesheet in `block.json` so it loads inside the iframed editor
+- Call `wp_set_script_translations()` for each editor script handle
 
 ### Do Not
 
@@ -868,3 +1372,6 @@ store('my-plugin/counter', {
 - Ignore block validation warnings
 - Skip internationalization for text strings
 - Bundle React/WordPress packages (use externals)
+- Edit or delete an existing `deprecated` entry
+- Rename a published block's `name`
+- Use `source: 'meta'` for attributes (use `useEntityProp()`)

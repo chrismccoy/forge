@@ -872,6 +872,343 @@ class CustomPostTypes {
 
 ---
 
+## REST API Controllers
+
+A single ad-hoc route only needs `register_rest_route()` (see `hooks-filters.md`). A
+resource with full CRUD is better served by subclassing `WP_REST_Controller`: it fixes
+the method names core already expects, drives argument validation from one schema, and
+keeps responses shaped like core's own endpoints.
+
+### Controller Class
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace PluginName\Api;
+
+use WP_Error;
+use WP_Post;
+use WP_Query;
+use WP_REST_Controller;
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_REST_Server;
+
+/**
+ * REST controller for the product resource.
+ *
+ * GET    /plugin-name/v1/products
+ * POST   /plugin-name/v1/products
+ * GET    /plugin-name/v1/products/<id>
+ * PUT    /plugin-name/v1/products/<id>
+ * DELETE /plugin-name/v1/products/<id>
+ */
+class ProductsController extends WP_REST_Controller {
+
+    /**
+     * Post type backing this resource.
+     */
+    private const POST_TYPE = 'product';
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->namespace = 'plugin-name/v1';
+        $this->rest_base = 'products';
+    }
+
+    /**
+     * Register the routes for this controller.
+     */
+    public function register_routes(): void {
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base,
+            [
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => [$this, 'get_items'],
+                    'permission_callback' => [$this, 'get_items_permissions_check'],
+                    'args'                => $this->get_collection_params(),
+                ],
+                [
+                    'methods'             => WP_REST_Server::CREATABLE,
+                    'callback'            => [$this, 'create_item'],
+                    'permission_callback' => [$this, 'create_item_permissions_check'],
+                    'args'                => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace,
+            '/' . $this->rest_base . '/(?P<id>[\d]+)',
+            [
+                'args' => [
+                    'id' => [
+                        'description' => __('Unique identifier for the product.', 'plugin-name'),
+                        'type'        => 'integer',
+                    ],
+                ],
+                [
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => [$this, 'get_item'],
+                    'permission_callback' => [$this, 'get_item_permissions_check'],
+                ],
+                [
+                    'methods'             => WP_REST_Server::EDITABLE,
+                    'callback'            => [$this, 'update_item'],
+                    'permission_callback' => [$this, 'update_item_permissions_check'],
+                    'args'                => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
+                ],
+                [
+                    'methods'             => WP_REST_Server::DELETABLE,
+                    'callback'            => [$this, 'delete_item'],
+                    'permission_callback' => [$this, 'delete_item_permissions_check'],
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ]
+        );
+    }
+
+    /**
+     * Permission check for reading the collection.
+     *
+     * @param WP_REST_Request $request Request object.
+     * @return bool|WP_Error
+     */
+    public function get_items_permissions_check($request) {
+        return true;  // Public read. Return a capability check for private data.
+    }
+
+    /**
+     * Permission check for creating an item.
+     *
+     * @param WP_REST_Request $request Request object.
+     * @return bool|WP_Error
+     */
+    public function create_item_permissions_check($request) {
+        if (!current_user_can('edit_posts')) {
+            return new WP_Error(
+                'rest_cannot_create',
+                __('Sorry, you are not allowed to create products.', 'plugin-name'),
+                ['status' => rest_authorization_required_code()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * Retrieve a collection of products.
+     *
+     * @param WP_REST_Request $request Request object.
+     * @return WP_REST_Response|WP_Error
+     */
+    public function get_items($request) {
+        $query = new WP_Query([
+            'post_type'      => self::POST_TYPE,
+            'post_status'    => 'publish',
+            'posts_per_page' => $request['per_page'],
+            'paged'          => $request['page'],
+            's'              => $request['search'] ?? '',
+        ]);
+
+        $items = [];
+
+        foreach ($query->posts as $post) {
+            $data    = $this->prepare_item_for_response($post, $request);
+            $items[] = $this->prepare_response_for_collection($data);
+        }
+
+        $response = rest_ensure_response($items);
+
+        // Pagination headers, same contract as core collection endpoints.
+        $response->header('X-WP-Total', (string) $query->found_posts);
+        $response->header('X-WP-TotalPages', (string) $query->max_num_pages);
+
+        return $response;
+    }
+
+    /**
+     * Retrieve a single product.
+     *
+     * @param WP_REST_Request $request Request object.
+     * @return WP_REST_Response|WP_Error
+     */
+    public function get_item($request) {
+        $post = get_post((int) $request['id']);
+
+        if (!$post instanceof WP_Post || self::POST_TYPE !== $post->post_type) {
+            return new WP_Error(
+                'rest_product_invalid_id',
+                __('Invalid product ID.', 'plugin-name'),
+                ['status' => 404]
+            );
+        }
+
+        return rest_ensure_response($this->prepare_item_for_response($post, $request));
+    }
+
+    /**
+     * Create a product.
+     *
+     * @param WP_REST_Request $request Request object.
+     * @return WP_REST_Response|WP_Error
+     */
+    public function create_item($request) {
+        $post_id = wp_insert_post(
+            [
+                'post_type'    => self::POST_TYPE,
+                'post_status'  => 'publish',
+                'post_title'   => $request['title'],
+                'post_content' => $request['content'] ?? '',
+            ],
+            true
+        );
+
+        if (is_wp_error($post_id)) {
+            return $post_id;
+        }
+
+        if (isset($request['price'])) {
+            update_post_meta($post_id, '_product_price', (float) $request['price']);
+        }
+
+        $response = rest_ensure_response(
+            $this->prepare_item_for_response(get_post($post_id), $request)
+        );
+        $response->set_status(201);
+        $response->header(
+            'Location',
+            rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $post_id))
+        );
+
+        return $response;
+    }
+
+    /**
+     * Shape a post for the response.
+     *
+     * @param WP_Post         $item    Post object.
+     * @param WP_REST_Request $request Request object.
+     * @return WP_REST_Response
+     */
+    public function prepare_item_for_response($item, $request) {
+        $fields = $this->get_fields_for_response($request);
+        $data   = [];
+
+        if (in_array('id', $fields, true)) {
+            $data['id'] = $item->ID;
+        }
+
+        if (in_array('title', $fields, true)) {
+            $data['title'] = ['rendered' => get_the_title($item)];
+        }
+
+        if (in_array('price', $fields, true)) {
+            $data['price'] = (float) get_post_meta($item->ID, '_product_price', true);
+        }
+
+        $context = $request['context'] ?? 'view';
+        $data    = $this->filter_response_by_context($data, $context);
+
+        $response = rest_ensure_response($data);
+        $response->add_links([
+            'self'       => ['href' => rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $item->ID))],
+            'collection' => ['href' => rest_url(sprintf('%s/%s', $this->namespace, $this->rest_base))],
+        ]);
+
+        return $response;
+    }
+
+    /**
+     * Item schema. Drives argument validation, sanitization, and _fields filtering.
+     *
+     * @return array
+     */
+    public function get_item_schema(): array {
+        if (null !== $this->schema) {
+            return $this->add_additional_fields_schema($this->schema);
+        }
+
+        $this->schema = [
+            '$schema'    => 'http://json-schema.org/draft-04/schema#',
+            'title'      => 'product',
+            'type'       => 'object',
+            'properties' => [
+                'id' => [
+                    'description' => __('Unique identifier for the product.', 'plugin-name'),
+                    'type'        => 'integer',
+                    'context'     => ['view', 'edit'],
+                    'readonly'    => true,
+                ],
+                'title' => [
+                    'description' => __('Product title.', 'plugin-name'),
+                    'type'        => 'string',
+                    'context'     => ['view', 'edit'],
+                    'required'    => true,
+                    'arg_options' => [
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                ],
+                'price' => [
+                    'description' => __('Product price.', 'plugin-name'),
+                    'type'        => 'number',
+                    'minimum'     => 0,
+                    'context'     => ['view', 'edit'],
+                ],
+            ],
+        ];
+
+        return $this->add_additional_fields_schema($this->schema);
+    }
+
+    /**
+     * Collection query parameters.
+     *
+     * @return array
+     */
+    public function get_collection_params(): array {
+        $params = parent::get_collection_params();
+
+        $params['per_page']['maximum'] = 50;
+
+        return $params;
+    }
+}
+```
+
+### Registering the Controller
+
+```php
+add_action('rest_api_init', static function (): void {
+    (new \PluginName\Api\ProductsController())->register_routes();
+});
+```
+
+### Notes
+
+- `permission_callback` is mandatory on every route. Returning `__return_true` is a
+  deliberate "this is public" statement, not a placeholder - omit the key entirely and
+  WordPress logs a `_doing_it_wrong()` notice and treats the route as public anyway.
+- `get_endpoint_args_for_item_schema()` derives `args` from the schema, so required
+  fields, types, `minimum`/`maximum`, and `arg_options` sanitizers are enforced before
+  the callback runs. Never re-sanitize by hand in the callback and never trust a field
+  absent from the schema.
+- Return `WP_Error` with an explicit `['status' => ...]`, and use
+  `rest_authorization_required_code()` for permission failures so anonymous callers get
+  401 and logged-in-but-unprivileged callers get 403.
+- `prepare_response_for_collection()` on each item strips the per-item `_links`
+  envelope that only belongs on a single-item response.
+- Bump the namespace version (`plugin-name/v2`) for breaking changes; keep the old
+  controller registered until clients migrate.
+
+---
+
 ## Plugin Updates
 
 ### Self-Hosted Update Checker
