@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          8 tools, 3 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          9 tools, 3 pages
 ================================================================================
   Build, review, and format WordPress plugins and themes.
 
@@ -48,6 +48,10 @@
   |  ( 2 )  Report card                                       -> /wp-report-card|
   |         Scorecard-only review: 10-area /10 table + overall + tier.          |
   |         No findings, no fixes.                                              |
+  |                                                                             |
+  |  ( 3 )  Performance review                                -> /wp-performance|
+  |         Cold full-file scan: unbounded queries, cache bypass,               |
+  |         N+1 loops, cron and asset cost.  Fresh every run.                   |
   |                                                                             |
   |  [Other] type a tool name ................................................  |
   '-----------------------------------------------------------------------------'
@@ -219,6 +223,34 @@
   .--[Mode B]-- theme has no icon field ---------------------------------------.
   |  install the full admin side, add a reader helper, write                   |
   |  MENU-ICON-FRONTEND.md with two render options.  Templates NOT auto-edited.|
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /wp-performance -
+  NO questions.  Runs from a file path (arg) or the current directory.
+  Every run is COLD: the manifest is rebuilt, every file is re-read from disk,
+  and prior findings/reports/clean verdicts are ignored.  Run it twice and the
+  second pass is independent, not a replay.
+
+  .--[Step 1]-- coverage manifest ---------------------------------------------.
+  |  scripts/wp-perf-manifest.sh <target>  ->  every .php .inc .js .jsx .ts    |
+  |  .tsx .json with line counts.  Prunes vendor/, node_modules/, dist/,       |
+  |  build/, coverage/, *.min.*, lock files.  --all keeps build output.        |
+  |  This list IS the checklist: nothing outside it, nothing skipped inside.   |
+  '----------------------------------------------------------------------------'
+  .--[Step 2]-- grep triage  (ordering only, never a verdict) -----------------.
+  |  scripts/wp-perf-scan.sh <target>  ->  CRITICAL / WARNING / INFO hits.     |
+  |  Decides which files get read first.  A match is a candidate, not a find.  |
+  '----------------------------------------------------------------------------'
+  .--[Step 3]-- read every manifest file, in full -----------------------------.
+  |  Top to bottom, >1500-line files in sequential chunks, batches of ~10.     |
+  |  Catches what grep cannot: N+1 in loops, wrong request context, missing    |
+  |  caching, per-request DB writes.                                           |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- findings + mandatory coverage line ----------------------------.
+  |  Scan: cold run . <N> files read / <N> in manifest . <N> total lines       |
+  |  CRITICAL / WARNING / INFO, each with file:line + quoted code + Impact +   |
+  |  Fix.  Max 5 per band.  Any unread file is named with its reason.          |
   '----------------------------------------------------------------------------'
 
 

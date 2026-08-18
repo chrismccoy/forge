@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  50 tools . 60 commands . 10 pickers . 0 skills . nothing auto-fires.
+  51 tools . 61 commands . 10 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/3)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, and format WP plugins and themes.  8 tools.           |
+  |         Build, review, and format WP plugins and themes.  9 tools.           |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6 tools.|
@@ -81,7 +81,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  8 tools, 3 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  9 tools, 3 pages ----------------------
 
   .-----------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/3)|
@@ -124,6 +124,10 @@
   |                                                                             |
   |  ( 2 )  Report card                                       -> /wp-report-card|
   |         Scorecard-only review: 10-area /10 table + overall + tier.          |
+  |                                                                             |
+  |  ( 3 )  Performance review                                -> /wp-performance|
+  |         Cold full-file scan: unbounded queries, cache bypass,               |
+  |         N+1 loops, cron and asset cost.  Fresh every run.                   |
   |                                                                             |
   |  [Other] type a tool name ................................................  |
   '-----------------------------------------------------------------------------'
@@ -406,6 +410,7 @@
    +-- WordPress ............ /forge-wordpress
    |    +-- wp-plugin   wp-build   wp-theme
    |    +-- wp-review   wp-consult wp-format   wp-menu-icons wp-report-card
+   |    +-- wp-performance
    |
    +-- Design & Frontend .... /forge-design
    |    +-- html-design-styles   accessibility-audit   design-system

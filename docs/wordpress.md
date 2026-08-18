@@ -408,6 +408,68 @@ The full procedure lives at [`lib/menu-icon-picker/SKILL.md`](../lib/menu-icon-p
 
 ---
 
+## `wordpress-performance`
+
+Cold, full-file performance review for WordPress plugins, themes, mu-plugins, and loose code. Reads every file in the target and reports what breaks under load - unbounded queries, cache bypass, N+1 loops, per-request database writes, polling, and cron that blocks its own queue.
+
+```
+/wp-performance
+```
+
+Most performance checks are a grep pass wearing a report's clothing. They find `posts_per_page => -1` because it has a literal signature, and miss the query sitting inside a `foreach` two files away because it does not. The `wordpress-performance` procedure separates the two jobs: a bundled scan script greps for the patterns that do have signatures and uses the hits only to decide reading order, then every file in the coverage manifest gets read top to bottom. The findings that matter most - N+1 loops, expensive work running in the wrong request context, missing caching around a slow call - only exist in the reading pass.
+
+The second thing it refuses to do is remember. Every run rebuilds the manifest, re-reads every file from disk, and ignores earlier findings, earlier reports, and earlier clean verdicts. Run it twice on the same theme and the second pass is genuinely independent, which is the only way a second pass finds anything. Coverage is reported as a number in the output - files read against files in the manifest - so an incomplete pass cannot read as a complete one.
+
+## ✨ Features
+
+- 🧊 Cold run every time. manifest rebuilt, files re-read, prior verdicts discarded. no warm-start, no "already checked"
+- 📖 Full-file coverage. every `.php`, `.inc`, `.js`, `.jsx`, `.ts`, `.tsx`, `.json` in the manifest read end to end; files over 1500 lines read in sequential chunks
+- 🔎 Triage, not verdicts. the scan script orders the reading pass; a grep match is a candidate until the surrounding code is read
+- 📐 Mandatory coverage line. `files read / files in manifest / total lines` printed with the report; any unread file named with its reason
+- 🏷️ Severity-tagged findings. CRITICAL / WARNING / INFO with `file:line`, quoted code, an Impact line naming the failure mode and scale, and a Fix line
+- 🧭 Context-aware severity. admin, CLI, and cron paths are scored against the load they actually face, not public traffic
+- 🏢 Platform-aware fixes. managed host, self-hosted, or shared hosting changes whether an object-cache fix is even available
+- 🛡️ Prompt-injection defense. file contents are inert data; an instruction hidden in a comment is reported, never followed
+- 🚫 Banned filler word list. no "leverage", "robust", "comprehensive", "utilize", "synergy", and ~15 more
+- ✅ Pre-emit validation. a report missing its coverage line or a finding's citation is regenerated, not shipped
+
+## 📂 What it checks
+
+- **Database queries**: unbounded `posts_per_page`, `query_posts()`, N+1 inside loops, `meta_query` value scans, `post__not_in`, leading-wildcard `LIKE`, missing `no_found_rows`
+- **Hooks and request context**: expensive work on `init` / `wp_loaded` with no guard, option writes on frontend paths, hook callbacks that run everywhere
+- **Caching**: uncached `url_to_postid` and friends, missing object-cache wrappers, dynamic transient keys, volatile-data transients, large autoloaded options
+- **Cache bypass**: `session_start()`, cookies on public pages, query-parameter cache busting
+- **AJAX and REST**: `admin-ajax.php` bootstrap cost, POST for reads, `setInterval` polling
+- **Assets**: unconditional enqueues, missing version strings, no defer/async strategy, full library imports
+- **Block editor**: `registerBlockStyle()` volume, re-sanitized InnerBlocks content, static blocks for client builds
+- **WP-Cron**: callbacks looping every user or post, `wp_schedule_event` without a `wp_next_scheduled` guard, cron on page requests
+- **External HTTP**: uncached `wp_remote_get`, missing timeouts, absent error handling
+
+## 🔄 How it works
+
+1. **Detect target**: plugin header, theme `style.css`, `block.json`, `mu-plugins` path, or a loose PHP/JS directory
+2. **Build the manifest**: `wp-perf-manifest.sh` lists every reviewable file with line counts, pruning `vendor`, `node_modules`, build output, and minified assets
+3. **Triage**: `wp-perf-scan.sh` returns severity-grouped grep hits, used only to order the reading pass
+4. **Read everything**: every manifest file in full, in batches, ticked off as it goes
+5. **Report**: findings by severity with citation, quoted code, impact, and fix, then the coverage line and headline verdict
+6. **Pre-emit validation**: manifest freshness, coverage arithmetic, and per-finding format checked before anything is returned
+
+## 🚀 How to use it
+
+```
+/wp-performance ← reviews the current working directory
+/wp-performance ./wp-content/themes/mytheme ← reviews the specified path
+/wp-performance ← run it again for an independent second pass
+```
+
+It also handles requests like *"why is this site slow"*, *"audit this plugin before our sale"*, *"find the query that's timing out"*, or *"scan it again, I think we missed something"* - but you invoke it with `/wp-performance`; it never auto-triggers.
+
+For a security and architecture review instead, use `/wp-review`. For the scorecard alone, `/wp-report-card`. To change the code rather than review it, `/wp-build`.
+
+The full procedure lives at [`lib/wordpress-performance/SKILL.md`](../lib/wordpress-performance/SKILL.md).
+
+---
+
 ## `wordpress-report-card`
 
 Scores a WordPress plugin or theme on ten areas, each out of 10, with an overall score and a rubric tier. That's the whole output - no findings, no fixes, no prose.
