@@ -1,56 +1,77 @@
 ================================================================================
-  FORGE  -  Docs & Diagrams          ( /forge-docs )          8 tools, 3 pages
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          10 tools, 4 pages
 ================================================================================
-  Onboarding docs, Mermaid, README, changelog, prompt explainers.
+  Onboarding docs, Mermaid, README, changelog, prompt tools.
 
   STEP 2 - pick a tool
 
-  .-------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2)  |
-  |-------------------------------------------------------------------------------|
-  |  ( 1 )  Onboarding documentation                       -> /explain-my-code    |
-  |         One self-contained 13-section CODEBASE_DOCUMENTATION.md for a repo.   |
-  |                                                                               |
-  |  ( 2 )  Codebase to Mermaid                            -> /codebase-to-mermaid|
-  |         Validated Mermaid diagrams with file:line citations.                  |
-  |                                                                               |
-  |  ( 3 )  Mermaid to ASCII                               -> /mermaid-to-ascii   |
-  |         Convert a Mermaid file into a monospace ASCII diagram (.txt).         |
-  |                                                                               |
-  |  ( 4 )  More...                                        -> page 2              |
-  |  [Other] type a tool name ................................................    |
-  '-------------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Onboarding documentation                       -> /explain-my-code   |
+  |         One self-contained 13-section CODEBASE_DOCUMENTATION.md for a repo.  |
+  |                                                                              |
+  |  ( 2 )  Codebase to Mermaid                          -> /codebase-to-mermaid |
+  |         Validated Mermaid diagrams with file:line citations.                 |
+  |                                                                              |
+  |  ( 3 )  Mermaid to ASCII                               -> /mermaid-to-ascii  |
+  |         Convert a Mermaid file into a monospace ASCII diagram (.txt).        |
+  |                                                                              |
+  |  ( 4 )  More...                                                              |
+  |         Sequence diagrams, README, changelog.  -> page 2                     |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
-  .--------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/3)   |
-  |--------------------------------------------------------------------------------|
-  |  ( 1 )  Mermaid sequence diagram                       -> /mermaid-sequence    |
-  |         Turn bullet-point process steps into one valid Mermaid sequence        |
-  |         diagram.                                                               |
-  |                                                                                |
-  |  ( 2 )  Write a README                                 -> /readme-builder      |
-  |         Scan a repo and write a beginner-friendly README.md.                   |
-  |                                                                                |
-  |  ( 3 )  Generate a changelog                           -> /changelog-generator |
-  |         User-facing changelog built from actual diffs across git history.      |
-  |                                                                                |
-  |  ( 4 )  More...                                        -> page 3               |
-  |  [Other] type a tool name ................................................     |
-  '--------------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Mermaid sequence diagram                       -> /mermaid-sequence  |
+  |         Turn bullet-point process steps into one valid Mermaid sequence      |
+  |         diagram.                                                             |
+  |                                                                              |
+  |  ( 2 )  Write a README                                 -> /readme-builder    |
+  |         Scan a repo and write a beginner-friendly README.md.                 |
+  |                                                                              |
+  |  ( 3 )  Generate a changelog                         -> /changelog-generator |
+  |         User-facing changelog built from actual diffs across git history.    |
+  |                                                                              |
+  |  ( 4 )  More...                                                              |
+  |         Prompt explainer, analyzer, auditor.  -> page 3                      |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
-  .--------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3)   |
-  |--------------------------------------------------------------------------------|
-  |  ( 1 )  Explain a prompt (plain English)               -> /explain-prompt      |
-  |         Describe any AI prompt in beginner-friendly plain English, eight       |
-  |         fixed sections.                                                        |
-  |                                                                                |
-  |  ( 2 )  Analyze a prompt (deep dive)                   -> /analyze-prompt      |
-  |         Rigorous review-ready breakdown: anatomy, techniques, failure          |
-  |         modes, improvements.                                                   |
-  |                                                                                |
-  |  [Other] type a tool name ................................................     |
-  '--------------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Explain a prompt (plain English)               -> /explain-prompt    |
+  |         Describe any AI prompt in beginner-friendly plain English, eight     |
+  |         fixed sections.                                                      |
+  |                                                                              |
+  |  ( 2 )  Analyze a prompt (deep dive)                   -> /analyze-prompt    |
+  |         Rigorous review-ready breakdown: anatomy, techniques, failure modes, |
+  |         improvements.                                                        |
+  |                                                                              |
+  |  ( 3 )  Audit prompt architecture                      -> /rank-prompt       |
+  |         Tier and score a prompt across 8 dimensions, with evidence and one   |
+  |         concrete improvement.                                                |
+  |                                                                              |
+  |  ( 4 )  More...                                                              |
+  |         The image-prompt stencil cutter.  -> page 4                          |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 4/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Cut an image prompt stencil                    -> /prompt-stencil    |
+  |         Turn a working image prompt into a reusable template: locks,         |
+  |         variables, drift guards, filled proofs.                              |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
   STEP 3 - run it
     read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
@@ -125,4 +146,37 @@
   .--[Prompt]-- Paste the prompt to analyze, or give a file path ---------------.
   |  ___ the AI prompt you want a rigorous, review-ready breakdown of           |
   '-----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /rank-prompt ---
+  Submission comes from the arg, a file path, or a plain ask.  Two optional
+  context questions after that; skipping either is fine.
+
+  .--[Prompt]-- paste the prompt to audit, or give a file path ----------------.
+  |  ___ plain ask, STOP for the reply.  An unreplaced placeholder counts      |
+  |      as absent - no rank, no score, no table                               |
+  '----------------------------------------------------------------------------'
+  .--[Target model]-- what the prompt runs against  (optional) ----------------.
+  |  ( ) Claude   ( ) GPT class   ( ) Gemini   ( ) Model-agnostic              |
+  '----------------------------------------------------------------------------'
+  .--[Current failure]-- what it is failing at today  (optional) --------------.
+  |  ( ) Ignores parts of the instructions   ( ) Output format drifts          |
+  |  ( ) Breaks on odd or hostile input   ( ) Nothing specific                 |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /prompt-stencil ---
+  2 required fields, 1 optional.  At most ONE clarifying question overall.
+
+  .--[Source prompt]-- the working image prompt, verbatim  (required) ---------.
+  |  ___ plain ask or path.  Missing, unusable, or non-visual is never a       |
+  |      question - it is the Cannot Build - Missing Material state            |
+  '----------------------------------------------------------------------------'
+  .--[Variable]-- what should become swappable?  (required) -------------------.
+  |  ( ) Subject or product   ( ) Palette accent                               |
+  |  ( ) Scene or setting   ( ) Aspect ratio or format                         |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- up to two material constraints  (optional) ---------------.
+  |  ___ asked once, in one line; a skip records "None"                        |
+  '----------------------------------------------------------------------------'
 ================================================================================

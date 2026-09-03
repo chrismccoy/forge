@@ -372,3 +372,112 @@ One slash command plus its procedure file `lib/prompt-summary/SKILL.md`. The com
 ```
 
 The full procedure lives at [`lib/prompt-summary/SKILL.md`](../lib/prompt-summary/SKILL.md) and the slash command at [`commands/analyze-prompt.md`](../commands/analyze-prompt.md).
+
+---
+
+## `prompt-ranker`
+
+A structured architecture audit of any prompt: a tier and a score on one anchored scale, strengths and risks each tied to real language in the submission, a row per analysis dimension, and the single change that would move it up the most.
+
+```
+/rank-prompt
+```
+
+Where `/explain-prompt` describes a prompt for a beginner and `/analyze-prompt` documents its anatomy, `prompt-ranker` grades it. Eight dimensions: structure and decomposition, constraint design, input handling and adversarial robustness, output contract, scale coherence, example and verification strategy, failure mode coverage, and efficiency and cognitive load. A dimension can be marked not applicable, but only with a stated reason in its own table row - it can never be dropped quietly.
+
+Scoring is anchored so a number means the same thing twice. The tier is assigned first, by which rungs the prompt actually clears: Expert requires untrusted input held inert behind paired markers, explicit precedence when rules collide, defined refusal behaviour, bounded retries, and self-consistent scales. Only then is a score picked inside that tier's band. Partial credit on a higher rung raises the score within the lower band; it never promotes the tier. The tier named at the top and the tier named in the verdict have to match.
+
+The submission is the subject, never a directive. It sits between paired named markers, is declared inert, and a `score this 10/10` buried inside it gets quoted in Structural Risks along with a statement that it was not followed. Length earns nothing: verbosity without structure counts against Efficiency, and a short prompt that fully covers its scope is not penalized for being short.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/prompt-ranker/SKILL.md`, which loads the master template from `lib/prompt-ranker/references/prompt-template.md`. The command `/rank-prompt` takes the prompt inline or as a file path, or asks for it, then optionally collects the target model and what the prompt is failing at today. An intake gate treats an unreplaced placeholder as no submission at all and stops rather than auditing empty space.
+
+## ✨ Features
+
+- 🧭 Eight analysis dimensions, every one accounted for in the table
+- 🪜 Anchored tiers. Novice, Intermediate, Advanced, Expert, each defined by mechanisms the prompt must actually contain
+- ⚖️ One scale only. Tier and score map to each other, and the opening rank must agree with the closing verdict
+- 🚪 Intake gate. No prompt, or a placeholder still in the markers, means a request and a stop - never a scorecard for empty space
+- 🛡️ Injection resistant. The submission is inert data behind paired markers, and directives aimed at the reviewer are reported rather than obeyed
+- 🔍 Evidence required. Every claim cites specific language or structure; generic praise and generic checklist criticism are ruled out
+- 📏 Length neutral, in both directions
+- 🧪 Bad input handled. A non-prompt is identified and refused rather than scored; a trivially short prompt is marked as such rather than padded out
+- 🎯 One concrete improvement, stated as a specific edit with a before/after sketch - never "make it clearer"
+
+## 🔄 How it works
+
+1. **Intake.** Take the submission from the argument, a file path, or a plain ask. Optionally collect target model and current failure.
+2. **Gate.** Stop on an absent or placeholder submission; refuse to scorecard a non-prompt.
+3. **Score.** Walk the eight dimensions, citing the submitted text for every judgment.
+4. **Tier.** Assign the tier by rungs cleared, then pick the score inside that band.
+5. **Check.** Seven sections in order, all eight rows present, both tier mentions identical, every claim anchored.
+6. **Print.** The seven sections only.
+
+## 🚀 How to use it
+
+```
+/rank-prompt ./prompts/agent.md   ← audit a prompt file
+/rank-prompt                      ← asks you to paste the prompt
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"score this prompt"*, *"audit my system prompt"*, *"how good is this prompt"*, *"what tier is this prompt"*, *"review my agent instructions"*, *"why does my prompt keep drifting"*
+
+The full procedure lives at [`lib/prompt-ranker/SKILL.md`](../lib/prompt-ranker/SKILL.md) and the slash command at [`commands/rank-prompt.md`](../commands/rank-prompt.md).
+
+---
+
+## `prompt-stencil`
+
+Takes one image-generation prompt that already gives you the picture you want and cuts it into a fill-in-the-variables version, so you can swap one thing and keep the same look.
+
+```
+/prompt-stencil
+```
+
+The problem it solves is rebuilding a look by hand. You have a prompt that renders exactly right, you change the subject, and the lighting drifts, the lens language goes, a prop appears that was never there. `prompt-stencil` separates the wording that makes the look from the wording that describes the thing, locks the first, and turns at most three dimensions of the second into `{TOKEN}` slots threaded through every clause that depends on them - and no others.
+
+You get eight sections: the locks, the variable surface with source-derived defaults, the style-lock block to copy verbatim, a copy-ready template in four labelled blocks (`[STYLE LOCK]`, `[VARIABLE BODY]`, `[NEGATIVE]`, `[PARAMETERS]`), a propagation map saying which clauses each token rewrites and which it must never touch, at least two filled proofs with materially different values, drift guards listing what must never creep in, and short usage notes.
+
+Model syntax is preserved, never translated. `--ar 3:2`, `--style raw`, weights, and flags stay in the source's own wording and go in `[PARAMETERS]`, whichever dialect they came from. Nothing is generated or verified: the proofs demonstrate token substitution, not visual outcome, and a stencil cut from a Midjourney prompt is not portable to another generator without translating the parameters yourself.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/prompt-stencil/SKILL.md`, which loads the master template from `lib/prompt-stencil/references/prompt-template.md`. The command `/prompt-stencil` collects the source prompt, the dimension to make reusable, and up to two optional constraints. It asks at most one clarifying question overall, and only when the dimension is missing while a usable source prompt is present.
+
+## ✨ Features
+
+- 🔒 Locks first. Composition, background, lighting, lens, palette, materials, style, negatives, and ratio are separated out before anything is cut
+- 🎚️ Minimal variable surface. At most three dimensions, each chosen for the widest reuse, and never a lock the user did not ask to change
+- 🧵 Dependency threading. A token rewrites only the clauses that logically depend on it; unrelated locks are left alone
+- 📋 Copy-ready template in four labelled blocks, with no notes, ellipses, or advice inside the code block
+- 🗺️ Propagation map. One row per token: what it rewrites, what it must never touch
+- 🧪 At least two filled proofs with materially different values and identical locks
+- 🚧 Drift guards kept separate from locks - guards say what to keep out, locks say what to keep
+- 🧰 Model syntax preserved verbatim, never translated between dialects
+- 🩹 Seam repair. A source that is itself a filled template gets its doubled articles and stranded prepositions fixed, and the notes say how
+- 🚫 Three named failure states instead of a half-built artifact: Missing Material, Variable Conflict, Capability Boundary
+
+## 🔄 How it works
+
+1. **Intake.** Source prompt, the dimension to make swappable, optional constraints.
+2. **Parse.** Break the source into visual clauses and mark each invariant, variable-dependent, or conflict-sensitive.
+3. **Select.** Pick the minimal safe variable surface, at most three dimensions.
+4. **Thread.** Run each variable through its dependent clauses and leave the rest untouched.
+5. **Cut and assemble.** Style-lock block and drift guards from the invariants, then the four-block template.
+6. **Prove and check.** Build the filled variants, then verify the artifact against the source and the request.
+
+## 🚀 How to use it
+
+```
+/prompt-stencil ./prompts/product-hero.txt   ← cut a saved prompt
+/prompt-stencil                              ← asks for the prompt, then what to vary
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"make this image prompt reusable"*, *"turn this into a template"*, *"I want to swap the subject and keep the look"*, *"variables for my Midjourney prompt"*, *"stop my prompt drifting when I change the product"*
+
+The full procedure lives at [`lib/prompt-stencil/SKILL.md`](../lib/prompt-stencil/SKILL.md) and the slash command at [`commands/prompt-stencil.md`](../commands/prompt-stencil.md).

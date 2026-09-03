@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  Utilities          ( /forge-utils )          4 tools
+  FORGE  -  Utilities          ( /forge-utils )          5 tools, 2 pages
 ================================================================================
-  App blueprints, session stats, VGA demos, Excel/Sheets formulas.
+  App blueprints, session stats, VGA demos, formulas, macOS crash reports.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Tool]                                                 Which tool?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                  -> /blueprint         |
   |         11-section senior-architect production blueprint for a new app.      |
@@ -17,8 +17,21 @@
   |  ( 3 )  VGA demo                                       -> /vgademo           |
   |         Sizecoded 1990s-style assembly demoscene production.                 |
   |                                                                              |
-  |  ( 4 )  Fix a spreadsheet formula                      -> /fix-formula       |
+  |  ( 4 )  More...                                                              |
+  |         Spreadsheet formulas and macOS crash reports.  -> page 2             |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Fix a spreadsheet formula                      -> /fix-formula       |
   |         Debug and fix a broken Excel or Google Sheets formula.               |
+  |                                                                              |
+  |  ( 2 )  Analyze a macOS crash                          -> /crash-report      |
+  |         Diagnose a .ips or .crash report in six plain-English sections, every|
+  |         claim cited.                                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -116,5 +129,15 @@
   '----------------------------------------------------------------------------'
   .--[Issue]-- what's going wrong  (error code, wrong result, expected) -------.
   |  ___ (asked only if absent; never guessed)                                 |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /crash-report ---
+  One field: the report.  A path or a pasted log skips the menu.
+
+  .--[Report]-- where is the crash report? ------------------------------------.
+  |  ( ) Paste it   ( ) Give a path   ( ) Latest DiagnosticReports             |
+  |      follow-up path/paste request is a plain prompt, not a menu            |
+  |      reads .ips, .crash, hang, spindump, sample, Console excerpt           |
   '----------------------------------------------------------------------------'
 ================================================================================

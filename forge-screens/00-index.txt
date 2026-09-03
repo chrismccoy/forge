@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  51 tools . 61 commands . 10 pickers . 0 skills . nothing auto-fires.
+  57 tools . 67 commands . 10 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's tool screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -30,7 +30,7 @@
   | [Category]                                        Which category?  (pg 2/3) |
   |-----------------------------------------------------------------------------|
   |  ( 1 )  DevOps & Data                       -> open  04-devops.txt          |
-  |         Compose, Kubernetes, PowerShell, jq.  4 tools.                      |
+  |         Compose, Kubernetes, PowerShell, jq, SQL review.  5 tools.          |
   |                                                                             |
   |  ( 2 )  Cloud & Architecture                -> open  05-cloud.txt           |
   |         Design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents.   |
@@ -47,13 +47,13 @@
   | [Category]                                        Which category?  (pg 3/3) |
   |-----------------------------------------------------------------------------|
   |  ( 1 )  Code Cleanup                        -> open  07-cleanup.txt         |
-  |         Strip AI voice, strip Unicode, docblocks, refactors.  4 tools.      |
+  |         Strip AI voice, Unicode, comments, docblocks.  6 tools.             |
   |                                                                             |
   |  ( 2 )  Docs & Diagrams                     -> open  08-docs.txt            |
-  |         Onboarding docs, Mermaid, README, changelog, prompts.  8 tools.     |
+  |         Onboarding docs, Mermaid, README, changelog, prompts.  10 tools.    |
   |                                                                             |
   |  ( 3 )  Utilities                           -> open  09-utils.txt           |
-  |         App blueprints, session stats, VGA demos, formulas.  4 tools.       |
+  |         App blueprints, session stats, VGA demos, crashes.  5 tools.        |
   |                                                                             |
   |  ( 4 )  Back to page 1                                     -> page 1        |
   |  [Other] type a tool name ................................................  |
@@ -65,12 +65,12 @@
     01-wordpress.txt  /forge-wordpress  . 9 tools
     02-design.txt     /forge-design     . 6 tools
     03-writing.txt    /forge-writing    . 5 tools
-    04-devops.txt     /forge-devops     . 4 tools
+    04-devops.txt     /forge-devops     . 5 tools
     05-cloud.txt      /forge-cloud      . 8 tools
     06-security.txt   /forge-security   . 3 tools
-    07-cleanup.txt    /forge-cleanup    . 4 tools
-    08-docs.txt       /forge-docs       . 8 tools
-    09-utils.txt      /forge-utils      . 4 tools
+    07-cleanup.txt    /forge-cleanup    . 6 tools
+    08-docs.txt       /forge-docs       . 10 tools
+    09-utils.txt      /forge-utils      . 5 tools
 
   Whole map on one screen: ../FORGE_MAP.txt
 ================================================================================

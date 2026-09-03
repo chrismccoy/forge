@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-devops - DevOps & Data picker
 
-Route the user to one of the 4 DevOps & Data tools and run it. Compose stacks, Kubernetes manifests, PowerShell, and jq.
+Route the user to one of the 5 DevOps & Data tools and run it. Compose stacks, Kubernetes manifests, PowerShell, jq, and SQL review.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -27,17 +27,26 @@ which was meant, then continue. If empty, go to Step 1.
 
 ## Step 1 - pick a tool
 
-Ask one `AskUserQuestion`: question "Which tool?", header "Tool". Use the **Label**
-column verbatim as each option label and the **Description** column as its description.
-The tool's built-in "Other" field lets the user type a name directly - treat any such
-answer as a Step 0 direct hit.
+`AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
+`More...`, which opens the next page. Use the **Label** column verbatim as each option
+label and the **Description** column as its description. The built-in "Other" field lets
+the user type a name directly - treat any such answer as a Step 0 direct hit.
+
+**Page 1** - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
+| More... | - | jq filters and SQL query review. |
+
+**Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
+
+| Label | Command | Description |
+|---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
+| Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 
 ## Step 2 - run it
 
@@ -69,6 +78,7 @@ answer as a Step 0 direct hit.
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
 | `codebase-to-mermaid` | `/forge-docs` |
+| `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
@@ -87,10 +97,14 @@ answer as a Step 0 direct hit.
 | `page-cloner` | `/forge-design` |
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
+| `prompt-stencil` | `/forge-docs` |
+| `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-docs` |
 | `refactor` | `/forge-cleanup` |
 | `session-stats` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
+| `strip-comments` | `/forge-cleanup` |
+| `strip-emoji` | `/forge-cleanup` |
 | `strip-unicode` | `/forge-cleanup` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |

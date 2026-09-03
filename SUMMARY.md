@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 51 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 57 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 31 guided helpers · 16 full toolkits.
+**At a glance:** 1 quick win · 36 guided helpers · 20 full toolkits.
 
 ## Small Utils
 
@@ -19,6 +19,7 @@ These ask you a few questions (or take a short description), then produce a comp
 | Tool | How you start it | What it does for you |
 |--------|------------------|----------------------|
 | `jq` | `/jq` | Builds a ready-to-paste command for pulling data out of JSON, and explains each step |
+| `sql-breakdown` | `/explain-sql` | Reviews one SQL query without running it - what each clause does, the business question it answers, a score out of 40, and what could give you wrong numbers |
 | `html-design-styles` | `/html-design-styles` | Restyles a web page in one of 53 named looks (bento, brutalist, glassmorphism, and more) |
 | `vgademo` | `/vgademo` | Walks you through a few choices, then writes a tiny retro 1990s-style graphics demo |
 | `tech-blog-article` | `/tech-blog-article` | Writes a polished technical blog post with a strong opening, clear examples, and honest trade-offs |
@@ -49,6 +50,10 @@ These ask you a few questions (or take a short description), then produce a comp
 | `mermaid-generator` | `/mermaid-sequence` | Turns a bullet-point list of process steps into one valid Mermaid sequence diagram |
 | `prompt-dummy` | `/explain-prompt` | Explains any AI prompt in plain beginner English across eight fixed sections |
 | `prompt-summary` | `/analyze-prompt` | Breaks an AI prompt down for review - anatomy, techniques, failure modes, and concrete improvements |
+| `prompt-ranker` | `/rank-prompt` | Scores a prompt's architecture on one anchored scale, with every strength and risk tied to real language in it, and names the one change worth making first |
+| `prompt-stencil` | `/prompt-stencil` | Turns an image prompt that already works into a reusable template - the look stays locked, up to three things become swappable, with filled examples proving the swap |
+| `readme-emoji` | `/strip-emoji` | Cleans a README's feature list - leading emoji off each bullet, a short label dash becomes a colon, long dashes gone, every other byte returned untouched |
+| `crash-report` | `/crash-report` | Explains a macOS crash report in plain English across six sections, every claim pointing at the field, thread, or line that backs it up |
 
 ## Full toolkits
 
@@ -66,6 +71,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `powershell-script-engine` | `/powershell-script-engine` | Writes clean, production-ready PowerShell scripts with logging, error handling, and safe credential use |
 | `html-to-wordpress-theme` | `/wp-theme` | Converts your static HTML into an installable WordPress theme, checking its own work as it goes |
 | `unslop` | `/unslop` | Strips the AI-sounding voice out of your comments and names without changing how the code runs |
+| `strip-comments` | `/strip-comments` | Deletes every comment except the header at the top of each file, keeping the shebangs, pragmas, and licence notices that only look like comments, and showing you a diff to approve before it writes |
 | `strip-unicode` | `/strip-unicode` | Flattens messy Unicode - curly quotes, long dashes, invisible characters - down to plain ASCII, cleaning a file in place or handing back tidied text, with a table of what changed |
 | `docblock-rewrite` | `/docblock-rewrite` | Rewrites bulky code comments into short one-liners anyone can read, backing up the originals first |
 | `codebase-to-mermaid` | `/codebase-to-mermaid` | Reads a codebase you don't know and draws accurate diagrams, every box tied to a real file and line |
@@ -78,7 +84,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 
 ## A few extra notes
 
-**Eighteen tools have a command name that's different from the tool name:**
+**Twenty-one tools have a command name that's different from the tool name:**
 
 All nine WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
@@ -92,7 +98,7 @@ All nine WordPress tools share a short `wp-` command so they group together when
 - `wordpress-report-card` → type `/wp-report-card`
 - `wordpress-performance` → type `/wp-performance`
 
-And nine others are shortened or renamed:
+And twelve others are shortened or renamed:
 
 - `excel-formula-troubleshooter` → type `/fix-formula`
 - `naming-strategist` → type `/name-domains`
@@ -103,10 +109,13 @@ And nine others are shortened or renamed:
 - `mermaid-generator` → type `/mermaid-sequence`
 - `prompt-dummy` → type `/explain-prompt`
 - `prompt-summary` → type `/analyze-prompt`
+- `prompt-ranker` → type `/rank-prompt`
+- `readme-emoji` → type `/strip-emoji`
+- `sql-breakdown` → type `/explain-sql`
 
-The other 33 use their own name as the command. Every tool has exactly one command.
+The other 36 use their own name as the command. Every tool has exactly one command.
 
-**Ten of the 61 commands are pickers, not tools:**
+**Ten of the 67 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
@@ -119,12 +128,12 @@ the right command and stops. Full walkthrough in the README under "Browsing the 
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 35 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 40 tools - the easiest way to start
 - **Asks a few questions directly:** 1 - `html-to-wordpress-theme`
-- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 13 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `page-cloner`, `page-tailwindify`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 14 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`
 
 **Every tool runs only when you type its command:**
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 51 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 57 tools here.

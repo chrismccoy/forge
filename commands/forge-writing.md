@@ -78,6 +78,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
 | `codebase-to-mermaid` | `/forge-docs` |
+| `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
@@ -85,6 +86,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `docker-compose-architect` | `/forge-devops` |
 | `explain-my-code` | `/forge-docs` |
 | `explain-prompt` | `/forge-docs` |
+| `explain-sql` | `/forge-devops` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
@@ -97,10 +99,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-stencil` | `/forge-docs` |
+| `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-docs` |
 | `refactor` | `/forge-cleanup` |
 | `session-stats` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
+| `strip-comments` | `/forge-cleanup` |
+| `strip-emoji` | `/forge-cleanup` |
 | `strip-unicode` | `/forge-cleanup` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-docs - Docs & Diagrams picker
 
-Route the user to one of the 8 Docs & Diagrams tools and run it. Onboarding docs, Mermaid diagrams, READMEs, changelogs, and prompt explainers.
+Route the user to one of the 10 Docs & Diagrams tools and run it. Onboarding docs, Mermaid diagrams, READMEs, changelogs, and prompt explainers, auditors, and stencils.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -48,7 +48,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Mermaid sequence diagram | mermaid-sequence | Turn bullet-point process steps into one valid Mermaid sequence diagram. |
 | Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Prompt explainer and analyzer tools. |
+| More... | - | Prompt explainer, analyzer, auditor, and stencil tools. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
 
@@ -56,6 +56,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
+| Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
+| More... | - | The image-prompt stencil cutter. |
+
+**Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
+
+| Label | Command | Description |
+|---|---|---|
+| Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
 
 ## Step 2 - run it
 
@@ -84,12 +92,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `blueprint` | `/forge-utils` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
+| `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
 | `docblock-rewrite` | `/forge-cleanup` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
+| `explain-sql` | `/forge-devops` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
@@ -105,6 +115,8 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `refactor` | `/forge-cleanup` |
 | `session-stats` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
+| `strip-comments` | `/forge-cleanup` |
+| `strip-emoji` | `/forge-cleanup` |
 | `strip-unicode` | `/forge-cleanup` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |

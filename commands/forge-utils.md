@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-utils - Utilities picker
 
-Route the user to one of the 4 Utilities tools and run it. App blueprints, session stats, demoscene intros, spreadsheet formulas.
+Route the user to one of the 5 Utilities tools and run it. App blueprints, session stats, demoscene intros, spreadsheet formulas, macOS crash reports.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -27,17 +27,26 @@ which was meant, then continue. If empty, go to Step 1.
 
 ## Step 1 - pick a tool
 
-Ask one `AskUserQuestion`: question "Which tool?", header "Tool". Use the **Label**
-column verbatim as each option label and the **Description** column as its description.
-The tool's built-in "Other" field lets the user type a name directly - treat any such
-answer as a Step 0 direct hit.
+`AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
+`More...`, which opens the next page. Use the **Label** column verbatim as each option
+label and the **Description** column as its description. The built-in "Other" field lets
+the user type a name directly - treat any such answer as a Step 0 direct hit.
+
+**Page 1** - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
 | App blueprint | blueprint | 11-section senior-architect production blueprint for a new app. |
 | Session stats | session-stats | Render this Claude Code session's stats as a standalone dark-theme HTML page. |
 | VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
+| More... | - | Spreadsheet formulas and macOS crash reports. |
+
+**Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
+
+| Label | Command | Description |
+|---|---|---|
 | Fix a spreadsheet formula | fix-formula | Debug and fix a broken Excel or Google Sheets formula. |
+| Analyze a macOS crash | crash-report | Diagnose a .ips or .crash report in six plain-English sections, every claim cited. |
 
 ## Step 2 - run it
 
@@ -76,6 +85,7 @@ answer as a Step 0 direct hit.
 | `draft-contract` | `/forge-writing` |
 | `explain-my-code` | `/forge-docs` |
 | `explain-prompt` | `/forge-docs` |
+| `explain-sql` | `/forge-devops` |
 | `finops` | `/forge-cloud` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |
@@ -89,9 +99,13 @@ answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-stencil` | `/forge-docs` |
+| `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-docs` |
 | `refactor` | `/forge-cleanup` |
 | `sre-audit` | `/forge-cloud` |
+| `strip-comments` | `/forge-cleanup` |
+| `strip-emoji` | `/forge-cleanup` |
 | `strip-unicode` | `/forge-cleanup` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |

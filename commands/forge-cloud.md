@@ -88,6 +88,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `blueprint` | `/forge-utils` |
 | `changelog-generator` | `/forge-docs` |
 | `codebase-to-mermaid` | `/forge-docs` |
+| `crash-report` | `/forge-utils` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
 | `docblock-rewrite` | `/forge-cleanup` |
@@ -95,6 +96,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `draft-contract` | `/forge-writing` |
 | `explain-my-code` | `/forge-docs` |
 | `explain-prompt` | `/forge-docs` |
+| `explain-sql` | `/forge-devops` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
 | `jq` | `/forge-devops` |
@@ -107,9 +109,13 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-stencil` | `/forge-docs` |
+| `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-docs` |
 | `refactor` | `/forge-cleanup` |
 | `session-stats` | `/forge-utils` |
+| `strip-comments` | `/forge-cleanup` |
+| `strip-emoji` | `/forge-cleanup` |
 | `strip-unicode` | `/forge-cleanup` |
 | `tailwind-convert` | `/forge-design` |
 | `tech-blog-article` | `/forge-writing` |

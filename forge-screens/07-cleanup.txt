@@ -1,24 +1,41 @@
 ================================================================================
-  FORGE  -  Code Cleanup          ( /forge-cleanup )          4 tools
+  FORGE  -  Code Cleanup          ( /forge-cleanup )          6 tools, 2 pages
 ================================================================================
-  Strip AI voice, strip Unicode, rewrite docblocks, plan refactors.
+  Strip AI voice, strip Unicode, strip comments, README bullets, docblocks.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Tool]                                                 Which tool?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Strip AI voice                                 -> /unslop            |
-  |         Remove AI-generated tone from comments, strings, names. No           |
-  |         behavior change.                                                     |
+  |         Remove AI-generated tone from comments, strings, names. No behavior  |
+  |         change.                                                              |
   |                                                                              |
   |  ( 2 )  Strip Unicode                                  -> /strip-unicode     |
   |         Transliterate messy Unicode down to plain 7-bit ASCII.               |
   |                                                                              |
-  |  ( 3 )  Rewrite docblocks                              -> /docblock-rewrite  |
+  |  ( 3 )  Clean README feature list                      -> /strip-emoji       |
+  |         Strip leading emoji from feature bullets, label dashes to colons,    |
+  |         en/em dashes removed.                                                |
+  |                                                                              |
+  |  ( 4 )  More...                                                              |
+  |         Comment stripping, docblocks, refactoring plans.  -> page 2          |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Strip comments                                 -> /strip-comments    |
+  |         Delete every comment except file headers, pragmas, and license       |
+  |         notices. Preview and approval required.                              |
+  |                                                                              |
+  |  ( 2 )  Rewrite docblocks                              -> /docblock-rewrite  |
   |         Convert PHPDoc and JSDoc into one-line plain-English // comments.    |
   |                                                                              |
-  |  ( 4 )  Refactoring plan                               -> /refactor          |
+  |  ( 3 )  Refactoring plan                               -> /refactor          |
   |         Evidence-first analysis with file:line citations. Read-only.         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
@@ -71,4 +88,45 @@
   .--[Depth]-- how deep should each section go? -------------------------------.
   |  ( ) Quick   ( ) Standard   ( ) Deep                                       |
   '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /strip-emoji ---
+  Input question only when the arg is empty; a path or pasted Markdown skips it.
+
+  .--[Input]-- which README?  (one plain line, no menu) -----------------------.
+  |  ___ "Which README should I clean? Send a file path, or paste the file     |
+  |      contents."   Never guesses a path, never invents a sample             |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- where the cleaned file goes  (path input only) ----------------.
+  |  ( ) Print it (default)   ( ) Overwrite the file                           |
+  |      skipped entirely for a paste - a paste is always printed              |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /strip-comments ---
+  Up to 5 fields; DOCSTRINGS and MARKUP asked only when those files turn up.
+  A safety gate runs before enumeration: branch, clean tree, version control.
+
+  .--[Scope]-- what should be processed? --------------------------------------.
+  |  ( ) Current directory, recursively   ( ) One subdirectory (give path)     |
+  |  ( ) Changed files only (git diff)   ( ) A single file                     |
+  '----------------------------------------------------------------------------'
+  .--[Languages]-- which file types -------------------------------------------.
+  |  ( ) Everything found   ( ) One language only (say which)                  |
+  |  ( ) Source files, skip templates                                          |
+  '----------------------------------------------------------------------------'
+  .--[Batching]-- how to work through it --------------------------------------.
+  |  ( ) By directory (recommended over ~50 files)   ( ) By language           |
+  |  ( ) All at once - small codebase                                          |
+  '----------------------------------------------------------------------------'
+  .--[Docstrings]-- Python only  (asked only if .py files are found) ----------.
+  |  ( ) Keep docstrings (default)   ( ) Remove docstrings too                 |
+  |      a docstring is an executable string expression, not a comment         |
+  '----------------------------------------------------------------------------'
+  .--[Markup]-- template files only  (asked only if they are found) -----------.
+  |  ( ) Leave markup comments alone (default)                                 |
+  |  ( ) Strip HTML/Blade/Jinja/Handlebars comments too                        |
+  '----------------------------------------------------------------------------'
+  THEN: enumerate -> file list -> DIFF PREVIEW -> approval -> apply -> verify.
+  Nothing is written to disk before the preview is approved.
 ================================================================================

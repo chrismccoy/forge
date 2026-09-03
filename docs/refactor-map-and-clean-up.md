@@ -589,3 +589,118 @@ Then paste steps like:
 ```
 
 The full procedure lives at [`lib/mermaid-generator/SKILL.md`](../lib/mermaid-generator/SKILL.md) and the slash command at [`commands/mermaid-sequence.md`](../commands/mermaid-sequence.md).
+
+---
+
+## `readme-emoji`
+
+Clean the feature list in a Markdown README: strip the leading emoji off each feature bullet, turn a short label dash into a colon, and remove the en dashes and em dashes from those bullets entirely. Every other byte of the file comes back exactly as it went in.
+
+```
+/strip-emoji
+```
+
+Feature lists collect decoration. A rocket in front of every bullet, an em dash doing the work a colon should do, an en dash range that a find-and-replace would flatten into nonsense. The `readme-emoji` skill does one pass over the feature section and nothing else - headings, paragraphs, tables, badges, HTML, link definitions, ordered lists, and every fenced or indented code block are out of scope and returned byte for byte, including the ones sitting inside the feature section.
+
+What counts as a feature section is a string comparison, not a judgment call. The heading text is normalized - leading emoji, emphasis markers, whitespace, trailing punctuation, case - and must then **equal** `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`. So `## 🚀 Features`, `## **Features**`, and `## features:` all match, while `Deprecated Features` and `Feature Requests` do not.
+
+The dash handling is two passes so ranges survive. Pass A classifies every dash: `2019–2024` and `10 – 20ms` are ranges and become plain ASCII hyphens, never colons and never deleted. Pass B gives a colon to the first remaining candidate whose preceding text is four words or fewer and does not end in `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes the rest. At most one candidate per bullet becomes a colon, so no bullet can end up with two.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/readme-emoji/SKILL.md`, which loads the master template from `lib/readme-emoji/references/prompt-template.md`. The command `/strip-emoji` takes a file path or pasted contents; with neither it emits one fixed intake line and stops rather than guessing a path or inventing a sample. The output is the whole file inside a single four-backtick fence tagged `markdown`, so three-backtick fences inside the README survive intact.
+
+## ✨ Features
+
+- 🎯 Mechanical scope test. Normalized heading equality against six exact names - a heading that merely contains "Features" is out of scope
+- ✂️ Whole emoji grapheme clusters removed, variation selectors, skin tones, ZWJ sequences, keycaps, and regional indicator pairs included
+- 🔢 Ranges preserved. `2019–2024` becomes `2019-2024`; a range never becomes a colon and is never deleted
+- 🏷️ One colon per bullet, awarded by a word count and a seven-word verb list, never by taste
+- 🧱 Everything else untouchable. Headings, ordered lists, continuation lines, code blocks, tables, badges, HTML, and link definitions come back byte for byte
+- 📏 Line count verified against the input before anything is emitted
+- 🚪 Asks for the file instead of guessing. No directory scan, no invented sample README
+- 🛡️ File content is data. Instructions found inside it are never followed
+- 📄 Non-Markdown input is echoed back unchanged rather than rewritten
+
+## 🔄 How it works
+
+1. **Intake.** Take the path or paste from the argument, or emit the one fixed intake line and stop.
+2. **Locate.** Normalize every heading, keep the ones that equal a feature-list name, and mark each section's bullets.
+3. **Transform 1.** Remove the leading emoji run from each in-scope bullet, along with the whitespace after it.
+4. **Transform 2.** Classify each dash as range or candidate, rewrite ranges as hyphens, award at most one colon, delete the rest.
+5. **Verify.** Line count matches, no heading or code line moved, no bullet gained two colons, every range still present.
+6. **Emit.** The whole file inside one four-backtick fence, and nothing outside it.
+
+## 🚀 How to use it
+
+```
+/strip-emoji ./README.md          ← clean a file, print or overwrite
+/strip-emoji                      ← asks for a path or a paste
+```
+
+Given a path and a file-writing tool, it offers once to overwrite in place; a paste is always printed.
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"strip the emoji out of my README"*, *"clean up this feature list"*, *"remove em dashes from my README bullets"*, *"turn those feature dashes into colons"*, *"de-emoji this readme"*
+
+The full procedure lives at [`lib/readme-emoji/SKILL.md`](../lib/readme-emoji/SKILL.md) and the slash command at [`commands/strip-emoji.md`](../commands/strip-emoji.md).
+
+---
+
+## `strip-comments`
+
+Remove every comment from a codebase except the header comment at the top of each file, and except the many comment-shaped constructs that are actually directives, pragmas, or legal notices.
+
+```
+/strip-comments
+```
+
+The hard part of this job is not deleting comments. It is the two silent failure modes. Delete a load-bearing pragma - `//go:build`, `# type: ignore`, `/*#__PURE__*/`, a `webpackChunkName` hint - and the build quietly changes with no test to catch it. Delete something that only looked like a comment because it sat inside a URL, a string, a regex, or a heredoc, and the code breaks, sometimes only at runtime. The `strip-comments` skill defends against both with a preserve list and a mandatory preview.
+
+Nothing is written before you have seen a diff and approved it. That holds on every batch - approval on one is not approval on the next - and it holds regardless of how the request is phrased. Before enumeration even starts, the skill checks that the work is on a branch, that the tree is clean, and that the project is under version control at all, saying which check failed rather than proceeding on its own judgment.
+
+Three bundled scripts do the mechanical parts. `find-candidates.sh` enumerates eligible files, honouring `.gitignore` and excluding dependency directories, build output, lockfiles, minified bundles, and generated files. `syntax-check.sh` parse-checks every modified file with that language's own parser and reports `SKIP` where the checker is absent. `audit-remaining.sh` classifies each surviving comment-like line as `HEADER`, `KEEP`, or `FLAG`, and exits non-zero while any `FLAG` is unresolved - it over-reports on purpose.
+
+Python docstrings are treated as what they are: executable string expressions, not comments. They are kept by default, and when removal is explicitly requested the skill still keeps any docstring consumed at runtime by `argparse`, `click`, FastAPI, or `doctest`, and replaces a docstring that is a function's only body with `pass` rather than producing a syntax error.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/strip-comments/SKILL.md`, with two reference files and four bundled scripts under the same folder. The command `/strip-comments` collects scope, languages, and batching, then asks about docstrings and markup comments only when those file types actually turn up. Comment removal only: no formatter, no linter autofix, no rename, no reorder, no import cleanup.
+
+## ✨ Features
+
+- 🛑 Preview and approval before any write, on every batch - never a first-run surprise on an unfamiliar codebase
+- 🧷 Safety gate first. On a branch, clean tree, under version control, or it says which check failed and stops
+- 📜 A full preserve catalogue. Shebangs, directive prologues, type-checker and linter directives, coverage and bundler hints, licence and copyright headers, SPDX identifiers, `/*! */` blocks, language pragmas, generated-file markers, Python comment-form type annotations
+- 🔎 No regex sweeps. Comment syntax inside strings, URLs, regexes, and heredocs is read in context, not pattern-matched
+- 🐍 Docstrings understood, not lumped in with comments - runtime-consumed ones survive even when removal is requested
+- 🧪 Verification required. Parse-check plus a comment audit, with every `FLAG` resolved and every `SKIP` listed before anything is called done
+- 📦 Batching by directory or language on anything over roughly 50 files, so a mistake stays cheap to isolate
+- 🎨 Templates covered. `<script>` and `<style>` blocks inside `.vue`, `.svelte`, `.astro`, `.ejs`, `.hbs`, `.html`, and `.blade.php`
+- 🚪 Markup comments opt-in. HTML, Blade, Handlebars, Jinja, and Markdown of any kind are out of scope unless asked for
+- 🚩 Ambiguity flagged with a file and line, never resolved quietly
+
+## 🔄 How it works
+
+1. **Gate.** Branch, clean tree, version control. Stop and name the failure if any check fails.
+2. **Enumerate.** `find-candidates.sh` builds the eligible file list; present it before touching anything.
+3. **Read.** Per language, find where the header ends, which comment-like lines must survive, and which apparent comments are inside data.
+4. **Preview.** Proposed changes grouped by file, diff only, then stop and wait.
+5. **Apply.** The approved batch, preserving indentation, blank-line structure, and untouched trailing whitespace.
+6. **Verify.** `syntax-check.sh`, then `audit-remaining.sh`, then the project's own tests and build.
+7. **Report.** Files changed, lines removed, files skipped and why, constructs preserved, every ambiguous case located.
+
+## 🚀 How to use it
+
+```
+/strip-comments src/              ← scope passed in, confirmed at intake
+/strip-comments src/ python only  ← scope plus a language hint
+/strip-comments                   ← full intake
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"strip the comments out of this codebase"*, *"remove all comments but keep the header"*, *"delete the commented-out code"*, *"clean up comments in src/"*, *"remove inline comments"*, *"clear out the stale TODOs"*
+
+The full procedure lives at [`lib/strip-comments/SKILL.md`](../lib/strip-comments/SKILL.md) and the slash command at [`commands/strip-comments.md`](../commands/strip-comments.md). Its preserve catalogue is at [`lib/strip-comments/references/preserve-list.md`](../lib/strip-comments/references/preserve-list.md) and the per-language notes at [`lib/strip-comments/references/language-notes.md`](../lib/strip-comments/references/language-notes.md).
