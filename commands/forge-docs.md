@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-docs - Docs & Diagrams picker
 
-Route the user to one of the 10 Docs & Diagrams tools and run it. Onboarding docs, Mermaid diagrams, READMEs, changelogs, and prompt explainers, auditors, and stencils.
+Route the user to one of the 12 Docs & Diagrams tools and run it. Onboarding docs, Mermaid diagrams, READMEs, changelogs, prompt explainers, auditors, and stencils, and teaching annotations for code.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -57,13 +57,15 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
 | Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
-| More... | - | The image-prompt stencil cutter. |
+| More... | - | The table-only prompt auditor, the stencil cutter, and the code annotator. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
+| Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
+| Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 
 ## Step 2 - run it
 
@@ -129,6 +131,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
+| `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |

@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 57 tools behind 67 slash commands.
+One Claude Code plugin - `forge` - holding 60 tools behind 70 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -23,6 +23,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-format`](docs/wordpress.md#wordpress-formatter). Formats a theme's template files to the WordPress coding standard - tabs, spacing, and array style - without changing how any page renders. It installs the tools, runs the fixer, and checks the result.
 - [`/wp-menu-icons`](docs/wordpress.md#menu-icon-picker). Ports a searchable Font Awesome icon picker onto every Appearance > Menus item, integrated into a classic theme - click an icon instead of typing a class, with security gates and full rebranding.
 - [`/wp-report-card`](docs/wordpress.md#wordpress-report-card). Scores a WordPress plugin or theme on ten areas out of 10, with an overall score and tier - just the scorecard table, no findings and no fixes.
+- [`/wp-grade`](docs/wordpress.md#wordpress-grade). Grades one piece of WordPress code - a snippet or a single file - with a letter grade from A to F against a fixed rubric, what the code does, what it gets right, the real problems with the reason each one matters, the nitpicks kept separate, and a verdict on whether it is safe for a live site.
 - [`/wp-performance`](docs/wordpress.md#wordpress-performance). Reads every file in a plugin or theme and reports what will break under traffic - unbounded queries, cache bypass, repeated queries inside loops, and cron that blocks itself. Starts fresh every run, so running it a second time is a real second opinion rather than a replay of the first.
 
 **Plan and Design**
@@ -42,6 +43,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/mermaid-to-ascii`](docs/refactor-map-and-clean-up.md#mermaid-to-ascii). Turns a Mermaid diagram file into clean text-art you can paste into a comment, a README, or a terminal, saved next to the original as a `.txt`.
 - [`/mermaid-sequence`](docs/refactor-map-and-clean-up.md#mermaid-generator). Turns a plain bullet-point list of steps into one valid Mermaid sequence diagram, getting the arrow directions right and refusing cleanly when a step is missing its sender.
 - [`/explain-my-code`](docs/refactor-map-and-clean-up.md#explain-my-code). Reads a whole repo and writes one self-contained onboarding document - architecture, folder map, app flow, design patterns, risks - in 13 fixed sections with Mermaid diagrams, so anyone new to the project can get up to speed just by reading it.
+- [`/code-teacher`](docs/refactor-map-and-clean-up.md#code-teacher). Turns a script into a teaching version of itself - a header block covering purpose, the tricky parts, the algorithm, usage, and requirements, then line-by-line comments explaining not just what each piece does but why it was written that way, the lessons worth taking away, and a check that the original code came back unchanged. Only comments are added.
 - [`/docblock-rewrite`](docs/refactor-map-and-clean-up.md#docblock-rewrite). Rewrites bulky PHPDoc and JSDoc blocks into short, plain-English one-line comments, backing up the originals first.
 - [`/unslop`](docs/refactor-map-and-clean-up.md#unslop). Strips the AI-sounding voice out of comments, docstrings, and names in your code without changing how the code runs. Works across 19+ languages.
 - [`/strip-unicode`](docs/refactor-map-and-clean-up.md#strip-unicode). Flattens messy Unicode - curly quotes, long dashes, ellipses, bullets, invisible characters - down to plain 7-bit ASCII that works everywhere, either cleaning a file in place or handing back tidied text, with a table of everything it changed. It swaps characters only; it never rewrites your words.
@@ -96,6 +98,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/explain-prompt`](docs/writing-and-language.md#prompt-dummy). Explains any AI prompt in plain, everyday English for a total beginner - what it is, what you get back, how it works, and how to use it - in eight fixed sections. It describes the prompt, it never runs it.
 - [`/analyze-prompt`](docs/writing-and-language.md#prompt-summary). A rigorous, review-ready breakdown of any AI prompt - anatomy, techniques, output contract, failure modes, and concrete improvements - with the full prompt quoted verbatim in an appendix.
 - [`/rank-prompt`](docs/writing-and-language.md#prompt-ranker). Audits a prompt's architecture and scores it - a tier and a score on one anchored scale, strengths and risks each tied to real language in the prompt, a row per analysis dimension, and the single change that would move it up the most. It reviews the prompt; it never obeys it.
+- [`/prompt-rank-table`](docs/writing-and-language.md#prompt-rank-table). The same eight-dimension prompt audit as `/rank-prompt`, reduced to three sections - a tier and score, one table row per dimension with the evidence quoted from the prompt itself, and a one-line verdict. Built for a fast read, or for putting several prompts side by side.
 - [`/prompt-stencil`](docs/writing-and-language.md#prompt-stencil). Turns one image prompt that already works into a reusable template - the wording that makes the look is locked, at most three things become swappable, and you get a copy-ready template plus filled examples proving the swap works.
 
 **Debugging**
@@ -115,7 +118,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 67 commands, nothing running in the background.
+That is the whole install. One plugin, 70 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -126,14 +129,14 @@ Then either browse the whole catalog:
 which asks for a category, then a tool, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 9 WordPress tools
+/forge-wordpress    # 10 WordPress tools
 /forge-design       # 6 design and frontend tools
 /forge-writing      # 5 writing and content tools
 /forge-devops       # 5 DevOps and data tools
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
 /forge-cleanup      # 6 code-cleanup tools
-/forge-docs         # 10 docs and diagram tools
+/forge-docs         # 12 docs and diagram tools
 /forge-utils        # 5 utilities
 ```
 
@@ -149,6 +152,7 @@ Or call any tool directly:
 /wp-format                      # apply WordPress Coding Standards formatting
 /wp-menu-icons                  # searchable icon picker for menu items
 /wp-report-card                 # scorecard-only review, /10 table plus tier
+/wp-grade                       # letter grade A-F on one snippet or file
 /wp-performance                 # cold full-file performance review
 
 # Design and frontend
@@ -194,6 +198,7 @@ Or call any tool directly:
 
 # Docs and diagrams
 /explain-my-code                # 13-section onboarding doc for a whole repo
+/code-teacher                   # annotate a script with teaching comments
 /codebase-to-mermaid            # validated Mermaid diagrams with file:line cites
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
 /readme-builder                 # beginner-friendly README.md
@@ -201,6 +206,7 @@ Or call any tool directly:
 /explain-prompt                 # any AI prompt in plain, beginner English
 /analyze-prompt                 # review-ready prompt anatomy breakdown
 /rank-prompt                    # tier and score a prompt's architecture
+/prompt-rank-table              # the same audit as a tier, a table, one verdict
 /prompt-stencil                 # cut a working image prompt into a reusable template
 
 # Utilities
@@ -215,7 +221,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Ten of the 67 commands are pickers. They do no work themselves - they show you what is
+Ten of the 70 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -239,14 +245,14 @@ description each.
 
 | Command | Tools | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-wordpress` | 10 | 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
 | `/forge-writing` | 5 | 3 + `More...`, then 2 |
 | `/forge-devops` | 5 | 3 + `More...`, then 2 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 6 | 3 + `More...`, then 3 |
-| `/forge-docs` | 10 | 3 + `More...`, three times, then 1 |
+| `/forge-docs` | 12 | 3 + `More...`, three times, then 3 |
 | `/forge-utils` | 5 | 3 + `More...`, then 2 |
 
 A picker screen looks like this - `/forge-wordpress`, page 1 of 2:
@@ -307,7 +313,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              67 command files - 57 tools, 10 pickers
+commands/              70 command files - 60 tools, 10 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -323,7 +329,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 67 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 70 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -337,16 +343,16 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Tools | Reference |
 |---|---|---|
-| WordPress | 9 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 10 | [docs/wordpress.md](docs/wordpress.md) |
 | Plan and Design | 7 | [docs/plan-and-design.md](docs/plan-and-design.md) |
-| Refactor, Map and Clean Up | 11 | [docs/refactor-map-and-clean-up.md](docs/refactor-map-and-clean-up.md) |
+| Refactor, Map and Clean Up | 12 | [docs/refactor-map-and-clean-up.md](docs/refactor-map-and-clean-up.md) |
 | Servers and Scripting | 4 | [docs/servers-and-scripting.md](docs/servers-and-scripting.md) |
 | Cloud and Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Domain Names | 1 | [docs/domain-names.md](docs/domain-names.md) |
 | Creative | 1 | [docs/creative.md](docs/creative.md) |
 | Data | 2 | [docs/data.md](docs/data.md) |
-| Writing and language | 9 | [docs/writing-and-language.md](docs/writing-and-language.md) |
+| Writing and language | 10 | [docs/writing-and-language.md](docs/writing-and-language.md) |
 | Debugging | 1 | [docs/debugging.md](docs/debugging.md) |
 | Session tools | 1 | [docs/session-tools.md](docs/session-tools.md) |
 
@@ -357,15 +363,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 67 slash commands: 10 pickers + 57 tools
-├── lib/                      ← 57 procedure folders (SKILL.md + bundled
+├── commands/                 ← 70 slash commands: 10 pickers + 60 tools
+├── lib/                      ← 60 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 57 tools compared by how much each does
+├── SUMMARY.md                ← the 60 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

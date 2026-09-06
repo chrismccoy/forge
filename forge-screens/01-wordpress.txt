@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          9 tools, 3 pages
+  FORGE  -  WordPress          ( /forge-wordpress )         10 tools, 3 pages
 ================================================================================
   Build, review, and format WordPress plugins and themes.
 
@@ -49,7 +49,11 @@
   |         Scorecard-only review: 10-area /10 table + overall + tier.          |
   |         No findings, no fixes.                                              |
   |                                                                             |
-  |  ( 3 )  Performance review                                -> /wp-performance|
+  |  ( 3 )  Grade one piece of code                            -> /wp-grade     |
+  |         Letter grade A-F on a snippet or single file: purpose,              |
+  |         strengths, weaknesses, nitpicks, verdict.                           |
+  |                                                                             |
+  |  ( 4 )  Performance review                                -> /wp-performance|
   |         Cold full-file scan: unbounded queries, cache bypass,               |
   |         N+1 loops, cron and asset cost.  Fresh every run.                   |
   |                                                                             |
@@ -263,5 +267,20 @@
   |  10 areas scored x/10 (Security, Performance, Architecture, Correctness,   |
   |  WP Standards, Maintainability, Documentation, Testing, Accessibility/UX,  |
   |  i18n) + an Overall row + one Tier line.  No findings, no fixes, no prose. |
+  '----------------------------------------------------------------------------'
+
+-------------------------------------------------------------------- /wp-grade -
+  NO menu.  Submission comes from the arg, a file path, or a plain ask.
+
+  .--[Code]-- paste the WordPress code to grade, or give a file path ----------.
+  |  ___ plain ask, STOP for the reply.  Not WordPress code means it says so   |
+  |      and stops - no grade.  Too large means partial review + where it      |
+  |      stopped + an offer to continue.                                       |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- six sections, fixed order -------------------------------------.
+  |  Purpose . Grade (A-F with +/-) . Strengths . Weaknesses . Nitpicks .      |
+  |  Verdict.  Six-point safety scan first (escaping, sanitization, nonces,    |
+  |  capability checks, $wpdb->prepare(), queries in loops); any hit is a      |
+  |  Weakness, never a Nitpick, and moves the grade.                           |
   '----------------------------------------------------------------------------'
 ================================================================================

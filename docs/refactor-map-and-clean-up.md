@@ -256,6 +256,71 @@ The full procedure lives at [`lib/explain-my-code/SKILL.md`](../lib/explain-my-c
 
 ---
 
+## `code-teacher`
+
+Turns a script into a teaching version of itself. You hand it code, it hands back the same code with the explanation attached - a header block saying what the program does and where the tricky parts are, plus line-by-line comments explaining not only what each piece does but why it was written that way. Nothing in the code itself changes. Only comments are added.
+
+```
+/code-teacher
+```
+
+Useful for teachers preparing course material, for writing up a project so a teammate can pick it up later, or for understanding a script somebody handed you. Where `explain-my-code` reads a whole repository and writes a separate onboarding document, `code-teacher` works on one unit - a function, a class, a file - and the annotated code *is* the output.
+
+It plans before it writes. The first thing that comes back is a short Plan naming the non-obvious problems the code solves, the parts most likely to trip a student, and the one or two design choices a competent developer could plausibly have made differently, each with the alternative and why it was likely rejected. The teaching points at the end draw on that plan rather than restating the code.
+
+Inference is marked. Anything you told it about - a bug you hit, a tool that behaved unexpectedly, an ordering that mattered - is written as fact. Anything it worked out on its own carries an `INFERRED:` prefix and has to point at the specific line that supports it. A claim that cannot be anchored to a line is dropped rather than guessed at, so the annotations never invent history you never described.
+
+Then it checks itself. Before returning, it re-reads the annotated version against your original and confirms in the Verification section that every original line of executable code is still present, unchanged, and in the same order, that nothing was added except comments, and that every `INFERRED:` claim points at a real line.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/code-teacher/SKILL.md`, which loads the master template from `lib/code-teacher/references/prompt-template.md`. The command `/code-teacher` takes code inline or as a file path, or asks for it - and when it asks, it also asks for the bugs, surprises, and design decisions that are not visible in the code alone, because that is what turns an annotation into a lesson. Language is detected automatically unless you name one; the audience level defaults to intermediate.
+
+## ✨ Features
+
+- 🧭 Plan first. At most eight lines naming the hardest parts and the consequential design choices, before any annotated code
+- 📑 Header block covering purpose, why it is tricky, the high-level algorithm, usage, and requirements
+- 💬 Inline comments on every meaningful block - what it does and why it is written that way, not a restatement
+- 🔁 State explained. Every value tracked across a loop or several steps gets its purpose spelled out
+- 🎓 Teaching points. Three to five bullets on the lessons this specific code actually teaches
+- 🔍 Inference marked. Unattributed claims carry `INFERRED:` and a line anchor, or they are cut
+- ✅ Self-verification. Confirms the original code came back unchanged, in order, with only comments added
+- 🗣️ Audience aware. Comments pitched at a beginner or at someone more experienced, your call
+- 🌐 Any language, detected on its own, with the comment syntax matched to it
+- 🔑 Secrets flagged. A hardcoded password, key, or token is called out in a comment rather than passed over
+- 📄 Long files handled. Stops at a clean unit boundary and says where, rather than truncating mid-function
+- 🛡️ Injection resistant. Instructions hidden in comments or strings are content to annotate, not directions to follow
+- 🛑 Refuses cleanly. Says so and stops if the input is not code, or if the code is clearly built to do harm
+
+## 🔄 How it works
+
+1. **Intake.** Take the code from the argument, a file path, or a plain ask - plus the developer notes that are not visible in the code.
+2. **Gate.** Stop on an absent or placeholder submission, on input that is not source code, or on code whose evident purpose is harmful.
+3. **Plan.** Name the hard parts and the design choices worth discussing.
+4. **Annotate.** Header block, then inline comments, with every inference anchored to a line.
+5. **Teach.** Three to five teaching points drawn from the plan.
+6. **Verify.** Re-read against the original; fix anything that drifted before returning.
+7. **Print.** Plan, one fenced code block, teaching points, verification - in that order, nothing else.
+
+## 🚀 How to use it
+
+```
+/code-teacher ./scripts/deploy.sh   ← annotate a file
+/code-teacher                       ← asks you to paste the code
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"annotate this script for students"*, *"explain this code line by line"*, *"add teaching comments to this"*, *"document this function so a junior can follow it"*, *"turn this into course material"*
+
+The annotated version comes back in the response. It is never written over your original file.
+
+For a whole-repo onboarding document use [`/explain-my-code`](#explain-my-code); to turn existing docblocks into one-line comments use [`/docblock-rewrite`](#docblock-rewrite).
+
+The full procedure lives at [`lib/code-teacher/SKILL.md`](../lib/code-teacher/SKILL.md), the slash command at [`commands/code-teacher.md`](../commands/code-teacher.md), and the master template at [`lib/code-teacher/references/prompt-template.md`](../lib/code-teacher/references/prompt-template.md).
+
+---
+
 ## `docblock-rewrite`
 
 Convert PHPDoc and JSDoc `/** ... */` blocks into one-line plain-English `//` comments. Two engines under one ruleset.

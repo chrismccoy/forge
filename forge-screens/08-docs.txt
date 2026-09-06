@@ -1,7 +1,7 @@
 ================================================================================
-  FORGE  -  Docs & Diagrams          ( /forge-docs )          10 tools, 4 pages
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          12 tools, 4 pages
 ================================================================================
-  Onboarding docs, Mermaid, README, changelog, prompt tools.
+  Onboarding docs, Mermaid, README, changelog, prompt tools, code annotation.
 
   STEP 2 - pick a tool
 
@@ -58,7 +58,7 @@
   |         concrete improvement.                                                |
   |                                                                              |
   |  ( 4 )  More...                                                              |
-  |         The image-prompt stencil cutter.  -> page 4                          |
+  |         Table-only prompt auditor, stencil cutter, code annotator.  -> page 4|
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -66,9 +66,17 @@
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 4/4) |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  Cut an image prompt stencil                    -> /prompt-stencil    |
+  |  ( 1 )  Audit a prompt as a table                      -> /prompt-rank-table |
+  |         The same 8-dimension audit as a tier, an evidence table,             |
+  |         and a one-line verdict.  Nothing else.                               |
+  |                                                                              |
+  |  ( 2 )  Cut an image prompt stencil                    -> /prompt-stencil    |
   |         Turn a working image prompt into a reusable template: locks,         |
   |         variables, drift guards, filled proofs.                              |
+  |                                                                              |
+  |  ( 3 )  Annotate code for teaching                     -> /code-teacher      |
+  |         Header block + line-by-line comments explaining what and             |
+  |         why.  Code itself unchanged.                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -178,5 +186,47 @@
   '----------------------------------------------------------------------------'
   .--[Constraints]-- up to two material constraints  (optional) ---------------.
   |  ___ asked once, in one line; a skip records "None"                        |
+  '----------------------------------------------------------------------------'
+--------------------------------------------------------- /prompt-rank-table ---
+  Submission comes from the arg, a file path, or a plain ask.  Two optional
+  context questions after that; skipping either is fine.
+
+  .--[Prompt]-- paste the prompt to audit, or give a file path ----------------.
+  |  ___ plain ask, STOP for the reply.  An unreplaced placeholder counts      |
+  |      as absent - no rank, no score, no table                               |
+  '----------------------------------------------------------------------------'
+  .--[Target model]-- what the prompt runs against  (optional) ----------------.
+  |  ( ) Claude   ( ) GPT class   ( ) Gemini   ( ) Model-agnostic              |
+  '----------------------------------------------------------------------------'
+  .--[Current failure]-- what it is failing at today  (optional) --------------.
+  |  ( ) Ignores parts of the instructions   ( ) Output format drifts          |
+  |  ( ) Breaks on odd or hostile input   ( ) Nothing specific                 |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- three sections, nothing else ----------------------------------.
+  |  Overall Rank . Skill Signals Table (always 8 one-line rows) . Verdict.    |
+  |  Same engine as /rank-prompt; only the report shape differs.               |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /code-teacher ---
+  NO menu until code is in hand.  If no code arg, one plain prompt (STOP for
+  reply) that also asks for the bugs and design decisions behind the code.
+
+  .--[Code]-- paste the code to annotate, or give a file path -----------------.
+  |  ___ plain ask, STOP for the reply.  Not source code, or code built to     |
+  |      do harm, means it says so and stops                                   |
+  '----------------------------------------------------------------------------'
+  .--[Audience level]-- who the comments are pitched at  (optional) -----------.
+  |  ( ) Beginner in this language   ( ) Intermediate (default)                |
+  |  ( ) Experienced, new to this codebase                                     |
+  '----------------------------------------------------------------------------'
+  .--[Dev notes]-- bugs hit, surprises, ordering that mattered  (optional) ----.
+  |  ( ) Nothing to add   ( ) I'll describe them                               |
+  |  Anything you state is written as fact; anything inferred carries          |
+  |  INFERRED: and must point at a real line.                                  |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- four sections, fixed order ------------------------------------.
+  |  Plan (<=8 lines) . one fenced code block . Teaching Points (3-5) .        |
+  |  Verification.  Original code returned unchanged, comments only.           |
   '----------------------------------------------------------------------------'
 ================================================================================

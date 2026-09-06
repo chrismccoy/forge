@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 57 tools in this plugin and then run it. This command
+Route the user to one of the 60 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,14 +29,14 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 9 WordPress tools |
+| `/forge-wordpress` | 10 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 5 writing and content tools |
 | `/forge-devops` | 5 DevOps and data tools |
 | `/forge-cloud` | 8 cloud and architecture tools |
 | `/forge-security` | 3 security tools |
 | `/forge-cleanup` | 6 code-cleanup tools |
-| `/forge-docs` | 10 docs and diagram tools |
+| `/forge-docs` | 12 docs and diagram tools |
 | `/forge-utils` | 5 utilities |
 
 If the user's input clearly names one category and no specific tool, mention the matching
@@ -53,7 +53,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, and format WordPress plugins and themes. 9 tools. |
+| WordPress | Build, review, and format WordPress plugins and themes. 10 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help. 5 tools. |
 | More... | DevOps, cloud, security, code cleanup, docs and diagrams, utilities. |
@@ -72,7 +72,7 @@ such answer as a Step 0 direct hit.
 | Label | Description |
 |---|---|
 | Code Cleanup | Strip AI voice, Unicode, comments, README bullets, docblocks, refactors. 6 tools. |
-| Docs & Diagrams | Onboarding docs, Mermaid, README, changelog, prompt tools. 10 tools. |
+| Docs & Diagrams | Onboarding docs, Mermaid, README, changelog, prompt tools, code annotation. 12 tools. |
 | Utilities | App blueprints, session stats, VGA demos, formulas, macOS crashes. 5 tools. |
 | Back to page 1 | Return to the first category page. |
 
@@ -82,7 +82,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (9 - page at 4)
+### WordPress (10 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -96,12 +96,13 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, and performance tools. |
+| More... | - | Menu-icon, report-card, grader, and performance tools. |
 
 | Label | Command | Description |
 |---|---|---|
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
+| Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 
 ### Design & Frontend (6 - page at 4)
@@ -191,7 +192,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
 | Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 
-### Docs & Diagrams (10 - page at 4)
+### Docs & Diagrams (12 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -212,11 +213,13 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
 | Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
-| More... | - | The image-prompt stencil cutter. |
+| More... | - | The table-only prompt auditor, the stencil cutter, and the code annotator. |
 
 | Label | Command | Description |
 |---|---|---|
+| Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
+| Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 
 ### Utilities (5 - page at 4)
 
@@ -268,6 +271,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | prompt-dummy | explain-prompt |
 | prompt-summary | analyze-prompt |
 | prompt-ranker | rank-prompt |
+| wordpress-grade | wp-grade |
 | readme-emoji | strip-emoji |
 | sql-breakdown | explain-sql |
 

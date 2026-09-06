@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 9 WordPress tools and run it. Build, review, and format WordPress plugins and themes.
+Route the user to one of the 10 WordPress tools and run it. Build, review, and format WordPress plugins and themes.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -56,6 +56,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
+| Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 
 ## Step 2 - run it
@@ -87,6 +88,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `changelog-generator` | `/forge-docs` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
+| `code-teacher` | `/forge-docs` |
 | `codebase-to-mermaid` | `/forge-docs` |
 | `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
@@ -112,6 +114,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-docs` |

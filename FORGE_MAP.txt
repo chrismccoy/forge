@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  57 tools . 67 commands . 10 pickers . 0 skills . nothing auto-fires.
+  60 tools . 70 commands . 10 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/3)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, and format WP plugins and themes.  9 tools.           |
+  |         Build, review, and format WP plugins and themes.  10 tools.          |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6 tools.|
@@ -64,7 +64,7 @@
   |         6 tools.                                                            |
   |                                                                             |
   |  ( 2 )  Docs & Diagrams                                                     |
-  |         Onboarding docs, Mermaid, README, changelog, prompts.  10 tools.    |
+  |         Onboarding docs, Mermaid, README, changelog, prompts.  12 tools.    |
   |                                                                             |
   |  ( 3 )  Utilities                                                           |
   |         App blueprints, session stats, VGA demos, formulas, macOS           |
@@ -81,7 +81,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  9 tools, 3 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  10 tools, 3 pages ---------------------
 
   .-----------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/3)|
@@ -125,7 +125,11 @@
   |  ( 2 )  Report card                                       -> /wp-report-card|
   |         Scorecard-only review: 10-area /10 table + overall + tier.          |
   |                                                                             |
-  |  ( 3 )  Performance review                                -> /wp-performance|
+  |  ( 3 )  Grade one piece of code                            -> /wp-grade     |
+  |         Letter grade A-F on a snippet or single file: purpose,              |
+  |         strengths, weaknesses, nitpicks, verdict.                           |
+  |                                                                             |
+  |  ( 4 )  Performance review                                -> /wp-performance|
   |         Cold full-file scan: unbounded queries, cache bypass,               |
   |         N+1 loops, cron and asset cost.  Fresh every run.                   |
   |                                                                             |
@@ -351,7 +355,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Docs & Diagrams  ( /forge-docs )  -  10 tools, 4 pages ---------------------
+--- Docs & Diagrams  ( /forge-docs )  -  12 tools, 4 pages ---------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/4) |
@@ -406,7 +410,7 @@
   |         concrete improvement.                                                |
   |                                                                              |
   |  ( 4 )  More...                                                              |
-  |         The image-prompt stencil cutter.  -> page 4                          |
+  |         Table-only prompt auditor, stencil cutter, code annotator.  -> page 4|
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -414,9 +418,17 @@
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 4/4) |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  Cut an image prompt stencil                    -> /prompt-stencil    |
+  |  ( 1 )  Audit a prompt as a table                      -> /prompt-rank-table |
+  |         The same 8-dimension audit as a tier, an evidence table,             |
+  |         and a one-line verdict.  Nothing else.                               |
+  |                                                                              |
+  |  ( 2 )  Cut an image prompt stencil                    -> /prompt-stencil    |
   |         Turn a working image prompt into a reusable template: locks,         |
   |         variables, drift guards, filled proofs.                              |
+  |                                                                              |
+  |  ( 3 )  Annotate code for teaching                     -> /code-teacher      |
+  |         Header block + line-by-line comments explaining what and             |
+  |         why.  Code itself unchanged.                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -474,7 +486,7 @@
    +-- WordPress ............ /forge-wordpress
    |    +-- wp-plugin   wp-build   wp-theme
    |    +-- wp-review   wp-consult wp-format   wp-menu-icons wp-report-card
-   |    +-- wp-performance
+   |    +-- wp-grade    wp-performance
    |
    +-- Design & Frontend .... /forge-design
    |    +-- html-design-styles   accessibility-audit   design-system
@@ -502,7 +514,7 @@
    +-- Docs & Diagrams ...... /forge-docs
    |    +-- explain-my-code  codebase-to-mermaid  mermaid-to-ascii  mermaid-sequence
    |    +-- readme-builder   changelog-generator  explain-prompt    analyze-prompt
-   |    +-- rank-prompt      prompt-stencil
+   |    +-- rank-prompt      prompt-rank-table    prompt-stencil    code-teacher
    |
    +-- Utilities ............ /forge-utils
         +-- blueprint  session-stats  vgademo  fix-formula  crash-report

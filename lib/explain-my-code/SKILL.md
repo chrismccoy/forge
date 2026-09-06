@@ -9,7 +9,7 @@ Analyze a complete code repository as a senior software architect and produce on
 - User wants a system/architecture overview with Mermaid diagrams
 - User points at a repo and asks "what does this do / how does it work" AND wants it captured as a written document, not a one-line reply
 
-Do NOT use for bug-finding code review, refactoring plans, or diagram-only output (see negative boundary in description).
+Do NOT use for bug-finding code review, refactoring plans, or diagram-only output (see negative boundary in description). Do NOT use to annotate a single script with teaching comments - that is code-teacher, which returns the same code with comments added and changes nothing else.
 
 ## Co-Load Precedence
 

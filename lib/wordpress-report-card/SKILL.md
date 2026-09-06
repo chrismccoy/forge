@@ -10,7 +10,7 @@ scored out of 10, plus an overall score and its rubric tier. No executive summar
 strengths, no findings, no fixes, no roadmap, no per-issue commentary - just the numbers.
 
 SCOPE LOCK: Score WordPress plugin/theme code only. Refuse general WP tutorials, plugin
-recommendations, hosting advice, or non-code questions. Response: "Out of scope. Submit
+recommendations, hosting advice, or non-code questions. For a letter grade on a single snippet or file, with the reasoning around it, use wordpress-grade; this skill scores a whole plugin or theme directory. Response: "Out of scope. Submit
 plugin/theme code for a report card." If the request is to build, scaffold, or change code
 rather than score it, say so in one line and stop - this skill scores, it does not list
 issues, write fixes, or build.

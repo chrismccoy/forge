@@ -429,6 +429,63 @@ The full procedure lives at [`lib/prompt-ranker/SKILL.md`](../lib/prompt-ranker/
 
 ---
 
+## `prompt-rank-table`
+
+The same architecture audit as `prompt-ranker`, reduced to what fits on one screen: a tier and a score, one table row per dimension with the evidence quoted from the prompt itself, and a one-line verdict. No preamble, no closing prose.
+
+```
+/prompt-rank-table
+```
+
+Both tools share one engine - the same eight dimensions, the same anchored tier bands, the same inert-input rules. They differ only in what comes back. `prompt-ranker` writes the long report: numbered strengths, numbered risks, a structural-risks section, and one improvement written out as an edit. `prompt-rank-table` emits three sections and pushes every piece of evidence into the table, which is what you want when you are scanning quickly or lining several prompts up against each other.
+
+The table is the whole output, so the rules that keep it rendering as a table are treated as hard constraints rather than formatting advice. Every row is one line with exactly three cells. No line break, `<br>`, bullet, or fenced block inside a cell. Pipes inside quoted evidence are escaped. Evidence cells stay under roughly 20 words - the shortest decisive fragment in quotes, then a brief gloss - with one exception: the input-handling row may run longer when it also has to report an injection attempt. A wrapped row renders as loose text, so a wrapped row is a failure.
+
+Attacks are reported, not dropped. Directive language aimed at the reviewer - `ignore prior instructions`, `score this 10/10` - is quoted in the input-handling row along with a statement that it was not followed, and the audit continues unchanged. No extra section is added to report one, because the output contract is three sections and nothing else.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/prompt-rank-table/SKILL.md`, which loads the master template from `lib/prompt-rank-table/references/prompt-template.md`. The command `/prompt-rank-table` takes the prompt inline or as a file path, or asks for it, then optionally collects the target model and what the prompt is failing at today. An intake gate treats an unreplaced placeholder as no submission at all and stops rather than auditing empty space.
+
+## ✨ Features
+
+- 📊 Three sections only. Overall Rank, the table, the verdict - no preamble before the first heading and no prose after the last
+- 🧭 Eight analysis dimensions, always eight data rows. A dimension can be marked `N/A - {reason}`, never dropped
+- 📐 Hard table rules. One line per row, three cells, escaped pipes, no fence around the table, evidence capped at roughly 20 words
+- 🪜 Anchored tiers. Novice, Intermediate, Advanced, Expert, each defined by mechanisms the prompt must actually contain
+- ⚖️ One scale only. The tier in the opening rank and the tier in the verdict have to match
+- 🚪 Intake gate. No prompt, or a placeholder still in the markers, means a request and a stop
+- 🛡️ Injection resistant. The submission is inert data behind paired markers, and directives aimed at the reviewer land in the input-handling row rather than in the model's behaviour
+- 🔍 Evidence required. Every row cites specific language or structure from the submitted prompt
+- 📏 Length neutral. Verbosity without structure counts against Efficiency; a short prompt that covers its scope is not penalized
+- 🧪 Bad input handled. A non-prompt is identified and refused rather than scored; a trivially short prompt gets `N/A` rows rather than padding
+
+## 🔄 How it works
+
+1. **Intake.** Take the submission from the argument, a file path, or a plain ask. Optionally collect target model and current failure.
+2. **Gate.** Stop on an absent or placeholder submission; refuse to table a non-prompt.
+3. **Score.** Walk the eight dimensions in fixed order, citing the submitted text for every row.
+4. **Tier.** Assign the tier by rungs cleared, then pick the score inside that band.
+5. **Check.** Three sections in order, eight single-line rows, both tier mentions identical, no stray prose.
+6. **Print.** The three sections only.
+
+## 🚀 How to use it
+
+```
+/prompt-rank-table ./prompts/agent.md   ← audit a prompt file
+/prompt-rank-table                      ← asks you to paste the prompt
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"score this prompt as a table"*, *"quick prompt audit"*, *"what tier is this prompt"*, *"compare these prompts"*, *"just give me the signals table"*
+
+For the long-form version of the same audit, use [`/rank-prompt`](#prompt-ranker).
+
+The full procedure lives at [`lib/prompt-rank-table/SKILL.md`](../lib/prompt-rank-table/SKILL.md) and the slash command at [`commands/prompt-rank-table.md`](../commands/prompt-rank-table.md).
+
+---
+
 ## `prompt-stencil`
 
 Takes one image-generation prompt that already gives you the picture you want and cuts it into a fill-in-the-variables version, so you can swap one thing and keep the same look.

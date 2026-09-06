@@ -87,6 +87,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `analyze-prompt` | `/forge-docs` |
 | `blueprint` | `/forge-utils` |
 | `changelog-generator` | `/forge-docs` |
+| `code-teacher` | `/forge-docs` |
 | `codebase-to-mermaid` | `/forge-docs` |
 | `crash-report` | `/forge-utils` |
 | `design-system` | `/forge-design` |
@@ -109,6 +110,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-docs` |
@@ -126,6 +128,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
+| `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
