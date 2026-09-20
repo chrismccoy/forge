@@ -8,17 +8,17 @@
   .------------------------------------------------------------------------------.
   | [Tool]                                                     Which tool?       |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  STRIDE threat model                            -> /threat-model      |
-  |         Trust boundaries, all six STRIDE categories, severity-rated          |
-  |         threats, mapped mitigations.                                         |
+  |  ( 1 )  STRIDE threat model                                -> /threat-model  |
+  |         Trust boundaries, all six STRIDE categories, severity-rated threats, |
+  |         and mapped mitigations.                                              |
   |                                                                              |
-  |  ( 2 )  DevSecOps hardening                             -> /devsecops        |
-  |         Audit pipelines, IaC, cloud config: blast radius, compliance,        |
-  |         scanning gates, runtime guardrails.                                  |
+  |  ( 2 )  DevSecOps hardening                                   -> /devsecops  |
+  |         Audit pipelines, IaC, or cloud config: blast radius, compliance      |
+  |         mapping, scanning gates, runtime guardrails.                         |
   |                                                                              |
-  |  ( 3 )  Vulnerability report                            -> /pentest-report   |
-  |         Authorized finding: CVSS vector, technical context, sanitized        |
-  |         PoC, remediation.                                                    |
+  |  ( 3 )  Vulnerability report                             -> /pentest-report  |
+  |         Formal write-up of an authorized finding: CVSS vector, technical     |
+  |         context, sanitized PoC, remediation.                                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -31,7 +31,6 @@
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
-
 
 ------------------------------------------------------------- /threat-model ---
   .--[System]-- what is being assessed? ---------------------------------------.

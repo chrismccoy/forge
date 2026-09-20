@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-devops - DevOps & Data picker
 
-Route the user to one of the 5 DevOps & Data tools and run it. Compose stacks, Kubernetes manifests, PowerShell, jq, and SQL review.
+Route the user to one of the 4 DevOps & Data tools and run it. Compose stacks, Kubernetes manifests, PowerShell scripts, and jq filters - each generated from a description.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -27,10 +27,10 @@ which was meant, then continue. If empty, go to Step 1.
 
 ## Step 1 - pick a tool
 
-`AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
-`More...`, which opens the next page. Use the **Label** column verbatim as each option
-label and the **Description** column as its description. The built-in "Other" field lets
-the user type a name directly - treat any such answer as a Step 0 direct hit.
+`AskUserQuestion` caps at 4 options. This category fits on one page. Use the **Label**
+column verbatim as each option label and the **Description** column as its description.
+The built-in "Other" field lets the user type a name directly - treat any such answer as
+a Step 0 direct hit.
 
 **Page 1** - question: "Which tool?", header: "Tool"
 
@@ -39,14 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
-| More... | - | jq filters and SQL query review. |
-
-**Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
-
-| Label | Command | Description |
-|---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
-| Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 
 ## Step 2 - run it
 
@@ -73,20 +66,22 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
-| `blueprint` | `/forge-utils` |
-| `changelog-generator` | `/forge-docs` |
+| `blueprint` | `/forge-code` |
+| `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
-| `code-teacher` | `/forge-docs` |
-| `codebase-to-mermaid` | `/forge-docs` |
+| `code-teacher` | `/forge-code` |
+| `codebase-to-mermaid` | `/forge-code` |
 | `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
-| `docblock-rewrite` | `/forge-cleanup` |
+| `docblock-rewrite` | `/forge-code` |
 | `draft-contract` | `/forge-writing` |
-| `explain-my-code` | `/forge-docs` |
+| `e2e-tests` | `/forge-code` |
+| `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
+| `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
@@ -101,9 +96,10 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
-| `readme-builder` | `/forge-docs` |
-| `refactor` | `/forge-cleanup` |
+| `readme-builder` | `/forge-code` |
+| `refactor` | `/forge-code` |
 | `session-stats` | `/forge-utils` |
+| `snippet` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
 | `strip-comments` | `/forge-cleanup` |
 | `strip-emoji` | `/forge-cleanup` |
@@ -113,11 +109,13 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
+| `token-audit` | `/forge-utils` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
+| `wp-demo` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |

@@ -1,4 +1,4 @@
-# Cloud and Architecture
+# Cloud & Architecture
 
 [← Back to the README](../README.md)
 

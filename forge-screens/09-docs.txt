@@ -1,0 +1,152 @@
+================================================================================
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          7 tools, 3 pages
+================================================================================
+  Mermaid diagrams, prompt explainers, auditors, and the stencil cutter.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Mermaid to ASCII                               -> /mermaid-to-ascii  |
+  |         Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
+  |                                                                              |
+  |  ( 2 )  Mermaid sequence diagram                       -> /mermaid-sequence  |
+  |         Turn bullet-point process steps into one valid Mermaid sequence      |
+  |         diagram.                                                             |
+  |                                                                              |
+  |  ( 3 )  Explain a prompt (plain English)                 -> /explain-prompt  |
+  |         Describe any AI prompt in beginner-friendly plain English, eight     |
+  |         fixed sections.                                                      |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         The prompt analyzer, auditors, and stencil cutter.                   |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Analyze a prompt (deep dive)                     -> /analyze-prompt  |
+  |         Rigorous review-ready prompt breakdown: anatomy, techniques, failure |
+  |         modes, improvements.                                                 |
+  |                                                                              |
+  |  ( 2 )  Audit prompt architecture                           -> /rank-prompt  |
+  |         Tier and score a prompt across 8 dimensions, with evidence and one   |
+  |         concrete improvement.                                                |
+  |                                                                              |
+  |  ( 3 )  Audit a prompt as a table                     -> /prompt-rank-table  |
+  |         The same 8-dimension audit reduced to a tier, an evidence table, and |
+  |         a one-line verdict.                                                  |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 3  |
+  |         The image prompt stencil cutter.                                     |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Cut an image prompt stencil                      -> /prompt-stencil  |
+  |         Turn a working image prompt into a reusable template: locks,         |
+  |         variables, drift guards, filled proofs.                              |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+-------------------------------------------------------- /mermaid-to-ascii -----
+  NO menu.  If no file arg, one plain prompt (STOP for reply):
+
+  .--[File]-- Which Mermaid file should I convert? (path or filename) ---------.
+  |  ___ e.g. flow.mmd, diagram.mermaid, /abs/path/flow.mmd                    |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------- /mermaid-sequence ----
+  NO menu.  If no bullet list, one plain prompt (STOP for reply):
+
+  .--[Steps]-- Paste your bullet-point process steps --------------------------.
+  |  ___ e.g. "* User submits form  * Server validates  * Server returns token"|
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /explain-prompt ----
+  NO menu.  If no prompt arg, one plain prompt (STOP for reply):
+
+  .--[Prompt]-- Paste the prompt to explain, or give a file path ---------------.
+  |  ___ the AI prompt you want described in plain, beginner English            |
+  '-----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /analyze-prompt ----
+  NO menu.  If no prompt arg, one plain prompt (STOP for reply):
+
+  .--[Prompt]-- Paste the prompt to analyze, or give a file path ---------------.
+  |  ___ the AI prompt you want a rigorous, review-ready breakdown of           |
+  '-----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /rank-prompt ---
+  Submission comes from the arg, a file path, or a plain ask.  Two optional
+  context questions after that; skipping either is fine.
+
+  .--[Prompt]-- paste the prompt to audit, or give a file path ----------------.
+  |  ___ plain ask, STOP for the reply.  An unreplaced placeholder counts      |
+  |      as absent - no rank, no score, no table                               |
+  '----------------------------------------------------------------------------'
+  .--[Target model]-- what the prompt runs against  (optional) ----------------.
+  |  ( ) Claude   ( ) GPT class   ( ) Gemini   ( ) Model-agnostic              |
+  '----------------------------------------------------------------------------'
+  .--[Current failure]-- what it is failing at today  (optional) --------------.
+  |  ( ) Ignores parts of the instructions   ( ) Output format drifts          |
+  |  ( ) Breaks on odd or hostile input   ( ) Nothing specific                 |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------- /prompt-rank-table ---
+  Submission comes from the arg, a file path, or a plain ask.  Two optional
+  context questions after that; skipping either is fine.
+
+  .--[Prompt]-- paste the prompt to audit, or give a file path ----------------.
+  |  ___ plain ask, STOP for the reply.  An unreplaced placeholder counts      |
+  |      as absent - no rank, no score, no table                               |
+  '----------------------------------------------------------------------------'
+  .--[Target model]-- what the prompt runs against  (optional) ----------------.
+  |  ( ) Claude   ( ) GPT class   ( ) Gemini   ( ) Model-agnostic              |
+  '----------------------------------------------------------------------------'
+  .--[Current failure]-- what it is failing at today  (optional) --------------.
+  |  ( ) Ignores parts of the instructions   ( ) Output format drifts          |
+  |  ( ) Breaks on odd or hostile input   ( ) Nothing specific                 |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- three sections, nothing else ----------------------------------.
+  |  Overall Rank . Skill Signals Table (always 8 one-line rows) . Verdict.    |
+  |  Same engine as /rank-prompt; only the report shape differs.               |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /prompt-stencil ---
+  2 required fields, 1 optional.  At most ONE clarifying question overall.
+
+  .--[Source prompt]-- the working image prompt, verbatim  (required) ---------.
+  |  ___ plain ask or path.  Missing, unusable, or non-visual is never a       |
+  |      question - it is the Cannot Build - Missing Material state            |
+  '----------------------------------------------------------------------------'
+  .--[Variable]-- what should become swappable?  (required) -------------------.
+  |  ( ) Subject or product   ( ) Palette accent                               |
+  |  ( ) Scene or setting   ( ) Aspect ratio or format                         |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- up to two material constraints  (optional) ---------------.
+  |  ___ asked once, in one line; a skip records "None"                        |
+  '----------------------------------------------------------------------------'
+================================================================================

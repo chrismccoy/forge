@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 60 tools in this plugin and then run it. This command
+Route the user to one of the 64 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,15 +29,16 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 10 WordPress tools |
+| `/forge-wordpress` | 11 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 5 writing and content tools |
-| `/forge-devops` | 5 DevOps and data tools |
+| `/forge-devops` | 4 DevOps and data tools |
 | `/forge-cloud` | 8 cloud and architecture tools |
 | `/forge-security` | 3 security tools |
-| `/forge-cleanup` | 6 code-cleanup tools |
-| `/forge-docs` | 12 docs and diagram tools |
-| `/forge-utils` | 5 utilities |
+| `/forge-cleanup` | 4 code-cleanup tools |
+| `/forge-code` | 10 code tools |
+| `/forge-docs` | 7 docs and diagram tools |
+| `/forge-utils` | 6 utilities |
 
 If the user's input clearly names one category and no specific tool, mention the matching
 command in one line, then continue with Step 1 rather than making them retype anything.
@@ -53,27 +54,34 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, and format WordPress plugins and themes. 10 tools. |
+| WordPress | Build, review, format, and fill WordPress plugins and themes. 11 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help. 5 tools. |
-| More... | DevOps, cloud, security, code cleanup, docs and diagrams, utilities. |
+| More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
-| DevOps & Data | Compose, Kubernetes, PowerShell, jq, SQL review. 5 tools. |
+| DevOps & Data | Compose stacks, Kubernetes manifests, PowerShell, jq. 4 tools. |
 | Cloud & Architecture | System design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents. 8 tools. |
 | Security | STRIDE threat models, DevSecOps hardening, vulnerability reports. 3 tools. |
-| More... | Code cleanup, docs and diagrams, utilities. |
+| More... | Code cleanup, code, docs and diagrams, utilities. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
-| Code Cleanup | Strip AI voice, Unicode, comments, README bullets, docblocks, refactors. 6 tools. |
-| Docs & Diagrams | Onboarding docs, Mermaid, README, changelog, prompt tools, code annotation. 12 tools. |
-| Utilities | App blueprints, session stats, VGA demos, formulas, macOS crashes. 5 tools. |
+| Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 tools. |
+| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review. 10 tools. |
+| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, stencils. 7 tools. |
+| More... | Utilities. |
+
+**Page 4** (only if `More...` was chosen a third time) - question: "Which category?", header: "Category"
+
+| Label | Description |
+|---|---|
+| Utilities | Standalone scripts, session stats, token grades, VGA demos, formulas, macOS crashes. 6 tools. |
 | Back to page 1 | Return to the first category page. |
 
 ## Step 2 - pick a tool
@@ -82,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (10 - page at 4)
+### WordPress (11 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -103,7 +111,12 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 | Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
+| More... | - | Performance review and demo content. |
+
+| Label | Command | Description |
+|---|---|---|
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
+| Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 
 ### Design & Frontend (6 - page at 4)
 
@@ -134,19 +147,14 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 
-### DevOps & Data (5 - page at 4)
+### DevOps & Data (4)
 
 | Label | Command | Description |
 |---|---|---|
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
-| More... | - | jq filters and SQL query review. |
-
-| Label | Command | Description |
-|---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
-| Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 
 ### Cloud & Architecture (8 - page at 4)
 
@@ -177,61 +185,74 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | DevSecOps hardening | devsecops | Audit pipelines, IaC, or cloud config: blast radius, compliance mapping, scanning gates, runtime guardrails. |
 | Vulnerability report | pentest-report | Formal write-up of an authorized finding: CVSS vector, technical context, sanitized PoC, remediation. |
 
-### Code Cleanup (6 - page at 4)
+### Code Cleanup (4)
 
 | Label | Command | Description |
 |---|---|---|
 | Strip AI voice | unslop | Remove AI-generated tone from comments, strings, and names without changing behavior. |
 | Strip Unicode | strip-unicode | Transliterate messy Unicode down to plain 7-bit ASCII. |
 | Clean README feature list | strip-emoji | Strip leading emoji from feature bullets, label dashes to colons, en and em dashes removed. |
-| More... | - | Comment stripping, docblock rewriting, refactoring plans. |
-
-| Label | Command | Description |
-|---|---|---|
 | Strip comments | strip-comments | Delete every comment except file headers, pragmas, and license notices. Preview and approval required. |
-| Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 
-### Docs & Diagrams (12 - page at 4)
-
-| Label | Command | Description |
-|---|---|---|
-| Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
-| Mermaid to ASCII | mermaid-to-ascii | Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
-| More... | - | Sequence diagrams, README, changelog, and prompt tools. |
-
-| Label | Command | Description |
-|---|---|---|
-| Mermaid sequence diagram | mermaid-sequence | Turn bullet-point process steps into one valid Mermaid sequence diagram. |
-| Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
-| Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Prompt explainer, analyzer, auditor, and stencil tools. |
-
-| Label | Command | Description |
-|---|---|---|
-| Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
-| Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
-| Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
-| More... | - | The table-only prompt auditor, the stencil cutter, and the code annotator. |
-
-| Label | Command | Description |
-|---|---|---|
-| Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
-| Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
-| Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
-
-### Utilities (5 - page at 4)
+### Code (10 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | App blueprint | blueprint | 11-section senior-architect production blueprint for a new app. |
-| Session stats | session-stats | Render this Claude Code session's stats as a standalone dark-theme HTML page. |
-| VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
-| More... | - | Spreadsheet formulas and macOS crash reports. |
+| Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
+| Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
+| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations. |
 
 | Label | Command | Description |
 |---|---|---|
+| Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
+| Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
+| Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
+| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations. |
+
+| Label | Command | Description |
+|---|---|---|
+| Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
+| Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
+| Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
+| More... | - | The teaching annotator. |
+
+| Label | Command | Description |
+|---|---|---|
+| Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
+
+### Docs & Diagrams (7 - page at 4)
+
+| Label | Command | Description |
+|---|---|---|
+| Mermaid to ASCII | mermaid-to-ascii | Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
+| Mermaid sequence diagram | mermaid-sequence | Turn bullet-point process steps into one valid Mermaid sequence diagram. |
+| Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
+| More... | - | The prompt analyzer, auditors, and stencil cutter. |
+
+| Label | Command | Description |
+|---|---|---|
+| Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
+| Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
+| Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
+| More... | - | The image prompt stencil cutter. |
+
+| Label | Command | Description |
+|---|---|---|
+| Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
+
+### Utilities (6 - page at 4)
+
+| Label | Command | Description |
+|---|---|---|
+| Write a standalone script | snippet | Production script in any of 19 languages: help, exit codes, cleanup, dry run, atomic writes. |
+| Session stats | session-stats | Render this Claude Code session's stats as a standalone dark-theme HTML page. |
+| Grade token efficiency | token-audit | Turn four token counts into an A-F report card: input, cache, output, weighted overall. |
+| More... | - | Demoscene intros, spreadsheet formulas, macOS crash reports. |
+
+| Label | Command | Description |
+|---|---|---|
+| VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
 | Fix a spreadsheet formula | fix-formula | Debug and fix a broken Excel or Google Sheets formula. |
 | Analyze a macOS crash | crash-report | Diagnose a .ips or .crash report in six plain-English sections, every claim cited. |
 
@@ -272,8 +293,12 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | prompt-summary | analyze-prompt |
 | prompt-ranker | rank-prompt |
 | wordpress-grade | wp-grade |
+| wp-demo-content, demo-content, demo-importer | wp-demo |
 | readme-emoji | strip-emoji |
 | sql-breakdown | explain-sql |
+| e2e-playwright, playwright, playwright-e2e | e2e-tests |
+| prompt-snippet, script-engine, write-script | snippet |
+| token-auditor, prompt-audit-usage | token-audit |
 
 ## Rules
 

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-docs - Docs & Diagrams picker
 
-Route the user to one of the 12 Docs & Diagrams tools and run it. Onboarding docs, Mermaid diagrams, READMEs, changelogs, prompt explainers, auditors, and stencils, and teaching annotations for code.
+Route the user to one of the 7 Docs & Diagrams tools and run it. Mermaid diagrams, and prompt explainers, auditors, and stencils. Nothing here reads a repository.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -36,36 +36,25 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 
 | Label | Command | Description |
 |---|---|---|
-| Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
 | Mermaid to ASCII | mermaid-to-ascii | Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
-| More... | - | Sequence diagrams, README, changelog, and prompt tools. |
+| Mermaid sequence diagram | mermaid-sequence | Turn bullet-point process steps into one valid Mermaid sequence diagram. |
+| Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
+| More... | - | The prompt analyzer, auditors, and stencil cutter. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
-| Mermaid sequence diagram | mermaid-sequence | Turn bullet-point process steps into one valid Mermaid sequence diagram. |
-| Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
-| Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Prompt explainer, analyzer, auditor, and stencil tools. |
+| Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
+| Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
+| Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
+| More... | - | The image prompt stencil cutter. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
-| Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
-| Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
-| Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
-| More... | - | The table-only prompt auditor, the stencil cutter, and the code annotator. |
-
-**Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
-
-| Label | Command | Description |
-|---|---|---|
-| Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
-| Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 
 ## Step 2 - run it
 
@@ -91,17 +80,22 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Tool | Owned by |
 |---|---|
 | `accessibility-audit` | `/forge-design` |
-| `blueprint` | `/forge-utils` |
+| `blueprint` | `/forge-code` |
+| `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
+| `code-teacher` | `/forge-code` |
+| `codebase-to-mermaid` | `/forge-code` |
 | `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
-| `docblock-rewrite` | `/forge-cleanup` |
+| `docblock-rewrite` | `/forge-code` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
-| `explain-sql` | `/forge-devops` |
+| `e2e-tests` | `/forge-code` |
+| `explain-my-code` | `/forge-code` |
+| `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
@@ -114,8 +108,10 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
-| `refactor` | `/forge-cleanup` |
+| `readme-builder` | `/forge-code` |
+| `refactor` | `/forge-code` |
 | `session-stats` | `/forge-utils` |
+| `snippet` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
 | `strip-comments` | `/forge-cleanup` |
 | `strip-emoji` | `/forge-cleanup` |
@@ -125,11 +121,13 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
+| `token-audit` | `/forge-utils` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
+| `wp-demo` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |

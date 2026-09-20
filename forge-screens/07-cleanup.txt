@@ -1,42 +1,27 @@
 ================================================================================
-  FORGE  -  Code Cleanup          ( /forge-cleanup )          6 tools, 2 pages
+  FORGE  -  Code Cleanup          ( /forge-cleanup )          4 tools
 ================================================================================
-  Strip AI voice, strip Unicode, strip comments, README bullets, docblocks.
+  Strip AI voice, strip Unicode, strip comments, clean README feature lists.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Tool]                                                     Which tool?       |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  Strip AI voice                                 -> /unslop            |
-  |         Remove AI-generated tone from comments, strings, names. No behavior  |
-  |         change.                                                              |
+  |  ( 1 )  Strip AI voice                                           -> /unslop  |
+  |         Remove AI-generated tone from comments, strings, and names without   |
+  |         changing behavior.                                                   |
   |                                                                              |
-  |  ( 2 )  Strip Unicode                                  -> /strip-unicode     |
+  |  ( 2 )  Strip Unicode                                     -> /strip-unicode  |
   |         Transliterate messy Unicode down to plain 7-bit ASCII.               |
   |                                                                              |
-  |  ( 3 )  Clean README feature list                      -> /strip-emoji       |
-  |         Strip leading emoji from feature bullets, label dashes to colons,    |
-  |         en/em dashes removed.                                                |
+  |  ( 3 )  Clean README feature list                           -> /strip-emoji  |
+  |         Strip leading emoji from feature bullets, label dashes to colons, en |
+  |         and em dashes removed.                                               |
   |                                                                              |
-  |  ( 4 )  More...                                                              |
-  |         Comment stripping, docblocks, refactoring plans.  -> page 2          |
-  |                                                                              |
-  |  [Other] type a tool name ................................................   |
-  '------------------------------------------------------------------------------'
-
-  .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
-  |------------------------------------------------------------------------------|
-  |  ( 1 )  Strip comments                                 -> /strip-comments    |
+  |  ( 4 )  Strip comments                                   -> /strip-comments  |
   |         Delete every comment except file headers, pragmas, and license       |
   |         notices. Preview and approval required.                              |
-  |                                                                              |
-  |  ( 2 )  Rewrite docblocks                              -> /docblock-rewrite  |
-  |         Convert PHPDoc and JSDoc into one-line plain-English // comments.    |
-  |                                                                              |
-  |  ( 3 )  Refactoring plan                               -> /refactor          |
-  |         Evidence-first analysis with file:line citations. Read-only.         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -49,7 +34,6 @@
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
-
 
 ----------------------------------------------------------------- /unslop -----
   Question only when the arg is empty/ambiguous; a path or pasted code skips it.
@@ -66,27 +50,6 @@
   .--[Target]-- What do you want to clean? ------------------------------------.
   |  ( ) File   ( ) Paste                                                      |
   |      (follow-up path/paste request is a plain prompt, not a menu)          |
-  '----------------------------------------------------------------------------'
-
-
------------------------------------------------------------- /docblock-rewrite -
-  NO questions.  Runs from a path/flags argument via a bundled bash script
-  (defaults to a dry-run on the current directory if empty).
-
-
------------------------------------------------------------------ /refactor ---
-  One AskUserQuestion call, 3 questions.  (path comes via arg or a plain ask.)
-
-  .--[Focus areas]-- weighted at full depth?  (optional, multi) ---------------.
-  |  [ ] Architecture & coupling   [ ] Quality & style                         |
-  |  [ ] Complexity & state   [ ] Portability & reuse                          |
-  '----------------------------------------------------------------------------'
-  .--[Scope]-- what should the analysis cover? --------------------------------.
-  |  ( ) Single file   ( ) Whole folder recursively                            |
-  |  ( ) PR diff / changed files   ( ) Sampled subset                          |
-  '----------------------------------------------------------------------------'
-  .--[Depth]-- how deep should each section go? -------------------------------.
-  |  ( ) Quick   ( ) Standard   ( ) Deep                                       |
   '----------------------------------------------------------------------------'
 
 

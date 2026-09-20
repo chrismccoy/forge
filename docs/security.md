@@ -2,10 +2,6 @@
 
 [← Back to the README](../README.md)
 
-All three security tools are defensive. They model, audit, and document systems you are
-responsible for. None of them produce offensive tooling, working exploits, or weaponized
-payloads, and each says so in its own scope lock.
-
 ## `threat-model`
 
 STRIDE threat modeling from four inputs, in the voice of a Principal AppSec Architect. Locked four-phase assessment with all six STRIDE categories addressed explicitly.

@@ -8,51 +8,61 @@
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/3) |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  System architecture                            -> /system-design     |
-  |         Scalable blueprint: components, data flow, datastore, fault          |
-  |         tolerance. No code.                                                  |
+  |  ( 1 )  System architecture                               -> /system-design  |
+  |         Scalable architecture blueprint: components, data flow, datastore    |
+  |         choice, fault tolerance. No code.                                    |
   |                                                                              |
-  |  ( 2 )  Terraform (IaC)                                -> /terraform         |
-  |         HCL split into main/variables/outputs, least-privilege IAM,          |
-  |         state backend.                                                       |
+  |  ( 2 )  Terraform (IaC)                                       -> /terraform  |
+  |         Production HCL split into main.tf, variables.tf, outputs.tf with     |
+  |         least-privilege IAM and a state backend.                             |
   |                                                                              |
-  |  ( 3 )  CI/CD pipeline                                 -> /cicd-pipeline     |
-  |         Platform-native YAML, dependency+layer caching, secrets checklist.   |
+  |  ( 3 )  CI/CD pipeline                                    -> /cicd-pipeline  |
+  |         Platform-native pipeline YAML with dependency and layer caching,     |
+  |         plus a secrets checklist.                                            |
   |                                                                              |
-  |  ( 4 )  More...                                        -> page 2             |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         Data, migration, reliability, cost, and incident tools.              |
+  |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 2/3) |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  Data pipeline (ETL)                            -> /data-pipeline     |
-  |         Idempotent ETL/ELT: extraction, medallion layers, DAG, tests,        |
-  |         backfill.                                                            |
+  |  ( 1 )  Data pipeline (ETL)                               -> /data-pipeline  |
+  |         Idempotent ETL/ELT design: extraction strategy, medallion layers,    |
+  |         DAG, quality tests, backfill.                                        |
   |                                                                              |
-  |  ( 2 )  Cloud migration                                -> /cloud-migration   |
-  |         On-prem to cloud on the 6 R's: landing zone, wave roadmap,           |
-  |         risk/TCO tables.                                                     |
+  |  ( 2 )  Cloud migration                                 -> /cloud-migration  |
+  |         On-prem to cloud plan on the 6 R's, with a landing zone, wave        |
+  |         roadmap, and risk/TCO tables.                                        |
   |                                                                              |
-  |  ( 3 )  SRE and observability                          -> /sre-audit         |
-  |         SLIs, SLOs, error budgets, tracing, burn-rate alerts, logging.       |
+  |  ( 3 )  SRE and observability                                 -> /sre-audit  |
+  |         SLIs, SLOs, error budgets, tracing spans, burn-rate alerts, and a    |
+  |         logging schema.                                                      |
   |                                                                              |
-  |  ( 4 )  More...                                        -> page 3             |
+  |  ( 4 )  More...                                                   -> page 3  |
+  |         Cost and incident tools.                                             |
+  |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
-  .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3)|
-  |-----------------------------------------------------------------------------|
-  |  ( 1 )  Cloud FinOps                                   -> /finops           |
-  |         Cost blueprint: quick wins, architectural shifts, commitments,      |
-  |         tagging, billing alarms.                                            |
-  |                                                                             |
-  |  ( 2 )  Incident report                                -> /incident-report  |
-  |         Blameless RCA: impact, timeline, 5 Whys, systemic action items.     |
-  |                                                                             |
-  |  [Other] type a tool name ................................................  |
-  '-----------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Cloud FinOps                                             -> /finops  |
+  |         Cost blueprint: quick wins, architectural shifts, commitment         |
+  |         strategy, tagging and billing alarms.                                |
+  |                                                                              |
+  |  ( 2 )  Incident report                                 -> /incident-report  |
+  |         Blameless RCA from incident notes: impact, timeline, 5 Whys, and     |
+  |         systemic action items.                                               |
+  |                                                                              |
+  |  ( 3 )  Back to page 1                                            -> page 1  |
+  |         Return to the first tool page.                                       |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
   STEP 3 - run it
     read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
@@ -62,8 +72,6 @@
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
-  Every tool below asks 4 single-pick questions.
-
 
 ------------------------------------------------------------ /system-design ---
   .--[Purpose]-- what the system is for ---------------------------------------.

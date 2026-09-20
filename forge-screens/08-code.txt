@@ -1,0 +1,238 @@
+================================================================================
+  FORGE  -  Code          ( /forge-code )          10 tools, 4 pages
+================================================================================
+  Everything here takes source you already have and analyses or documents it:
+  blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  App blueprint                                         -> /blueprint  |
+  |         11-section senior-architect production blueprint for a new app.      |
+  |                                                                              |
+  |  ( 2 )  Playwright end-to-end suite                           -> /e2e-tests  |
+  |         Add a Playwright E2E suite to a Node/Express app: seeded throwaway   |
+  |         install, fake upstream, one spec per journey.                        |
+  |                                                                              |
+  |  ( 3 )  Onboarding documentation                        -> /explain-my-code  |
+  |         One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole  |
+  |         repo.                                                                |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
+  |         annotations.                                                         |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
+  |         Validated Mermaid diagrams of a codebase with file:line citations.   |
+  |                                                                              |
+  |  ( 2 )  Write a README                                   -> /readme-builder  |
+  |         Scan a repo and write a beginner-friendly README.md.                 |
+  |                                                                              |
+  |  ( 3 )  Generate a changelog                        -> /changelog-generator  |
+  |         User-facing changelog built from actual diffs across the full git    |
+  |         history.                                                             |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 3  |
+  |         Refactoring plans, SQL review, docblocks, teaching annotations.      |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Refactoring plan                                       -> /refactor  |
+  |         Evidence-first refactoring analysis with file:line citations. Read-  |
+  |         only, no edits.                                                      |
+  |                                                                              |
+  |  ( 2 )  Explain a SQL query                                 -> /explain-sql  |
+  |         Validate one query, then break it down clause by clause with a       |
+  |         scorecard and risk flags.                                            |
+  |                                                                              |
+  |  ( 3 )  Rewrite docblocks                              -> /docblock-rewrite  |
+  |         Convert PHPDoc and JSDoc into one-line plain-English // comments in  |
+  |         bulk.                                                                |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 4  |
+  |         The teaching annotator.                                              |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 4/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
+  |         Return a script with a header block and line-by-line comments        |
+  |         explaining what and why. Code unchanged.                             |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+---------------------------------------------------------------- /blueprint ---
+  5 fields, asked one at a time.  (arg seeds APP_DESCRIPTION, confirmed first.)
+
+  .--[App description]-- what the app does, domain, target users --------------.
+  |  ___                                                                       |
+  '----------------------------------------------------------------------------'
+  .--[App type]-- workload class  (4 shown of 6) ------------------------------.
+  |  ( ) web app   ( ) API service   ( ) mobile   ( ) CLI                      |
+  |      also: data pipeline, desktop                                          |
+  '----------------------------------------------------------------------------'
+  .--[Tech stack]-- primary frameworks, database, infra -----------------------.
+  |  ___ e.g. "Next.js + Postgres + Prisma + Vercel"                           |
+  '----------------------------------------------------------------------------'
+  .--[Language]-- implementation language  (4 shown of 6) ---------------------.
+  |  ( ) TypeScript   ( ) Python   ( ) Go   ( ) Rust                           |
+  |      also: Java, C#                                                        |
+  '----------------------------------------------------------------------------'
+  .--[Scale]-- concurrent users / req-per-sec / data volume -------------------.
+  |  ___ e.g. "100 tenants, ~5k DAU, 50 rps peak"                              |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------------------- /e2e-tests ---
+  5 fields, asked one at a time.  Any field the repository answers is skipped -
+  module system, database, session mechanism, env vars and the existing test
+  runner's file pattern are all read, never asked.  (arg seeds TARGET_REPO.)
+
+  .--[Repo]-- which application root ------------------------------------------.
+  |  ( ) the current directory   ( ) a path I'll give you                      |
+  |      skipped when the argument already named a readable path               |
+  '----------------------------------------------------------------------------'
+  .--[Database]-- how the app stores data -------------------------------------.
+  |  ( ) file database (SQLite or similar)   ( ) database server (Postgres,    |
+  |      MySQL, ...)   ( ) read the repo and decide                            |
+  |      a database server STOPS the run and asks how to get a throwaway one   |
+  '----------------------------------------------------------------------------'
+  .--[Upstream]-- paid external API, and what to do about fixtures ------------.
+  |  ( ) no external API                                                       |
+  |  ( ) yes - record real response envelopes (costs money, asks first)        |
+  |  ( ) yes - hand-build the fixtures                                         |
+  '----------------------------------------------------------------------------'
+  .--[Browsers]-- which browser projects to configure -------------------------.
+  |  ( ) Chromium only   ( ) Chromium + Google Chrome (default)                |
+  |      Chrome install needs root on Linux; on failure the project is dropped |
+  '----------------------------------------------------------------------------'
+  .--[Git]-- how the work is landed -------------------------------------------.
+  |  ( ) branch and commit each step (default)   ( ) branch, no commits        |
+  |  ( ) no git - just list changed files                                      |
+  |      never pushes, never commits to the default branch                     |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------- /explain-my-code -----
+  NO questions when a path arg is given.  If empty, one routing question:
+
+  .--[Target]-- Which codebase should I document? -----------------------------.
+  |  ( ) Current working directory   ( ) Custom path (then asks path) ___      |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------- /codebase-to-mermaid ----
+  NO questions when a path arg is given.  If empty, one routing question:
+
+  .--[Target]-- Which codebase should I map? ----------------------------------.
+  |  ( ) Current working directory   ( ) Custom path (then asks path) ___      |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /readme-builder -----
+  .--[Target]-- which project to document?  (skipped if a path arg passed) ----.
+  |  ( ) the current directory   ( ) a different folder (give path) ___        |
+  |  [Other]                                                                   |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- what to do with the result?  (optional) -----------------------.
+  |  ( ) write it to README.md in the project folder                           |
+  |  ( ) print the Markdown so I can save it myself (default)                  |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------ /changelog-generator ----
+  NO questions.  Runs from the path arg, or the current directory if empty.
+  Date/version ranges are rejected - always the full history.
+
+
+----------------------------------------------------------------- /refactor ---
+  One AskUserQuestion call, 3 questions.  (path comes via arg or a plain ask.)
+
+  .--[Focus areas]-- weighted at full depth?  (optional, multi) ---------------.
+  |  [ ] Architecture & coupling   [ ] Quality & style                         |
+  |  [ ] Complexity & state   [ ] Portability & reuse                          |
+  '----------------------------------------------------------------------------'
+  .--[Scope]-- what should the analysis cover? --------------------------------.
+  |  ( ) Single file   ( ) Whole folder recursively                            |
+  |  ( ) PR diff / changed files   ( ) Sampled subset                          |
+  '----------------------------------------------------------------------------'
+  .--[Depth]-- how deep should each section go? -------------------------------.
+  |  ( ) Quick   ( ) Standard   ( ) Deep                                       |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /explain-sql ---
+  4 fields, asked one at a time.  Only the query is required; the other three
+  have defined defaults and may be skipped.
+
+  .--[SQL query]-- the query to review  (paste or path; asked first) ----------.
+  |  ___ plain ask, not a menu - STOP for the reply                            |
+  '----------------------------------------------------------------------------'
+  .--[Recipient role]-- who the explanation is for ----------------------------.
+  |  ( ) Data engineer   ( ) Analytics engineer / analyst                      |
+  |  ( ) Marketing or ops manager   ( ) Executive (CFO, VP)                    |
+  |      skipped -> business analyst with light SQL, stated in one line        |
+  '----------------------------------------------------------------------------'
+  .--[Business context]-- what it is for, plus schema or DDL if available -----.
+  |  ( ) Revenue or finance reporting   ( ) Product or user analytics          |
+  |  ( ) Operational monitoring   ( ) No context - review the SQL alone        |
+  |      skipped -> completeness check reports NOT ASSESSABLE                  |
+  '----------------------------------------------------------------------------'
+  .--[SQL dialect]-- which engine to judge the syntax against -----------------.
+  |  ( ) PostgreSQL   ( ) BigQuery   ( ) Snowflake   ( ) MySQL                 |
+  |      skipped -> names the dialect assumed and flags the verdict            |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------ /docblock-rewrite -
+  NO questions.  Runs from a path/flags argument via a bundled bash script
+  (defaults to a dry-run on the current directory if empty).
+
+
+-------------------------------------------------------------- /code-teacher ---
+  NO menu until code is in hand.  If no code arg, one plain prompt (STOP for
+  reply) that also asks for the bugs and design decisions behind the code.
+
+  .--[Code]-- paste the code to annotate, or give a file path -----------------.
+  |  ___ plain ask, STOP for the reply.  Not source code, or code built to     |
+  |      do harm, means it says so and stops                                   |
+  '----------------------------------------------------------------------------'
+  .--[Audience level]-- who the comments are pitched at  (optional) -----------.
+  |  ( ) Beginner in this language   ( ) Intermediate (default)                |
+  |  ( ) Experienced, new to this codebase                                     |
+  '----------------------------------------------------------------------------'
+  .--[Dev notes]-- bugs hit, surprises, ordering that mattered  (optional) ----.
+  |  ( ) Nothing to add   ( ) I'll describe them                               |
+  |  Anything you state is written as fact; anything inferred carries          |
+  |  INFERRED: and must point at a real line.                                  |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- four sections, fixed order ------------------------------------.
+  |  Plan (<=8 lines) . one fenced code block . Teaching Points (3-5) .        |
+  |  Verification.  Original code returned unchanged, comments only.           |
+  '----------------------------------------------------------------------------'
+================================================================================

@@ -1,46 +1,48 @@
 ================================================================================
   FORGE  -  Design & Frontend          ( /forge-design )          6 tools, 2 pages
 ================================================================================
-  Design styles, WCAG accessibility, design systems, Tailwind, page cloning.
+  Design styles, accessibility, DESIGN.md, Tailwind, page cloning.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/2) |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  Apply a design style                        -> /html-design-styles   |
-  |         53 named styles - bento, brutalist, vaporwave, kawaii,               |
-  |         glassmorphism - with full specs.                                     |
+  |  ( 1 )  Apply a design style                         -> /html-design-styles  |
+  |         53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism |
+  |         - with full specs.                                                   |
   |                                                                              |
-  |  ( 2 )  Accessibility audit                          -> /accessibility-audit |
-  |         Find, report, and fix WCAG issues in files, live pages, or a         |
-  |         pasted component.                                                    |
+  |  ( 2 )  Accessibility audit                         -> /accessibility-audit  |
+  |         Find, report, and fix WCAG issues in files, live pages, or a pasted  |
+  |         component.                                                           |
   |                                                                              |
-  |  ( 3 )  Extract a design system                          -> /design-system   |
-  |         Reverse-engineer HTML/CSS into a reusable DESIGN.md: colors,         |
-  |         type, components, signature motifs.                                  |
+  |  ( 3 )  Extract a design system                           -> /design-system  |
+  |         Reverse-engineer HTML/CSS into a reusable DESIGN.md: colors, type,   |
+  |         components, motifs.                                                  |
   |                                                                              |
-  |  ( 4 )  More...                                        -> page 2             |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         Tailwind conversion and page cloning tools.                          |
+  |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
-  .-------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2)  |
-  |-------------------------------------------------------------------------------|
-  |  ( 1 )  Convert CSS to Tailwind                        -> /tailwind-convert   |
-  |         Rip out custom CSS and rewrite a page in Tailwind utilities,          |
-  |         pixel-identical, with a change report.                                |
-  |                                                                               |
-  |  ( 2 )  Clone a web page                                    -> /page-cloner   |
-  |         Copy a live URL into one self-contained working HTML file,            |
-  |         faithful, no redesign.  Needs Claude in Chrome.                       |
-  |                                                                               |
-  |  ( 3 )  Rebuild a page in Tailwind                     -> /page-tailwindify   |
-  |         Reproduce a page's exact look in clean Tailwind, generated class      |
-  |         hashes replaced.  Needs Claude in Chrome.                             |
-  |                                                                               |
-  |  [Other] type a tool name ................................................    |
-  '-------------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Convert CSS to Tailwind                        -> /tailwind-convert  |
+  |         Rip out custom CSS and rewrite a page in Tailwind utilities, pixel-  |
+  |         identical, with a report.                                            |
+  |                                                                              |
+  |  ( 2 )  Clone a web page                                    -> /page-cloner  |
+  |         Copy a live URL into one self-contained working HTML file, faithful, |
+  |         no redesign.                                                         |
+  |                                                                              |
+  |  ( 3 )  Rebuild a page in Tailwind                     -> /page-tailwindify  |
+  |         Reproduce a live page's exact look in clean Tailwind, generated      |
+  |         class hashes replaced.                                               |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
   STEP 3 - run it
     read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
@@ -50,7 +52,6 @@
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
-
 
 -------------------------------------------------------- /html-design-styles -
   Style picker only when the style is unnamed/ambiguous; context gate always.

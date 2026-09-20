@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 10 WordPress tools and run it. Build, review, and format WordPress plugins and themes.
+Route the user to one of the 11 WordPress tools and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, and build demo content.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -57,7 +57,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 | Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
+| More... | - | Performance review and demo content. |
+
+**Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
+
+| Label | Command | Description |
+|---|---|---|
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
+| Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 
 ## Step 2 - run it
 
@@ -84,22 +91,23 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
-| `blueprint` | `/forge-utils` |
-| `changelog-generator` | `/forge-docs` |
+| `blueprint` | `/forge-code` |
+| `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
-| `code-teacher` | `/forge-docs` |
-| `codebase-to-mermaid` | `/forge-docs` |
+| `code-teacher` | `/forge-code` |
+| `codebase-to-mermaid` | `/forge-code` |
 | `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
-| `docblock-rewrite` | `/forge-cleanup` |
+| `docblock-rewrite` | `/forge-code` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
-| `explain-my-code` | `/forge-docs` |
+| `e2e-tests` | `/forge-code` |
+| `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
-| `explain-sql` | `/forge-devops` |
+| `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
@@ -117,9 +125,10 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
-| `readme-builder` | `/forge-docs` |
-| `refactor` | `/forge-cleanup` |
+| `readme-builder` | `/forge-code` |
+| `refactor` | `/forge-code` |
 | `session-stats` | `/forge-utils` |
+| `snippet` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
 | `strip-comments` | `/forge-cleanup` |
 | `strip-emoji` | `/forge-cleanup` |
@@ -129,6 +138,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
+| `token-audit` | `/forge-utils` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |

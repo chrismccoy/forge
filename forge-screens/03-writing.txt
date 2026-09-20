@@ -5,33 +5,37 @@
 
   STEP 2 - pick a tool
 
-  .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2)|
-  |-----------------------------------------------------------------------------|
-  |  ( 1 )  Technical article                              -> /tech-blog-article|
-  |         Front-page-quality article from topic, audience, angle, length.     |
-  |                                                                             |
-  |  ( 2 )  Hands-on tutorial                              -> /tutorial-builder |
-  |         Step-by-step tutorial built from code or a topic.                   |
-  |                                                                             |
-  |  ( 3 )  Service contract                               -> /draft-contract   |
-  |         Plain-English eight-section service-agreement framework.            |
-  |                                                                             |
-  |  ( 4 )  More...                                        -> page 2            |
-  |  [Other] type a tool name ................................................  |
-  '-----------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Technical article                             -> /tech-blog-article  |
+  |         Front-page-quality technical article from topic, audience, angle,    |
+  |         and length.                                                          |
+  |                                                                              |
+  |  ( 2 )  Hands-on tutorial                              -> /tutorial-builder  |
+  |         Step-by-step tutorial built from code or a topic.                    |
+  |                                                                              |
+  |  ( 3 )  Service contract                                 -> /draft-contract  |
+  |         Plain-English eight-section service-agreement framework.             |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         The remaining Writing & Content tools.                               |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
-  .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2)|
-  |-----------------------------------------------------------------------------|
-  |  ( 1 )  Name a product                                 -> /name-domains     |
-  |         10 brandable SaaS domain candidates, scored, locked A-D format.     |
-  |                                                                             |
-  |  ( 2 )  Translate or correct writing                   -> /language-tutor   |
-  |         Translate and explain a phrase, or correct and critique writing.    |
-  |                                                                             |
-  |  [Other] type a tool name ................................................  |
-  '-----------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Name a product                                     -> /name-domains  |
+  |         10 brandable SaaS domain candidates, scored, in a locked A-D format. |
+  |                                                                              |
+  |  ( 2 )  Translate or correct writing                     -> /language-tutor  |
+  |         Translate and explain a phrase, or correct and critique your         |
+  |         writing.                                                             |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
   STEP 3 - run it
     read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
@@ -41,7 +45,6 @@
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
-
 
 ------------------------------------------------------------ /tech-blog-article -
   5 fields, asked one at a time.

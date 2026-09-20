@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-utils - Utilities picker
 
-Route the user to one of the 5 Utilities tools and run it. App blueprints, session stats, demoscene intros, spreadsheet formulas, macOS crash reports.
+Route the user to one of the 6 Utilities tools and run it. Standalone scripts, session stats, token-efficiency grades, demoscene intros, spreadsheet formulas, macOS crash reports.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -36,15 +36,16 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 
 | Label | Command | Description |
 |---|---|---|
-| App blueprint | blueprint | 11-section senior-architect production blueprint for a new app. |
+| Write a standalone script | snippet | Production script in any of 19 languages: help, exit codes, cleanup, dry run, atomic writes. |
 | Session stats | session-stats | Render this Claude Code session's stats as a standalone dark-theme HTML page. |
-| VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
-| More... | - | Spreadsheet formulas and macOS crash reports. |
+| Grade token efficiency | token-audit | Turn four token counts into an A-F report card: input, cache, output, weighted overall. |
+| More... | - | Demoscene intros, spreadsheet formulas, macOS crash reports. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
+| VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
 | Fix a spreadsheet formula | fix-formula | Debug and fix a broken Excel or Google Sheets formula. |
 | Analyze a macOS crash | crash-report | Diagnose a .ips or .crash report in six plain-English sections, every claim cited. |
 
@@ -73,20 +74,22 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
-| `changelog-generator` | `/forge-docs` |
+| `blueprint` | `/forge-code` |
+| `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
-| `code-teacher` | `/forge-docs` |
-| `codebase-to-mermaid` | `/forge-docs` |
+| `code-teacher` | `/forge-code` |
+| `codebase-to-mermaid` | `/forge-code` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
-| `docblock-rewrite` | `/forge-cleanup` |
+| `docblock-rewrite` | `/forge-code` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
-| `explain-my-code` | `/forge-docs` |
+| `e2e-tests` | `/forge-code` |
+| `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
-| `explain-sql` | `/forge-devops` |
+| `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |
@@ -103,8 +106,8 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
-| `readme-builder` | `/forge-docs` |
-| `refactor` | `/forge-cleanup` |
+| `readme-builder` | `/forge-code` |
+| `refactor` | `/forge-code` |
 | `sre-audit` | `/forge-cloud` |
 | `strip-comments` | `/forge-cleanup` |
 | `strip-emoji` | `/forge-cleanup` |
@@ -118,6 +121,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `unslop` | `/forge-cleanup` |
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
+| `wp-demo` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |

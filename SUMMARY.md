@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 60 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 64 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 39 guided helpers · 20 full toolkits.
+**At a glance:** 1 quick win · 40 guided helpers · 23 full toolkits.
 
 ## Small Utils
 
@@ -57,6 +57,7 @@ These ask you a few questions (or take a short description), then produce a comp
 | `crash-report` | `/crash-report` | Explains a macOS crash report in plain English across six sections, every claim pointing at the field, thread, or line that backs it up |
 | `wordpress-grade` | `/wp-grade` | Grades one piece of WordPress code A to F against a fixed rubric, with strengths, real problems, nitpicks kept separate, and a ship-or-not verdict |
 | `code-teacher` | `/code-teacher` | Hands a script back as a teaching version of itself - a header block, comments explaining what and why, and the lessons worth taking away. Only comments are added |
+| `token-auditor` | `/token-audit` | Grades how efficiently you used the model from four token counts - input, cache and output each get a letter, weighted into one overall grade, with the single fix worth making first |
 
 ## Full toolkits
 
@@ -83,13 +84,16 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `changelog-generator` | `/changelog-generator` | Writes a changelog from a repo's whole history by reading the real code changes, not the commit messages, then sorts each change and saves the file |
 | `session-stats` | `/session-stats` | Turns a Claude Code session into a single shareable stats page - prompts, edits, cost, and files changed |
 | `page-cloner` | `/page-cloner` | Copies a live web page into one self-contained working HTML file that matches the original, built from the real rendered page and checked against it in a loop, no redesign (needs Claude in Chrome) |
+| `wp-demo-content` | `/wp-demo` | Reads a theme's whole data model, then writes and tests a one-file importer that fills an empty site with realistic demo content - posts, photos, video, comments, menus and every setting the theme reads - and hands back a list of the theme's own bugs |
 | `page-tailwindify` | `/page-tailwindify` | Rebuilds a live page's exact look in clean Tailwind, the framework's generated class hashes swapped for real utilities and every class traced to a real computed value (needs Claude in Chrome) |
+| `prompt-snippet` | `/snippet` | Asks three questions, then writes a complete standalone script in any of 19 languages - help text, exit codes, cleanup on interrupt, a dry run before anything destructive, and no secrets in the file |
+| `e2e-playwright` | `/e2e-tests` | Adds a browser test suite to a Node app: a throwaway database rebuilt each run, a stand-in for any paid API so no real one is called, one test per user journey, and a report of every bug and every change it made |
 
 ## A few extra notes
 
-**Twenty-two tools have a command name that's different from the tool name:**
+**Twenty-six tools have a command name that's different from the tool name:**
 
-All ten WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+All eleven WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
 - `wordpress-plugin` → type `/wp-plugin`
 - `wp-builder-pro` → type `/wp-build`
@@ -101,8 +105,9 @@ All ten WordPress tools share a short `wp-` command so they group together when 
 - `wordpress-report-card` → type `/wp-report-card`
 - `wordpress-grade` → type `/wp-grade`
 - `wordpress-performance` → type `/wp-performance`
+- `wp-demo-content` → type `/wp-demo`
 
-And twelve others are shortened or renamed:
+And fifteen others are shortened or renamed:
 
 - `excel-formula-troubleshooter` → type `/fix-formula`
 - `naming-strategist` → type `/name-domains`
@@ -116,28 +121,32 @@ And twelve others are shortened or renamed:
 - `prompt-ranker` → type `/rank-prompt`
 - `readme-emoji` → type `/strip-emoji`
 - `sql-breakdown` → type `/explain-sql`
+- `e2e-playwright` → type `/e2e-tests`
+- `prompt-snippet` → type `/snippet`
+- `token-auditor` → type `/token-audit`
 
 The other 38 use their own name as the command. Every tool has exactly one command.
 
-**Ten of the 70 commands are pickers, not tools:**
+**Eleven of the 75 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
-`/forge-cleanup`, `/forge-docs`, and `/forge-utils` skip the category step and go straight
-to one group. Lists longer than four
+`/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
+and go straight to one of the ten categories - 11, 6, 5, 4, 8, 3, 4, 10, 7 and 6 tools
+respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
 against that path. A category command will not run a tool from another category; it names
-the right command and stops. Full walkthrough in the README under "Browsing the catalog".
+the right command and stops. Every tool's write-up lives in the `docs/` file for its category, one file per category. Full walkthrough in the README under "Browsing the catalog".
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 42 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 48 tools - the easiest way to start
 - **Asks a few questions directly:** 1 - `html-to-wordpress-theme`
 - **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 15 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`
 
 **Every tool runs only when you type its command:**
 
-None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
+None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 60 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 64 tools here.

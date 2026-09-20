@@ -1,0 +1,178 @@
+================================================================================
+  FORGE  -  Utilities          ( /forge-utils )          6 tools, 2 pages
+================================================================================
+  Standalone scripts, session stats, token grades, VGA demos, formulas, crashes.
+
+  STEP 2 - pick a tool
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Write a standalone script                               -> /snippet  |
+  |         Production script in any of 19 languages: help, exit codes, cleanup, |
+  |         dry run, atomic writes.                                              |
+  |                                                                              |
+  |  ( 2 )  Session stats                                     -> /session-stats  |
+  |         Render this Claude Code session's stats as a standalone dark-theme   |
+  |         HTML page.                                                           |
+  |                                                                              |
+  |  ( 3 )  Grade token efficiency                              -> /token-audit  |
+  |         Turn four token counts into an A-F report card: input, cache,        |
+  |         output, weighted overall.                                            |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         Demoscene intros, spreadsheet formulas, macOS crash reports.         |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  VGA demo                                                -> /vgademo  |
+  |         Sizecoded 1990s-style assembly demoscene production.                 |
+  |                                                                              |
+  |  ( 2 )  Fix a spreadsheet formula                           -> /fix-formula  |
+  |         Debug and fix a broken Excel or Google Sheets formula.               |
+  |                                                                              |
+  |  ( 3 )  Analyze a macOS crash                              -> /crash-report  |
+  |         Diagnose a .ips or .crash report in six plain-English sections,      |
+  |         every claim cited.                                                   |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  STEP 3 - run it
+    read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
+
+
+================================================================================
+  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+================================================================================
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
+
+------------------------------------------------------------------ /snippet ---
+  3 fields, asked one at a time, each on its own - no code block, no preamble.
+  An answer given anywhere in the conversation counts, so an argument naming
+  the language and the task leaves only the third question.
+
+  .--[Language]-- which language to write in ----------------------------------.
+  |  ( ) Python   ( ) Go   ( ) TypeScript                                      |
+  |      [Other] reaches the other 16: bash, clojure, csharp, elixir, erlang,  |
+  |      haskell, java, javascript, lua, perl, php, powershell, ruby, rust,    |
+  |      swift, zsh - or any language with no section of its own               |
+  '----------------------------------------------------------------------------'
+  .--[Task]-- what the script should do ---------------------------------------.
+  |  ___                                                                       |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- show it or save it --------------------------------------------.
+  |  ( ) show it in the chat (default)   ( ) save it to a file                 |
+  |      [Other] takes a file name, which counts as an answer                  |
+  '----------------------------------------------------------------------------'
+  Missing details (paths, formats, limits) are never asked about - sensible
+  defaults are chosen and listed under Assumptions: in the header, five at most.
+
+
+------------------------------------------------------------ /session-stats ---
+  NO questions.  Runs from the current session transcript (or a .jsonl path arg).
+
+
+-------------------------------------------------------------- /token-audit ---
+  6 fields, asked one at a time.  A pasted ---BEGIN TOKENS--- block in the
+  argument skips the menu entirely; four labelled numbers without delimiters
+  are assembled into that block first, so both paths validate identically.
+
+  .--[Label]-- what period this run covers ------------------------------------.
+  |  ( ) this session   ( ) today   ( ) this week                              |
+  |      [Other] takes a free-text label like "refactor sprint"                |
+  '----------------------------------------------------------------------------'
+  .--[Input]-- INPUT_TOKENS, uncached input -----------------------------------.
+  |  ___ non-negative integer, never estimated                                 |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- OUTPUT_TOKENS, generated output -------------------------------.
+  |  ___ non-negative integer, never estimated                                 |
+  '----------------------------------------------------------------------------'
+  .--[Cache create]-- CACHE_CREATE_TOKENS, written into the cache -------------.
+  |  ___ non-negative integer, never estimated                                 |
+  '----------------------------------------------------------------------------'
+  .--[Cache read]-- CACHE_READ_TOKENS, served from the cache ------------------.
+  |  ___ non-negative integer, never estimated                                 |
+  '----------------------------------------------------------------------------'
+  .--[Total]-- TOTAL_TOKENS, cross-check only ---------------------------------.
+  |  ( ) skip - compute it   ( ) I'll give the number                          |
+  |      never enters a calculation; a mismatch prints a gap line and the      |
+  |      computed sum is used                                                  |
+  '----------------------------------------------------------------------------'
+  A missing, negative or non-numeric required value HALTs the run.  It is
+  never guessed.
+
+
+------------------------------------------------------------------ /vgademo ---
+  14 fields across 4 batched rounds.  Every question has an [Other] free-text.
+
+  .--[Effect]-- What visual effect? -------------------------------------------.
+  |  ( ) Plasma   ( ) Fire effect   ( ) Tunnel   ( ) Rotozoomer                |
+  '----------------------------------------------------------------------------'
+  .--[Size]-- What size budget? -----------------------------------------------.
+  |  ( ) 256 bytes   ( ) 512 bytes   ( ) 1KB intro   ( ) 4KB or unrestricted   |
+  '----------------------------------------------------------------------------'
+  .--[Platform]-- What target platform? ---------------------------------------.
+  |  ( ) MS-DOS .COM file   ( ) Boot sector (raw binary)   ( ) BIOS only       |
+  '----------------------------------------------------------------------------'
+  .--[Video mode]-- What video mode? ------------------------------------------.
+  |  ( ) Mode 13h   ( ) Text mode (B800h)   ( ) VGA planar (Mode X)            |
+  '----------------------------------------------------------------------------'
+  .--[CPU mode]-- What CPU mode? ----------------------------------------------.
+  |  ( ) 16-bit real mode   ( ) 32-bit protected mode                          |
+  '----------------------------------------------------------------------------'
+  .--[Assembler]-- Which assembler syntax? ------------------------------------.
+  |  ( ) NASM   ( ) FASM   ( ) TASM   ( ) MASM                                 |
+  '----------------------------------------------------------------------------'
+  .--[Binary]-- What binary format? -------------------------------------------.
+  |  ( ) .COM file   ( ) Boot sector (raw + 0AA55h sig)   ( ) Raw binary       |
+  '----------------------------------------------------------------------------'
+  .--[Entry]-- What entry point? ----------------------------------------------.
+  |  ( ) org 100h   ( ) org 7C00h   ( ) org 0                                  |
+  '----------------------------------------------------------------------------'
+  .--[Priority]-- What performance priority? ----------------------------------.
+  |  ( ) Smallest size   ( ) Fastest execution   ( ) Balanced                  |
+  '----------------------------------------------------------------------------'
+  .--[Loop style]-- What loop style? ------------------------------------------.
+  |  ( ) Single loop (LOOP)   ( ) Unrolled loop   ( ) Self-modifying loop      |
+  '----------------------------------------------------------------------------'
+  .--[Tricks]-- Which tricks allowed?  (multi) --------------------------------.
+  |  [ ] Self-modifying code   [ ] Undocumented opcodes                        |
+  |  [ ] FPU instructions   [ ] Lookup tables                                  |
+  '----------------------------------------------------------------------------'
+  .--[Memory]-- What memory model? --------------------------------------------.
+  |  ( ) Segment reuse (CS=DS=ES=SS)   ( ) No stack setup   ( ) Flat segment   |
+  '----------------------------------------------------------------------------'
+  .--[Deps]-- What dependencies? ----------------------------------------------.
+  |  ( ) BIOS only (INT 10h/16h)   ( ) No DOS calls (INT 21h forbidden)        |
+  |  ( ) Direct hardware access                                                |
+  '----------------------------------------------------------------------------'
+  .--[Comments]-- Emit comments in code? --------------------------------------.
+  |  ( ) No - bare bytes only   ( ) Yes - annotate the asm                     |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------- /fix-formula ----
+  Only asks for whatever the arg didn't already provide.
+
+  .--[Broken formula]-- the formula that isn't working ------------------------.
+  |  ___ (asked only if absent from the argument)                              |
+  '----------------------------------------------------------------------------'
+  .--[Issue]-- what's going wrong  (error code, wrong result, expected) -------.
+  |  ___ (asked only if absent; never guessed)                                 |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /crash-report ---
+  One field: the report.  A path or a pasted log skips the menu.
+
+  .--[Report]-- where is the crash report? ------------------------------------.
+  |  ( ) Paste it   ( ) Give a path   ( ) Latest DiagnosticReports             |
+  |      follow-up path/paste request is a plain prompt, not a menu            |
+  |      reads .ips, .crash, hang, spindump, sample, Console excerpt           |
+  '----------------------------------------------------------------------------'
+================================================================================

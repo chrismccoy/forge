@@ -1,64 +1,85 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )         10 tools, 3 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          11 tools, 4 pages
 ================================================================================
-  Build, review, and format WordPress plugins and themes.
+  Build, review, format, and fill WordPress plugins and themes.
 
   STEP 2 - pick a tool
 
-  .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/3)|
-  |-----------------------------------------------------------------------------|
-  |  ( 1 )  Build a plugin from scratch                        -> /wp-plugin    |
-  |         Full WordPress.org-ready scaffold: OOP classes, blocks, REST,       |
-  |         i18n, uninstall.php.                                                |
-  |                                                                             |
-  |  ( 2 )  Targeted WordPress code                            -> /wp-build     |
-  |         Add a feature, settings page, block, or endpoint to a project.      |
-  |                                                                             |
-  |  ( 3 )  HTML to WordPress theme                            -> /wp-theme     |
-  |         Convert static HTML into an installable theme, Tailwind + WCAG AA.  |
-  |                                                                             |
-  |  ( 4 )  More...                                            -> page 2        |
-  |  [Other] type a tool name ................................................  |
-  '-----------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 1/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
+  |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
+  |         i18n, uninstall.php.                                                 |
+  |                                                                              |
+  |  ( 2 )  Targeted WordPress code                                -> /wp-build  |
+  |         Add a feature, settings page, block, or endpoint to an existing      |
+  |         project.                                                             |
+  |                                                                              |
+  |  ( 3 )  HTML to WordPress theme                                -> /wp-theme  |
+  |         Convert static HTML into an installable theme with Tailwind and WCAG |
+  |         AA.                                                                  |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         The remaining WordPress tools.                                       |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
-  .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/3)|
-  |-----------------------------------------------------------------------------|
-  |  ( 1 )  Architect review                                   -> /wp-review    |
-  |         Security, performance, architecture review with a scorecard.        |
-  |                                                                             |
-  |  ( 2 )  Consulting audit                                   -> /wp-consult   |
-  |         10-section senior consulting audit, 0-100 scorecard.                |
-  |                                                                             |
-  |  ( 3 )  Coding-standards formatting                        -> /wp-format    |
-  |         Set up WPCS and apply auto-fixable formatting, no render change.    |
-  |                                                                             |
-  |  ( 4 )  More...                                            -> page 3        |
-  |  [Other] type a tool name ................................................  |
-  '-----------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 2/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Architect review                                      -> /wp-review  |
+  |         Security, performance, and architecture review of a plugin or theme, |
+  |         with a scorecard.                                                    |
+  |                                                                              |
+  |  ( 2 )  Consulting audit                                     -> /wp-consult  |
+  |         10-section senior consulting audit with a 0-100 scorecard.           |
+  |                                                                              |
+  |  ( 3 )  Coding-standards formatting                           -> /wp-format  |
+  |         Set up WPCS and apply auto-fixable formatting without changing       |
+  |         rendering.                                                           |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 3  |
+  |         The remaining WordPress tools.                                       |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
-  .-----------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3)|
-  |-----------------------------------------------------------------------------|
-  |  ( 1 )  Menu icon picker                                   -> /wp-menu-icons|
-  |         Searchable Font Awesome icon picker per menu item, ported into      |
-  |         the theme; classic menus only.                                      |
-  |                                                                             |
-  |  ( 2 )  Report card                                       -> /wp-report-card|
-  |         Scorecard-only review: 10-area /10 table + overall + tier.          |
-  |         No findings, no fixes.                                              |
-  |                                                                             |
-  |  ( 3 )  Grade one piece of code                            -> /wp-grade     |
-  |         Letter grade A-F on a snippet or single file: purpose,              |
-  |         strengths, weaknesses, nitpicks, verdict.                           |
-  |                                                                             |
-  |  ( 4 )  Performance review                                -> /wp-performance|
-  |         Cold full-file scan: unbounded queries, cache bypass,               |
-  |         N+1 loops, cron and asset cost.  Fresh every run.                   |
-  |                                                                             |
-  |  [Other] type a tool name ................................................  |
-  '-----------------------------------------------------------------------------'
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
+  |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
+  |         item, ported into the theme.                                         |
+  |                                                                              |
+  |  ( 2 )  Report card                                      -> /wp-report-card  |
+  |         Scorecard-only review: the 10-area /10 table plus an overall score   |
+  |         and tier, no findings or fixes.                                      |
+  |                                                                              |
+  |  ( 3 )  Grade one piece of code                                -> /wp-grade  |
+  |         Letter grade A-F on a snippet or single file, with purpose,          |
+  |         strengths, weaknesses, nitpicks, and a verdict.                      |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 4  |
+  |         Performance review and demo content.                                 |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 4/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Performance review                               -> /wp-performance  |
+  |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
+  |         and cron and asset cost.                                             |
+  |                                                                              |
+  |  ( 2 )  Demo content importer                                   -> /wp-demo  |
+  |         Build a WP-CLI importer that fills an empty site with realistic demo |
+  |         content, tested on a throwaway SQLite site.                          |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
 
   STEP 3 - run it
     read commands/<command>.md -> load lib/<tool>/SKILL.md -> "Running /<cmd>."
@@ -67,9 +88,7 @@
 ================================================================================
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
-  KEY   ( ) single-pick    [ ] multi-pick (select all)    ___ free-text
-        [Other] every question also has a free-text escape hatch
-
+  KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 
 ------------------------------------------------------------------- /wp-plugin -
   7 questions.  (multi-picks have >4 options, asked as a checklist.)
@@ -230,6 +249,34 @@
   '----------------------------------------------------------------------------'
 
 
+-------------------------------------------------------------- /wp-report-card -
+  NO questions.  Runs from a file path (arg) or the current directory,
+  auto-detects target type, reads files directly.  Same detection and reading
+  as /wp-review, but the output is ONLY the scorecard:
+
+  .--[Output]-- one table, nothing else ---------------------------------------.
+  |  10 areas scored x/10 (Security, Performance, Architecture, Correctness,   |
+  |  WP Standards, Maintainability, Documentation, Testing, Accessibility/UX,  |
+  |  i18n) + an Overall row + one Tier line.  No findings, no fixes, no prose. |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------------- /wp-grade -
+  NO menu.  Submission comes from the arg, a file path, or a plain ask.
+
+  .--[Code]-- paste the WordPress code to grade, or give a file path ----------.
+  |  ___ plain ask, STOP for the reply.  Not WordPress code means it says so   |
+  |      and stops - no grade.  Too large means partial review + where it      |
+  |      stopped + an offer to continue.                                       |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- six sections, fixed order -------------------------------------.
+  |  Purpose . Grade (A-F with +/-) . Strengths . Weaknesses . Nitpicks .      |
+  |  Verdict.  Six-point safety scan first (escaping, sanitization, nonces,    |
+  |  capability checks, $wpdb->prepare(), queries in loops); any hit is a      |
+  |  Weakness, never a Nitpick, and moves the grade.                           |
+  '----------------------------------------------------------------------------'
+
+
 -------------------------------------------------------------- /wp-performance -
   NO questions.  Runs from a file path (arg) or the current directory.
   Every run is COLD: the manifest is rebuilt, every file is re-read from disk,
@@ -258,29 +305,25 @@
   '----------------------------------------------------------------------------'
 
 
--------------------------------------------------------------- /wp-report-card -
-  NO questions.  Runs from a file path (arg) or the current directory,
-  auto-detects target type, reads files directly.  Same detection and reading
-  as /wp-review, but the output is ONLY the scorecard:
+------------------------------------------------------------------ /wp-demo ---
+  4 fields, asked one at a time; every one has a good default.  The argument seeds
+  THEME_DIR, and the resolved theme is named back in one line before anything else.
 
-  .--[Output]-- one table, nothing else ---------------------------------------.
-  |  10 areas scored x/10 (Security, Performance, Architecture, Correctness,   |
-  |  WP Standards, Maintainability, Documentation, Testing, Accessibility/UX,  |
-  |  i18n) + an Overall row + one Tier line.  No findings, no fixes, no prose. |
+  .--[Theme]-- which classic theme -------------------------------------------.
+  |  ( ) the current directory   ( ) a path I'll give you                      |
+  |      a block theme or a non-theme directory STOPS the run                  |
   '----------------------------------------------------------------------------'
-
--------------------------------------------------------------------- /wp-grade -
-  NO menu.  Submission comes from the arg, a file path, or a plain ask.
-
-  .--[Code]-- paste the WordPress code to grade, or give a file path ----------.
-  |  ___ plain ask, STOP for the reply.  Not WordPress code means it says so   |
-  |      and stops - no grade.  Too large means partial review + where it      |
-  |      stopped + an offer to continue.                                       |
+  .--[Posts]-- how many, across every format and post type -------------------.
+  |  ( ) 50 (default)   ( ) 20 - quicker run   ( ) 100 - a big library         |
   '----------------------------------------------------------------------------'
-  .--[Output]-- six sections, fixed order -------------------------------------.
-  |  Purpose . Grade (A-F with +/-) . Strengths . Weaknesses . Nitpicks .      |
-  |  Verdict.  Six-point safety scan first (escaping, sanitization, nonces,    |
-  |  capability checks, $wpdb->prepare(), queries in loops); any hit is a      |
-  |  Weakness, never a Nitpick, and moves the grade.                           |
+  .--[Images]-- where photos come from ----------------------------------------.
+  |  ( ) picsum.photos (default)                                               |
+  |      whatever is used, URLs stay deterministic per seed                    |
   '----------------------------------------------------------------------------'
+  .--[Brand]-- the fake business the copy is written around -------------------.
+  |  ( ) auto - invent one that fits the theme's niche (default)               |
+  |  ( ) I'll give a name and a one-line niche                                 |
+  '----------------------------------------------------------------------------'
+  Warns first that a full run downloads ~100 photos and often takes 30+ minutes.
+  Missing Chrome or Node 22+ only SKIPS screenshots; every other step still runs.
 ================================================================================

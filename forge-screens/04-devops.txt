@@ -1,38 +1,27 @@
 ================================================================================
-  FORGE  -  DevOps & Data          ( /forge-devops )          5 tools, 2 pages
+  FORGE  -  DevOps & Data          ( /forge-devops )          4 tools
 ================================================================================
-  Compose, Kubernetes, PowerShell, jq, SQL query review.
+  Compose stacks, Kubernetes manifests, PowerShell scripts, jq filters.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Tool]                                                     Which tool?       |
   |------------------------------------------------------------------------------|
-  |  ( 1 )  docker-compose stack                    -> /docker-compose-architect |
-  |         Production stack: networks, healthchecks, secrets as env refs, .env  |
-  |         template.                                                            |
+  |  ( 1 )  docker-compose stack                   -> /docker-compose-architect  |
+  |         Production compose stack: networks, healthchecks, secrets as env     |
+  |         refs, .env template.                                                 |
   |                                                                              |
-  |  ( 2 )  Kubernetes manifests                        -> /kubernetes-architect |
-  |         Deployment, HPA, Service/Ingress, probes, limits, security ctx.      |
+  |  ( 2 )  Kubernetes manifests                       -> /kubernetes-architect  |
+  |         Deployment, HPA, Service/Ingress, probes, resource limits, security  |
+  |         contexts.                                                            |
   |                                                                              |
-  |  ( 3 )  PowerShell script                       -> /powershell-script-engine |
-  |         PSScriptAnalyzer-clean script: help, logging, validation, notes.     |
+  |  ( 3 )  PowerShell script                      -> /powershell-script-engine  |
+  |         PSScriptAnalyzer-clean script with help, logging, validation, and    |
+  |         security notes.                                                      |
   |                                                                              |
-  |  ( 4 )  More...                                                              |
-  |         jq filters and SQL query review.  -> page 2                          |
-  |                                                                              |
-  |  [Other] type a tool name ................................................   |
-  '------------------------------------------------------------------------------'
-
-  .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
-  |------------------------------------------------------------------------------|
-  |  ( 1 )  jq filter                                      -> /jq                |
+  |  ( 4 )  jq filter                                                    -> /jq  |
   |         One copy-paste-ready jq command, explained stage by stage.           |
-  |                                                                              |
-  |  ( 2 )  Explain a SQL query                            -> /explain-sql       |
-  |         Validate one query, then break it down clause by clause with a       |
-  |         scorecard and risk flags.                                            |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -45,7 +34,6 @@
   STEP 4 - AFTER YOU PICK: the tool's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
-
 
 --------------------------------------------------- /docker-compose-architect -
   .--[Tech stack]-- application runtime/framework(s) --------------------------.
@@ -114,27 +102,4 @@
   |  ( ) raw -r (feed shell var/command)   ( ) compact -c (NDJSON)              |
   |  ( ) pretty (default)   ( ) formatted @csv/@tsv   [Other]                   |
   '-----------------------------------------------------------------------------'
-
-
---------------------------------------------------------------- /explain-sql ---
-  4 fields, asked one at a time.  Only the query is required; the other three
-  have defined defaults and may be skipped.
-
-  .--[SQL query]-- the query to review  (paste or path; asked first) ----------.
-  |  ___ plain ask, not a menu - STOP for the reply                            |
-  '----------------------------------------------------------------------------'
-  .--[Recipient role]-- who the explanation is for ----------------------------.
-  |  ( ) Data engineer   ( ) Analytics engineer / analyst                      |
-  |  ( ) Marketing or ops manager   ( ) Executive (CFO, VP)                    |
-  |      skipped -> business analyst with light SQL, stated in one line        |
-  '----------------------------------------------------------------------------'
-  .--[Business context]-- what it is for, plus schema or DDL if available -----.
-  |  ( ) Revenue or finance reporting   ( ) Product or user analytics          |
-  |  ( ) Operational monitoring   ( ) No context - review the SQL alone        |
-  |      skipped -> completeness check reports NOT ASSESSABLE                  |
-  '----------------------------------------------------------------------------'
-  .--[SQL dialect]-- which engine to judge the syntax against -----------------.
-  |  ( ) PostgreSQL   ( ) BigQuery   ( ) Snowflake   ( ) MySQL                 |
-  |      skipped -> names the dialect assumed and flags the verdict            |
-  '----------------------------------------------------------------------------'
 ================================================================================

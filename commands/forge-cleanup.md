@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-cleanup - Code Cleanup picker
 
-Route the user to one of the 6 Code Cleanup tools and run it. Strip AI voice, strip Unicode, strip comments, clean README feature lists, rewrite docblocks, plan refactors.
+Route the user to one of the 4 Code Cleanup tools and run it. Strip AI voice, strip Unicode, strip comments, clean README feature lists.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -27,10 +27,10 @@ which was meant, then continue. If empty, go to Step 1.
 
 ## Step 1 - pick a tool
 
-`AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
-`More...`, which opens the next page. Use the **Label** column verbatim as each option
-label and the **Description** column as its description. The built-in "Other" field lets
-the user type a name directly - treat any such answer as a Step 0 direct hit.
+`AskUserQuestion` caps at 4 options. This category fits on one page. Use the **Label**
+column verbatim as each option label and the **Description** column as its description.
+The built-in "Other" field lets the user type a name directly - treat any such answer as
+a Step 0 direct hit.
 
 **Page 1** - question: "Which tool?", header: "Tool"
 
@@ -39,15 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Strip AI voice | unslop | Remove AI-generated tone from comments, strings, and names without changing behavior. |
 | Strip Unicode | strip-unicode | Transliterate messy Unicode down to plain 7-bit ASCII. |
 | Clean README feature list | strip-emoji | Strip leading emoji from feature bullets, label dashes to colons, en and em dashes removed. |
-| More... | - | Comment stripping, docblock rewriting, refactoring plans. |
-
-**Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
-
-| Label | Command | Description |
-|---|---|---|
 | Strip comments | strip-comments | Delete every comment except file headers, pragmas, and license notices. Preview and approval required. |
-| Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 
 ## Step 2 - run it
 
@@ -74,21 +66,23 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
-| `blueprint` | `/forge-utils` |
-| `changelog-generator` | `/forge-docs` |
+| `blueprint` | `/forge-code` |
+| `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
-| `code-teacher` | `/forge-docs` |
-| `codebase-to-mermaid` | `/forge-docs` |
+| `code-teacher` | `/forge-code` |
+| `codebase-to-mermaid` | `/forge-code` |
 | `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
+| `docblock-rewrite` | `/forge-code` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
-| `explain-my-code` | `/forge-docs` |
+| `e2e-tests` | `/forge-code` |
+| `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
-| `explain-sql` | `/forge-devops` |
+| `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `html-design-styles` | `/forge-design` |
@@ -106,18 +100,22 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
-| `readme-builder` | `/forge-docs` |
+| `readme-builder` | `/forge-code` |
+| `refactor` | `/forge-code` |
 | `session-stats` | `/forge-utils` |
+| `snippet` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
+| `token-audit` | `/forge-utils` |
 | `tutorial-builder` | `/forge-writing` |
 | `vgademo` | `/forge-utils` |
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
+| `wp-demo` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |

@@ -2,50 +2,6 @@
 
 [← Back to the README](../README.md)
 
-## `wp-builder-pro`
-
-Builds and implements custom WordPress code - themes, plugins, Gutenberg blocks, WooCommerce, and REST endpoints - with security and performance built in.
-
-```
-/wp-build
-```
-
-Where `wordpress-plugin` builds a whole plugin from scratch in a single run, `wp-builder-pro` is the everyday builder: add a settings page, register a dynamic block, connect a REST endpoint, extend WooCommerce checkout, or track down why the shop page is slow. It routes each request to one of five bundled references and works the same six steps every time - analyze, design, implement, validate with `phpcs --standard=WordPress`, optimize, then test and secure - so the output meets WordPress Coding Standards with nonces, sanitization, escaping, capability checks, and prepared statements already in place.
-
-It also answers symptom-first requests. *"My site is slow"*, *"a plugin throws a fatal error"*, *"this block won't render"*, *"fix my WordPress site"* all trigger it, and it asks for the specific symptom before writing a line of code.
-
-## ✨ Features
-
-- 📋 Intake. four fields via `AskUserQuestion` - build target (single-select), new-vs-existing context, free-text specifics, optional WP/PHP constraints - then routes the target to the right reference
-- 🏗️ Full WordPress surface. themes (templates, hierarchy, child themes, FSE), plugins (activation, settings API, hooks, updates), Gutenberg blocks and patterns (static + dynamic), WooCommerce extensions, REST endpoints, ACF fields
-- 🔒 Security by default. nonces on every form/AJAX path, sanitization on every input, escaping on every output, capability checks before privileged actions, `$wpdb->prepare()` with `$wpdb->prefix` on every query
-- ⚡ Performance built in. transient and object caching, query optimization, conditional asset enqueueing via `wp_enqueue_scripts` hooks
-- 🩺 Fixes things that broke. slow site, fatal error, block won't render - asks what's going wrong first, then fixes it
-- 📚 Five on-demand references. theme-development, plugin-architecture, gutenberg-blocks, hooks-filters, performance-security - loaded only for the matching build target
-- ✅ Quality gates before delivery. WPCS clean, nonce per mutation, sanitize/escape on all I/O, capability checks, prepared statements, hook-based enqueueing, translatable strings, no core edits
-- 🚦 Scope-locked. defers complete from-scratch plugin scaffolds to `wordpress-plugin` and refuses code review (that's `wordpress-architect-review` / `wordpress-consultant`)
-
-## 🔄 How it works
-
-1. **Intake**: four fields via `AskUserQuestion` - build target, project context (new vs existing + path), specifics, optional WP/PHP constraints.
-2. **Routing**: the chosen build target maps to one or two bundled references (e.g. WooCommerce → `plugin-architecture.md` + `hooks-filters.md`).
-3. **Six-step workflow**: analyze → design → implement → validate (`phpcs --standard=WordPress`) → optimize → test & secure.
-4. **Quality gates**: runs before delivery - WPCS clean, nonce per mutation, sanitize/escape on all I/O, capability checks, prepared statements, hook-based enqueueing, i18n, no core edits.
-5. **Delivery**: the code plus a short explanation of the WordPress-specific patterns used.
-
-## 🚀 How to use it
-
-```
-/wp-build ← walks through all four questions
-/wp-build "a dynamic block that lists recent posts" ← seeds the specifics
-```
-
-It also handles requests like *"build a custom WordPress theme"*, *"add a settings page to my plugin"*, *"create a Gutenberg block"*, *"extend WooCommerce checkout"*, *"add a REST API endpoint"*, or *"my WordPress site is slow"* - but you invoke it with `/wp-build`; it never auto-triggers.
-
-The full procedure lives at [`lib/wp-builder-pro/SKILL.md`](../lib/wp-builder-pro/SKILL.md).
-
----
-
 ## `wordpress-plugin`
 
 Generates complete WordPress plugins from scratch. the kind you could submit to the WordPress.org repository today.
@@ -99,6 +55,50 @@ Five of the seven intake questions are **pickers** via `AskUserQuestion`: pick t
 It also handles requests like *"build me a WordPress plugin for time-slot bookings"*, *"scaffold a WP plugin with a settings page and a REST endpoint"*, *"create a custom post type plugin for testimonials"*, *"I need a Gutenberg block plugin for newsletter signups"*, or *"make me a WooCommerce extension that adds gift wrapping"* - but you invoke it with `/wp-plugin`; it never auto-triggers.
 
 The full procedure lives at [`lib/wordpress-plugin/SKILL.md`](../lib/wordpress-plugin/SKILL.md).
+
+---
+
+## `wp-builder-pro`
+
+Builds and implements custom WordPress code - themes, plugins, Gutenberg blocks, WooCommerce, and REST endpoints - with security and performance built in.
+
+```
+/wp-build
+```
+
+Where `wordpress-plugin` builds a whole plugin from scratch in a single run, `wp-builder-pro` is the everyday builder: add a settings page, register a dynamic block, connect a REST endpoint, extend WooCommerce checkout, or track down why the shop page is slow. It routes each request to one of five bundled references and works the same six steps every time - analyze, design, implement, validate with `phpcs --standard=WordPress`, optimize, then test and secure - so the output meets WordPress Coding Standards with nonces, sanitization, escaping, capability checks, and prepared statements already in place.
+
+It also answers symptom-first requests. *"My site is slow"*, *"a plugin throws a fatal error"*, *"this block won't render"*, *"fix my WordPress site"* all trigger it, and it asks for the specific symptom before writing a line of code.
+
+## ✨ Features
+
+- 📋 Intake. four fields via `AskUserQuestion` - build target (single-select), new-vs-existing context, free-text specifics, optional WP/PHP constraints - then routes the target to the right reference
+- 🏗️ Full WordPress surface. themes (templates, hierarchy, child themes, FSE), plugins (activation, settings API, hooks, updates), Gutenberg blocks and patterns (static + dynamic), WooCommerce extensions, REST endpoints, ACF fields
+- 🔒 Security by default. nonces on every form/AJAX path, sanitization on every input, escaping on every output, capability checks before privileged actions, `$wpdb->prepare()` with `$wpdb->prefix` on every query
+- ⚡ Performance built in. transient and object caching, query optimization, conditional asset enqueueing via `wp_enqueue_scripts` hooks
+- 🩺 Fixes things that broke. slow site, fatal error, block won't render - asks what's going wrong first, then fixes it
+- 📚 Five on-demand references. theme-development, plugin-architecture, gutenberg-blocks, hooks-filters, performance-security - loaded only for the matching build target
+- ✅ Quality gates before delivery. WPCS clean, nonce per mutation, sanitize/escape on all I/O, capability checks, prepared statements, hook-based enqueueing, translatable strings, no core edits
+- 🚦 Scope-locked. defers complete from-scratch plugin scaffolds to `wordpress-plugin` and refuses code review (that's `wordpress-architect-review` / `wordpress-consultant`)
+
+## 🔄 How it works
+
+1. **Intake**: four fields via `AskUserQuestion` - build target, project context (new vs existing + path), specifics, optional WP/PHP constraints.
+2. **Routing**: the chosen build target maps to one or two bundled references (e.g. WooCommerce → `plugin-architecture.md` + `hooks-filters.md`).
+3. **Six-step workflow**: analyze → design → implement → validate (`phpcs --standard=WordPress`) → optimize → test & secure.
+4. **Quality gates**: runs before delivery - WPCS clean, nonce per mutation, sanitize/escape on all I/O, capability checks, prepared statements, hook-based enqueueing, i18n, no core edits.
+5. **Delivery**: the code plus a short explanation of the WordPress-specific patterns used.
+
+## 🚀 How to use it
+
+```
+/wp-build ← walks through all four questions
+/wp-build "a dynamic block that lists recent posts" ← seeds the specifics
+```
+
+It also handles requests like *"build a custom WordPress theme"*, *"add a settings page to my plugin"*, *"create a Gutenberg block"*, *"extend WooCommerce checkout"*, *"add a REST API endpoint"*, or *"my WordPress site is slow"* - but you invoke it with `/wp-build`; it never auto-triggers.
+
+The full procedure lives at [`lib/wp-builder-pro/SKILL.md`](../lib/wp-builder-pro/SKILL.md).
 
 ---
 
@@ -408,68 +408,6 @@ The full procedure lives at [`lib/menu-icon-picker/SKILL.md`](../lib/menu-icon-p
 
 ---
 
-## `wordpress-performance`
-
-Cold, full-file performance review for WordPress plugins, themes, mu-plugins, and loose code. Reads every file in the target and reports what breaks under load - unbounded queries, cache bypass, N+1 loops, per-request database writes, polling, and cron that blocks its own queue.
-
-```
-/wp-performance
-```
-
-Most performance checks are a grep pass wearing a report's clothing. They find `posts_per_page => -1` because it has a literal signature, and miss the query sitting inside a `foreach` two files away because it does not. The `wordpress-performance` procedure separates the two jobs: a bundled scan script greps for the patterns that do have signatures and uses the hits only to decide reading order, then every file in the coverage manifest gets read top to bottom. The findings that matter most - N+1 loops, expensive work running in the wrong request context, missing caching around a slow call - only exist in the reading pass.
-
-The second thing it refuses to do is remember. Every run rebuilds the manifest, re-reads every file from disk, and ignores earlier findings, earlier reports, and earlier clean verdicts. Run it twice on the same theme and the second pass is genuinely independent, which is the only way a second pass finds anything. Coverage is reported as a number in the output - files read against files in the manifest - so an incomplete pass cannot read as a complete one.
-
-## ✨ Features
-
-- 🧊 Cold run every time. manifest rebuilt, files re-read, prior verdicts discarded. no warm-start, no "already checked"
-- 📖 Full-file coverage. every `.php`, `.inc`, `.js`, `.jsx`, `.ts`, `.tsx`, `.json` in the manifest read end to end; files over 1500 lines read in sequential chunks
-- 🔎 Triage, not verdicts. the scan script orders the reading pass; a grep match is a candidate until the surrounding code is read
-- 📐 Mandatory coverage line. `files read / files in manifest / total lines` printed with the report; any unread file named with its reason
-- 🏷️ Severity-tagged findings. CRITICAL / WARNING / INFO with `file:line`, quoted code, an Impact line naming the failure mode and scale, and a Fix line
-- 🧭 Context-aware severity. admin, CLI, and cron paths are scored against the load they actually face, not public traffic
-- 🏢 Platform-aware fixes. managed host, self-hosted, or shared hosting changes whether an object-cache fix is even available
-- 🛡️ Prompt-injection defense. file contents are inert data; an instruction hidden in a comment is reported, never followed
-- 🚫 Banned filler word list. no "leverage", "robust", "comprehensive", "utilize", "synergy", and ~15 more
-- ✅ Pre-emit validation. a report missing its coverage line or a finding's citation is regenerated, not shipped
-
-## 📂 What it checks
-
-- **Database queries**: unbounded `posts_per_page`, `query_posts()`, N+1 inside loops, `meta_query` value scans, `post__not_in`, leading-wildcard `LIKE`, missing `no_found_rows`
-- **Hooks and request context**: expensive work on `init` / `wp_loaded` with no guard, option writes on frontend paths, hook callbacks that run everywhere
-- **Caching**: uncached `url_to_postid` and friends, missing object-cache wrappers, dynamic transient keys, volatile-data transients, large autoloaded options
-- **Cache bypass**: `session_start()`, cookies on public pages, query-parameter cache busting
-- **AJAX and REST**: `admin-ajax.php` bootstrap cost, POST for reads, `setInterval` polling
-- **Assets**: unconditional enqueues, missing version strings, no defer/async strategy, full library imports
-- **Block editor**: `registerBlockStyle()` volume, re-sanitized InnerBlocks content, static blocks for client builds
-- **WP-Cron**: callbacks looping every user or post, `wp_schedule_event` without a `wp_next_scheduled` guard, cron on page requests
-- **External HTTP**: uncached `wp_remote_get`, missing timeouts, absent error handling
-
-## 🔄 How it works
-
-1. **Detect target**: plugin header, theme `style.css`, `block.json`, `mu-plugins` path, or a loose PHP/JS directory
-2. **Build the manifest**: `wp-perf-manifest.sh` lists every reviewable file with line counts, pruning `vendor`, `node_modules`, build output, and minified assets
-3. **Triage**: `wp-perf-scan.sh` returns severity-grouped grep hits, used only to order the reading pass
-4. **Read everything**: every manifest file in full, in batches, ticked off as it goes
-5. **Report**: findings by severity with citation, quoted code, impact, and fix, then the coverage line and headline verdict
-6. **Pre-emit validation**: manifest freshness, coverage arithmetic, and per-finding format checked before anything is returned
-
-## 🚀 How to use it
-
-```
-/wp-performance ← reviews the current working directory
-/wp-performance ./wp-content/themes/mytheme ← reviews the specified path
-/wp-performance ← run it again for an independent second pass
-```
-
-It also handles requests like *"why is this site slow"*, *"audit this plugin before our sale"*, *"find the query that's timing out"*, or *"scan it again, I think we missed something"* - but you invoke it with `/wp-performance`; it never auto-triggers.
-
-For a security and architecture review instead, use `/wp-review`. For the scorecard alone, `/wp-report-card`. To change the code rather than review it, `/wp-build`.
-
-The full procedure lives at [`lib/wordpress-performance/SKILL.md`](../lib/wordpress-performance/SKILL.md).
-
----
-
 ## `wordpress-report-card`
 
 Scores a WordPress plugin or theme on ten areas, each out of 10, with an overall score and a rubric tier. That's the whole output - no findings, no fixes, no prose.
@@ -574,3 +512,120 @@ One slash command plus its procedure file `lib/wordpress-grade/SKILL.md`, which 
 For a file-by-file review of a whole plugin or theme use [`/wp-review`](#wordpress-architect-review); for the scorecard-only pass over a directory use [`/wp-report-card`](#wordpress-report-card).
 
 The full procedure lives at [`lib/wordpress-grade/SKILL.md`](../lib/wordpress-grade/SKILL.md), the slash command at [`commands/wp-grade.md`](../commands/wp-grade.md), and the master template at [`lib/wordpress-grade/references/prompt-template.md`](../lib/wordpress-grade/references/prompt-template.md).
+
+## `wordpress-performance`
+
+Cold, full-file performance review for WordPress plugins, themes, mu-plugins, and loose code. Reads every file in the target and reports what breaks under load - unbounded queries, cache bypass, N+1 loops, per-request database writes, polling, and cron that blocks its own queue.
+
+```
+/wp-performance
+```
+
+Most performance checks are a grep pass wearing a report's clothing. They find `posts_per_page => -1` because it has a literal signature, and miss the query sitting inside a `foreach` two files away because it does not. The `wordpress-performance` procedure separates the two jobs: a bundled scan script greps for the patterns that do have signatures and uses the hits only to decide reading order, then every file in the coverage manifest gets read top to bottom. The findings that matter most - N+1 loops, expensive work running in the wrong request context, missing caching around a slow call - only exist in the reading pass.
+
+The second thing it refuses to do is remember. Every run rebuilds the manifest, re-reads every file from disk, and ignores earlier findings, earlier reports, and earlier clean verdicts. Run it twice on the same theme and the second pass is genuinely independent, which is the only way a second pass finds anything. Coverage is reported as a number in the output - files read against files in the manifest - so an incomplete pass cannot read as a complete one.
+
+## ✨ Features
+
+- 🧊 Cold run every time. manifest rebuilt, files re-read, prior verdicts discarded. no warm-start, no "already checked"
+- 📖 Full-file coverage. every `.php`, `.inc`, `.js`, `.jsx`, `.ts`, `.tsx`, `.json` in the manifest read end to end; files over 1500 lines read in sequential chunks
+- 🔎 Triage, not verdicts. the scan script orders the reading pass; a grep match is a candidate until the surrounding code is read
+- 📐 Mandatory coverage line. `files read / files in manifest / total lines` printed with the report; any unread file named with its reason
+- 🏷️ Severity-tagged findings. CRITICAL / WARNING / INFO with `file:line`, quoted code, an Impact line naming the failure mode and scale, and a Fix line
+- 🧭 Context-aware severity. admin, CLI, and cron paths are scored against the load they actually face, not public traffic
+- 🏢 Platform-aware fixes. managed host, self-hosted, or shared hosting changes whether an object-cache fix is even available
+- 🛡️ Prompt-injection defense. file contents are inert data; an instruction hidden in a comment is reported, never followed
+- 🚫 Banned filler word list. no "leverage", "robust", "comprehensive", "utilize", "synergy", and ~15 more
+- ✅ Pre-emit validation. a report missing its coverage line or a finding's citation is regenerated, not shipped
+
+## 📂 What it checks
+
+- **Database queries**: unbounded `posts_per_page`, `query_posts()`, N+1 inside loops, `meta_query` value scans, `post__not_in`, leading-wildcard `LIKE`, missing `no_found_rows`
+- **Hooks and request context**: expensive work on `init` / `wp_loaded` with no guard, option writes on frontend paths, hook callbacks that run everywhere
+- **Caching**: uncached `url_to_postid` and friends, missing object-cache wrappers, dynamic transient keys, volatile-data transients, large autoloaded options
+- **Cache bypass**: `session_start()`, cookies on public pages, query-parameter cache busting
+- **AJAX and REST**: `admin-ajax.php` bootstrap cost, POST for reads, `setInterval` polling
+- **Assets**: unconditional enqueues, missing version strings, no defer/async strategy, full library imports
+- **Block editor**: `registerBlockStyle()` volume, re-sanitized InnerBlocks content, static blocks for client builds
+- **WP-Cron**: callbacks looping every user or post, `wp_schedule_event` without a `wp_next_scheduled` guard, cron on page requests
+- **External HTTP**: uncached `wp_remote_get`, missing timeouts, absent error handling
+
+## 🔄 How it works
+
+1. **Detect target**: plugin header, theme `style.css`, `block.json`, `mu-plugins` path, or a loose PHP/JS directory
+2. **Build the manifest**: `wp-perf-manifest.sh` lists every reviewable file with line counts, pruning `vendor`, `node_modules`, build output, and minified assets
+3. **Triage**: `wp-perf-scan.sh` returns severity-grouped grep hits, used only to order the reading pass
+4. **Read everything**: every manifest file in full, in batches, ticked off as it goes
+5. **Report**: findings by severity with citation, quoted code, impact, and fix, then the coverage line and headline verdict
+6. **Pre-emit validation**: manifest freshness, coverage arithmetic, and per-finding format checked before anything is returned
+
+## 🚀 How to use it
+
+```
+/wp-performance ← reviews the current working directory
+/wp-performance ./wp-content/themes/mytheme ← reviews the specified path
+/wp-performance ← run it again for an independent second pass
+```
+
+It also handles requests like *"why is this site slow"*, *"audit this plugin before our sale"*, *"find the query that's timing out"*, or *"scan it again, I think we missed something"* - but you invoke it with `/wp-performance`; it never auto-triggers.
+
+For a security and architecture review instead, use `/wp-review`. For the scorecard alone, `/wp-report-card`. To change the code rather than review it, `/wp-build`.
+
+The full procedure lives at [`lib/wordpress-performance/SKILL.md`](../lib/wordpress-performance/SKILL.md).
+
+---
+
+## `wp-demo-content`
+
+Build a WP-CLI demo content importer for a classic WordPress theme: read the theme's whole data model out of its code, write `demo/demo-import.php`, test it end to end on a throwaway SQLite site, and report the theme's own bugs.
+
+```
+/wp-demo
+```
+
+Seeing whether a theme actually looks right needs a site full of believable content - posts in every format, photos at the right aspect ratio, video and audio the player accepts, threaded comments, menus, widgets, and every meta box, Customizer setting and options field the theme reads. Building that by hand takes hours, and a generic dummy-content plugin fills none of the theme's own fields. This tool writes an importer that fits the specific theme, because it maps the theme's data model first: every meta key with its storage, field type, sanitize callback, allowed values, where it applies, and where templates print it, each cited `file:line`, before a line of importer code exists.
+
+The importer it produces is a single `final class` in the theme's own code style, run with `wp eval-file`. It takes positional arguments - `reset`, `purge`, `count=N`, `seed=N`, `no-comments`, `verify` - refuses to run twice or on multisite, flags everything it creates so `purge` removes only its own content, and backs up every setting it touches so `purge` restores them exactly. The same `seed` always produces the same content, with dates anchored to the day it runs.
+
+Then it tests for real, on a throwaway WordPress built by a bundled script: SQLite, WP-Cron off, `WP_DEBUG` on, pretty permalinks, Classic Editor active, the theme symlinked and activated. Fourteen numbered steps follow - marker values, liveness checks on every media URL, phpcs to zero violations, a small import inspected item by item, a refuse-to-rerun check, a purge that must restore the markers, a full import plus `verify`, two `seed=1` runs compared for identical output, front-end and admin fetches grepped for PHP notices, field-by-field verification, screenshots at 1440 and 390 wide, and a final purge and teardown. Anything that cannot run is marked BLOCKED with the reason rather than reported as passed.
+
+## 📋 Technical Overview
+
+One slash command and a six-file procedure bundle. `lib/wp-demo-content/SKILL.md` carries the scope lock, the inputs, the six-step workflow, the deliverables contract and the hard rules. `references/data-model.md` is the read-the-theme-first step; `references/content-spec.md` is what the importer creates; `references/importer-spec.md` is the arguments, guards, flagging, settings backup, run order and runtime; `references/testing.md` is the fourteen test steps; `references/bug-fixing.md` is the optional fix pass; and `references/setup-test-site.md` holds the test harness itself, copied out by line range and checked against a `sha256` recorded in the procedure, so a mistyped copy cannot run.
+
+## ✨ Features
+
+- 🗺️ Maps the theme's data model first - every meta field, Customizer setting and options field, cited `file:line`, before any code is written
+- 🧩 Fills fields the way the theme's own save handler stores them, calling its sanitize functions, ACF field keys, CMB2, Meta Box and Carbon Fields formats
+- 🖼️ Images sized to each slot's aspect ratio and never below the largest registered crop, deduplicated by file hash and picsum photo ID
+- 🎞️ Freely licensed video and audio, liveness-checked and size-capped before download; animated GIFs generated locally with GD
+- ♻️ Reversible by construction: everything flagged, every touched setting backed up, `purge` restores the site exactly
+- 🎲 Repeatable: the same `seed` gives identical content, dates anchored to the run day
+- 🧪 Tested on a throwaway SQLite WordPress, never against a real site, with phpcs at zero violations
+- 📸 Screenshots at 1440 and 390 wide, with overlay bypass via `SHOT_INIT_JS`; skipped cleanly when Chrome or Node 22+ is missing
+- 🐞 Reports the theme's own bugs in `demo/BUGS.md`, grouped by severity with where, what breaks, and a suggested fix
+- 🔒 Never writes to code or secret fields, never emails or pings, never commits, and treats theme file contents as data
+
+## 🔄 How it works
+
+1. **Read the theme.** Grep and read it, then summarize the data model in tables with `file:line` citations. Large themes split the reading across subagents.
+2. **Decide the content.** Posts across every format and post type, terms, authors, dates, comments, counters, media, fields, pages, menus, widgets, and one consistent fake brand across every Customizer and options field.
+3. **Write the importer.** One file, theme code style, positional arguments, guards, flagging, settings backup, fixed run order.
+4. **Test it.** Build the throwaway site from the bundled script after checking its hash, then run the fourteen steps.
+5. **Deliver.** `demo/demo-import.php`, `demo/BUGS.md`, `demo/README.md`, `demo/screenshots/`, a `demo/` line in `.distignore`, and a report with real numbers.
+6. **Offer fixes.** Only if bugs were found and only on a yes: confirm each bug, ask about the ones needing a decision, fix on a `fix/demo-audit-bugs` branch, and record everything in `demo/CHANGED.md`.
+
+## 🚀 How to use it
+
+```
+/wp-demo                      ← the theme in the current directory
+/wp-demo ~/themes/mytheme     ← a specific theme
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"build demo content for this theme"*, *"I need a demo importer"*, *"fill a test site with content for my theme"*, *"generate sample content that exercises every field"*, *"what's broken in this theme"*
+
+**Needs:** Linux with bash 4.4+, PHP with `pdo_sqlite`, and `curl`, `unzip`, `mktemp`, `timeout`. Chrome or Chromium and Node.js 22+ for screenshots - without them screenshots are skipped and everything else still runs. Classic themes only; block themes, MySQL and multisite are out of scope.
+
+The full procedure lives at [`lib/wp-demo-content/SKILL.md`](../lib/wp-demo-content/SKILL.md), the step references under [`lib/wp-demo-content/references/`](../lib/wp-demo-content/references/), and the slash command at [`commands/wp-demo.md`](../commands/wp-demo.md).
