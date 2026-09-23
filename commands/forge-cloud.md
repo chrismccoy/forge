@@ -131,6 +131,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `wp-build` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-demo` | `/forge-wordpress` |
+| `wp-feature-readme` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |

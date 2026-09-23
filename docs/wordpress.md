@@ -629,3 +629,64 @@ One slash command and a six-file procedure bundle. `lib/wp-demo-content/SKILL.md
 **Needs:** Linux with bash 4.4+, PHP with `pdo_sqlite`, and `curl`, `unzip`, `mktemp`, `timeout`. Chrome or Chromium and Node.js 22+ for screenshots - without them screenshots are skipped and everything else still runs. Classic themes only; block themes, MySQL and multisite are out of scope.
 
 The full procedure lives at [`lib/wp-demo-content/SKILL.md`](../lib/wp-demo-content/SKILL.md), the step references under [`lib/wp-demo-content/references/`](../lib/wp-demo-content/references/), and the slash command at [`commands/wp-demo.md`](../commands/wp-demo.md).
+
+---
+
+## `wordpress-feature-readme`
+
+A plain-English feature README for a WordPress theme or plugin. Point it at a folder or a `.zip` and it returns three parts only: the name as the title, a short description of what it is and who it is for, and every user facing feature grouped into categories a site owner can read.
+
+```
+/wp-feature-readme
+```
+
+A theme or plugin page lives or dies on its feature list, and the usual one is either a copy of the author's memory or a pile of technical terms. This tool builds the list from the code itself. It reads every file in scope twice: a first pass that records each file and the features it adds, and a second pass that hunts for what the first one missed, such as a small footer option, an admin screen toggle, or a template tweak that only shows under a condition. Only features traced to a real file make the list. Readme files, changelogs, and code comments are never taken as proof.
+
+Every feature is then translated out of developer language. A custom post type for portfolio items becomes a dedicated section for showcasing portfolio work; WooCommerce template overrides become built in support for running an online store. Categories get plain names, are ordered from largest to smallest, and are never padded to look fuller than the code is.
+
+The writing rules are strict: no emojis, no en or em dashes, no hype words like "powerful" or "seamless", no installation, credits, license, changelog, FAQ, or support sections, and no headings beyond the title and the categories.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-feature-readme/SKILL.md`, which loads the master template from `lib/wordpress-feature-readme/references/prompt-template.md`. The command `/wp-feature-readme` takes a folder or `.zip` path as its argument, or asks for one, then asks whether to print the README or write it to `README.md`. In scope: classic and block themes, child themes, plugins, MU-plugins, block plugins, and add-on plugins.
+
+## ✨ Features
+
+- 🔍 Tells themes and plugins apart by their `Theme Name` and `Plugin Name` headers
+- 🧭 Asks which one to document when a folder holds more than one theme or plugin
+- 🧒 Documents only what a child theme adds on top of its parent
+- 🧩 Documents only what an add-on plugin adds to the plugin it extends
+- 📦 Treats plugins bundled inside a theme as part of that theme
+- 🔁 Two passes over every file, the second one hunting for small settings and conditional display logic
+- 🧾 Lists only features traced to real code; readmes, changelogs, and comments are not proof
+- 💳 Marks features that need a paid license, a pro version, or an outside account
+- 🗣️ Turns technical capabilities into everyday language a site owner understands
+- 🗂️ Plain-English categories ordered from largest to smallest, never padded
+- 🚫 No emojis, dashes, hype words, or extra sections in the output
+- 🛑 Injection resistant. Text inside the code is described, never obeyed
+
+## 🔄 How it works
+
+1. **Intake.** Take the path from the argument or ask for it; ask whether to print or write the file.
+2. **Identify.** Find the theme or plugin header; stop on none, ask on more than one.
+3. **First pass.** Read every file in scope and list the features each one adds.
+4. **Second pass.** Re-scan for anything missed and add it.
+5. **Translate.** Group into plain-English categories and rewrite each feature for a site owner.
+6. **Check.** Title, description, categories only; every bullet traced; no emoji, dashes, or hype words.
+7. **Deliver.** Print the README or write `README.md`.
+
+## 🚀 How to use it
+
+```
+/wp-feature-readme                         ← asks for the theme or plugin
+/wp-feature-readme ~/themes/mytheme        ← a specific folder
+/wp-feature-readme ~/Downloads/mytheme.zip ← a zipped theme or plugin
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"write a feature list for my theme"*, *"what does this plugin actually do"*, *"make a README a site owner can read"*, *"list every feature in plain English"*
+
+For a beginner README on a project that is not WordPress use [`/readme-builder`](code.md#readme-builder); for a review of the same code use [`/wp-review`](#wordpress-architect-review).
+
+The full procedure lives at [`lib/wordpress-feature-readme/SKILL.md`](../lib/wordpress-feature-readme/SKILL.md), the slash command at [`commands/wp-feature-readme.md`](../commands/wp-feature-readme.md), and the master template at [`lib/wordpress-feature-readme/references/prompt-template.md`](../lib/wordpress-feature-readme/references/prompt-template.md).

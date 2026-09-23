@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 11 WordPress tools and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, and build demo content.
+Route the user to one of the 12 WordPress tools and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, and write feature READMEs.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -57,7 +57,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 | Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
-| More... | - | Performance review and demo content. |
+| More... | - | Performance review, demo content, and feature READMEs. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
 
@@ -65,6 +65,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
+| Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
 
 ## Step 2 - run it
 

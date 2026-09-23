@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 64 tools in this plugin and then run it. This command
+Route the user to one of the 65 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,7 +29,7 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 11 WordPress tools |
+| `/forge-wordpress` | 12 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 5 writing and content tools |
 | `/forge-devops` | 4 DevOps and data tools |
@@ -54,7 +54,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, format, and fill WordPress plugins and themes. 11 tools. |
+| WordPress | Build, review, format, fill, and document WordPress plugins and themes. 12 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help. 5 tools. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
@@ -90,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (11 - page at 4)
+### WordPress (12 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -104,19 +104,20 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, and performance tools. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, and feature-README tools. |
 
 | Label | Command | Description |
 |---|---|---|
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 | Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
-| More... | - | Performance review and demo content. |
+| More... | - | Performance review, demo content, and feature READMEs. |
 
 | Label | Command | Description |
 |---|---|---|
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
+| Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
 
 ### Design & Frontend (6 - page at 4)
 
@@ -293,6 +294,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | prompt-summary | analyze-prompt |
 | prompt-ranker | rank-prompt |
 | wordpress-grade | wp-grade |
+| wordpress-feature-readme, wp-readme, feature-readme | wp-feature-readme |
 | wp-demo-content, demo-content, demo-importer | wp-demo |
 | readme-emoji | strip-emoji |
 | sql-breakdown | explain-sql |

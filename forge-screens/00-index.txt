@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  64 tools . 75 commands . 11 pickers . 0 skills . nothing auto-fires.
+  65 tools . 76 commands . 11 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's tool screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -14,7 +14,7 @@
   | [Category]                                        Which category?  (pg 1/4) |
   |-----------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                 -> open  01-wordpress.txt |
-  |         Build, review, format, and fill WP plugins and themes.  11 tools.   |
+  |         Build, review, format, and fill WP plugins and themes.  12 tools.   |
   |                                                                             |
   |  ( 2 )  Design & Frontend                            -> open  02-design.txt |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6      |
@@ -79,7 +79,7 @@
 
   FILES IN THIS FOLDER
     00-index.txtyou are here
-    01-wordpress.txt  /forge-wordpress  . 11 tools
+    01-wordpress.txt  /forge-wordpress  . 12 tools
     02-design.txt     /forge-design     . 6 tools
     03-writing.txt    /forge-writing    . 5 tools
     04-devops.txt     /forge-devops     . 4 tools

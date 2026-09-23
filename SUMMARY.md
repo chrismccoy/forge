@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 64 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 65 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 40 guided helpers · 23 full toolkits.
+**At a glance:** 1 quick win · 41 guided helpers · 23 full toolkits.
 
 ## Small Utils
 
@@ -56,6 +56,7 @@ These ask you a few questions (or take a short description), then produce a comp
 | `readme-emoji` | `/strip-emoji` | Cleans a README's feature list - leading emoji off each bullet, a short label dash becomes a colon, long dashes gone, every other byte returned untouched |
 | `crash-report` | `/crash-report` | Explains a macOS crash report in plain English across six sections, every claim pointing at the field, thread, or line that backs it up |
 | `wordpress-grade` | `/wp-grade` | Grades one piece of WordPress code A to F against a fixed rubric, with strengths, real problems, nitpicks kept separate, and a ship-or-not verdict |
+| `wordpress-feature-readme` | `/wp-feature-readme` | Reads a WordPress theme or plugin and writes a plain-English README: the name, a short description, and every feature a site owner would notice, grouped into categories and traced to real code |
 | `code-teacher` | `/code-teacher` | Hands a script back as a teaching version of itself - a header block, comments explaining what and why, and the lessons worth taking away. Only comments are added |
 | `token-auditor` | `/token-audit` | Grades how efficiently you used the model from four token counts - input, cache and output each get a letter, weighted into one overall grade, with the single fix worth making first |
 
@@ -91,9 +92,9 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 
 ## A few extra notes
 
-**Twenty-six tools have a command name that's different from the tool name:**
+**Twenty-seven tools have a command name that's different from the tool name:**
 
-All eleven WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+All twelve WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
 - `wordpress-plugin` → type `/wp-plugin`
 - `wp-builder-pro` → type `/wp-build`
@@ -106,6 +107,7 @@ All eleven WordPress tools share a short `wp-` command so they group together wh
 - `wordpress-grade` → type `/wp-grade`
 - `wordpress-performance` → type `/wp-performance`
 - `wp-demo-content` → type `/wp-demo`
+- `wordpress-feature-readme` → type `/wp-feature-readme`
 
 And fifteen others are shortened or renamed:
 
@@ -127,12 +129,12 @@ And fifteen others are shortened or renamed:
 
 The other 38 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 75 commands are pickers, not tools:**
+**Eleven of the 76 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 11, 6, 5, 4, 8, 3, 4, 10, 7 and 6 tools
+and go straight to one of the ten categories - 12, 6, 5, 4, 8, 3, 4, 10, 7 and 6 tools
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -141,7 +143,7 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 48 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 49 tools - the easiest way to start
 - **Asks a few questions directly:** 1 - `html-to-wordpress-theme`
 - **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 15 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`
 
@@ -149,4 +151,4 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 64 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 65 tools here.

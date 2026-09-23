@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 64 tools behind 75 slash commands.
+One Claude Code plugin - `forge` - holding 65 tools behind 76 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -27,6 +27,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-grade`](docs/wordpress.md#wordpress-grade). Grades one piece of WordPress code - a snippet or a single file - with a letter grade from A to F against a fixed rubric, what the code does, what it gets right, the real problems with the reason each one matters, the nitpicks kept separate, and a verdict on whether it is safe for a live site.
 - [`/wp-performance`](docs/wordpress.md#wordpress-performance). Reads every file in a plugin or theme and reports what will break under traffic - unbounded queries, cache bypass, repeated queries inside loops, and cron that blocks itself. Starts fresh every run, so running it a second time is a real second opinion rather than a replay of the first.
 - [`/wp-demo`](docs/wordpress.md#wp-demo-content). Builds a WP-CLI demo content importer for a classic theme: reads the theme's whole data model out of its code, writes `demo/demo-import.php`, fills an empty site with realistic posts, media, fields, menus and settings, tests it end to end on a throwaway SQLite site, and reports the theme's own bugs. The theme's files are never touched unless you agree to fixes.
+- [`/wp-feature-readme`](docs/wordpress.md#wordpress-feature-readme). Writes a plain-English README for a WordPress theme or plugin: the name, a short description, and every user facing feature grouped into categories a site owner can read. Each feature is traced to real code, never taken from a readme or changelog, and the output carries no emojis, dashes, or hype words.
 
 **Design & Frontend**
 
@@ -117,7 +118,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 75 commands, nothing running in the background.
+That is the whole install. One plugin, 76 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -128,7 +129,7 @@ Then either browse the whole catalog:
 which asks for a category, then a tool, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 11 WordPress tools
+/forge-wordpress    # 12 WordPress tools
 /forge-design       # 6 design and frontend tools
 /forge-writing      # 5 writing and content tools
 /forge-devops       # 4 DevOps and data tools
@@ -155,6 +156,7 @@ Or call any tool directly:
 /wp-grade                       # letter grade A-F on one snippet or file
 /wp-performance                 # cold full-file performance review
 /wp-demo                        # WP-CLI demo content importer, built and tested
+/wp-feature-readme              # plain-English feature README for a theme or plugin
 
 # Design & Frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -232,7 +234,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 75 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 76 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -256,7 +258,7 @@ description each.
 
 | Command | Tools | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 11 | 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-wordpress` | 12 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
 | `/forge-writing` | 5 | 3 + `More...`, then 2 |
 | `/forge-devops` | 4 | one |
@@ -269,7 +271,7 @@ description each.
 
 
 
-A picker screen looks like this - `/forge-wordpress`, page 1 of 2:
+A picker screen looks like this - `/forge-wordpress`, page 1 of 4:
 
 ```
 Which tool?
@@ -327,7 +329,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              75 command files - 64 tools, 11 pickers
+commands/              76 command files - 65 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -343,7 +345,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 75 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 76 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -357,7 +359,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Tools | Reference |
 |---|---|---|
-| WordPress | 11 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 12 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
 | Writing & Content | 5 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 4 | [docs/devops-and-data.md](docs/devops-and-data.md) |
@@ -376,15 +378,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 75 slash commands: 11 pickers + 64 tools
-├── lib/                      ← 64 procedure folders (SKILL.md + bundled
+├── commands/                 ← 76 slash commands: 11 pickers + 65 tools
+├── lib/                      ← 65 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 64 tools compared by how much each does
+├── SUMMARY.md                ← the 65 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

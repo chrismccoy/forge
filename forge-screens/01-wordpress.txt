@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          11 tools, 4 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          12 tools, 4 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
@@ -62,7 +62,7 @@
   |         strengths, weaknesses, nitpicks, and a verdict.                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Performance review and demo content.                                 |
+  |         Performance review, demo content, and feature READMEs.               |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -77,6 +77,10 @@
   |  ( 2 )  Demo content importer                                   -> /wp-demo  |
   |         Build a WP-CLI importer that fills an empty site with realistic demo |
   |         content, tested on a throwaway SQLite site.                          |
+  |                                                                              |
+  |  ( 3 )  Feature README                                -> /wp-feature-readme  |
+  |         Plain-English README for a theme or plugin: title, description,      |
+  |         and a categorized feature list traced to real code.                  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -326,4 +330,22 @@
   '----------------------------------------------------------------------------'
   Warns first that a full run downloads ~100 photos and often takes 30+ minutes.
   Missing Chrome or Node 22+ only SKIPS screenshots; every other step still runs.
+
+----------------------------------------------------------- /wp-feature-readme -
+  2 fields, asked one at a time.  A path argument seeds TARGET and skips it.
+
+  .--[Target]-- which theme or plugin -----------------------------------------.
+  |  ( ) the current directory   ( ) a folder or .zip I'll give you            |
+  |      no Theme Name / Plugin Name header STOPS the run; more than one       |
+  |      theme or plugin lists their names and asks which                      |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- where the README goes -----------------------------------------.
+  |  ( ) print the README (default)   ( ) write README.md into the folder      |
+  |      an existing README.md is confirmed before it is overwritten           |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- three parts, nothing else -------------------------------------.
+  |  # Name . 2-4 sentence description . ## plain-English categories, largest  |
+  |  first, one-sentence bullets.  Two passes over every file; only features   |
+  |  traced to real code.  No emoji, no en/em dashes, no hype words.           |
+  '----------------------------------------------------------------------------'
 ================================================================================

@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  64 tools . 75 commands . 11 pickers . 0 skills . nothing auto-fires.
+  65 tools . 76 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  11 tools.    |
+  |         Build, review, format, and fill WP plugins and themes.  12 tools.    |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
@@ -91,7 +91,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  11 tools, 4 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  12 tools, 4 pages ----------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/4) |
@@ -150,7 +150,7 @@
   |         strengths, weaknesses, nitpicks, and a verdict.                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Performance review and demo content.                                 |
+  |         Performance review, demo content, and feature READMEs.               |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -165,6 +165,10 @@
   |  ( 2 )  Demo content importer                                   -> /wp-demo  |
   |         Build a WP-CLI importer that fills an empty site with realistic demo |
   |         content, tested on a throwaway SQLite site.                          |
+  |                                                                              |
+  |  ( 3 )  Feature README                                -> /wp-feature-readme  |
+  |         Plain-English README for a theme or plugin: title, description,      |
+  |         and a categorized feature list traced to real code.                  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -564,6 +568,7 @@
    +-- WordPress ............. /forge-wordpress
    |    +-- wp-plugin  wp-build  wp-theme  wp-review  wp-consult  wp-format
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
+   |    +-- wp-feature-readme
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system
