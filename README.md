@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 65 tools behind 76 slash commands.
+One Claude Code plugin - `forge` - holding 66 tools behind 77 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -89,6 +89,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/explain-sql`](docs/code.md#sql-breakdown). Reviews one SQL query without running it - a validation check, a clause-by-clause breakdown, the business question it answers, a quality scorecard out of 40, efficiency and risk flags, and a plain-English summary for someone who has never seen SQL.
 - [`/docblock-rewrite`](docs/code.md#docblock-rewrite). Rewrites bulky PHPDoc and JSDoc blocks into short, plain-English one-line comments, backing up the originals first.
 - [`/code-teacher`](docs/code.md#code-teacher). Turns a script into a teaching version of itself - a header block covering purpose, the tricky parts, the algorithm, usage, and requirements, then line-by-line comments explaining not just what each piece does but why it was written that way, the lessons worth taking away, and a check that the original code came back unchanged. Only comments are added.
+- [`/fullstack-readme`](docs/code.md#fullstack-feature-readme). Writes a plain-English README for a web application, frontend, backend, or both: the name, a short description, and every user facing feature grouped into categories a non-technical user can read. Each feature is traced to real code, never taken from a readme, docs, or tests, and the output carries no emojis, dashes, hype words, or setup steps.
 
 **Docs & Diagrams**
 
@@ -118,7 +119,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 76 commands, nothing running in the background.
+That is the whole install. One plugin, 77 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -136,7 +137,7 @@ which asks for a category, then a tool, then runs it. Or jump straight to one ca
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
 /forge-cleanup      # 4 code-cleanup tools
-/forge-code         # 10 code tools
+/forge-code         # 11 code tools
 /forge-docs         # 7 docs and diagram tools
 /forge-utils        # 6 utilities
 ```
@@ -211,6 +212,7 @@ Or call any tool directly:
 /explain-sql                    # validate and break down one SQL query
 /docblock-rewrite               # PHPDoc/JSDoc -> one-line plain-English comments
 /code-teacher                   # annotate a script with teaching comments
+/fullstack-readme               # plain-English feature README for a web app
 
 # Docs & Diagrams
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
@@ -234,7 +236,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 76 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 77 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -265,7 +267,7 @@ description each.
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
-| `/forge-code` | 10 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 1 |
+| `/forge-code` | 11 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-docs` | 7 | 3 + `More...`, then 3 + `More...`, then 1 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
@@ -329,7 +331,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              76 command files - 65 tools, 11 pickers
+commands/              77 command files - 66 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -345,7 +347,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 76 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 77 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -366,7 +368,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
-| Code | 10 | [docs/code.md](docs/code.md) |
+| Code | 11 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 7 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
@@ -378,15 +380,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 76 slash commands: 11 pickers + 65 tools
-├── lib/                      ← 65 procedure folders (SKILL.md + bundled
+├── commands/                 ← 77 slash commands: 11 pickers + 66 tools
+├── lib/                      ← 66 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 65 tools compared by how much each does
+├── SUMMARY.md                ← the 66 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

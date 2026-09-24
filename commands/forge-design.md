@@ -91,6 +91,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
+| `fullstack-readme` | `/forge-code` |
 | `incident-report` | `/forge-cloud` |
 | `jq` | `/forge-devops` |
 | `kubernetes-architect` | `/forge-devops` |

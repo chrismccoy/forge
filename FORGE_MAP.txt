@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  65 tools . 76 commands . 11 pickers . 0 skills . nothing auto-fires.
+  66 tools . 77 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -63,7 +63,7 @@
   |                                                                              |
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
-  |         refactors.  10 tools.                                                |
+  |         refactors.  11 tools.                                                |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils.  7 tools.   |
@@ -382,7 +382,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  10 tools, 4 pages --------------------------------
+--- Code  ( /forge-code )  -  11 tools, 4 pages --------------------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/4) |
@@ -400,7 +400,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations.                                                         |
+  |         annotations, feature READMEs.                                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -419,7 +419,8 @@
   |         history.                                                             |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Refactoring plans, SQL review, docblocks, teaching annotations.      |
+  |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
+  |         feature READMEs.                                                     |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -440,7 +441,7 @@
   |         bulk.                                                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator.                                              |
+  |         The teaching annotator and full stack feature READMEs.               |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -451,6 +452,10 @@
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
   |         explaining what and why. Code unchanged.                             |
+  |                                                                              |
+  |  ( 2 )  Full stack feature README                      -> /fullstack-readme  |
+  |         Plain-English README for a web app: title, description, and a        |
+  |         categorized feature list traced to real code.                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -595,7 +600,7 @@
    +-- Code .................. /forge-code
    |    +-- blueprint  e2e-tests  explain-my-code  codebase-to-mermaid
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
-   |    +-- docblock-rewrite  code-teacher
+   |    +-- docblock-rewrite  code-teacher  fullstack-readme
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt

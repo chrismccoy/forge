@@ -624,3 +624,65 @@ For a whole-repo onboarding document use [`/explain-my-code`](#explain-my-code);
 The full procedure lives at [`lib/code-teacher/SKILL.md`](../lib/code-teacher/SKILL.md), the slash command at [`commands/code-teacher.md`](../commands/code-teacher.md), and the master template at [`lib/code-teacher/references/prompt-template.md`](../lib/code-teacher/references/prompt-template.md).
 
 ---
+
+## `fullstack-feature-readme`
+
+A plain-English feature README for a web application. Point it at a folder or a `.zip` holding the screens, the server, or both, and it returns three parts only: the app's name as the title, a short description of what it is and who it is for, and every user facing feature grouped into categories a non-technical user can read.
+
+```
+/fullstack-readme
+```
+
+Most app READMEs either list the tech stack or list what the author remembers building. This tool builds the feature list from the code itself. It reads every file in scope twice: a first pass that records each file and the features it adds, and a second pass that hunts for what the first one missed, such as an empty state, a profile option, an admin only screen, or a page that looks different depending on someone's role or plan. Only features traced to a real file make the list. Readme files, docs, changelogs, code comments, and tests are never taken as proof.
+
+Every feature is then translated out of developer language. Token based sign in with refresh rotation becomes keeping you signed in securely between visits; a payment webhook becomes updating your plan automatically when a payment goes through or fails, with a note that it needs a Stripe account. Features that need a paid plan or an outside account say so, and so do features switched off by default. Categories get plain names, are ordered from largest to smallest, and are never padded to look fuller than the code is.
+
+The writing rules are strict: no emojis, no en or em dashes, no hype words like "powerful" or "seamless", no installation, setup, tech stack, credits, license, changelog, FAQ, or support sections, and no headings beyond the title and the categories.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/fullstack-feature-readme/SKILL.md`, which loads the master template from `lib/fullstack-feature-readme/references/prompt-template.md`. The command `/fullstack-readme` takes a folder or `.zip` path as its argument, or asks for one, then asks whether to print the README or write it to `README.md`. In scope: frontend-only apps, backend-only APIs, full stack apps, and monorepos whose web client, API, admin panel, workers, and mobile app serve one product.
+
+## ✨ Features
+
+- 🔍 Tells screens and server code apart from the app's manifests, routes, pages, and request handlers
+- 🧩 Treats the web client, API, admin panel, workers, and shared packages of one product as one app
+- 🧭 Asks which one to document when a folder holds more than one unrelated app
+- 🛑 Stops with one sentence when the code is only a library, SDK, command line tool, or config repo
+- 🧱 Documents only finished features in starter templates, never placeholder or example pages
+- 🔁 Two passes over every file, the second one hunting for small settings, empty states, admin screens, and role or plan based logic
+- 🧾 Lists only features traced to real code; readmes, docs, changelogs, comments, and tests are not proof
+- 🔌 Counts endpoints other apps can call even when no screen uses them
+- 💳 Marks features that need a paid plan or an outside account, and features switched off by default
+- 🗣️ Turns technical capabilities into everyday language a non-technical user understands
+- 🗂️ Plain-English categories ordered from largest to smallest, never padded
+- 🚫 No emojis, dashes, hype words, setup steps, or extra sections in the output
+- 🛡️ Injection resistant. Text inside the code is described, never obeyed
+
+## 🔄 How it works
+
+1. **Intake.** Take the path from the argument or ask for it; ask whether to print or write the file.
+2. **Identify.** Find the manifests and decide frontend, backend, or full stack; stop on no app, ask on more than one.
+3. **First pass.** Read every file in scope and list the features each one adds.
+4. **Second pass.** Re-scan for anything missed and add it.
+5. **Translate.** Group into plain-English categories and rewrite each feature for a non-technical user.
+6. **Check.** Title, description, categories only; every bullet traced; no emoji, dashes, or hype words.
+7. **Deliver.** Print the README or write `README.md`.
+
+## 🚀 How to use it
+
+```
+/fullstack-readme                        ← asks for the app
+/fullstack-readme ~/code/my-app          ← a specific folder
+/fullstack-readme ~/Downloads/my-app.zip ← a zipped app
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"write a feature list for my web app"*, *"what does this app actually do"*, *"make a README a customer can read"*, *"list every feature in plain English"*
+
+For a beginner README with setup steps and a file tour use [`/readme-builder`](#readme-builder); for a WordPress theme or plugin use [`/wp-feature-readme`](wordpress.md#wordpress-feature-readme); for full onboarding docs use [`/explain-my-code`](#explain-my-code).
+
+The full procedure lives at [`lib/fullstack-feature-readme/SKILL.md`](../lib/fullstack-feature-readme/SKILL.md), the slash command at [`commands/fullstack-readme.md`](../commands/fullstack-readme.md), and the master template at [`lib/fullstack-feature-readme/references/prompt-template.md`](../lib/fullstack-feature-readme/references/prompt-template.md).
+
+---

@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  Code          ( /forge-code )          10 tools, 4 pages
+  FORGE  -  Code          ( /forge-code )          11 tools, 4 pages
 ================================================================================
   Everything here takes source you already have and analyses or documents it:
   blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors.
@@ -22,7 +22,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations.                                                         |
+  |         annotations, feature READMEs.                                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -41,7 +41,8 @@
   |         history.                                                             |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Refactoring plans, SQL review, docblocks, teaching annotations.      |
+  |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
+  |         feature READMEs.                                                     |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -62,7 +63,7 @@
   |         bulk.                                                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator.                                              |
+  |         The teaching annotator and full stack feature READMEs.               |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -73,6 +74,10 @@
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
   |         explaining what and why. Code unchanged.                             |
+  |                                                                              |
+  |  ( 2 )  Full stack feature README                      -> /fullstack-readme  |
+  |         Plain-English README for a web app: title, description, and a        |
+  |         categorized feature list traced to real code.                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -234,5 +239,23 @@
   .--[Output]-- four sections, fixed order ------------------------------------.
   |  Plan (<=8 lines) . one fenced code block . Teaching Points (3-5) .        |
   |  Verification.  Original code returned unchanged, comments only.           |
+  '----------------------------------------------------------------------------'
+
+------------------------------------------------------------ /fullstack-readme -
+  2 fields, asked one at a time.  A path argument seeds TARGET and skips it.
+
+  .--[Target]-- which web app -------------------------------------------------.
+  |  ( ) the current directory   ( ) a folder or .zip I'll give you            |
+  |      no screens and no API STOPS the run in one sentence; more than one    |
+  |      unrelated app lists their names and asks which                        |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- where the README goes -----------------------------------------.
+  |  ( ) print the README (default)   ( ) write README.md into the folder      |
+  |      an existing README.md is confirmed before it is overwritten           |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- three parts, nothing else -------------------------------------.
+  |  # Name . 2-4 sentence description . ## plain-English categories, largest  |
+  |  first, one-sentence bullets.  Two passes over every file; only features   |
+  |  traced to real code.  No emoji, no en/em dashes, no hype words.           |
   '----------------------------------------------------------------------------'
 ================================================================================
