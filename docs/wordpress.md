@@ -690,3 +690,243 @@ One slash command plus its procedure file `lib/wordpress-feature-readme/SKILL.md
 For a beginner README on a project that is not WordPress use [`/readme-builder`](code.md#readme-builder); for a review of the same code use [`/wp-review`](#wordpress-architect-review).
 
 The full procedure lives at [`lib/wordpress-feature-readme/SKILL.md`](../lib/wordpress-feature-readme/SKILL.md), the slash command at [`commands/wp-feature-readme.md`](../commands/wp-feature-readme.md), and the master template at [`lib/wordpress-feature-readme/references/prompt-template.md`](../lib/wordpress-feature-readme/references/prompt-template.md).
+
+---
+
+## `wordpress-wp-cli`
+
+Bash scripts that use WP-CLI to run one task across every WordPress site on a server, or on one site. It writes new ones, or reviews a script you already have, lists what is wrong with it line by line, and fixes it.
+
+```
+/wp-cli
+```
+
+Running the same job on forty sites by hand means forty logins, or a quick loop that stops at the first broken install and never tells you which sites it skipped. This tool writes the loop properly. It finds every `wp-config.php` under a sites root, talks to each install through one `wp_run` wrapper, keeps going when a site fails, and ends with a summary table and an exit code that tells cron what happened. Every script is built from the same tested skeleton, so the flags, the logging, and the safety rules are the same from one script to the next.
+
+Every script is a dry run until you add `-f`. It asks you to type `yes` before changing anything, and `-y` skips that for cron. Update scripts export the database and use maintenance mode before applying changes, git scripts never push without `-f`, and every change is read back afterwards, so anything that did not take shows as `FAILED (not verified)`.
+
+It never runs anything against your live sites. Each script is tested against a fake sites root and a stub `wp` before it is handed over, and you run the real thing.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-wp-cli/SKILL.md`. Three references load on every run: `references/conventions.md` (house style: header, strict mode, options, logging, exit codes), `references/fleet.md` (finding installs, the `wp_run` wrapper, multisite, the site loop, the summary), and `references/safety.md` (dry run, confirmation, and the rules for deletes, updates, backups, git, URLs, and downloads). Write mode starts from `references/examples/skeleton.sh`; review mode works through `references/review-checklist.md`. Ten area guides under `references/areas/` carry the commands and known traps for content, comments, media, users, updates, settings, themes and git, backups, maintenance, and custom WP-CLI commands, with a tested PHP example in `references/examples/custom-command.php`.
+
+## ✨ Features
+
+- 🌐 Runs one task across every install under a sites root, or one site with `-s`
+- 🧪 Dry run by default; `-f` applies, a typed `yes` confirms, `-y` skips the prompt for cron
+- 🧱 One site's failure never stops the rest, and the run ends with a summary table and a meaningful exit code
+- 🚩 Shared flags on every script: `-r` sites root, `-s` one site, `-m` search depth, `-f`, `-y`, `-q`, `-h`
+- 💾 Update scripts export the database and use maintenance mode before changing anything
+- 🔍 Every change is read back, and anything that did not take is reported as `FAILED (not verified)`
+- 🔒 Git scripts never push unless `-f` is passed
+- 🗂️ Area guides for comments, media, users, updates and checksums, settings, themes and git, backups, and maintenance
+- 🐘 Suggests a small custom WP-CLI command in PHP when a job would call `wp` thousands of times, and writes it only on a yes
+- 📝 Review mode tags every finding CRITICAL, WARNING, or INFO with the line, the risk, and the fix, and asks before fixing
+- ✅ `bash -n`, `shellcheck`, and a stub dry run and apply run on every script before hand-off
+- 🛑 Never runs against your real sites, and treats existing scripts and command output as data
+
+## 🔄 How it works
+
+1. **Intake.** Write or review, then the task or the script path, one question at a time.
+2. **Read the rules.** House style, fleet, and safety, plus the area guide that matches the task.
+3. **Write.** Check every WP-CLI command exists, decide bash or a custom command, build from the skeleton, and `chmod +x`.
+4. **Or review.** Run the checklist (and a quick scan for a folder), report findings, then ask: fix everything, only bugs and safety, or report only.
+5. **Test.** `bash -n`, `shellcheck`, `-h`, a bad option, then a dry run and a `-f -y` run against a stub `wp` and a fake sites root, cleaned up afterwards.
+6. **Report.** The path, usage for a dry run, an apply run, one site, and cron, the defaults chosen, and the test results.
+
+## 🚀 How to use it
+
+```
+/wp-cli                                         ← asks write or review
+/wp-cli delete spam and trash pending comments  ← write a new script
+/wp-cli ./scripts/wp-user-purge.sh              ← review and fix a script
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"write a script that updates plugins on every site"*, *"purge spam comments across all my WordPress installs"*, *"check core checksums on the whole server"*, *"back up every active theme"*, *"review my WP-CLI script"*
+
+**Needs:** bash and `shellcheck` for testing. The scripts themselves need WP-CLI on the server they run on. Defaults: sites root `$HOME/webapps` (override with `-r` or `SITES_ROOT`) and search depth 2.
+
+For demo content on a single theme use [`/wp-demo`](#wp-demo-content); for a script in another language use [`/snippet`](utilities.md#prompt-snippet).
+
+The full procedure lives at [`lib/wordpress-wp-cli/SKILL.md`](../lib/wordpress-wp-cli/SKILL.md), the references under [`lib/wordpress-wp-cli/references/`](../lib/wordpress-wp-cli/references/), and the slash command at [`commands/wp-cli.md`](../commands/wp-cli.md).
+
+---
+
+## `wordpress-block-theme`
+
+Build or review a WordPress block theme made for full site editing. Give it a name and what the site is for and it writes a complete theme; point it at an existing block theme and it reports every problem by file and line.
+
+```
+/wp-block-theme
+```
+
+Block themes move almost everything into `theme.json`, HTML block templates, and patterns, and a small mistake there fails quietly: a raw hex color that the Site Editor can't change, a template part whose area doesn't match its registration, a pattern slug without a namespace, a font pulled from a CDN. This tool knows theme.json version 3 (WordPress 6.6+) key by key, the template hierarchy and its fallbacks, Global Styles, style variations, patterns, navigation, local fonts, the layout system, and the WordPress.org directory rules.
+
+**Build** writes the whole theme from a short brief: `theme.json` version 3, templates, template parts, patterns, style variations, and local fonts, with preset-based styles and color pairs that pass WCAG AA. Name one of the 53 styles from [`/wp-mockup`](#wordpress-theme-mockup) and it carries that style's colors, fonts, radii, shadows, and spacing into the presets. It then reviews its own output with every check and fixes it until the verdict is `SHIP`.
+
+**Review** reads `theme.json`, every template, part, pattern, and style variation, `style.css`, `functions.php`, and child theme overrides. Each finding carries the file and line, a severity (CRITICAL, WARNING, or INFO), the bad code, and the fixed code, and the report ends with one verdict: `SHIP`, `FIX WARNINGS`, or `DO NOT SHIP`. Review is read-only.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-block-theme/SKILL.md` and seven references: `build.md` (intake, files to create, rules, testing), `checks.md` (checks for every file type plus quick scans), `report-format.md` (severity, the report format, the "not a bug" list, version requirements), `theme-json-guide.md`, `template-patterns.md`, `fse-guide.md`, and `patterns.md` (working examples used for the GOOD side of findings). Build's optional live check uses the throwaway SQLite site builder bundled with [`/wp-bug-audit`](#wordpress-theme-bug-audit).
+
+## ✨ Features
+
+- 🏗️ Builds a complete block theme from a name, a purpose, and optional design notes
+- 🎨 Takes colors and fonts from any of the 53 `/wp-mockup` styles
+- 🧾 theme.json version 3 with a `$schema`, preset scales, and object-notation root padding
+- 🔤 Local fonts only, never a font CDN
+- ♿ Color pairs that pass WCAG AA contrast
+- 🔁 Self-review until `SHIP`, plus JSON, `php -l`, and block markup balance checks
+- 🧒 Builds and reviews child themes of a block theme
+- 🏷️ WordPress.org mode applies the stricter directory rules: `readme.txt`, `screenshot.png`, license, no phone-home code
+- 📍 Every finding cites `file:line`, quotes the code, and gives a BAD/GOOD pair
+- 🧪 Judges each finding against a "not a bug" list before reporting it
+- 🛑 Injection resistant: text inside the theme that tries to give orders is reported as CRITICAL
+
+## 🔄 How it works
+
+1. **Intake.** Build or review, then the brief or the theme path, one question at a time.
+2. **Build:** derive the slug, text domain, prefix, and pattern namespace; write every file; test; self-review until `SHIP`; optionally run a live check on a throwaway site.
+3. **Review:** detect a child theme and WordPress.org targeting, map the theme and run the quick scans, read every file in full, check each file type, and filter against the "not a bug" list.
+4. **Report.** Findings grouped by file, the summary, and one verdict line.
+
+## 🚀 How to use it
+
+```
+/wp-block-theme                                   ← asks build or review
+/wp-block-theme Trail Notes, a hiking blog, swiss ← build a new theme
+/wp-block-theme ~/themes/my-theme                 ← review a block theme
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"build me a block theme for a recipe site"*, *"make an FSE theme in the bento style"*, *"review my theme.json"*, *"is this block theme ready for WordPress.org"*
+
+Block themes only. For converting static HTML into a classic theme use [`/wp-theme`](#html-to-wordpress-theme); for a full bug audit on test sites use [`/wp-bug-audit`](#wordpress-theme-bug-audit).
+
+The full procedure lives at [`lib/wordpress-block-theme/SKILL.md`](../lib/wordpress-block-theme/SKILL.md), the references under [`lib/wordpress-block-theme/references/`](../lib/wordpress-block-theme/references/), and the slash command at [`commands/wp-block-theme.md`](../commands/wp-block-theme.md).
+
+---
+
+## `wordpress-theme-bug-audit`
+
+A full bug audit of a WordPress theme. It reads every file, checks the code against about 160 numbered bug checks, tests everything on throwaway WordPress sites across the PHP versions your customers run, and writes a verified bug list and a coverage report into the theme's `audit/` folder.
+
+```
+/wp-bug-audit
+```
+
+A theme can pass every linter and still lose a customer's settings when they switch tabs on the options page, print a nonce into a cached page, or fatal on PHP 7.4. This tool looks for the bugs a customer would actually hit. It maps every field the theme stores and every template that reads it, checks each against the numbered list, then exercises all of it on real throwaway sites: activation, probe data through every save handler, the front end, the admin, every entry point, JavaScript errors, and a list of variations (page cache, plain permalinks, a subdirectory install, right to left, user roles, time zones, multisite, and more), each with its own evidence file.
+
+It is built for long runs. Before anything starts it asks eight questions and shows the file count, a token estimate, free disk space, and which tools it found, then waits for **Start**. Progress is saved after every step in a work folder outside the theme, so an interrupted run can resume. Every bug is confirmed and independently checked before it is written, and nothing in the theme changes unless you ask for fixes afterwards.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-theme-bug-audit/SKILL.md`, which holds the ground rules, the intake, and a phase map. Each phase reads its reference in full first: `reading.md`, `checks.md` (the numbered check list), `testing-setup.md`, `testing-steps.md`, `variations.md`, `testing-final.md`, `verify-and-report.md`, and `fixes.md`. Eighteen tested scripts in `scripts/` do the fiddly parts: a sha256-checked SQLite site builder, per-version PHP passes with standalone PHP builds, phpcs and PHPStan in batches, ESLint and stylelint, page fetches that catch hidden fatals, HTML and asset checks, JavaScript and axe-core capture, and must-use plugins that log queries and block outbound requests.
+
+## ✨ Features
+
+- 🔎 Finds the theme on its own - the current folder, up to three levels below, or a parent - and announces it before starting
+- ❓ Eight multiple-choice questions: scope, PHP versions, extra plugins, known issues, fixes, marketplace, upgrade test, oldest WordPress
+- 💰 Shows a token estimate, disk space, and missing tools before asking Start or Cancel; no answer means no audit
+- 📋 About 160 numbered checks across fields, templates, code, JavaScript, security, upgrades, caching, privacy, accessibility, and multisite
+- 🐘 A pass per PHP version your customers run, with standalone PHP builds for 8.x and Docker for 7.4
+- 🧪 Throwaway SQLite sites only, outbound hosts blocked, no `sudo`
+- 🧩 Every variation checked as its own item with its own evidence
+- ⬆️ Upgrade test from an earlier git tag or release
+- 🏷️ Optional WordPress.org or ThemeForest rules
+- ✅ Every bug confirmed and independently checked, with `file:line`, check ID, affected PHP versions, customer symptom, and steps to reproduce
+- 📊 A coverage file that shows every file, entry point, and check ID with its outcome, so gaps are visible
+- ♻️ Resumes after a crash, a closed terminal, or a full context
+- 🔒 The theme is never changed unless you ask for fixes; earlier audits are left alone
+
+## 🔄 How it works
+
+1. **Find the theme** and announce it; check for an unfinished run to resume.
+2. **Intake.** Eight questions, then a cost and tools summary, then Start or Cancel.
+3. **Read.** Every theme file, split across subagents for big themes; build the data model and inventory.
+4. **Check.** Every row and template against every check ID.
+5. **Test.** Tools and static analysis, then steps 1-17 on throwaway sites: activation, probe data, handlers, front end, admin, entry points, JavaScript, screenshots, variations, PHP and WordPress versions, upgrade, standards, loading, coverage.
+6. **Verify and report.** Confirm each bug, check it independently, set severity, and write `BUGS.md` and `COVERAGE.md` into `audit/`.
+7. **Offer fixes.** Only if you asked for them at intake.
+
+## 🚀 How to use it
+
+```
+/wp-bug-audit                     ← finds the theme from the current folder
+/wp-bug-audit ~/themes/mytheme    ← a specific theme
+/wp-bug-audit ~/Downloads/x.zip   ← a zipped theme, audited from a scratch copy
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"audit my theme for bugs"*, *"find everything broken in this theme before release"*, *"test my theme on PHP 7.4 through 8.4"*, *"what will customers hit in this theme"*
+
+**Needs:** Linux with bash 4.4+, PHP with `pdo_sqlite`, `curl`, `unzip`, `mktemp`, `timeout`, `rsync`, network access, Composer (or PHP able to run `composer.phar`), Node.js 22+ with npm, Chrome or Chromium, and about 2 GB free. Java, Xdebug or pcov, and Docker without `sudo` are used when present. Anything missing is marked BLOCKED or SKIPPED and the rest still runs. A full audit costs about 15,000-20,000 tokens per PHP file; Standard scope is roughly half.
+
+For a scorecard review use [`/wp-review`](#wordpress-architect-review); for a performance-only pass use [`/wp-performance`](#wordpress-performance); for block themes use [`/wp-block-theme`](#wordpress-block-theme).
+
+The full procedure lives at [`lib/wordpress-theme-bug-audit/SKILL.md`](../lib/wordpress-theme-bug-audit/SKILL.md), the references under [`lib/wordpress-theme-bug-audit/references/`](../lib/wordpress-theme-bug-audit/references/), the scripts under [`lib/wordpress-theme-bug-audit/scripts/`](../lib/wordpress-theme-bug-audit/scripts/), and the slash command at [`commands/wp-bug-audit.md`](../commands/wp-bug-audit.md).
+
+---
+
+## `wordpress-theme-mockup`
+
+A clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles, such as bento, swiss, glassmorphism, retro terminal, or y2k. You get one page per theme template, all sharing a header, sidebar, and footer and linking to each other.
+
+```
+/wp-mockup
+```
+
+Seeing a design style on a real blog - not a landing page - usually means building the theme first. This tool skips that. It writes `index.html`, `single.html`, `page.html`, `archive.html`, `category.html`, `tag.html`, `author.html`, `search.html`, and `404.html`, with an optional `front-page.html`, into `./<style>-theme-mockup/`. The single post page shows every element a writer can use - headings, lists, quotes, aligned images, a gallery, a table, and code - so the style covers all of them.
+
+The style specs describe landing pages, so the tool maps them onto a blog instead of copying them. Fonts, colors, shadows, radii, textures, and motion carry over exactly; cards become post cards and widgets, pills become category and tag badges, and buttons become "Read more" and pagination. Landing-only sections like pricing and hero blocks are left out. Post text stays readable even in loud styles, because the style goes into the frame around the article.
+
+The mockup is built to be converted: Tailwind CSS v3 with the style's tokens in `tailwind.config`, no inline style attributes, WordPress class names, semantic landmarks, and WCAG 2.1 AA contrast. When it is done, run [`/wp-theme`](#html-to-wordpress-theme) from inside the mockup folder to turn it into a real theme.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-theme-mockup/SKILL.md`, which holds the style picking rules, how a style is applied to a theme, the build rules, the output, and the style list. `references/theme-pages.md` covers the page set, the shared parts, the single-post content showcase, comments, and content rules. `references/styles/<slug>.md` holds one design spec per style, 53 in all, and only the requested one is read. The same 53 specs drive the named styles in [`/wp-block-theme`](#wordpress-block-theme).
+
+## ✨ Features
+
+- 🎨 53 named design styles, from bento and swiss to vaporwave, gothic, and longform
+- 🧭 A style name it doesn't know gets the 2-3 closest suggestions, never an improvised style
+- 🗂️ Nine linked pages covering every classic theme template, plus an optional static front page
+- 🧱 Identical `<head>`, config, header, sidebar, and footer on every page
+- 📰 A single post that shows every content element a writer can use
+- ↔️ Right sidebar by default, or left, or none
+- 🌬️ Tailwind CSS v3 Play CDN with the style's tokens; no inline styles, no Tailwind v4 syntax
+- ♿ WCAG 2.1 AA contrast, visible focus, labelled fields, and reduced motion
+- 📱 Mobile first, with the sidebar stacking below the content
+- 🔗 Every link between pages works
+- 🔁 Built for `/wp-theme` to convert into a real theme
+
+## 🔄 How it works
+
+1. **Intake.** The style, the fictional site, the sidebar, and any extra pages, one question at a time.
+2. **Read.** `theme-pages.md` and only the chosen style's spec.
+3. **Adapt.** Apply the style's visual rules exactly, map its components onto blog parts, and leave out landing-only sections.
+4. **Build.** Write every page with the shared parts and working links.
+5. **Check.** Every item in `theme-pages.md`, the shared parts, and every link.
+6. **Report.** The folder and files, the style rules adapted or left out, and the `/wp-theme` handoff.
+
+## 🚀 How to use it
+
+```
+/wp-mockup                                        ← asks for the style
+/wp-mockup bento, Trail Notes, a hiking blog      ← a style and a site
+/wp-mockup swiss, left sidebar                    ← a style and a layout
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"mock up a WordPress theme in the bento style"*, *"show me a blog theme in vaporwave"*, *"build theme pages I can convert later"*
+
+For turning the mockup into a theme use [`/wp-theme`](#html-to-wordpress-theme); for a block theme in one of these styles use [`/wp-block-theme`](#wordpress-block-theme).
+
+The full procedure lives at [`lib/wordpress-theme-mockup/SKILL.md`](../lib/wordpress-theme-mockup/SKILL.md), the references under [`lib/wordpress-theme-mockup/references/`](../lib/wordpress-theme-mockup/references/), and the slash command at [`commands/wp-mockup.md`](../commands/wp-mockup.md).

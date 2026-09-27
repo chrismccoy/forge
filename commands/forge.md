@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 66 tools in this plugin and then run it. This command
+Route the user to one of the 70 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,7 +29,7 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 12 WordPress tools |
+| `/forge-wordpress` | 16 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 5 writing and content tools |
 | `/forge-devops` | 4 DevOps and data tools |
@@ -54,7 +54,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, format, fill, and document WordPress plugins and themes. 12 tools. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 16 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help. 5 tools. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
@@ -90,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (12 - page at 4)
+### WordPress (16 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -104,20 +104,28 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, performance, demo-content, and feature-README tools. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, bug-audit, and mockup tools. |
 
 | Label | Command | Description |
 |---|---|---|
 | Menu icon picker | wp-menu-icons | Add a searchable Font Awesome icon picker to each Appearance > Menus item, ported into the theme. |
 | Report card | wp-report-card | Scorecard-only review: the 10-area /10 table plus an overall score and tier, no findings or fixes. |
 | Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
-| More... | - | Performance review, demo content, and feature READMEs. |
+| More... | - | Performance review, demo content, feature READMEs, and more. |
 
 | Label | Command | Description |
 |---|---|---|
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
+| More... | - | WP-CLI scripts, block themes, the theme bug audit, and theme mockups. |
+
+| Label | Command | Description |
+|---|---|---|
+| WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
+| Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
+| Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
+| Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
 
 ### Design & Frontend (6 - page at 4)
 
@@ -298,6 +306,10 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | wordpress-feature-readme, wp-readme, feature-readme | wp-feature-readme |
 | fullstack-feature-readme, app-readme, app-feature-readme | fullstack-readme |
 | wp-demo-content, demo-content, demo-importer | wp-demo |
+| wordpress-wp-cli, wpcli, wp-cli-scripts, wp-fleet | wp-cli |
+| wordpress-block-theme, block-theme, fse-theme | wp-block-theme |
+| wordpress-theme-bug-audit, theme-bug-audit, bug-audit, theme-audit | wp-bug-audit |
+| wordpress-theme-mockup, theme-mockup, mockup | wp-mockup |
 | readme-emoji | strip-emoji |
 | sql-breakdown | explain-sql |
 | e2e-playwright, playwright, playwright-e2e | e2e-tests |

@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          12 tools, 4 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          16 tools, 5 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/4) |
+  | [Tool]                                                 Which tool?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -27,7 +27,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/4) |
+  | [Tool]                                                 Which tool?  (pg 2/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -47,7 +47,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/4) |
+  | [Tool]                                                 Which tool?  (pg 3/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -62,13 +62,13 @@
   |         strengths, weaknesses, nitpicks, and a verdict.                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Performance review, demo content, and feature READMEs.               |
+  |         Performance review, demo content, feature READMEs, and more.         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/4) |
+  | [Tool]                                                 Which tool?  (pg 4/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -81,6 +81,32 @@
   |  ( 3 )  Feature README                                -> /wp-feature-readme  |
   |         Plain-English README for a theme or plugin: title, description,      |
   |         and a categorized feature list traced to real code.                  |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 5  |
+  |         WP-CLI scripts, block themes, the theme bug audit, and theme         |
+  |         mockups.                                                             |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 5/5) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
+  |         Write or review bash scripts that run a WP-CLI task on every site    |
+  |         or one: dry run first, stub-tested.                                  |
+  |                                                                              |
+  |  ( 2 )  Block theme build or review                      -> /wp-block-theme  |
+  |         Build a full-site-editing block theme from a brief, or review one    |
+  |         with file:line findings and a ship verdict.                          |
+  |                                                                              |
+  |  ( 3 )  Theme bug audit                                    -> /wp-bug-audit  |
+  |         Read every file, run ~160 checks, and test on throwaway sites across |
+  |         PHP versions; a verified bug list in audit/.                         |
+  |                                                                              |
+  |  ( 4 )  Theme mockup in a design style                        -> /wp-mockup  |
+  |         Clickable static HTML mockup of a classic theme in one of 53 named   |
+  |         styles, ready for /wp-theme.                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -347,5 +373,128 @@
   |  # Name . 2-4 sentence description . ## plain-English categories, largest  |
   |  first, one-sentence bullets.  Two passes over every file; only features   |
   |  traced to real code.  No emoji, no en/em dashes, no hype words.           |
+  '----------------------------------------------------------------------------'
+
+---------------------------------------------------------------------- /wp-cli -
+  Mode first, then its fields, one at a time.  A path argument means REVIEW
+  with that TARGET; a task description means WRITE with that TASK.
+
+  .--[Mode]-- write or review -------------------------------------------------.
+  |  ( ) write a new script   ( ) review and fix an existing script            |
+  '----------------------------------------------------------------------------'
+  .--[Task]-- write mode ------------------------------------------------------.
+  |  ( ) comments or spam cleanup   ( ) updates and checksums                  |
+  |  ( ) users, media, or backups   [Other] any other WP-CLI job               |
+  |      follow-ups only for what cannot default: dates, a role, a URL file    |
+  '----------------------------------------------------------------------------'
+  .--[Scope]-- write mode -----------------------------------------------------.
+  |  ( ) every site under the sites root (default)   ( ) one site only         |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- write mode ----------------------------------------------------.
+  |  ( ) ./<task-name>.sh (default)   [Other] a path                           |
+  |      an existing file is confirmed before it is overwritten                |
+  '----------------------------------------------------------------------------'
+  .--[Target]-- review mode ---------------------------------------------------.
+  |  ( ) a script I'll give you   ( ) a folder of scripts                      |
+  |      findings CRITICAL / WARNING / INFO, then: fix all, bugs and safety    |
+  |      only, or report only                                                  |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- tested, never run live ----------------------------------------.
+  |  Dry run until -f; typed yes (-y for cron); one site failing never stops   |
+  |  the rest; summary table + exit code.  bash -n, shellcheck, and a stub     |
+  |  dry run and -f -y run against a fake sites root before hand-off.          |
+  '----------------------------------------------------------------------------'
+
+-------------------------------------------------------------- /wp-block-theme -
+  Mode first, then its fields, one at a time.  A theme path argument means
+  REVIEW; a name or site description means BUILD.
+
+  .--[Mode]-- build or review -------------------------------------------------.
+  |  ( ) build a new block theme   ( ) review an existing block theme          |
+  '----------------------------------------------------------------------------'
+  .--[Brief]-- build mode -----------------------------------------------------.
+  |  ___ theme name   ___ what the site is for                                 |
+  |      a folder that already exists is never overwritten                     |
+  '----------------------------------------------------------------------------'
+  .--[Design]-- build mode ----------------------------------------------------.
+  |  ( ) neutral and readable (default)                                        |
+  |  ( ) a named style from /wp-mockup   ( ) colors and fonts I give           |
+  '----------------------------------------------------------------------------'
+  .--[Distribution]-- both modes ----------------------------------------------.
+  |  ( ) private (default)   ( ) WordPress.org - stricter directory rules      |
+  |      review detects WordPress.org from readme.txt or screenshot.png        |
+  '----------------------------------------------------------------------------'
+  .--[Parent]-- build mode ----------------------------------------------------.
+  |  ( ) standalone theme (default)   ( ) child of a block theme I name        |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- build ships, review reports -----------------------------------.
+  |  BUILD: theme.json v3, templates, parts, patterns, style variations,       |
+  |  local fonts; self-reviewed until SHIP.  REVIEW: findings by file:line,    |
+  |  CRITICAL / WARNING / INFO with BAD/GOOD code, then SHIP, FIX WARNINGS,    |
+  |  or DO NOT SHIP.  No templates/index.html STOPS the review.                |
+  '----------------------------------------------------------------------------'
+
+---------------------------------------------------------------- /wp-bug-audit -
+  Finds the theme first and announces it, then a resume check, then 8
+  questions (4 per screen), then a cost confirm.  No clear answer = STOP.
+
+  .--[Scope]-- 1 of 8 ---------------------------------------------------------.
+  |  ( ) full audit (Recommended)   ( ) standard - no screenshots, variations, |
+  |      upgrade, or line coverage   ( ) code only - no test site              |
+  '----------------------------------------------------------------------------'
+  .--[PHP]-- 2 of 8 -----------------------------------------------------------.
+  |  ( ) every minor from Requires PHP up (Recommended)                        |
+  |  ( ) 7.4, 8.1, 8.2, 8.3, 8.4   [Other] versions I type                     |
+  '----------------------------------------------------------------------------'
+  .--[Plugins]-- 3 of 8 -------------------------------------------------------.
+  |  ( ) theme's dependencies only (Recommended)                               |
+  |  ( ) + WooCommerce, Yoast, CF7, Jetpack   [Other] plugins I list           |
+  '----------------------------------------------------------------------------'
+  .--[Known issues]-- 4 of 8 --------------------------------------------------.
+  |  ( ) yes - ask after the audit   ( ) no                                    |
+  '----------------------------------------------------------------------------'
+  .--[Fixes]-- 5 of 8 ---------------------------------------------------------.
+  |  ( ) ask which bugs to fix (Recommended)   ( ) report only                 |
+  '----------------------------------------------------------------------------'
+  .--[Marketplace]-- 6 of 8 ---------------------------------------------------.
+  |  ( ) own site / none (Recommended)   ( ) WordPress.org   ( ) ThemeForest   |
+  '----------------------------------------------------------------------------'
+  .--[Upgrade]-- 7 of 8 -------------------------------------------------------.
+  |  ( ) latest earlier git tag (Recommended)   [Other] a previous zip/folder  |
+  |  ( ) skip the upgrade test                                                 |
+  '----------------------------------------------------------------------------'
+  .--[WordPress]-- 8 of 8 -----------------------------------------------------.
+  |  ( ) the theme's Requires at least (Recommended)   [Other] a version       |
+  '----------------------------------------------------------------------------'
+  .--[Confirm]-- start the audit? ---------------------------------------------.
+  |  files, lines, KB, token estimate, disk free (~2 GB needed), media         |
+  |  folders, tools found, what will be BLOCKED     ( ) Start   ( ) Cancel     |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- written to the theme's audit/ ---------------------------------.
+  |  A verified bug list (file:line, check ID, severity) and a coverage file.  |
+  |  Throwaway SQLite sites per PHP version; the theme itself is untouched.    |
+  '----------------------------------------------------------------------------'
+
+------------------------------------------------------------------- /wp-mockup -
+  4 fields, one at a time.  A style named in the argument skips STYLE.
+
+  .--[Style]-- 53 named styles ------------------------------------------------.
+  |  ( ) bento   ( ) swiss   ( ) glassmorphism   ( ) retro terminal            |
+  |  [Other] any style from the list; one not in the list gets the 2-3         |
+  |  closest suggested, never improvised                                       |
+  '----------------------------------------------------------------------------'
+  .--[Site]-- the fictional blog ----------------------------------------------.
+  |  ( ) invent one that fits the style (default)   [Other] name and niche     |
+  '----------------------------------------------------------------------------'
+  .--[Sidebar]-- layout -------------------------------------------------------.
+  |  ( ) right (default)   ( ) left   ( ) none                                 |
+  '----------------------------------------------------------------------------'
+  .--[Pages]-- extras ---------------------------------------------------------.
+  |  ( ) the standard nine (default)   ( ) also front-page.html                |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- ./<style>-theme-mockup/ ---------------------------------------.
+  |  index, single, page, archive, category, tag, author, search, 404 -        |
+  |  shared header, sidebar, footer; Tailwind v3; no inline styles; WCAG       |
+  |  AA.  Ends with the handoff line for /wp-theme.                            |
   '----------------------------------------------------------------------------'
 ================================================================================

@@ -120,13 +120,17 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `token-audit` | `/forge-utils` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |
+| `wp-block-theme` | `/forge-wordpress` |
+| `wp-bug-audit` | `/forge-wordpress` |
 | `wp-build` | `/forge-wordpress` |
+| `wp-cli` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-demo` | `/forge-wordpress` |
 | `wp-feature-readme` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |
+| `wp-mockup` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |

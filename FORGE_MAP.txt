@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  66 tools . 77 commands . 11 pickers . 0 skills . nothing auto-fires.
+  70 tools . 81 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  12 tools.    |
+  |         Build, review, format, and fill WP plugins and themes.  16 tools.    |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
@@ -91,10 +91,10 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  12 tools, 4 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  16 tools, 5 pages ----------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/4) |
+  | [Tool]                                                 Which tool?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -115,7 +115,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/4) |
+  | [Tool]                                                 Which tool?  (pg 2/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -135,7 +135,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/4) |
+  | [Tool]                                                 Which tool?  (pg 3/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -150,13 +150,13 @@
   |         strengths, weaknesses, nitpicks, and a verdict.                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Performance review, demo content, and feature READMEs.               |
+  |         Performance review, demo content, feature READMEs, and more.         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/4) |
+  | [Tool]                                                 Which tool?  (pg 4/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -169,6 +169,32 @@
   |  ( 3 )  Feature README                                -> /wp-feature-readme  |
   |         Plain-English README for a theme or plugin: title, description,      |
   |         and a categorized feature list traced to real code.                  |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 5  |
+  |         WP-CLI scripts, block themes, the theme bug audit, and theme         |
+  |         mockups.                                                             |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 5/5) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
+  |         Write or review bash scripts that run a WP-CLI task on every site    |
+  |         or one: dry run first, stub-tested.                                  |
+  |                                                                              |
+  |  ( 2 )  Block theme build or review                      -> /wp-block-theme  |
+  |         Build a full-site-editing block theme from a brief, or review one    |
+  |         with file:line findings and a ship verdict.                          |
+  |                                                                              |
+  |  ( 3 )  Theme bug audit                                    -> /wp-bug-audit  |
+  |         Read every file, run ~160 checks, and test on throwaway sites across |
+  |         PHP versions; a verified bug list in audit/.                         |
+  |                                                                              |
+  |  ( 4 )  Theme mockup in a design style                        -> /wp-mockup  |
+  |         Clickable static HTML mockup of a classic theme in one of 53 named   |
+  |         styles, ready for /wp-theme.                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -573,7 +599,8 @@
    +-- WordPress ............. /forge-wordpress
    |    +-- wp-plugin  wp-build  wp-theme  wp-review  wp-consult  wp-format
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
-   |    +-- wp-feature-readme
+   |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-bug-audit
+   |    +-- wp-mockup
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system
