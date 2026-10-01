@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Fetch one URL from the test site, save the body, and print one summary line:
 #   <status> <label> errors=<n> critical=<0|1> bytes=<n> <url>
-# errors counts PHP warning, notice, deprecation, and fatal lines in the HTML; critical is 1 when WordPress printed
+# errors counts PHP warning, notice, deprecation, parse, and fatal lines in the HTML; critical is 1 when WordPress printed
 # "There has been a critical error" (a fatal can keep a 200 or 404 status, so never rely on the status alone).
 #
 # Usage: fetch.sh <tmp> <out-dir> <label> <path-or-url> [extra curl arguments...]
@@ -13,11 +13,12 @@
 #     doesn't define WP_TEST_URL.
 #   - The body is saved as <out-dir>/<label>.html, so <label> must be a plain file name. Any earlier file with that
 #     name is removed first, so the counts always describe this request (curl writes no file when nothing arrives).
+#     A label with a slash or whitespace exits 1 with one stderr line and no stdout, before anything is written.
 
 set -uo pipefail
 
 # PHP error lines as PHP prints them in HTML (display_errors wraps the level in <b>).
-readonly PHP_ERROR_PATTERN='(Warning|Notice|Deprecated|Fatal error)(</b>)?: .* on line'
+readonly PHP_ERROR_PATTERN='(Warning|Notice|Deprecated|Fatal error|Parse error|Recoverable fatal error)(</b>)?: .* on line'
 # WordPress's fatal-error handler page; shown even when the status stays 200 or 404.
 readonly CRITICAL_ERROR_TEXT='There has been a critical error'
 # Sent by default so WordPress serves what a browser gets (the classic editor only loads TinyMCE for browser user
@@ -33,6 +34,9 @@ out_dir="${2:?out dir}"
 label="${3:?label}"
 target="${4:?path or url}"
 shift 4
+# Characters a label can't contain: a slash would write (and delete) outside <out-dir>, whitespace splits the line.
+readonly BAD_LABEL_PATTERN='[/[:space:]]'
+[[ "$label" =~ $BAD_LABEL_PATTERN ]] && { printf 'fetch: label must be a plain file name: %s\n' "$label" >&2; exit 1; }
 
 # resolve_url <path-or-url>: absolute URLs pass through; paths are joined to the test site's base URL.
 resolve_url() {

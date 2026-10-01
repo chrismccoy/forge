@@ -17,7 +17,8 @@
 # Exit 1 with a one-line stderr message when <theme-dir> doesn't exist; a missing argument exits 1 (bash's
 # ${1:?} behaviour, like the other scripts). .git folders are skipped at any depth; node_modules, vendor, and audit
 # only at the theme's top level (nested inside a candidate folder they hold code and count against it).
-# Symlinks are ignored. Needs python3.
+# Symlinks are ignored. Needs python3. An index.php under 200 bytes is skipped only when it holds nothing but the
+# opening tag, whitespace, comments, and an optional closing tag.
 # A matching folder whose path contains whitespace is left out (the list is space-separated, so it couldn't be
 # parsed back); one stderr line names it, and test sites copy it instead of linking it.
 
@@ -30,6 +31,7 @@ theme="$(cd "$theme_arg" 2>/dev/null && pwd -P)"
 
 python3 - "$theme" "$mode" <<'PY'
 import os
+import re
 import sys
 
 theme, mode = sys.argv[1], sys.argv[2]
@@ -42,14 +44,28 @@ MEDIA = {
 # Folder names never walked, at any depth.
 SKIP = {'.git', 'node_modules', 'vendor', 'audit'}
 # File extensions that disqualify a folder: linking it would hide code from the audit.
-CODE = {'php', 'js', 'mjs', 'cjs', 'ts', 'jsx', 'tsx', 'css', 'scss', 'sass', 'less', 'json', 'html', 'htm', 'svg', 'twig', 'xml', 'inc', 'phtml', 'vue'}
+CODE = {'php', 'js', 'mjs', 'cjs', 'ts', 'jsx', 'tsx', 'css', 'scss', 'sass', 'less', 'json', 'html', 'htm', 'svg', 'twig', 'xml', 'inc', 'phtml', 'vue',
+        'php3', 'php4', 'php5', 'php7', 'php8', 'pht', 'phar', 'htaccess'}
 # An index.php smaller than this is a "silence is golden" placeholder, not code.
 PLACEHOLDER_MAX_BYTES = 200
+# A placeholder holds only an opening tag, whitespace, comments, and an optional closing tag. Each part matches only
+# one way (no catastrophic backtracking); a line comment holding "?" counts as code, since "?>" ends it.
+PLACEHOLDER_BODY = re.compile(
+    br'\s*<\?php(?:\s|//[^\n?]*(?=\n|\Z)|#[^\n?]*(?=\n|\Z)|/\*(?:[^*]|\*(?!/))*\*/)*(?:\?>\s*)?\Z')
 # Smallest folder worth linking.
 MIN_BYTES = 10 * 1024 * 1024
 # Share of the folder, by size and by file count, that must be media.
 SHARE = 0.9
 MEGABYTE = 1048576
+
+
+def is_placeholder(path):
+    """True for an index.php that only holds comments; an unreadable file counts as code."""
+    try:
+        with open(path, 'rb') as handle:
+            return PLACEHOLDER_BODY.match(handle.read()) is not None
+    except OSError:
+        return False
 
 
 def walk_bottom_up(top):
@@ -81,7 +97,7 @@ for root, dirs, files in walk_bottom_up(theme):
             n = os.path.getsize(path)
         except OSError:
             continue
-        if name == 'index.php' and n < PLACEHOLDER_MAX_BYTES:
+        if name == 'index.php' and n < PLACEHOLDER_MAX_BYTES and is_placeholder(path):
             continue
         size += n
         count += 1
