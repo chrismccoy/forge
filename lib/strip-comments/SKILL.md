@@ -49,7 +49,7 @@ through to enumeration.
 ### 2. Enumerate candidates
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/find-candidates.sh <root> [-- ext1 ext2 ...]
+bash ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/find-candidates.sh <root> [-- ext1 ext2 ...]
 ```
 
 It respects `.gitignore` in a git work tree and excludes dependency directories,
@@ -93,8 +93,8 @@ no header comment, do not invent one.
 ### 6. Verify — required before reporting done
 
 ```bash
-git diff --name-only | ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/syntax-check.sh
-git diff --name-only | ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/audit-remaining.sh
+git diff --name-only | bash ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/syntax-check.sh
+git diff --name-only | bash ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/audit-remaining.sh
 git diff --stat
 ```
 

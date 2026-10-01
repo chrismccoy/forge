@@ -11,7 +11,8 @@
 #   - Exits 0 with the summary line whenever a request was attempted; a connection failure shows as status 000
 #     with bytes=0. Exits 1 with one stderr line and no stdout when <path-or-url> is a path and <tmp>/env.sh
 #     doesn't define WP_TEST_URL.
-#   - The body is saved as <out-dir>/<label>.html, so <label> must be a plain file name.
+#   - The body is saved as <out-dir>/<label>.html, so <label> must be a plain file name. Any earlier file with that
+#     name is removed first, so the counts always describe this request (curl writes no file when nothing arrives).
 
 set -uo pipefail
 
@@ -73,6 +74,7 @@ byte_count() {
 url="$(resolve_url "$target")" || exit 1
 mkdir -p "$out_dir"
 out="$out_dir/$label.html"
+rm -f -- "$out"
 
 status="$(curl -s -o "$out" -w '%{http_code}' --max-time "$FETCH_TIMEOUT" -A "$BROWSER_USER_AGENT" "$@" "$url")"
 [[ "$status" =~ ^[0-9]{3}$ ]] || status="$NO_RESPONSE_STATUS"

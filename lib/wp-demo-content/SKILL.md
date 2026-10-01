@@ -27,7 +27,7 @@ Write data in exactly the shape the templates read and the theme's save code sto
 
 ## Environment
 
-The test harness needs Linux with bash 4.4+, PHP with `pdo_sqlite`, and `curl`, `unzip`, `mktemp` and `timeout`. Screenshots additionally need Chrome or Chromium and Node.js 22+; if either is missing, screenshots are skipped with a clear message and every other step still runs. No MySQL is needed - the test site runs on SQLite in its own temp folder, isolated from any real site.
+The test harness needs Linux with bash 4.4+, PHP with `pdo_sqlite`, and `curl`, `unzip`, `mktemp` and `timeout`. The phpcs step also needs PHP's `simplexml` and `xmlwriter` extensions (`php-xml`). Screenshots additionally need Chrome or Chromium and Node.js 22+; if either is missing, screenshots are skipped with a clear message and every other step still runs. No MySQL is needed - the test site runs on SQLite in its own temp folder, isolated from any real site.
 
 A full run downloads around a hundred photos and often takes half an hour or more.
 

@@ -10,9 +10,12 @@ doesn't match the file type (a .css served as text/html).
 
 Output (stdout): one line per broken asset, "<status> <bytes> <content-type> <url>  (on <n> pages, e.g. <page>)",
 then a summary line "<n> assets checked; <n> broken". Exit 1 with a message when the folder doesn't exist.
+<content-type> never contains spaces: whitespace is removed from real content types (text/html;charset=UTF-8),
+and a request that got no response shows status 0 and "error:<reason>" with spaces as underscores.
 """
 import collections
 import glob
+import http.client
 import os
 import re
 import sys
@@ -61,8 +64,8 @@ def fetch(url):
             return response.status, len(response.read()), response.headers.get('Content-Type', '')
     except urllib.error.HTTPError as error:
         return error.code, 0, error.headers.get('Content-Type', '') if error.headers else ''
-    except (urllib.error.URLError, OSError) as error:
-        return 0, 0, 'error: %s' % getattr(error, 'reason', error)
+    except (urllib.error.URLError, http.client.HTTPException, OSError, ValueError) as error:
+        return 0, 0, 'error:%s' % re.sub(r'\s+', '_', str(getattr(error, 'reason', error)))
 
 
 def broken(url, status, size, content_type):
@@ -86,6 +89,7 @@ def main():
         if broken(url, status, size, content_type):
             bad += 1
             pages = sorted(assets[url])
+            content_type = re.sub(r'\s+', '', content_type)
             print('%s %d %s %s  (on %d pages, e.g. %s)' % (status, size, content_type or '-', url, len(pages), pages[0]))
     print('%d assets checked; %d broken' % (len(assets), bad))
 

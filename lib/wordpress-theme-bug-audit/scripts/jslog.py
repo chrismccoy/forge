@@ -8,6 +8,7 @@ violations (rule|impact, with an example page and element), and 404s on the them
 """
 # Output (stdout), always these four sections in this order, even when empty:
 #   pages where axe finished: <n>
+#   (only when axe timed out somewhere, one extra line here: "pages where axe timed out (...): <pages>")
 #   JS errors:            then "  <count>  <message, digits as N>  e.g. [<up to 2 pages>]"   (top 30)
 #   axe violations:       then "  <count>  <rule>|<impact>  e.g. [<up to 2 'page :: element'>]" (top 30)
 #   404s on theme files:  then "  <count>  <requested path>"                                   (top 10)

@@ -26,7 +26,7 @@ User input: $ARGUMENTS
 
 Follow the full procedure in `${CLAUDE_PLUGIN_ROOT}/lib/changelog-generator/SKILL.md`:
 
-1. Run `${CLAUDE_PLUGIN_ROOT}/lib/changelog-generator/scripts/map-history.sh <target>` first and act on `STATUS` / `SHALLOW` /
+1. Run `bash ${CLAUDE_PLUGIN_ROOT}/lib/changelog-generator/scripts/map-history.sh <target>` first and act on `STATUS` / `SHALLOW` /
    `COMMIT_COUNT` (stop if not a git repo; warn if shallow; single-commit path if 1).
 2. Split the timeline into contiguous ranges by era / release.
 3. Read the **actual diffs** (`git show`, `git log -p`, `git diff`) — the diff is ground

@@ -17,7 +17,7 @@ This guide is for:
 Before a high-traffic event, run the bundled triage scan rather than hand-rolling greps:
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh .
+bash ${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh .
 ```
 
 It covers the same patterns with severity grouping - unbounded queries, `session_start()`,

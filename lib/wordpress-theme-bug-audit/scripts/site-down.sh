@@ -6,7 +6,8 @@
 #
 # Output (stdout), one line: "site-down: <tmp> removed" or "site-down: <tmp> is already gone" (both exit 0).
 # Exit 2 with a stderr line when <tmp> isn't a wp-test-* folder once symlinks and .. are resolved (nothing is
-# touched); exit 1 with a stderr line when the folder is still there afterwards.
+# touched); exit 1 with a stderr line when the folder is still there afterwards. Anything bin/teardown prints is
+# discarded.
 
 set -uo pipefail
 
@@ -40,7 +41,7 @@ all_server_pids() {
 	{ server_pids "$given"; server_pids "$tmp"; } | sort -u
 }
 
-"$tmp/bin/teardown" 2>/dev/null || true
+"$tmp/bin/teardown" >/dev/null 2>&1 || true
 
 mapfile -t pids < <(all_server_pids)
 if [[ ${#pids[@]} -gt 0 ]]; then

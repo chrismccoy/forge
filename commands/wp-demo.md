@@ -1,7 +1,7 @@
 ---
 description: Build a WP-CLI demo content importer for a classic WordPress theme - reads the theme's data model, writes demo/demo-import.php, tests it on a throwaway SQLite site, and reports the theme's own bugs.
 argument-hint: [optional path to the theme directory]
-allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Task, Bash(sha256sum:*), Bash(mktemp:*), Bash(sed -n:*), Bash(du -sh:*), Bash(git status:*), Bash(git branch:*), Bash(tar tzf:*)
+allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Task, Bash(sha256sum:*), Bash(mktemp:*), Bash(sed -n:*), Bash(du -sh:*), Bash(git status:*), Bash(git branch:*), Bash(tar tzf:*), Bash(bash:*), Bash(source:*), Bash(wp:*), Bash(php:*), Bash(curl:*), Bash(composer:*), Bash(timeout:*), Bash(grep:*), Bash(diff:*), Bash(cmp:*), Bash(sort:*), Bash(comm:*), Bash(find:*), Bash(ls:*)
 disable-model-invocation: true
 ---
 
@@ -37,7 +37,7 @@ Stop and say so, rather than proceeding, when any of these hold:
 
 - **`THEME_DIR` is not a WordPress theme** - no `style.css` with a `Theme Name:` header. Say what it appears to be and stop.
 - **The theme is a block theme** - a `templates/` directory of HTML block templates, or `theme.json` driving the whole front end. This procedure covers classic themes used with the classic editor. Say so and stop.
-If the environment cannot host the harness - no Linux with bash 4.4+, no PHP `pdo_sqlite`, or missing `curl`, `unzip`, `mktemp` or `timeout` - do not stop: report the missing piece, still read the theme and write the importer, and mark testing BLOCKED rather than testing against anything real.
+If the environment cannot host the harness - no Linux with bash 4.4+, no PHP `pdo_sqlite`, or missing `curl`, `unzip`, `mktemp` or `timeout` - do not stop (missing `simplexml`/`xmlwriter` only blocks the phpcs step): report the missing piece, still read the theme and write the importer, and mark testing BLOCKED rather than testing against anything real.
 
 Missing Chrome, Chromium or Node.js 22+ is **not** a stopper: screenshots are skipped with the reason and every other step still runs.
 

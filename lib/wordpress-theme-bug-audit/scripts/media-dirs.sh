@@ -18,6 +18,8 @@
 # ${1:?} behaviour, like the other scripts). .git folders are skipped at any depth; node_modules, vendor, and audit
 # only at the theme's top level (nested inside a candidate folder they hold code and count against it).
 # Symlinks are ignored. Needs python3.
+# A matching folder whose path contains whitespace is left out (the list is space-separated, so it couldn't be
+# parsed back); one stderr line names it, and test sites copy it instead of linking it.
 
 set -uo pipefail
 
@@ -107,6 +109,9 @@ for rel in sorted(totals, key=lambda r: r.count(os.sep)):
         continue
     size, count, media_size, media_count, code = totals[rel]
     if code == 0 and size >= MIN_BYTES and count and media_size >= SHARE * size and media_count >= SHARE * count:
+        if any(c.isspace() for c in rel):
+            sys.stderr.write('media-dirs: skipped, path has whitespace: %s\n' % rel)
+            continue
         found.append(rel)
 
 if mode == '--report':

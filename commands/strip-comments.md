@@ -44,14 +44,14 @@ Do not proceed past a failed check on your own judgment. Say which check failed 
 
 ## Execution
 
-1. **Enumerate** with `${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/find-candidates.sh <root> [-- ext ...]`, passing the collected scope through. Present the file list before touching anything, and carry the script's stderr skips into the report.
+1. **Enumerate** with `bash ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/find-candidates.sh <root> [-- ext ...]`, passing the collected scope through. Present the file list before touching anything, and carry the script's stderr skips into the report.
 2. **Read before editing.** Per language, establish where the header ends (`${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/references/language-notes.md`), which comment-like lines must survive (`${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/references/preserve-list.md`), and which apparent comments sit inside strings, URLs, regexes, or heredocs. Batch by language.
 3. **Preview.** Show proposed changes grouped by file, diff format, no prose between hunks. Then STOP and wait. Approval on one batch is not approval on the next.
 4. **Apply** only the approved batch.
 5. **Verify** - required before reporting done:
    ```
-   git diff --name-only | ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/syntax-check.sh
-   git diff --name-only | ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/audit-remaining.sh
+   git diff --name-only | bash ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/syntax-check.sh
+   git diff --name-only | bash ${CLAUDE_PLUGIN_ROOT}/lib/strip-comments/scripts/audit-remaining.sh
    git diff --stat
    ```
    Resolve every `FLAG` from the audit. List every `SKIP` from the syntax check - a skip is not evidence of correctness. Then run the project's test suite if one exists, and its build for languages the syntax check could not cover.

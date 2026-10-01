@@ -46,7 +46,7 @@ A second pass that inherits the first pass's assumptions cannot find what the fi
 ## Step 1 - Build the coverage manifest
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-manifest.sh <target-dir>
+bash ${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-manifest.sh <target-dir>
 ```
 
 Lists every reviewable file (`.php`, `.inc`, `.js`, `.jsx`, `.ts`, `.tsx`, `.json`) with line counts, pruning `node_modules`, `vendor`, `.git`, `dist`, `build`, `coverage`, minified assets, and lock files. Pass `--all` to include build output.
@@ -58,7 +58,7 @@ State the scale before reading: file count and total lines. For targets over 200
 ## Step 2 - Triage with the scan script
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh <target-dir>
+bash ${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh <target-dir>
 ```
 
 Severity-tagged hits for literal anti-patterns. Use it to order the reading pass - files with CRITICAL hits first. Never report from triage output alone: a grep match is a candidate, and its surrounding context decides whether it is a finding at all.

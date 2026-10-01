@@ -34,7 +34,7 @@ emits stats only.
    # Locate the current session transcript (POSIX: macOS / Linux / WSL / Git Bash)
    ls -t "$HOME/.claude/projects/<project-slug>"/*.jsonl | head -1
    # Scan it
-   python "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/scan_jsonl.py" --in <session.jsonl> > /tmp/scan.json
+   python3 "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/scan_jsonl.py" --in <session.jsonl> > /tmp/scan.json
    ```
 
    On Windows/PowerShell, resolve the newest transcript natively:
@@ -57,18 +57,18 @@ emits stats only.
 2. **Render the HTML.** Run the builder, or pipe the two stages directly:
 
    ```bash
-   python "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/build_stats_html.py" --in /tmp/scan.json --out session-stats.html
+   python3 "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/build_stats_html.py" --in /tmp/scan.json --out session-stats.html
    ```
 
    ```bash
-   python "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/scan_jsonl.py" --in <session.jsonl> \
-     | python "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/build_stats_html.py" --out session-stats.html
+   python3 "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/scan_jsonl.py" --in <session.jsonl> \
+     | python3 "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/build_stats_html.py" --out session-stats.html
    ```
 
    When a scan holds multiple sessions, select one by id/slug prefix:
 
    ```bash
-   python "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/build_stats_html.py" --in /tmp/scan.json --session 657aa92f --out session-stats.html
+   python3 "${CLAUDE_PLUGIN_ROOT}/lib/session-stats/scripts/build_stats_html.py" --in /tmp/scan.json --session 657aa92f --out session-stats.html
    ```
 
 3. **Report.** State the output path and confirm the page is self-contained (no `<script>`, no

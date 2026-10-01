@@ -58,9 +58,9 @@ For each AI-jargon name candidate (Rule 4 pattern catalog), run `grep -c "<name>
 `${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh` bundles every Rule 8 grep and reports per-category hit counts. It uses ripgrep when available and falls back to grep. Exit code = number of categories with hits (0 = clean).
 
 ```bash
-${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh <file>                    # summary
-${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh --verbose <file>          # show matching lines
-${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh --category em-dash <file> # one category only
+bash ${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh <file>                    # summary
+bash ${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh --verbose <file>          # show matching lines
+bash ${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh --category em-dash <file> # one category only
 ```
 
 Categories (canonical list; the source of truth is the `verify.sh` header): `1pp em-dash en-dash anthropomorphic tutorial jargon marketing hyphen-compound num-word-compound britishism hedging tutorial-voice connectors padding filler empty-enum apologetic filler-intensifier passive-marketing tutorial-transition smart-punct emoji-decor pseudo-action so-voice marketing-intros self-ref empty-preamble docstring-openers human-user generic-id test-voice ai-artifacts defensive stale-meta placeholder-todo jsdoc-fluff type-cast pragma-py pragma-php pragma-rb pragma-go output-tells`
