@@ -1,9 +1,9 @@
 ================================================================================
-  FORGE  -  Code          ( /forge-code )          12 tools, 4 pages
+  FORGE  -  Code          ( /forge-code )          13 tools, 4 pages
 ================================================================================
   Everything here takes source you already have and analyses or documents it:
   blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors,
-  SQL queries, and regular expressions.
+  SQL queries, regular expressions, and the scripts an agent runs.
 
   STEP 2 - pick a tool
 
@@ -23,7 +23,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations, feature READMEs, regex teardowns.                       |
+  |         annotations, feature READMEs, regex teardowns, script refactors.     |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -43,7 +43,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
-  |         feature READMEs, regex teardowns.                                    |
+  |         feature READMEs, regex teardowns, script refactors.                  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -64,8 +64,8 @@
   |         bulk.                                                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator, full stack feature READMEs, and the regex    |
-  |         tutor.                                                               |
+  |         The teaching annotator, full stack feature READMEs, the regex        |
+  |         tutor, and safe script refactors.                                    |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -84,6 +84,10 @@
   |  ( 3 )  Explain a regex                                   -> /explain-regex  |
   |         Verified 11-section plain-English teardown of one regex: examples,   |
   |         pitfalls, ReDoS verdict, alternatives.                               |
+  |                                                                              |
+  |  ( 4 )  Refactor a script safely                        -> /script-refactor  |
+  |         Clean up bash and Python scripts an agent runs without changing      |
+  |         their output; behavior fixes wait for approval.                      |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -289,5 +293,26 @@
   .--[Result]-- 11 numbered sections, every example engine-checked ------------.
   |  Summary . tokens . structure . valid / invalid examples . walkthrough .   |
   |  pitfalls . ReDoS verdict . alternatives . context . plain rewrite.        |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------- /script-refactor -
+  NO menu when an argument names scripts (paths, a folder, or a glob).  With
+  no argument, one question.  Everything else is inferred from the scripts,
+  read from their callers, or defaulted.
+
+  .--[Scripts]-- which scripts to refactor  (only with no argument) -----------.
+  |  ( ) All scripts in ./scripts   ( ) One script (give path)                 |
+  |  ( ) Changed scripts only (git diff)                                       |
+  '----------------------------------------------------------------------------'
+  .--[Checks]-- before anything is written ------------------------------------.
+  |  Callers searched for what they read . copies refactored in a temp         |
+  |  workspace . old and new run side by side with compare-runs.sh . every     |
+  |  case must show result: same                                               |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- report, then STOP for approval --------------------------------.
+  |  Intake . per script: diff, contract check, comparison, changes,           |
+  |  skipped . numbered behavior fixes, safety first . cross-script findings.  |
+  |  Originals untouched until approved; fixes apply only by number.           |
   '----------------------------------------------------------------------------'
 ================================================================================

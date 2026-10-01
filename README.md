@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 71 tools behind 82 slash commands.
+One Claude Code plugin - `forge` - holding 72 tools behind 83 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -95,6 +95,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/code-teacher`](docs/code.md#code-teacher). Turns a script into a teaching version of itself - a header block covering purpose, the tricky parts, the algorithm, usage, and requirements, then line-by-line comments explaining not just what each piece does but why it was written that way, the lessons worth taking away, and a check that the original code came back unchanged. Only comments are added.
 - [`/fullstack-readme`](docs/code.md#fullstack-feature-readme). Writes a plain-English README for a web application, frontend, backend, or both: the name, a short description, and every user facing feature grouped into categories a non-technical user can read. Each feature is traced to real code, never taken from a readme, docs, or tests, and the output carries no emojis, dashes, hype words, or setup steps.
 - [`/explain-regex`](docs/code.md#regex-tutor). Explains one regular expression in plain English for beginners and experienced developers alike - a token-by-token breakdown, its structure and capture groups, examples that match and examples that fail, a step-by-step walkthrough, pitfalls, a catastrophic-backtracking (ReDoS) verdict, safer alternatives, and a jargon-free rewrite. Every example and alternative is checked against real regex engines, and the teardown prints in chat or saves to `REGEX-EXPLAINED.md`.
+- [`/script-refactor`](docs/code.md#script-refactor). Cleans up bash and Python scripts that another program or AI agent runs, keeping their output, exit codes, and written files exactly the same. It checks what calls each script, runs the old and new versions side by side to prove nothing changed, and lists any bug fix that would change behavior as a numbered proposal you approve before it is applied.
 
 **Docs & Diagrams**
 
@@ -124,7 +125,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 82 commands, nothing running in the background.
+That is the whole install. One plugin, 83 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -142,7 +143,7 @@ which asks for a category, then a tool, then runs it. Or jump straight to one ca
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
 /forge-cleanup      # 4 code-cleanup tools
-/forge-code         # 12 code tools
+/forge-code         # 13 code tools
 /forge-docs         # 7 docs and diagram tools
 /forge-utils        # 6 utilities
 ```
@@ -223,6 +224,7 @@ Or call any tool directly:
 /code-teacher                   # annotate a script with teaching comments
 /fullstack-readme               # plain-English feature README for a web app
 /explain-regex                  # verified plain-English teardown of one regex
+/script-refactor                # clean up agent-run scripts, output kept identical
 
 # Docs & Diagrams
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
@@ -246,7 +248,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 82 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 83 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -277,7 +279,7 @@ description each.
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
-| `/forge-code` | 12 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-code` | 13 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-docs` | 7 | 3 + `More...`, then 3 + `More...`, then 1 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
@@ -341,7 +343,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              82 command files - 71 tools, 11 pickers
+commands/              83 command files - 72 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -357,7 +359,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 82 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 83 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -378,7 +380,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
-| Code | 12 | [docs/code.md](docs/code.md) |
+| Code | 13 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 7 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
@@ -390,15 +392,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 82 slash commands: 11 pickers + 71 tools
-├── lib/                      ← 71 procedure folders (SKILL.md + bundled
+├── commands/                 ← 83 slash commands: 11 pickers + 72 tools
+├── lib/                      ← 72 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 71 tools compared by how much each does
+├── SUMMARY.md                ← the 72 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

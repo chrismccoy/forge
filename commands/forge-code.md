@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-code - Code picker
 
-Route the user to one of the 12 Code tools and run it. Production app blueprints, end-to-end test suites, onboarding documentation, codebase diagrams, READMEs, changelogs, refactoring plans, SQL query review, docblock rewriting, teaching annotations, feature READMEs, and regex teardowns.
+Route the user to one of the 13 Code tools and run it. Production app blueprints, end-to-end test suites, onboarding documentation, codebase diagrams, READMEs, changelogs, refactoring plans, SQL query review, docblock rewriting, teaching annotations, feature READMEs, regex teardowns, and behavior-safe script refactors.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -39,7 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | App blueprint | blueprint | 11-section senior-architect production blueprint for a new app. |
 | Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns. |
+| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
 
@@ -48,7 +48,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
 | Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns. |
+| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
 
@@ -57,7 +57,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 | Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| More... | - | The teaching annotator, full stack feature READMEs, and the regex tutor. |
+| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, and safe script refactors. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
 
@@ -66,6 +66,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 | Full stack feature README | fullstack-readme | Plain-English README for a web app: title, description, and a categorized feature list traced to real code. |
 | Explain a regex | explain-regex | Verified 11-section plain-English teardown of one regex: examples, pitfalls, ReDoS verdict, alternatives. |
+| Refactor a script safely | script-refactor | Clean up bash and Python scripts an agent runs without changing their output; behavior fixes wait for approval. |
 
 ## Step 2 - run it
 

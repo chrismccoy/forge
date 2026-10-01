@@ -744,3 +744,65 @@ For one SQL query use [`/explain-sql`](#sql-breakdown); for a jq filter over JSO
 The full procedure lives at [`lib/regex-tutor/SKILL.md`](../lib/regex-tutor/SKILL.md), the slash command at [`commands/explain-regex.md`](../commands/explain-regex.md), the section spec at [`lib/regex-tutor/references/sections.md`](../lib/regex-tutor/references/sections.md), and the checker at [`lib/regex-tutor/scripts/regex_check.py`](../lib/regex-tutor/scripts/regex_check.py).
 
 ---
+
+## `script-refactor`
+
+Cleans up bash and Python scripts that another program or AI agent runs, without changing anything that program depends on.
+
+```
+/script-refactor
+```
+
+When a program runs a script, it usually depends on small details. It might read one exact line of output, check whether the script exited with 0 or 1, or look for a file in a certain place. A normal cleanup (swapping `echo` for `printf`, adding `set -e`, moving a Python script to `argparse`) can change those details without anyone noticing, and the program that runs the script stops working.
+
+The `script-refactor` tool treats all of those details as fixed. It tidies the code, adds comments and safety checks, and then runs the old and new versions side by side to show they still behave the same. When it finds a real bug that can only be fixed by changing how the script behaves, it does not fix it on its own. It lists the bug with an example and the exact fix, and waits for you to say which fixes to apply.
+
+Before deciding what is safe to touch, it searches your repo for whatever calls each script (docs, prompts, other scripts) and reads what that caller uses. Your original files are not changed until you approve.
+
+## 📋 Technical Overview
+
+One slash command, its procedure file, four reference files, and one bundled bash script. The procedure file `lib/script-refactor/SKILL.md` holds the seven-step workflow. The rules live in `references/contract.md` (what counts as behavior, the approval rule, the order rules win in, and the intake defaults), `references/hazards.md` (cleanups that quietly change behavior), `references/improvements.md`, and `references/report-format.md`. The script `scripts/compare-runs.sh` runs an old and a new script with the same arguments and reports whether their output, error messages, and exit code match.
+
+## ✨ Features
+
+- 🔒 Keeps the script's arguments, output, exit codes, error messages, and written files exactly the same
+- 🔎 Searches the repo for what calls each script, so it knows which output and exit codes really matter
+- 🧪 Runs old and new versions side by side with `compare-runs.sh` on small test files in a temporary folder, never against real servers or real data
+- ✋ Lists every behavior-changing bug fix as a numbered diff with an example input, safety bugs first, and applies only the numbers you approve
+- ⚠️ Knows the common cleanups that break scripts: `set -e` and `pipefail`, `echo` to `printf`, quoting a variable that relied on word splitting, `argparse`, `os.system` to `subprocess`, `pathlib` path changes, and error handling that hides a failure
+- 📏 Flags output lines where a value with a space in it (a folder name, for example) would make the line hard to read back
+- 🧾 Backs up every bug it reports with a concrete input and what actually happens
+- 📐 Scales the work to the script, so a short script gets a header and a few checks rather than a rewrite
+- 🚫 Never commits, never edits originals before approval, never uses `sudo`
+
+## 🔄 How it works
+
+1. **Intake.** Take the scripts from the argument (paths, a folder, or a glob), or ask once which scripts to use. Work out the language, the oldest bash or Python version to support, and the order, without more questions.
+2. **Find the callers.** Search the repo for each script's name and read what the callers use: output lines, exit codes, error messages, files.
+3. **Read the rules.** Load the contract, the list of risky cleanups, and the improvement guide.
+4. **Refactor copies.** Copy each script into a temporary folder and change only the copies.
+5. **Compare.** Run old and new with `compare-runs.sh` for no arguments, wrong arguments, each normal path, safe failure paths, and the input behind every bug found. Every case must match.
+6. **Report and wait.** Show a diff per script, the comparison results, what changed and what was skipped, and the numbered list of behavior fixes. Then stop.
+7. **Apply what you approve.** Write the refactor over the originals, apply only the fixes you named, rerun the comparisons, and update any docs or callers that describe the changed behavior.
+
+## 🚀 How to use it
+
+```
+/script-refactor scripts/                    ← every bash and Python script in a folder
+/script-refactor fetch.sh site-down.sh       ← two scripts as a batch
+/script-refactor                             ← asks which scripts to use
+```
+
+When the report comes back, reply with the fixes you want, for example "apply the refactor and fixes 1 and 3".
+
+**Requests it handles** (type the command to run it; it never starts on its own):
+
+> *"clean up the scripts my agent runs"*, *"refactor this bash script without breaking it"*, *"make these Python scripts safer"*, *"review the scripts in scripts/ for bugs"*, *"harden this shell script but keep the output the same"*
+
+Requirements: `bash` 4+ and `python3`. Only bash and Python scripts are handled.
+
+For a read-only refactoring plan of a whole codebase use [`/refactor`](#refactoring-analyst); to write a brand new script use [`/snippet`](utilities.md#prompt-snippet).
+
+The full procedure lives at [`lib/script-refactor/SKILL.md`](../lib/script-refactor/SKILL.md), the slash command at [`commands/script-refactor.md`](../commands/script-refactor.md), and the comparison script at [`lib/script-refactor/scripts/compare-runs.sh`](../lib/script-refactor/scripts/compare-runs.sh).
+
+---
