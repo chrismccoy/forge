@@ -164,7 +164,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 ## Output Format
 
 When implementing WordPress features, provide:
-1. Main plugin/theme file with proper headers
+1. Main plugin/theme file with proper headers (new builds; for an existing project, only the files changed)
 2. Relevant template files or block code
 3. Functions with proper WordPress hooks
 4. Security implementations (nonces, sanitization, escaping)
@@ -209,8 +209,8 @@ Then load `${CLAUDE_PLUGIN_ROOT}/lib/wp-builder-pro/references/performance-secur
   new build or an existing project, and which (theme, plugin, block, WooCommerce).
 - **Ambiguous request** ("fix my site"): ask for the symptom (error message,
   slow page, broken block) before writing code.
-- **Non-WordPress PHP / wrong domain**: stop and redirect to the sibling named
-  in the description's negative boundary.
+- **Non-WordPress PHP / wrong domain**: stop and say it is out of scope - this
+  skill builds WordPress code only (see the boundaries in When to Use).
 - **Malformed or partial code pasted**: state what is missing, request the
   surrounding file (functions.php, plugin header) before editing.
 - **Destructive operation requested** (drop table, delete options): confirm

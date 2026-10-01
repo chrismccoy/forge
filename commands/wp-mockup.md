@@ -1,7 +1,7 @@
 ---
 description: Build a clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles - one linked page per template (index, single, page, archives, search, 404), Tailwind v3, ready for /wp-theme to convert into a real theme.
 argument-hint: [optional style name, plus site name and niche]
-allowed-tools: AskUserQuestion, Read, Write, Glob, Grep, Bash
+allowed-tools: AskUserQuestion, Read, Write, Glob, Grep
 disable-model-invocation: true
 ---
 

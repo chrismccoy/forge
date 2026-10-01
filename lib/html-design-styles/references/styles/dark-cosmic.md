@@ -45,10 +45,11 @@ Feature icon containers: `rounded-xl bg-brand-600/20 ring-1 ring-brand-500/30` w
 ## Buttons
 
 ```css
-.btn-primary { background: #fff; color: #0f172a; rounded-xl; font-semibold; }
+.btn-primary { background: #fff; color: #0f172a; border-radius: 0.75rem; font-weight: 600; }
 .btn-primary:hover { background: #f1f5f9; }
 /* White on dark bg reads as high-contrast and premium */
-.btn-ghost { rounded-xl; px-3 py-2; text-slate-200; hover:text-white; }
+.btn-ghost { border-radius: 0.75rem; padding: 0.5rem 0.75rem; color: #e2e8f0; }
+.btn-ghost:hover { color: #fff; }
 ```
 
 ## Header

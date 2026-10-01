@@ -34,9 +34,9 @@ Place large blurred circles for depth. No hard shapes:
 ## Buttons
 
 ```css
-.btn-primary { background: #EC4899; color: #fff; rounded-xl; padding: 12px 24px; font-weight: 600; shadow-soft; }
+.btn-primary { background: #EC4899; color: #fff; border-radius: 0.75rem; padding: 12px 24px; font-weight: 600; box-shadow: 0 10px 30px rgba(2,6,23,0.10); }
 .btn-primary:hover { filter: brightness(1.1); }
-.btn-secondary { border: 1px solid #e2e8f0; background: #fff; color: #0f172a; rounded-2xl; }
+.btn-secondary { border: 1px solid #e2e8f0; background: #fff; color: #0f172a; border-radius: 1rem; }
 /* Always include focus-visible ring: focus-visible:ring-2 focus-visible:ring-[brand] focus-visible:ring-offset-2 */
 ```
 

@@ -1,6 +1,6 @@
 ---
 description: Troubleshoot a broken Excel/Google Sheets formula - collects the formula and the problem, then debugs and fixes it.
-argument-hint: [broken formula] | [what's going wrong]
+argument-hint: "[broken formula] | [what's going wrong]"
 allowed-tools: Read, AskUserQuestion
 disable-model-invocation: true
 ---

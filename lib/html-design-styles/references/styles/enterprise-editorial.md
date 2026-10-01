@@ -47,9 +47,9 @@ Dark sections (app mockup): `bg-gray-800 rounded-[3rem] p-4 shadow-2xl ring-1 ri
 ## Buttons
 
 ```css
-.btn-primary { background: #111827; color: #fff; rounded-2xl; px-12 py-6; font-black uppercase tracking-widest; shadow-2xl; }
+.btn-primary { background: #111827; color: #fff; border-radius: 1rem; padding: 1.5rem 3rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
 .btn-primary:hover { background: #000; }
-.btn-secondary { background: #fff; border: 2px solid #f3f4f6; rounded-2xl; px-12 py-6; font-black text-transform: uppercase; }
+.btn-secondary { background: #fff; border: 2px solid #f3f4f6; border-radius: 1rem; padding: 1.5rem 3rem; font-weight: 900; text-transform: uppercase; }
 .btn-secondary:hover { border-color: #4f46e5; }
 /* Active: scale-95 */
 ```

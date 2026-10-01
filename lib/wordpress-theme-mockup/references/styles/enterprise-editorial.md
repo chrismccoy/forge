@@ -68,6 +68,5 @@ Greyscale logos: `opacity-30 grayscale contrast-125`. Text labels in `text-2xl f
 - Google Fonts: Inter only
 - `selection:bg-indigo-100 selection:text-indigo-700`
 - `antialiased`
-- Alpine.js optional for interactive mockup elements
 - Headings lead with `[0.85]` tight leading, increase to normal for body
 

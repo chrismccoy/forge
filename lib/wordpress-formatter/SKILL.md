@@ -22,7 +22,7 @@ not, stop and say so - do not scaffold tooling into a non-theme repo.
 
 1. **Scope - which files?**
    - `templates` - WP template hierarchy files and `partials/` only (excludes
-     `functions.php`, `lib/`, `inc/`). Default.
+     `functions.php`, `lib/`, `inc/`, `assets/`). Default.
    - `all` - every theme PHP file including `functions.php`, `lib/`, `inc/`,
      excluding only `vendor/` and `node_modules/`.
 2. **Ruleset strictness?**
@@ -52,8 +52,8 @@ Do not install phpcs globally, hand-edit `vendor/`, or use any other formatter.
 
 1. **Check the environment.** Run `php -v` and `composer --version`. If no
    `composer.json` exists, ask whether to run `composer init` or abort - do not
-   create one silently. Skip the install if `./vendor/bin/phpcs --version`
-   already works.
+   create one silently. Skip the install if `./vendor/bin/phpcs -i` already
+   lists the chosen standard.
 2. **Install WPCS (dev only):**
    ```
    composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
@@ -83,7 +83,7 @@ Do not install phpcs globally, hand-edit `vendor/`, or use any other formatter.
    `<exclude-pattern>*/lib/*</exclude-pattern>`,
    `<exclude-pattern>*/inc/*</exclude-pattern>`,
    `<exclude-pattern>*/assets/*</exclude-pattern>`,
-   `<exclude-pattern>functions.php</exclude-pattern>`. When scope is `all`,
+   `<exclude-pattern>*/functions.php</exclude-pattern>`. When scope is `all`,
    omit them.
 4. **Add composer scripts** for re-runs:
    `"scripts": { "lint": "phpcs", "format": "phpcbf" }`.
@@ -94,7 +94,8 @@ Do not install phpcs globally, hand-edit `vendor/`, or use any other formatter.
 7. **Check syntax:** run `php -l` on every touched file. Zero syntax errors is a
    hard gate - if any file fails, stop and report it.
 8. **Triage the remainder** (re-run phpcs) using the table below. Apply the
-   Yoda reorders only if the intake answer was yes.
+   Yoda reorders only if the intake answer was yes, then run `php -l` again on
+   every file they touched.
 
 ## Decision table - remaining sniffs
 
@@ -113,8 +114,10 @@ Do not install phpcs globally, hand-edit `vendor/`, or use any other formatter.
 - Touch only files in scope. Never touch `vendor/`.
 - `php -l` must pass on every file before reporting done.
 - If a phpcbf change might alter output - for example splitting an inline
-  conditional inside an HTML attribute - check that the rendered result is the
-  same before keeping it.
+  conditional inside an HTML attribute - compare the before and after text and
+  confirm the emitted HTML is identical before keeping it. If you cannot
+  confirm it, restore the original lines and report the item as
+  left-intentionally.
 
 ## Report
 

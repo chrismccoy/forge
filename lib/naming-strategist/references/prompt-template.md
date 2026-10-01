@@ -25,7 +25,7 @@ Rules:
 - Avoid awkward letter clusters, confusing spelling, hyphens, and numbers.
 - Avoid purely descriptive keyword domains that feel generic.
 - Use a balanced mix of: compound, blended, metaphor, invented, and classical-roots (when appropriate).
-- Do not use forced suffixes like "-ify / -ly / -hub" unless they genuinely fit the niche and tone.
+- Do not use forced suffixes like "-ify / -ly / -hub / -io / -app" unless they genuinely fit the niche and tone.
 
 Silently score each candidate 1-10 on:
 - Brandability

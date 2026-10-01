@@ -6,18 +6,24 @@
 
 set -uo pipefail
 
-TARGET="${1:-.}"
+TARGET=""
 INCLUDE_BUILD=0
 for arg in "$@"; do
-  [ "$arg" = "--all" ] && INCLUDE_BUILD=1
+  if [ "$arg" = "--all" ]; then
+    INCLUDE_BUILD=1
+  elif [ -z "$TARGET" ]; then
+    TARGET="$arg"
+  fi
 done
+TARGET="${TARGET:-.}"
 
 if [ ! -d "$TARGET" ]; then
   echo "ERROR: not a directory: $TARGET" >&2
   exit 1
 fi
 
-PRUNE_DIRS=( node_modules vendor .git .svn dist build coverage )
+PRUNE_DIRS=( node_modules vendor .git .svn coverage )
+[ "$INCLUDE_BUILD" -eq 0 ] && PRUNE_DIRS+=( dist build )
 EXTS=( php js jsx ts tsx json inc )
 
 prune_expr=()

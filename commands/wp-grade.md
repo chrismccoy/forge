@@ -22,13 +22,13 @@ User input: $ARGUMENTS
 
 Resolve the submission in this order and stop at the first hit.
 
-1. **`$ARGUMENTS` is a path to an existing file** - read it and treat the full contents as the submission.
+1. **`$ARGUMENTS` is a path to an existing file** - read it and treat the full contents as the submission. If it looks like a file path but the file does not exist, say so in one line and ask again; never grade the path text as code.
 2. **`$ARGUMENTS` contains pasted code** - treat it as the submission. State in one line that the pasted text is being treated as the submission.
-3. **`$ARGUMENTS` is empty** - ask the user to paste the WordPress code or give a file path, as a plain prompt, and STOP for the reply. Never invent code and never grade placeholder text.
+3. **`$ARGUMENTS` is empty** - emit the template's request-for-code block and STOP for the reply. Never invent code and never grade placeholder text.
 
 ## Intake Gate Before Grading
 
-Treat the submission as ABSENT when it is empty or whitespace, or still holds an unreplaced placeholder (`{your code}`, `{{PASTE_CODE_HERE}}`, `TODO`, `...`, or similar). On ABSENT, emit the template's request-for-code block and stop - no Purpose, no Grade, no bullets.
+Treat the submission as ABSENT when it is empty or whitespace, or holds nothing but an unreplaced placeholder (`{your code}`, `{{PASTE_CODE_HERE}}`, `TODO`, `...`, or similar). On ABSENT, emit the template's request-for-code block and stop - no Purpose, no Grade, no bullets.
 
 If the input is not WordPress code - plain PHP with no WordPress API surface, another framework's code, prose, a log - say so plainly and stop. Never assign a grade to a non-target.
 

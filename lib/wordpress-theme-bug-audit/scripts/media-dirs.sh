@@ -15,7 +15,8 @@
 #
 # Output: without --report, exactly one line, empty when no folder matches (so an empty line is a valid answer).
 # Exit 1 with a one-line stderr message when <theme-dir> doesn't exist; a missing argument exits 1 (bash's
-# ${1:?} behaviour, like the other scripts). .git, node_modules, vendor, and audit folders are skipped at any depth.
+# ${1:?} behaviour, like the other scripts). .git folders are skipped at any depth; node_modules, vendor, and audit
+# only at the theme's top level (nested inside a candidate folder they hold code and count against it).
 # Symlinks are ignored. Needs python3.
 
 set -uo pipefail

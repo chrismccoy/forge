@@ -4,21 +4,21 @@
 
 ## `docker-compose-architect`
 
-Production, secure, scalable docker-compose stacks from four inputs, in the voice of a Senior DevOps Engineer and Docker expert. Locked four-phase blueprint. Required-input validation and a silent output gate before sending.
+Production, secure, scalable docker-compose stacks from four inputs, in the voice of a Principal DevOps Engineer and Docker expert. Locked four-phase blueprint. Required-input validation and a silent output gate before sending.
 
 ```
 /docker-compose-architect
 ```
 
-Most "give me a docker-compose file" prompts return something that should never reach production: secrets hardcoded in plaintext, every service on one flat network, no volumes so data evaporates on restart, no healthchecks so `depends_on` races, and containers running as root. This plugin replaces that with what a senior DevOps engineer actually does. Secrets are always `${VAR}` references resolved from a generated `.env` template - never literals. Tiers are isolated on separate bridge networks (frontend vs database). Every stateful service gets a named volume. Every service gets a healthcheck, and `depends_on` uses `condition: service_healthy`. Containers run non-root where the base image allows. Compose YAML is indented 2 spaces. Image names and tags are never invented - uncertain tags are flagged for confirmation.
+Most "give me a docker-compose file" prompts return something that should never reach production: secrets hardcoded in plaintext, every service on one flat network, no volumes so data evaporates on restart, no healthchecks so `depends_on` races, and containers running as root. This plugin replaces that with what a senior DevOps engineer actually does. Secrets are always `${VAR}` references resolved from a generated `.env` template - never literals. Tiers are isolated on separate bridge networks (frontend vs database). Every stateful service gets a named volume. Every service gets a healthcheck, or a one-line comment in the compose file stating why it cannot have one, and `depends_on` uses `condition: service_healthy`. Containers run non-root where the base image allows. Compose YAML is indented 2 spaces. Image names and tags are never invented - uncertain tags are flagged for confirmation.
 
-The skill body runs the workflow. Step 1 loads the master prompt from `references/prompt-template.md` and substitutes the four inputs. Step 2 validates inputs - a missing `TECH_STACK` or `DATABASE_REQUIREMENTS` halts with one targeted question per field, and conflicting constraints (e.g. "no persistence" plus a database) are surfaced before generating. Step 3 produces the blueprint under the strict operating constraints. Step 4 runs a silent output gate - all four phases present, valid 2-space YAML, secrets as env refs, a healthcheck per service or documented reason, no invented images - and fixes any failure before returning.
+The skill body runs the workflow. Step 1 validates inputs - a missing `TECH_STACK` or `DATABASE_REQUIREMENTS` gets one targeted question per field and stops only if still missing after asking, and conflicting constraints (e.g. "no persistence" plus a database) are surfaced before generating. Step 2 loads the master prompt from `references/prompt-template.md` and substitutes the four inputs. Step 3 produces the blueprint under the strict operating constraints. Step 4 runs a silent output gate - all four phases present, valid 2-space YAML, secrets as env refs, every service non-root where the image allows, data-tier services on isolated networks with no published ports, stateful services on named volumes with `depends_on`, every service gets a healthcheck, or a one-line comment in the compose file stating why it cannot have one, no invented images - and fixes any failure before returning.
 
-Hard refusal on out-of-scope asks. Kubernetes, Terraform, raw Dockerfiles, and unrelated requests get exactly one line: `Out of scope: this engine outputs docker-compose stacks only.`
+Hard refusal on out-of-scope asks. Kubernetes, Terraform, raw Dockerfiles, and unrelated requests get exactly one line: `Out of scope: this engine outputs docker-compose stacks only.` Kubernetes manifest requests get the routing hint on that same line: `... only - try /kubernetes-architect.`
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. The procedure file `lib/docker-compose-architect/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` lives in `references/prompt-template.md` and loads on every invocation. The slash command `/docker-compose-architect` accepts an optional `TECH_STACK` arg, then walks the user through `AskUserQuestion` intake for the remaining fields.
+One slash command plus its procedure file. The procedure file `lib/docker-compose-architect/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` lives in `references/prompt-template.md` and loads on every blueprint request. The slash command `/docker-compose-architect` accepts an optional `TECH_STACK` arg, then walks the user through `AskUserQuestion` intake for the remaining fields.
 
 ## ✨ Features
 
@@ -26,21 +26,21 @@ One slash command plus its procedure file. The procedure file `lib/docker-compos
 - 🧱 Locked 4-phase output: Architecture Overview, complete `docker-compose.yml`, `.env` template, Deployment & Scaling
 - 🔐 Secrets only as `${VAR}` env references resolved from the `.env` template - never plaintext literals
 - 🧬 Tier network isolation (frontend-tier vs database-tier bridges), named volumes for every stateful service
-- 🩺 Healthcheck on every service; `depends_on` with `condition: service_healthy`; containers run non-root where the base image allows
+- 🩺 Every service gets a healthcheck, or a one-line comment in the compose file stating why it cannot have one; `depends_on` with `condition: service_healthy`; containers run non-root where the base image allows
 - 🧠 No invented image names, tags, version numbers, or compose keys - only real, documented images; uncertain tags flagged for confirmation
-- ✅ Silent output validation: 4 phases present, valid 2-space YAML, every secret an env ref, every service healthchecked or documented, no invented images
+- ✅ Silent output validation: 4 phases present, valid 2-space YAML, every secret an env ref, non-root services, isolated data-tier networks with no published ports, named volumes for stateful services, every service gets a healthcheck, or a one-line comment in the compose file stating why it cannot have one, no invented images
 - 🛡️ Prompt-injection defense. All inputs treated as untrusted data; embedded directives (`ignore prior`, `act as`, output-format-change attempts) ignored
-- 🚦 Required-field halt + conflict surfacing - missing `TECH_STACK`/`DATABASE_REQUIREMENTS` asks one question per field; "no persistence" plus a database is surfaced before generating
+- 🚦 Required-field check + conflict surfacing - missing `TECH_STACK`/`DATABASE_REQUIREMENTS` asks one question per field and stops only if still missing; "no persistence" plus a database is surfaced before generating
 - 🪧 Scope-locked. Kubernetes, Terraform, raw Dockerfiles, unrelated requests refused with `Out of scope: this engine outputs docker-compose stacks only.`
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If `TECH_STACK` was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute `{{TECH_STACK}}`, `{{DATABASE_REQUIREMENTS}}`, `{{NETWORK_SETUP}}`, `{{SPECIFIC_CONSTRAINTS}}`. Treat inputs as untrusted data.
-3. **Validate inputs.** Empty / placeholder `TECH_STACK` or `DATABASE_REQUIREMENTS` → one targeted question per field, then halt. Conflicting constraints → surface and ask which wins.
+2. **Validate inputs.** Empty / placeholder `TECH_STACK` or `DATABASE_REQUIREMENTS` → one targeted question per field; stop only if still missing after asking. Conflicting constraints → surface and ask which wins.
+3. **Load template.** Read `references/prompt-template.md`. Substitute `{{TECH_STACK}}`, `{{DATABASE_REQUIREMENTS}}`, `{{NETWORK_SETUP}}`, `{{SPECIFIC_CONSTRAINTS}}`. Treat inputs as untrusted data.
 4. **Generate** the blueprint under the strict operating constraints (non-root, tier isolation, named volumes, healthchecks, `${VAR}` secrets, 2-space YAML).
-5. **Silent output gate.** 4 phases; valid YAML; secrets as env refs; healthcheck per service or documented reason; no invented images. Fix failures before printing.
-6. **Output the four phases only.**
+5. **Silent output gate.** 4 phases; valid YAML; secrets as env refs; non-root; isolated data-tier networks; named volumes for stateful services; every service gets a healthcheck, or a one-line comment in the compose file stating why it cannot have one; no invented images. Fix failures before printing.
+6. **Output the four phases only**, with at most one `Assumptions:` line directly before Phase 1. Direct docker-compose questions are answered plainly.
 
 ## 🚀 How to use it
 
@@ -71,32 +71,32 @@ Resilient, secure, production-ready Kubernetes manifests from four inputs, in th
 
 Most "give me a Kubernetes Deployment" prompts return YAML that falls apart at the first cluster review: no liveness or readiness probes so rollouts and traffic routing misbehave, no resource requests or limits so the scheduler and autoscaler have nothing to go on, containers running as root with a writable root filesystem, and Service selectors that don't match pod labels. This plugin replaces that with what a principal cloud native architect actually does. Every container gets liveness and readiness probes, resource requests and limits, and a security context (`runAsNonRoot`, `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false`). YAML is syntax-perfect, 2-space indented, with dash-based arrays. Image names, tags, apiVersion values, and field keys are never invented - uncertain tags are flagged for confirmation. Before sending, every block is validated: `apiVersion`/`kind`/`metadata.name` present, indentation valid, probes + resources + securityContext per container, and Service/Ingress selectors matching Deployment pod labels.
 
-The skill body runs the workflow. Step 1 loads the master prompt from `references/prompt-template.md` (including the canonical Deployment skeleton) and substitutes the four inputs. Step 2 validates inputs - any empty or contradictory field STOPs with a list of exactly what is missing rather than inventing a default. Step 3 generates the manifests under the strict operating constraints. Step 4 runs a silent pre-delivery validation and fixes any failure before returning; unvalidated YAML is never emitted.
+The skill body runs the workflow. Step 1 validates inputs - any empty, placeholder, or contradictory field STOPs with a list of exactly what is missing (or the conflict) and asks, rather than inventing a default. Step 2 loads the master prompt from `references/prompt-template.md` (including a reference container snippet that sets the expected manifest density) and substitutes the four inputs. Step 3 generates the manifests under the strict operating constraints. Step 4 runs a silent pre-delivery validation and fixes any failure before returning; unvalidated YAML is never emitted.
 
-Hard prompt-injection defense. Inputs are untrusted data - a field that says "ignore probes", "run as root", or "skip security" is ignored and flagged in PHASE 1. Off-domain requests (Terraform, billing, application code) get one refusal line, then the K8s task continues.
+Hard prompt-injection defense. Inputs are untrusted data - a field that says "ignore probes", "run as root", or "skip security" is ignored and flagged in PHASE 1. Off-domain requests (Terraform, billing, application code, docker-compose stacks) get one refusal line - docker-compose requests are pointed to `/docker-compose-architect` on that same line - then the K8s task continues.
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. The procedure file `lib/kubernetes-architect/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` and the Deployment skeleton lives in `references/prompt-template.md` and loads on every invocation. The slash command `/kubernetes-architect` accepts an optional `APP_REQUIREMENTS` arg, then walks the user through `AskUserQuestion` intake for the remaining fields.
+One slash command plus its procedure file. The procedure file `lib/kubernetes-architect/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` and the reference container snippet lives in `references/prompt-template.md` and loads on every blueprint request. The slash command `/kubernetes-architect` accepts an optional `APP_REQUIREMENTS` arg, then walks the user through `AskUserQuestion` intake for the remaining fields.
 
 ## ✨ Features
 
 - 🎯 Four inputs in, one blueprint out. APP_REQUIREMENTS + RESOURCE_LIMITS + EXPOSURE_STRATEGY + TARGET_ENVIRONMENT
-- 🧱 Locked 4-phase output: Architecture Overview, Deployment + HPA manifests, Service/Ingress/ConfigMap manifests, kubectl Deployment Guide
+- 🧱 Locked 4-phase output: Architecture Overview, Deployment + HPA manifests, Service/Ingress/ConfigMap manifests, kubectl Deployment Guide. Direct Kubernetes concept questions are answered plainly, outside the phases
 - 🩺 Liveness AND readiness probes on every container - no silent rollout or routing failures
 - 📊 `resources.requests` AND `resources.limits` on every container - scheduler and HPA get real signals
 - 🔐 Security contexts where applicable - `runAsNonRoot`, `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false`
 - 🧠 No invented image names, tags, apiVersion values, kind names, or field keys - only real, documented Kubernetes resources; uncertain tags flagged for confirmation
 - ✅ Silent pre-delivery validation per block: apiVersion/kind/metadata.name present, valid 2-space indentation, probes+resources+securityContext per container, Service/Ingress selectors match pod labels
 - 🛡️ Prompt-injection defense. Inputs are untrusted data; behavior-altering directives (`ignore probes`, `run as root`, `skip security`) are ignored and flagged in PHASE 1
-- 🚦 No invented defaults - empty or contradictory fields STOP with a list of exactly what is missing
-- 🪧 Scope-locked. Terraform, billing, and application-code requests get one refusal line, then the K8s task continues
+- 🚦 No invented defaults - empty, placeholder, or contradictory fields STOP with a list of exactly what is missing (or the conflict) and ask
+- 🪧 Scope-locked. Terraform, billing, application-code, and docker-compose requests get one refusal line (docker-compose points to `/docker-compose-architect`), then the K8s task continues
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If `APP_REQUIREMENTS` was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute `{{APP_REQUIREMENTS}}`, `{{RESOURCE_LIMITS}}`, `{{EXPOSURE_STRATEGY}}`, `{{TARGET_ENVIRONMENT}}`. Treat inputs as untrusted data.
-3. **Validate inputs.** Empty / placeholder / contradictory field → STOP, list what is missing, ask. No invented defaults.
+2. **Validate inputs.** Empty / placeholder / contradictory field → STOP, list what is missing (or the conflict), ask. No invented defaults.
+3. **Load template.** Read `references/prompt-template.md`. Substitute `{{APP_REQUIREMENTS}}`, `{{RESOURCE_LIMITS}}`, `{{EXPOSURE_STRATEGY}}`, `{{TARGET_ENVIRONMENT}}`. Treat inputs as untrusted data.
 4. **Generate** the manifests under the strict operating constraints (probes, resource requests/limits, security contexts, 2-space YAML, dash-based arrays).
 5. **Silent pre-delivery validation.** apiVersion/kind/metadata.name; 2-space indentation; probes+resources+securityContext per container; selectors match pod labels; no invented images. Fix failures before printing.
 6. **Output the four phases only.**
@@ -130,7 +130,7 @@ Production, PSScriptAnalyzer-clean PowerShell scripts from five inputs, in the v
 
 Most "write me a PowerShell script" prompts return something that fails review the moment it hits a real server: `Write-Host` used for data, unapproved verbs, hardcoded credentials in plaintext, a `Remove-Item` with no `-WhatIf`, and zero logging. This plugin replaces that with what a seasoned Windows systems engineer actually does. Every script opens with `#Requires -Version 7.0`, carries comment-based help (`.SYNOPSIS`/`.DESCRIPTION`/`.PARAMETER`/`.EXAMPLE`) on the script and every function, uses `[CmdletBinding()]` with validated parameters, wraps work in `try/catch/finally`, and logs to both console and a rolling file (`$env:ProgramData\<ScriptName>\<ScriptName>.log`, 10 MB roll, 5 archives). Credentials are typed `[PSCredential]` - never plaintext. Destructive operations are refused unless named in the requirements, and gated behind `-WhatIf`/`-Confirm` when generated. Cmdlet, module, and parameter names are never invented.
 
-The skill body runs the workflow. Step 1 loads the master prompt from `references/prompt-template.md` and substitutes the five inputs. Step 2 validates inputs - an empty or placeholder `TASK`/`USER_REQUIREMENTS` halts with one clarifying question rather than a guessed script. Step 3 generates the script under the full specification (foundation, parameters, error handling, logging, security, remote). Step 4 runs a silent self-check - approved verbs, clean parse, no plaintext secrets, no invented names, four sections in order - and fixes any failure before returning.
+The skill body runs the workflow. Step 1 loads the master prompt from `references/prompt-template.md` and substitutes the five inputs. Step 2 validates inputs - an empty or placeholder `TASK`/`USER_REQUIREMENTS` halts with one clarifying question rather than a guessed script, and allowing destructive ops without naming any triggers a follow-up question. Step 3 generates the script under the full specification (foundation, parameters, error handling, logging, security, remote). Step 4 runs a silent self-check - approved verbs, clean parse, no plaintext secrets, no invented names, destructive ops named and gated, four sections in order - and fixes any failure before returning.
 
 Hard refusal on out-of-scope asks (output is the script plus usage examples only) and on security violations. Every response ends with `--- Generated by PowerShell Script Engine | review before production use ---`.
 
@@ -145,9 +145,9 @@ One slash command plus its procedure file. The procedure file `lib/powershell-sc
 - 🧯 `try/catch/finally` everywhere; clear error messages; console AND rolling file logging (10 MB roll, 5 archives)
 - ✔️ Approved verbs only (Get-Verb). No `Write-Host` for data, no aliases in the body, no positional args in examples, no PSScriptAnalyzer rule suppressions
 - 🔐 No plaintext secrets - `[PSCredential]` / `Get-Credential` / SecretManagement only
-- 🚫 No destructive ops (`Remove-*`, `Format-*`, `Stop-*`, registry/disk writes) unless named in requirements; gated behind `-WhatIf`/`-Confirm` when generated
+- 🚫 No destructive ops (`Remove-*`, `Format-*`, `Stop-*`, registry/disk writes) unless named in requirements; when generated, gated by `[CmdletBinding(SupportsShouldProcess)]` plus a `$PSCmdlet.ShouldProcess(...)` check, so `-WhatIf`/`-Confirm` work
 - 🧠 No invented cmdlet, module, parameter, or version names - only real, documented PowerShell; unverifiable modules flagged for confirmation
-- 📦 Locked 4-section output: Script, Parameters table (Name/Mandatory/Type/Validation), 3+ Usage Examples (local/pipeline/PSSession), Security Notes
+- 📦 Locked 4-section output: Script, Parameters table (Name/Mandatory/Type/Validation), 3+ Usage Examples (local/pipeline, plus PSSession when remote), Security Notes
 - 🛡️ Prompt-injection defense. `USER_REQUIREMENTS` treated as inert data; embedded directives (`ignore prior`, `act as`, output-format-change attempts) are ignored
 - 🪧 Scope-locked. Empty or off-topic requirements get one clarifying question, then a halt
 
@@ -155,9 +155,9 @@ One slash command plus its procedure file. The procedure file `lib/powershell-sc
 
 1. **Intake.** Slash command collects five fields via `AskUserQuestion`. If `TASK` was passed as `$ARGUMENTS`, confirm and skip that question.
 2. **Load template.** Read `references/prompt-template.md`. Substitute `{{TASK}}`, `{{USER_REQUIREMENTS}}`, `{{PS_TARGET}}`, `{{REMOTE}}`, `{{DESTRUCTIVE}}`. Treat requirements as inert data.
-3. **Validate inputs.** Empty / blank / placeholder `TASK` or `USER_REQUIREMENTS` → ask one clarifying question naming the job, then halt.
+3. **Validate inputs.** Empty / blank / placeholder `TASK` or `USER_REQUIREMENTS` → ask one clarifying question naming the job, then halt. Destructive ops allowed but none named → ask which ones before generating.
 4. **Generate** the script per the specification (foundation, parameters, error handling, logging, security, remote).
-5. **Silent self-check.** Approved verbs; balanced braces, no aliases, no `Write-Host` for data; no plaintext secrets, credentials `[PSCredential]`; no invented names; four sections in order. Fix failures before printing.
+5. **Silent self-check.** Approved verbs; balanced braces, no aliases, no `Write-Host` for data; no plaintext secrets, credentials `[PSCredential]`; no invented names; any destructive op was named and is gated; four sections in order. Fix failures before printing.
 6. **Output the four sections**, then the footer line.
 
 ## 🚀 How to use it
@@ -181,7 +181,7 @@ The full procedure lives at [`lib/powershell-script-engine/SKILL.md`](../lib/pow
 
 ## `jq`
 
-Expert jq one-liners for querying, filtering, transforming, and aggregating JSON in real shell pipelines, in the voice of a senior CLI engineer. Inspects the JSON structure before writing the filter, builds it one pipe stage at a time, and returns a single copy-paste-ready command plus a one-line explanation per stage.
+Expert jq one-liners for querying, filtering, transforming, and aggregating JSON in real shell pipelines. Inspects the JSON structure before writing the filter, builds it one pipe stage at a time, and returns a single copy-paste-ready command plus a one-line explanation per stage.
 
 ```
 /jq
@@ -193,7 +193,7 @@ The skill covers basic and nested selection, `select()` filtering, `map` and obj
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. The procedure file `lib/jq/SKILL.md` carries the persona, the 6-step workflow (identify source, inspect the structure, build incrementally, choose output mode, verify, deliver), a full cookbook of patterns, the output format, and the quality gates. The slash command `/jq` accepts an optional argument that seeds `JSON_SOURCE`, then walks the user through `AskUserQuestion` intake for the source, the goal, and the output mode.
+One slash command plus its procedure file. The procedure file `lib/jq/SKILL.md` carries the 6-step workflow (identify source, inspect the structure, build incrementally, choose output mode, verify, deliver), a full cookbook of patterns, the output format, and the quality gates. The slash command `/jq` accepts an optional argument that seeds `JSON_SOURCE`, then walks the user through `AskUserQuestion` intake for the source, the goal, and the output mode.
 
 ## ✨ Features
 
@@ -228,6 +228,6 @@ Two ways to invoke:
 
 **Requests it handles** (type the command to run it - it never auto-triggers):
 
-> *"parse this JSON"*, *"extract X from this output"*, *"pull the field with jq"*, *"filter this API response"*, *"reshape this JSON"*, *"aggregate these records"*, *"explain this jq filter"*, or paste raw JSON or CLI output and ask to filter, transform, or summarize it
+> *"parse this JSON"*, *"extract X from this output"*, *"pull the field with jq"*, *"filter this API response"*, *"reshape this JSON"*, *"aggregate these records"*, *"turn this JSON into CSV"*, or paste raw JSON or CLI output and ask to filter, transform, or summarize it
 
 The full procedure lives at [`lib/jq/SKILL.md`](../lib/jq/SKILL.md) and the slash command at [`commands/jq.md`](../commands/jq.md).

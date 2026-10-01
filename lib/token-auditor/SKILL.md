@@ -12,7 +12,7 @@ Audit token efficiency only. Do not rewrite prompts, judge the work the tokens w
 
 | Field | Meaning | Accepted forms |
 |-------|---------|----------------|
-| `SESSION_LABEL` | What period this run covers | Free text, e.g. `Week of 2026-09-14`, `refactor sprint` |
+| `SESSION_LABEL` | What period this run covers | Free text, e.g. `Week of 2026-09-14`, `refactor sprint`. Optional; defaults to `this session` |
 | `INPUT_TOKENS` | Uncached input tokens | Non-negative integer, required |
 | `OUTPUT_TOKENS` | Generated output tokens | Non-negative integer, required |
 | `CACHE_CREATE_TOKENS` | Tokens written into the cache | Non-negative integer, required |

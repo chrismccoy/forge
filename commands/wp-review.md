@@ -9,7 +9,7 @@ disable-model-invocation: true
 > procedure for this command; every mention of "the `wordpress-architect-review` procedure" below
 > refers to it. It is not auto-loaded, so this read is mandatory.
 
-Run a structured senior WordPress architect review using the `wordpress-architect-review` procedure. Detect target type (plugin / theme / block plugin / MU-plugin), read every PHP/JS/CSS and companion config file directly, then produce the full report - executive summary, rating, strengths, severity-tagged critical issues by category with file:line + quoted code + Impact + Fix, scorecard, top 5 prioritized fixes, and a refactor roadmap if the overall score is below 6/10.
+Run a structured senior WordPress architect review using the `wordpress-architect-review` procedure. Detect target type (plugin / theme / block plugin / MU-plugin), read every PHP/JS/CSS and companion config file directly, then produce the full report - executive summary, rating, severity-tagged critical issues by category with file:line + quoted code + Impact + Fix, strengths, scorecard, top 5 prioritized fixes, and a refactor roadmap if the overall score is below 6/10.
 
 If a path was provided in the slash command arguments, audit that path. Otherwise audit the current working directory.
 

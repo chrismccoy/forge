@@ -55,7 +55,7 @@ The full procedure lives at [`lib/prompt-snippet/SKILL.md`](../lib/prompt-snippe
 
 ## `session-stats`
 
-Render a Claude Code session's quantitative stats as a single self-contained, dark-theme HTML page. Stats only: KPI cards, a full metrics table, and a files-modified table. No prompts, observations, tone analysis, or recommendations.
+Render a Claude Code session's quantitative stats as a single self-contained, dark-theme HTML page. Stats only: KPI cards, a per-tool usage table, and a token-bucket table. No prompts, observations, tone analysis, or recommendations.
 
 ```
 /session-stats
@@ -63,7 +63,7 @@ Render a Claude Code session's quantitative stats as a single self-contained, da
 
 Session transcripts are rich but unreadable as raw `.jsonl`, and the one number people actually want, what a session cost, is not stored anywhere in them. This plugin turns a transcript into a clean visual of the numbers. A two-stage offline pipeline parses the transcript and renders the page with no external dependency. `scan_jsonl.py` walks the `.jsonl`, counts prompts (excluding slash-command and system turns), tool calls, edits, files touched, errors, compactions, and subagents, derives duration and median turn time from timestamps, and computes a cost estimate from each assistant message's token `usage` times per-model pricing (the transcript stores token counts, not dollars). `build_stats_html.py` injects the result into a fixed dark template and writes a standalone `.html` file with no `<script>` tags and no external assets.
 
-Pricing follows the current Claude API catalog (Opus 4.8 = $5/$25 per MTok in/out, cache write $6.25, cache read $0.50). Override any rate per MTok with the `IN_RATE`, `OUT_RATE`, `CW_RATE`, `CR_RATE` environment variables. Every number traces to the transcript; absent fields render as `N/A`, never a guess.
+Pricing follows the current Claude API catalog via a per-model table (Opus, Sonnet, Haiku, Fable), defaulting to Opus 4.8 = $5/$25 per MTok in/out, cache write $6.25, cache read $0.50. A model with no table entry renders cost as `N/A` rather than $0. Override any rate per MTok with the `IN_RATE`, `OUT_RATE`, `CW_RATE`, `CR_RATE` environment variables. Every number traces to the transcript; absent fields render as `N/A`, never a guess.
 
 ## 📋 Technical Overview
 
@@ -71,8 +71,8 @@ One slash command, its procedure file, two scripts, and a template asset. The pr
 
 ## ✨ Features
 
-- 🎯 KPI cards: prompts, tool calls, edits, duration, cost, API errors, compactions, subagents
-- 📊 Full metrics table plus a files-modified table (path and write count)
+- 🎯 KPI cards: duration, prompts, tool calls, files written/edited, output tokens, est. cost
+- 📊 Per-tool usage table (calls, share bar, percent) plus a token-bucket table (input, output, cache created, cache read)
 - 💰 Cost computed from token `usage` times per-model pricing; current Opus 4.8 catalog rates; `IN_RATE`/`OUT_RATE`/`CW_RATE`/`CR_RATE` overrides
 - 🧮 promptCount excludes slash-command and system turns; cost groups assistant messages by model and sums input/output/cache-write/cache-read tokens times rates / 1e6
 - 🌑 Fixed dark template; restyle via the `:root` CSS variables only
@@ -129,7 +129,7 @@ One slash command and a two-file procedure bundle. `lib/token-auditor/SKILL.md` 
 - 🧾 `RULE residual`: four independently rounded shares do not sum to 100.0, so the residual lands on the largest of rows 1, 3 and 4 - never on the output row, whose share is itself a banded metric
 - 🚦 Ten edge-case rows under a precedence rule: rows 1-6 HALT on first match, rows 7-10 all apply
 - ⭐ Row 9 fallback scale marks its letter with `*` and says so, since a marked B is not comparable to an unmarked one
-- 🔁 `RULE verify-retry`: a disagreeing letter re-runs CALCULATE and GRADE once, then HALTs rather than guessing
+- 🔁 `RULE verify-retry`: a disagreeing letter re-runs CALCULATE and GRADE once, and HALTs only if the second pass still disagrees, rather than guessing
 - 🚫 Never estimates a value that was not supplied - a missing required number is a HALT
 - 📊 Working shown for every ratio and for the weighted score; raw values stated once outside the table
 
@@ -139,7 +139,7 @@ One slash command and a two-file procedure bundle. `lib/token-auditor/SKILL.md` 
 2. **Validate.** Walk the ten edge-case rows under `RULE precedence`.
 3. **Calculate.** Apply the formulas at full precision - shares, input efficiency, cache ratio, cache share, output discipline, io ratio.
 4. **Grade.** Band each rounded value, then compute the weighted score from the letter values.
-5. **Verify.** Recheck the arithmetic and each letter against its band row; re-run stages 3 and 4 once on disagreement, then HALT.
+5. **Verify.** Recheck the arithmetic and each letter against its band row; re-run stages 3 and 4 once on disagreement, and HALT only if the second pass still disagrees.
 6. **Render.** Emit the output contract verbatim: metrics table, three ratios with working, four grades, one recommendation.
 
 ## 🚀 How to use it
@@ -208,7 +208,7 @@ It behaves like a real sizecoder: show the technique, name the opcode, move on. 
  - **Round 2 - Toolchain**: CPU mode (16-bit real / 32-bit protected), assembler (NASM / FASM / TASM / MASM), binary format (.COM / boot sector / raw), entry point (`org 100h` / `org 7C00h` / `org 0`)
  - **Round 3 - Optimization**: performance priority (smallest / fastest / balanced), loop style (single / unrolled / SMC), allowed tricks (multi-select. SMC / undoc / FPU / LUT), memory model
  - **Round 4 - Final**: dependencies (BIOS only / no DOS / direct HW), comments (yes / no)
-2. **Validation**: checks for contradictions before emit. size-vs-effect, BIOS-only-vs-DOS-mode, 16-bit-vs-32-bit-tricks. emits `REFUSE: <reason>` on any conflict
+2. **Validation**: checks before emit - size-vs-effect, BIOS-only-vs-DOS-mode, 16-bit-vs-32-bit-tricks, non-period platform, off-scope requests, injection attempts, and unfilled placeholders - and emits a single `REFUSE: <reason>` line on any failure
 3. **Pre-emit checklist** (silent): byte estimate ≤ 0.85 × size limit, zero forbidden instructions, register reuse covers every named register, mechanism matches the named trick
 4. **Emit**: mandatory four-section output. Byte Budget, Code (single asm block), Core Trick (≤200 words), Tradeoffs (≤120 words)
 
@@ -236,25 +236,25 @@ Debug, fix, and optimize broken Excel and Google Sheets formulas.
 /fix-formula
 ```
 
-A broken formula is rarely broken where it looks broken. `=VLOOKUP(A2,Sheet2!A:B,3,0)` throws `#REF!` not because the syntax is wrong but because the column index counts inside the range, and `A:B` only has two columns. The `excel-formula-troubleshooter` skill traces the formula like a spreadsheet engine does. function by function, parentheses balance, argument count and order, range references, data types (text vs number, dates as serials), circular references. then names the exact root cause, returns a copy-paste-ready corrected formula, explains the fix in plain bullets, and where it helps, suggests a modern alternative (`XLOOKUP` over `VLOOKUP`, `IFERROR` to mask error values).
+A broken formula is rarely broken where it looks broken. `=VLOOKUP(A2,Sheet2!A:B,3,0)` throws `#REF!` not because the syntax is wrong but because the column index counts inside the range, and `A:B` only has two columns. The `excel-formula-troubleshooter` skill traces the formula like a spreadsheet engine does - function by function, parentheses balance, argument count and order, range references, data types (text vs number, dates as serials), circular references - then names the exact root cause, returns a copy-paste-ready corrected formula, explains the fix in plain bullets, and where it helps, suggests a modern alternative (`XLOOKUP` over `VLOOKUP`, `IFERROR` to mask error values).
 
-Output is locked to four sections so every answer reads the same: ❌ The Issue, ✅ Corrected Formula, 🛠️ How the Fix Works, 🚀 Better Alternative (omitted when none applies). Function names come back UPPERCASE, ready to paste. Scope is locked to spreadsheet-formula troubleshooting. it does not answer general spreadsheet or data questions outside a broken formula.
+Output is locked to four sections so every answer reads the same: ❌ The Issue, ✅ Corrected Formula, 🛠️ How the Fix Works, 🚀 Better Alternative (omitted when none applies). Function names come back UPPERCASE, ready to paste. Scope is locked to spreadsheet-formula troubleshooting: it does not build spreadsheets, write VBA, macros, or Apps Script, design pivot tables or charts, or answer general spreadsheet or data questions outside a broken formula.
 
 ## ✨ Features
 
-- 🔎 Silent pre-answer trace. function-by-function, parentheses balance, argument count/order, range references, data types, circular references. the reasoning never clutters the output
-- 🎯 Exact root cause. mismatched parentheses, wrong syntax, text-vs-number mismatch, circular reference, incorrect range, wrong column index. not "consider checking your ranges"
+- 🔎 Silent pre-answer trace - function-by-function, parentheses balance, argument count/order, range references, data types, circular references - the reasoning never clutters the output
+- 🎯 Exact root cause - mismatched parentheses, wrong syntax, text-vs-number mismatch, circular reference, incorrect range, wrong column index - not "consider checking your ranges"
 - 📋 Copy-paste-ready corrected formula with UPPERCASE function names
 - 🧾 Beginner-friendly bulleted explanation of why the fix works
-- 🚀 Optional modern alternative. `XLOOKUP` over `VLOOKUP`, `INDEX/MATCH`, `IFERROR` to mask `#N/A`. omitted cleanly when nothing better applies
-- 📦 Locked 4-section output format. identical layout on every answer
+- 🚀 Optional modern alternative - `XLOOKUP` over `VLOOKUP`, `INDEX/MATCH`, `IFERROR` to mask `#N/A` - omitted cleanly when nothing better applies
+- 📦 Locked 4-section output format - identical layout on every answer
 - 🚪 Asks for the issue instead of guessing when only a formula is supplied
-- 🔒 Scope lock. spreadsheet-formula troubleshooting only
+- 🔒 Scope lock - spreadsheet-formula troubleshooting only
 
 ## 🔄 How it works
 
-1. **Intake**: the `/fix-formula` slash command parses the broken formula and the issue. pipe-separated (`formula | issue`), tag-wrapped (`<broken_formula>` / `<issue>`), or interactive prompt when either is missing
-2. **Silent trace**: walks the formula function-by-function, checking parentheses, arguments, ranges, data types, and circular references. reasoning is not shown
+1. **Intake**: the `/fix-formula` slash command parses the broken formula and the issue - pipe-separated (`formula | issue`), tag-wrapped (`<broken_formula>` / `<issue>`), or interactive prompt when either is missing
+2. **Silent trace**: walks the formula function-by-function, checking parentheses, arguments, ranges, data types, and circular references - reasoning is not shown
 3. **Diagnose**: names the single exact root cause
 4. **Emit**: the locked four-section answer. The Issue, Corrected Formula, How the Fix Works, optional Better Alternative
 
@@ -286,7 +286,7 @@ Explain a macOS crash report in plain English: what happened, the core issue, wh
 
 A Mac writes a crash report every time an app stops working, and the reason is in there, buried in thousands of lines of addresses and frame numbers. The `crash-report` skill reads modern `.ips` JSON reports, legacy `.crash` text reports, hang reports, spindumps, samples, and Console excerpts, and returns six fixed sections in the same order every time - section 1 for a non-technical stakeholder, section 6 for someone who does not write code.
 
-Every claim has to name its source: the thread number, the frame index, the field name, or the exact string it came from. A claim without an anchor is not made at all - the section prints its header followed by `Not determinable from this report - need [the missing field]` instead. That rule is what keeps the analysis from drifting into a plausible-sounding story about a crash that did not happen.
+Every claim has to name its source: the thread number, the frame index, the field name, or the exact string it came from. A claim without an anchor is not made at all - the section prints its header followed by `Not determinable from this report - need [name the missing field]` instead. That rule is what keeps the analysis from drifting into a plausible-sounding story about a crash that did not happen.
 
 Length tracks evidence rather than filling a quota. Each section has a structural cap counted before sending, but the caps are ceilings and most reports land well under: a paste with three usable lines gets a two-sentence section 4. Restating the backtrace frame by frame, explaining macOS concepts the report never raises, or listing fixes the evidence does not support all count as padding and get cut.
 

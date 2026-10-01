@@ -1,6 +1,6 @@
 ---
 description: Render a Claude Code session's stats (KPI cards + per-tool usage table + token-bucket table) as a self-contained dark-theme HTML page. Offline pipeline - parses the .jsonl transcript and computes cost from token usage; no external tools required. Stats only, no observations.
-allowed-tools: Read, Bash, Glob
+allowed-tools: Read, Glob, Bash(ls:*)
 disable-model-invocation: true
 ---
 

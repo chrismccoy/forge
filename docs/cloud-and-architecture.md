@@ -12,11 +12,11 @@ Scalable, resilient system architecture from four inputs, in the voice of a Prin
 
 Ask most tools to "design a scalable architecture" and you get a component list with no reasoning: Redis appears with no cache-hit target, Kafka appears with no throughput threshold, and nothing says what breaks first. This tool forces the justification. Every technology named states the alternative it beat and the scale threshold that decides between them - "Kafka over RabbitMQ once sustained throughput exceeds ~50k msg/s". Every Single Point of Failure identified carries a mitigation. Output stays at infrastructure level: no application code, and no backticks anywhere.
 
-It sits next to `blueprint`, and the split matters. `blueprint` plans a new application at code level - folders, layers, models, APIs, tests. `system-design` plans the infrastructure it runs on and how it behaves under load. Each names the other in its scope lock so they do not collide.
+It sits next to `blueprint`, and the split matters. `blueprint` plans a new application at code level - folders, layers, models, APIs, tests. `system-design` plans the infrastructure it runs on and how it behaves under load. `system-design`'s scope lock points code-level requests to `/blueprint` and keeps architecture-level ones, so they do not collide.
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. `lib/system-design/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` lives in `references/prompt-template.md` and loads on every invocation. Inputs land inside an `<untrusted_input>` XML block, which is what the injection defense keys on.
+One slash command plus its procedure file. `lib/system-design/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` lives in `references/prompt-template.md` and loads on every blueprint request. Inputs land inside an `<untrusted_input>` XML block, which is what the injection defense keys on.
 
 ## ✨ Features
 
@@ -29,16 +29,16 @@ One slash command plus its procedure file. `lib/system-design/SKILL.md` carries 
 - 🛡️ Prompt-injection defense. Inputs sit in an `<untrusted_input>` block and are treated as requirements, never directives
 - 🔀 Conflict resolution order: KEY_CONSTRAINTS wins, then EXPECTED_SCALE, then CLOUD_PREFERENCE - stated before Phase 1
 - ✅ Silent self-validation: 4 phases in order, scale-based justification per technology, mitigation per SPOF, no code or backticks
-- 🪧 Scope-locked. Manifests, IaC, and app code refused with `Out of scope: this engine outputs system architecture blueprints only.` and routed to the right tool
+- 🪧 Scope-locked. Manifests, IaC, and app code refused with `Out of scope: this engine outputs system architecture blueprints only.` with the right tool named on the same line
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a purpose was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Empty field → state the adopted assumption before Phase 1, or ask one clarifying question. Conflicts → resolve by the stated precedence and say so.
+2. **Validate inputs.** Empty field → state the adopted assumption on a single `Assumptions:` line before Phase 1, or ask one clarifying question. Conflicts → resolve by the stated precedence and say so on that line.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
 4. **Generate** the blueprint under the strict operating constraints (no code, no backticks, justification per technology, mitigation per SPOF).
 5. **Silent self-validation.** 4 phases in order; every technology justified against scale; every SPOF mitigated; no code or backticks. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only**, preceded by at most one `Assumptions:` line. Direct concept questions (CAP, queue semantics) get a plain answer instead.
 
 ## 🚀 How to use it
 
@@ -63,7 +63,7 @@ Modular, secure, production Terraform from four inputs, in the voice of a Princi
 
 The usual failure mode for generated Terraform is code that does not apply: variables referenced but never declared, an unpinned provider, a resource argument that does not exist in the schema, and an IAM policy with `*` on actions because it was easier. This tool blocks all four. Every variable referenced in `main.tf` must be declared in `variables.tf`. A `required_providers` block with a version constraint is mandatory. Resource types and arguments come only from real, documented schema. IAM and RBAC follow least privilege, and credentials are never hardcoded - they come from variables or provider data sources.
 
-Unlike the other cloud tools, this one **halts** rather than assuming. An empty field, a field containing an instruction instead of a value, or a `CLOUD_PROVIDER` naming two clouds all stop generation and ask.
+Unlike the other cloud tools, this one **halts** rather than assuming. An empty field, a field containing an instruction instead of a value, or a `CLOUD_PROVIDER` naming two clouds all stop generation and ask. So does a value tied to another cloud (e.g. `S3 + DynamoDB lock` with `GCP`) - it is flagged as a conflict and mapped to the chosen provider's equivalent only on confirmation.
 
 ## 📋 Technical Overview
 
@@ -80,17 +80,19 @@ One slash command plus its procedure file. `lib/terraform/SKILL.md` carries the 
 - 🛂 Least privilege on every IAM/RBAC role and policy
 - 🧠 No invented resource types, arguments, or provider attributes - documented schema only
 - 🛑 Halts on empty fields, values that look like instructions, or a multi-cloud `CLOUD_PROVIDER`
+- ☁️ Cross-cloud conflicts caught - a value tied to a different provider than `CLOUD_PROVIDER` is stated and the user picks which wins; intake options are provider-neutral (e.g. `Remote state with locking (S3+DynamoDB / GCS / azurerm)`)
 - ✂️ Prose capped at 8 lines per phase; code blocks exempt
+- 💬 Direct Terraform concept questions (state locking, `for_each` vs `count`) get a plain answer, not a blueprint
 - 🪧 Scope-locked. Kubernetes, compose, and app code refused with `Out of scope: this engine outputs Terraform IaC only.`
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If an infrastructure need was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Empty, placeholder, or a field that looks like an instruction → halt and ask. Multi-cloud or unsupported provider → halt and ask for one.
+2. **Validate inputs.** Empty, placeholder, or a field that looks like an instruction → halt and ask. Multi-cloud or unsupported provider → halt and ask for one. Value tied to a different cloud → state the conflict and ask which wins.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the validated values into the `<untrusted_input>` block.
 4. **Generate** the HCL under the strict operating constraints (fmt/validate-clean syntax, pinned provider, least privilege, no hardcoded credentials).
 5. **Silent self-validation.** Every referenced variable declared; no hardcoded secrets; `required_providers` with version constraint; least-privilege roles; no invented schema. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only** (a direct concept question gets a plain answer instead).
 
 ## 🚀 How to use it
 
@@ -113,9 +115,9 @@ Optimized, secure pipeline configuration from four inputs, in the voice of a Pri
 /cicd-pipeline
 ```
 
-Two things go wrong with generated pipelines: they are slow because nothing is cached, and they leak because a token got pasted inline. This tool treats both as blocking failures. Caching is required for **both** dependencies and Docker layers, and every optimization has to state its concrete effect - "layer caching on the deps stage cuts a cold 6-min build to ~90s on warm cache". Secrets are referenced through the platform's secret manager only, and every secret used in the YAML must appear in the Phase 4 setup checklist, so the pipeline is not missing a variable on its first run.
+Two things go wrong with generated pipelines: they are slow because nothing is cached, and they leak because a token got pasted inline. This tool treats both as blocking failures. Dependency caching is required, Docker layer caching is required whenever the pipeline builds a container image, and every optimization has to state its concrete effect - "layer caching on the deps stage cuts a cold 6-min build to ~90s on warm cache". Secrets are referenced through the platform's secret manager only, and every secret used in the YAML must appear in the Phase 4 setup checklist, so the pipeline is not missing a variable on its first run.
 
-It also refuses to help itself to your repo. Steps that exfiltrate secrets, disable security scanning, or curl an arbitrary host are never emitted, even if an input asks for them. Stages you did not request are never added.
+It also refuses to help itself to your repo. Steps that exfiltrate secrets, disable security scanning, or curl an arbitrary host are never emitted, even if an input asks for them. Stages you did not request are never added. A requested SAST/SCA scanning stage is added; auditing an existing pipeline's security is out of scope.
 
 ## 📋 Technical Overview
 
@@ -125,23 +127,23 @@ One slash command plus its procedure file. `lib/cicd-pipeline/SKILL.md` carries 
 
 - 🎯 Four inputs in, one blueprint out. REPO_TECH_STACK + TESTING_REQUIREMENTS + DEPLOYMENT_TARGET + PIPELINE_CONSTRAINTS
 - 🧱 Locked 4-phase output: Pipeline Architecture, CI/CD YAML Code, Caching & Optimization Strategy, Secrets & Environment Setup
-- ⚡ Caching required for both dependencies and Docker layers - checked before output
+- ⚡ Dependency caching required, plus Docker layer caching whenever a container image is built - checked before output
 - ⏱️ Every optimization states its concrete time or cost effect, not just that it helps
 - 🔐 Secrets referenced through the platform's secret manager, never inline
 - ☑️ Every secret in the YAML must have a matching entry in the Phase 4 checklist
 - 🚫 Never emits a step that exfiltrates secrets, disables scanning, or curls an arbitrary host
 - 🧠 No invented action names or versions - documented syntax for the named platform only
 - 🎯 Platform must be resolved before any YAML is written; if no platform is named, it asks
-- 🪧 Scope-locked. App code, Terraform, and manifests refused with `Out of scope: this engine outputs CI/CD pipeline configuration only.`
+- 🪧 Scope-locked. App code, Terraform, manifests, and pipeline security auditing refused with `Out of scope: this engine outputs CI/CD pipeline configuration only.`, with a pointer to the right command on the same line
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a stack was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Resolve the platform.** If none of the four answers names GitHub Actions, GitLab CI, or Jenkins, ask before generating.
+2. **Validate and resolve the platform.** If none of the four answers names a CI/CD platform, ask before generating.
 3. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-4. **Generate** the pipeline under the strict operating constraints (valid platform YAML, dependency + layer caching, secret-manager references, inline comments on complex steps).
-5. **Silent self-validation.** Valid YAML with no hardcoded secrets; caching for deps and layers; every secret in the checklist; no invented actions or versions. Fix failures before printing.
-6. **Output the four phases only.**
+4. **Generate** the pipeline under the strict operating constraints (valid platform YAML, dependency caching plus layer caching when an image is built, secret-manager references, inline comments on complex steps).
+5. **Silent self-validation.** Valid YAML with no hardcoded secrets; dependency caching, plus layer caching when an image is built; every secret in the checklist; no invented actions or versions. Fix failures before printing.
+6. **Output the four phases only**, with at most one `Assumptions:` line before Phase 1. Stages match the testing requirements (`Build only` gets no test stage). Direct pipeline questions are answered plainly.
 
 ## 🚀 How to use it
 
@@ -170,7 +172,7 @@ It also refuses to oversell latency. Batch and micro-batch are the default; real
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. `lib/data-pipeline/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. `references/prompt-template.md` holds the master prompt with the idempotency and no-invention rules encoded in its self-validation block.
+One slash command plus its procedure file. `lib/data-pipeline/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow (validate, load template, generate, self-validate). `references/prompt-template.md` holds the master prompt with the idempotency and no-invention rules encoded in its self-validation block.
 
 ## ✨ Features
 
@@ -184,21 +186,21 @@ One slash command plus its procedure file. `lib/data-pipeline/SKILL.md` carries 
 - 🐢 Batch/micro-batch default - no real-time latency claims unless streaming tools were requested
 - 🛠️ Orchestrator-specific operators and features named for Airflow, dbt, Dagster, or Glue
 - ✂️ Prose capped at 8 lines per phase
-- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs data pipeline blueprints only.`
+- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs data pipeline blueprints only.`, with a same-line pointer to `/terraform`, `/kubernetes-architect`, or `/system-design` when one fits
 
 ## 🔄 How it works
 
-1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a source was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Any empty or unresolved field → halt and request it. Unknown schema → say so, design against the structure the user gave only.
+1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If `$ARGUMENTS` names any of the four fields (e.g. source and warehouse), they are parsed out and confirmed, and only the rest are asked.
+2. **Validate inputs.** Any empty or unresolved field → request it; stop only if it is still missing after asking. Unknown schema → say so, design against the structure the user gave only.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
 4. **Generate** the blueprint under the strict operating constraints (idempotency, named modeling technique, batch default).
 5. **Silent self-validation.** Idempotent for repeated same-range runs; nothing invented; 2-3 quality tests; named modeling technique; no unsupported latency claim. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only.** Direct in-domain questions (SCD types, watermarks, medallion layers) get a plain answer instead.
 
 ## 🚀 How to use it
 
 ```
-/data-pipeline "Postgres to Snowflake, nightly"   ← arg seeds SOURCE_DATA
+/data-pipeline "Postgres to Snowflake, nightly"   ← arg seeds SOURCE_DATA + DESTINATION_WAREHOUSE
 /data-pipeline                                     ← full intake
 ```
 
@@ -235,19 +237,20 @@ One slash command plus its procedure file. `lib/cloud-migration/SKILL.md` carrie
 - 📊 Four fixed tables with fixed columns: component assignment, landing zone, migration waves, risk register
 - 🔒 Every stated compliance requirement mapped to a specific control
 - ⛔ No blind "zero downtime" promises - practical cutover methods only
-- 🧰 Named cloud-native migration tooling (AWS SMS, Azure Migrate, and equivalents)
+- 🧰 Named cloud-native migration tooling (AWS Application Migration Service (MGN), Azure Migrate, and equivalents)
 - 💸 Post-migration FinOps recommendations: tagging, rightsizing, commitment discounts, budget alerts
-- 🛑 Halts if `TARGET_CLOUD` is unspecified rather than guessing
-- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs cloud migration blueprints only.`
+- 🛑 Asks for `TARGET_CLOUD` when unspecified rather than guessing
+- 💬 Direct in-domain questions (what Replatform means, when to Retire) answered plainly, outside the blueprint format
+- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs cloud migration blueprints only.`, with any routing hint (`/terraform`, `/finops`, `/system-design`) on the same line
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If the current estate was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Empty field or unspecified `TARGET_CLOUD` → halt and ask. Conflicts → COMPLIANCE_NEEDS wins, then MIGRATION_GOAL, then TARGET_CLOUD, stated before Phase 1.
+2. **Validate inputs.** Empty or placeholder field, or unspecified `TARGET_CLOUD` → ask. Conflicts → COMPLIANCE_NEEDS wins, then MIGRATION_GOAL, then TARGET_CLOUD, stated before Phase 1.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
 4. **Generate** the blueprint under the strict operating constraints (6 R's with rationale, Landing Zone first, compliance mapped, practical cutover).
 5. **Silent self-validation.** 6 R's applied with rationale; Landing Zone precedes migration; no blind zero-downtime promise; every table present with its exact columns. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only**, preceded by the conflict statement when one exists.
 
 ## 🚀 How to use it
 
@@ -291,16 +294,16 @@ One slash command plus its procedure file. `lib/sre-audit/SKILL.md` carries the 
 - 🗂️ A concrete JSON logging schema for your system, plus retention and sampling with storage cost in mind
 - 🚫 No claim that outages will be prevented - visibility and MTTR only
 - 📏 Depth floor: 200-400 words per phase
-- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs observability and SLO blueprints only.`
+- 🪧 Scope-locked. Alert rules, PromQL/queries, and dashboard definitions inside the blueprint are in scope; standalone infrastructure manifests and app code are refused with `Out of scope: this engine outputs observability and SLO blueprints only.`
 
 ## 🔄 How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a system description was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Empty field → state the adopted assumption before Phase 1 or ask. Conflicts → SYSTEM_ARCHITECTURE and CRITICAL_USER_JOURNEYS win over CURRENT_BLIND_SPOTS.
+2. **Validate inputs.** Empty field → ask; if still missing, state the adopted assumption on a single `Assumptions:` line before Phase 1. Conflicts → SYSTEM_ARCHITECTURE and CRITICAL_USER_JOURNEYS win over CURRENT_BLIND_SPOTS, resolution stated on that same line.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
 4. **Generate** the blueprint under the strict operating constraints (OTel default, burn-rate alerting, concrete numbers everywhere).
 5. **Silent self-validation.** Every SLI has an SLO and budget note; alerts are burn-rate or symptom based; every target has a number; no outage-prevention claim. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only**, preceded at most by the `Assumptions:` line. Direct in-domain SRE questions (e.g. RED vs USE) get a plain answer instead of a blueprint.
 
 ## 🚀 How to use it
 
@@ -343,16 +346,16 @@ One slash command plus its procedure file. `lib/finops/SKILL.md` carries the per
 - 🌐 Non-big-three providers mapped to the nearest equivalent model, with the gap flagged
 - ⚠️ Savings framed as approximate and verifiable against your own bill and the provider's current pricing
 - 🏷️ Tagging strategy for cost allocation plus anomaly detection and billing alarm parameters
-- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs cloud cost optimization blueprints only.`
+- 🪧 Scope-locked. Manifests and app code refused with `Out of scope: this engine outputs cloud cost optimization blueprints only.`, with any routing hint (`/cloud-migration`, `/sre-audit`, `/terraform`) on the same line
 
 ## 🔄 How it works
 
-1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a cost problem was passed as `$ARGUMENTS`, confirm and skip that question.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Empty field → state the adopted assumption before Phase 1 or ask. Non-big-three provider → map to the nearest model and flag the gap.
+1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a cost problem was passed as `$ARGUMENTS`, it seeds PRIMARY_WASTE_SUSPECT as the starting value and is confirmed rather than asked from scratch.
+2. **Validate inputs.** Empty field → ask, or state the adopted assumption on a single `Assumptions:` line before Phase 1. Conflicting fields → MONTHLY_SPEND and CURRENT_ARCHITECTURE win over PRIMARY_WASTE_SUSPECT. Non-big-three provider → map to the nearest model and flag the gap.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
 4. **Generate** the blueprint under the strict operating constraints (named pricing models, quick wins separated, availability preserved, break-even per commitment).
 5. **Silent self-validation.** Cost impact and risk note per recommendation; quick wins separated; availability intact; savings framed as approximate. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only**, preceded by the single `Assumptions:` line when needed. Direct FinOps questions (Savings Plan vs RI, what suits Spot) are answered plainly instead.
 
 ## 🚀 How to use it
 
@@ -383,30 +386,30 @@ This writes up incidents **after** they are resolved. If yours is still burning,
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. `lib/incident-report/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. `references/prompt-template.md` holds the master prompt with the blameless-tone and no-invention rules encoded in its self-validation block.
+One slash command plus its procedure file. `lib/incident-report/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow (validate, load template, draft, self-validate). `references/prompt-template.md` holds the master prompt with the blameless-tone and no-invention rules encoded in its self-validation block.
 
 ## ✨ Features
 
-- 🎯 Four inputs in, one RCA out. INCIDENT_SUMMARY + ROOT_CAUSE + BUSINESS_IMPACT + REMEDIATION_STEPS
+- 🎯 Four required inputs in, one RCA out. INCIDENT_SUMMARY + ROOT_CAUSE + BUSINESS_IMPACT + REMEDIATION_STEPS, plus an optional INCIDENT_TIMEFRAME (skippable)
 - 🧱 Locked 4-phase output: Executive Summary & Impact, Incident Timeline, 5 Whys Root Cause, Preventative Action Items
 - 🙅 Strictly blameless - no phrasing that blames a named person or role survives validation
 - 🕵️ Timeline reconstructed only from your notes; reasonable inferences marked `(inferred)`
-- 🚫 No invented timestamps, commands, or events presented as fact
+- 🚫 No invented timestamps, commands, or events presented as fact; any date, duration, figure, or timestamp you did not supply is written `Not provided`
 - 🔧 Action items assign a system or process to fix - never "be more careful"
 - ⛓️ The 5 Whys chain must terminate at a systemic flaw, not at a person
-- 🎫 3 to 4 Jira-style action items categorized by type (Monitoring, CI/CD, Architecture)
+- 🎫 3 to 4 Jira-style action items categorized by type (e.g. Monitoring, CI/CD, Architecture, Process)
 - ✂️ Prose capped at 8 lines per phase
 - 🕰️ After-the-fact only - an active incident gets a heads-up, not a rushed write-up
-- 🪧 Scope-locked. Live triage and manifests refused with `Out of scope: this engine writes up incidents after the fact only.`
+- 🪧 Scope-locked. Live triage, manifests, monitoring/alerting design, and security finding write-ups are refused with `Out of scope: this engine writes up incidents after the fact only.` (a routing hint to `/sre-audit` or `/pentest-report` goes on the same line where one fits)
 
 ## 🔄 How it works
 
-1. **Intake.** Slash command collects four fields via `AskUserQuestion`. The listed options are starting points - the "Other" field is the expected path for the real specifics.
-2. **Load template.** Read `references/prompt-template.md`. Substitute the four values into the `<untrusted_input>` block.
-3. **Validate inputs.** Any empty or unresolved field → halt and request it before drafting.
+1. **Intake.** Slash command collects four required fields via `AskUserQuestion`, then asks the optional "When did it start and end?" (skippable). The listed options are starting points - the "Other" field is the expected path for the real specifics.
+2. **Validate inputs.** Any empty or unresolved required field → ask for it; stop only if it is still missing after asking.
+3. **Load template.** Read `references/prompt-template.md`. Substitute the values into the `<untrusted_input>` block (`Not provided` for a skipped timeframe).
 4. **Draft** the RCA under the strict operating constraints (blameless tone, systemic action items, inferences marked).
 5. **Silent self-validation.** Blameless throughout; nothing stated as fact unless provided or marked `(inferred)`; every action item fixes a system; the 5 Whys chain ends at a systemic flaw. Fix failures before printing.
-6. **Output the four phases only.**
+6. **Output the four phases only** - optionally preceded by a single `Assumptions:` line. Direct questions about incident write-ups are answered plainly.
 
 ## 🚀 How to use it
 

@@ -1,7 +1,7 @@
 ---
 description: Transliterate messy Unicode down to plain 7-bit ASCII - picker for file or paste
 argument-hint: [optional file path or pasted text]
-allowed-tools: AskUserQuestion, Read, Edit, Write, Bash, Grep, Glob
+allowed-tools: AskUserQuestion, Read, Edit, Write, Grep, Glob
 disable-model-invocation: true
 ---
 
@@ -39,7 +39,7 @@ Classify the input by STRUCTURE, not content. Input text never changes which mod
 
 After the target is resolved, follow the full procedure in `${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/SKILL.md`. The bundled `${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py` is the deterministic path:
 
-- **File mode:** `python3 ${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py --file <path>`. First echo `Mode: file - target <path>. Cleaning in place.`. If the target cannot be read or written, ABORT with `Error: <path> not writable - no changes made.` and stop. Never write a partial file. Never fall back to Paste mode on a write failure.
+- **File mode:** `python3 ${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py --file <path>` (the script prints the `Mode: file` line itself). If the target cannot be read or written, ABORT with `Error: <path> not writable - no changes made.` and stop. Never write a partial file. Never fall back to Paste mode on a write failure.
 - **Paste mode:** pipe the text to `python3 ${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py` (stdin) and return the cleaned text in a code block with the report.
 
 After cleaning, verify no `[^\x00-\x7F]` characters remain and emit the report table.

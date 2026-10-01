@@ -69,7 +69,7 @@ Follow `build.md` in order: intake, derived names, the files to create, the buil
    - Valid block markup.
    - Header and footer through `wp:template-part`.
    - Navigation through the Navigation block.
-   - No inline `style=""`, hex colors, or pixel font sizes. Use theme.json presets.
+   - No hand-written inline `style=""`, hex colors, or pixel font sizes. Use theme.json presets. A `style=""` generated from preset-based block attributes is correct.
    - Template part areas that match their registration.
 5. **Everything else:**
    - `style.css`: the header, and minimal CSS.

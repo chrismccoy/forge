@@ -50,7 +50,7 @@ In the Evidence column, name the specific files examined for that row. Do not wr
 | 31 | | Arch | File-level docblocks on every PHP file | | | |
 | 32 | | Arch | Function docblocks on every custom function | | | |
 | 33 | | Arch | `functions.php` is ≤150 lines with logic extracted to `inc/` | | | |
-| 34 | | Arch | `functions.php` require order: functions → tags → navigation → widgets | | | |
+| 34 | | Arch | `functions.php` require order: functions → tags → navigation → widgets (conditional files omitted when not in ⑪) | | | |
 | 35 | | Dynamic | Navigation fully dynamic - zero hardcoded links in menus | | | |
 | 36 | | Dynamic | All post data uses WP template tags (not hardcoded) | | | |
 | 37 | | Dynamic | Sidebar uses `dynamic_sidebar()` with `is_active_sidebar()` check | | | |
@@ -116,7 +116,7 @@ In the Evidence column, name the specific files examined for that row. Do not wr
 |--------|----------|--------|
 | ✅ **GO** | All blockers PASS + ≤ 3 non-blocker FAILs | Theme is ready. List any non-blocker FAILs as minor follow-ups. |
 | ⚠️ **CONDITIONAL** | All blockers PASS + 4-8 non-blocker FAILs | List every FAIL with its fix. Offer to apply all fixes in one follow-up chunk. |
-| ❌ **NO-GO** | Any blocker FAIL | List ALL failures (blocker and non-blocker). Provide fixes for each per Change Management Protocol. Offer to regenerate affected files. |
+| ❌ **NO-GO** | Any blocker FAIL, or 9+ non-blocker FAILs | List ALL failures (blocker and non-blocker). Provide fixes for each per Change Management Protocol. Offer to regenerate affected files. |
 
 ---
 

@@ -1055,7 +1055,7 @@ See "CRITICAL: Must use object notation for padding" section above.
 | **Custom spacingSizes without defaultSpacingSizes: false** | WordPress spacing mixed in with the theme's | CRITICAL | Add `"defaultSpacingSizes": false` |
 | **Hardcoded hex values in styles** | Users can't customize colors | WARNING | Define in palette, reference via CSS variable |
 | **Root padding without useRootPaddingAwareAlignments** | Full-width blocks broken | WARNING | Set `"useRootPaddingAwareAlignments": true` |
-| **CSS shorthand padding with useRootPaddingAwareAlignments** | Feature doesn't work | WARNING | Use object notation: `{"top": "2rem", ...}` |
+| **CSS shorthand padding with useRootPaddingAwareAlignments** | Feature doesn't work | CRITICAL | Use object notation: `{"top": "2rem", ...}` |
 | **Missing $schema** | No IDE validation | INFO | Add `"$schema": "https://schemas.wp.org/trunk/theme.json"` |
 | **Trailing commas in JSON** | Parse error | CRITICAL | Remove trailing commas |
 | **File paths in fontFace without file:** | Fonts won't load | CRITICAL | Use `"file:./assets/fonts/font.woff2"` |

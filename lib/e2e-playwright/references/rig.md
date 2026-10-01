@@ -4,6 +4,20 @@ The Playwright config, the ports module, the launcher, the fake upstream, the se
 and the npm scripts. Read `pitfalls.md` first - most of what follows only makes sense
 against it.
 
+## Architecture
+
+Playwright owns the whole test rig. Nothing about the developer's own install is touched.
+
+1. **A throwaway install.** A seed script wipes `var/e2e`, rebuilds the database from the application's own schema module, and copies fixture files into a throwaway uploads directory. The app under test is pointed at all of it through the environment variables it already reads for those paths. If it has no such variables, add them - an application that cannot be told where to keep its data is hard to test and hard to deploy.
+
+   **The seed must never be able to delete real data.** It does not fall back on the application's default paths: when the variables are unset it uses `var/e2e`. Before deleting anything it resolves the database and uploads paths and exits non-zero, having touched nothing, unless both sit inside `var/e2e`. Check that with `path.relative(e2eDir, target)`, which must be non-empty and must neither start with `..` nor be absolute - never with a string prefix, which lets `var/e2e-other` through. Resolve `var/e2e` from the script's own location (`__dirname`), not from the working directory: `npm run seed:e2e` can be started from anywhere. Give that guard a test, including the `var/e2e-other` case.
+
+2. **A fake upstream, if the app calls a paid API.** A dependency-free `node:http` server that answers the API's routes, started by Playwright like any other server, with the app pointed at it through whatever base-URL setting the SDK honours. Do not put a test branch inside the application: pointing the real client at a different origin keeps the SDK, the HTTP layer and the multipart encoding under test, so a broken base URL or a malformed body still fails.
+
+3. **Two servers, started by Playwright.** The `webServer` array holds the fake upstream first and the app second, each with a readiness URL.
+
+4. **Specs, one per journey**, sharing a helpers module and a constants module that describes the seeded data.
+
 ## Configuration
 
 ```js
@@ -210,7 +224,21 @@ script that makes the cheapest possible calls with a real key and saves each rep
 *envelope* — status, headers and body, with the payload bytes replaced by a placeholder —
 so nothing but the shape is committed. The nesting inside something like a `usage` block
 is exactly what a hand-built stub gets subtly wrong, and what the application reads. Ask
-the human before spending their money, and never print or commit the key.
+the human before spending their money, and never print or commit the key. If there is no
+way to ask, or the `CI` environment variable is set, do not record: build the fixtures by
+hand from the SDK's types and the API's documentation, mark each file `TODO: re-record
+against the real API`, and say so in the report.
+
+Prove the app really talks to the stub with a spec that checks the stub's request log
+against every upstream call the journey should make, so a call that went somewhere else
+shows up as a missing entry.
+
+**Before the first full run, close every route to the real upstream.** Collect every
+variable that could steer the upstream client: the ones the app builds the SDK from (grep
+the app), the ones the SDK reads by itself (grep its package under `node_modules` for
+`process.env` or its env helper), and every key in `.env` and `.env.example`. Set each one
+in `appEnv`, to a fake value or `""`. The launcher keeps the shell out; only a **set**
+variable keeps `.env` out.
 
 ## Seed data
 
@@ -276,3 +304,8 @@ collect the other's files. Neither side is safe by default: Playwright's default
 
 Add `var/`, `test-results/` and `playwright-report/` to `.gitignore`.
 
+## Documentation
+
+Put the documentation in `TESTING.md`, not the README: how to run each suite, what the
+test rig is made of, how the fake upstream is driven, how to re-record its envelopes, and
+what the suite deliberately does not cover. Keep the README for what the application does.

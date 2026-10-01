@@ -70,7 +70,7 @@ Before emitting, self-check:
 
 1. Every node id appears in the legend with a real file:line.
 2. Every edge corresponds to a real call, import, route, hook registration, or message send you can `Grep` for. If you cannot cite it, delete the edge.
-3. Mermaid syntax parses: balanced brackets, no reserved-word collisions (`end`, `class`, `style`), node ids do not start with a digit, labels with special chars (`()`, `:`, `/`) wrapped in `"…"`.
+3. Mermaid syntax parses: balanced brackets, no reserved-word collisions: node ids must not equal or begin with a Mermaid keyword (`end`, `class`, `style`, `graph`, `subgraph`, `click`, `create`, `destroy`), and sequence-diagram participant ids use snake_case (a hyphenated id like `create-handler` fails to parse); node ids do not start with a digit; message text contains no `;` or `#`, labels with special chars (`()`, `:`, `/`) wrapped in `"…"`.
 4. No orphan nodes unless they are documented external systems.
 5. Diagram fits the cap. If it does not, split.
 

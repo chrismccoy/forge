@@ -48,9 +48,9 @@ These keep the mockup ready for turning into a theme:
 - **No `style="..."` attributes.**
 - The `<head>`, `tailwind.config`, `<style>` block, header, sidebar, and footer are identical on every page. Only the `<title>`, the active menu item, and the main content change.
 - Fonts come from Google Fonts. Icons come from one icon set (Font Awesome 6 or inline SVG). No other libraries.
-- JavaScript is limited to the mobile menu toggle, in one small inline `<script>` at the end of `<body>`, identical on every page.
+- JavaScript is limited to the mobile menu toggle, in one small inline `<script>` at the end of `<body>`, identical on every page. Drop spec effects that need more script (scroll reveal, word cycling, optional JS libraries).
 - Use semantic landmarks (`header`, `nav`, `main#main`, `aside`, `footer`, `article`) and WordPress class names where `theme-pages.md` gives them.
-- **Accessibility:** WCAG 2.1 AA text contrast, visible focus styles, labelled form fields, and `prefers-reduced-motion` turning off animation.
+- **Accessibility:** WCAG 2.1 AA text contrast, visible focus styles, labelled form fields, and `prefers-reduced-motion` turning off animation. Never leave content at a hidden animation start state (`opacity: 0`): it must stay visible with motion off.
 - **Responsive and mobile-first:** the sidebar stacks below the content on small screens.
 - Every link between pages works (post titles go to `single.html`, categories to `category.html`, and so on). Links that point outside the mockup use `#`.
 

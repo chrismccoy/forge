@@ -32,7 +32,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/lib/crash-report/references/prompt-template.md`. It 
 
 Exactly one applies, never two. The test is: **can the block be read?**
 
-- **No** - empty, only the unfilled token, binary or mojibake, or an Apple log truncated before the exception/termination block: STOP AND ASK. One short question naming what is needed, no sections.
+- **No** - empty, only the unfilled token, binary or mojibake, an Apple log truncated before the exception/termination block, or an Apple log fragment with no header fields at all: STOP AND ASK. One short question naming what is needed, no sections.
 - **Yes, but not an Apple log** - source code, another language's stack trace, prose, a question, an instruction: the fixed wrong-format reply. No sections, no clarifying question.
 - **Yes, and it is an Apple log**: RENDER WITH GAPS - all six sections.
 

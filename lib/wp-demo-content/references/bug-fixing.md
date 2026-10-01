@@ -15,7 +15,7 @@ If the developer agrees (all, or a chosen subset):
   - Behaviour that hides or removes core WordPress features on purpose is a product decision: recommend leaving it, with the fix as an alternative.
   - Accessibility and HTML validity problems: recommend fixing them.
   - Stale compiled CSS: recommend fixing the source or build config and listing the rebuild, never editing the built file.
-- **Keep the work separate.** Never stash, reset, or discard anything, and never move `demo/`.
+- **Keep the work separate.** Never stash, `git reset`, or discard anything, and never move `demo/`.
   - In a git repository: if there are uncommitted changes outside `demo/` and `.distignore`, list them and ask the developer before continuing. If a `fix/demo-audit-bugs` branch already exists, stop and ask. Otherwise run `git switch -c fix/demo-audit-bugs` (the untracked `demo/` comes along) and leave everything uncommitted.
   - Without git: before changing anything, save a backup, including `demo/`, to `<theme's parent folder>/<slug>-backup-before-fixes-<YYYYmmdd-HHMM>.tar.gz` (never under `$TMPDIR` or `<tmp>`, which `teardown` deletes), check it with `tar tzf`, and give its absolute path in `demo/CHANGED.md`.
 - **How to fix:**

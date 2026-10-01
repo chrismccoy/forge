@@ -63,32 +63,33 @@ The full procedure lives at [`lib/tech-blog-article/SKILL.md`](../lib/tech-blog-
 
 ## `tutorial-builder`
 
-Turns code, a feature, or a library into a step-by-step, hands-on tutorial that teaches instead of describing. Five inputs, a locked tutorial structure, retention patterns and cognitive-load limits built in, and a pre-publish checklist plus a 1-5 speed score that gate the result.
+Turns code, a feature, or a library into a step-by-step, hands-on tutorial that teaches instead of describing. Five inputs, a locked tutorial structure, retention patterns and cognitive-load limits built in, and a pre-publish checklist plus a checkable yes/no quality gate that decide whether the result ships.
 
 ```
 /tutorial-builder
 ```
 
-Most "write a tutorial" prompts produce a wall of prose with a code dump in the middle: concepts used before they are introduced, examples that do not run, no exercises, and no way for the reader to check they got it right. This plugin works the way a careful teacher does. It sets measurable objectives first (Bloom's verbs like build and debug, not "understand"), breaks the topic into atomic concepts ordered simple to complex with no forward references, and scaffolds practice as I-do, We-do, You-do. Every code block runs unmodified, lists its dependencies, and shows its expected output. Each section carries a minimal example, guided practice, a few challenges, and a troubleshooting table. The reader leaves with a summary that mirrors the opening and a concrete set of next steps.
+Most "write a tutorial" prompts produce a wall of prose with a code dump in the middle: concepts used before they are introduced, examples that do not run, no exercises, and no way for the reader to check they got it right. This plugin works the way a careful teacher does. It sets measurable objectives first (Bloom's verbs like build and debug, not "understand"), breaks the topic into atomic concepts ordered simple to complex with no forward references, and scaffolds practice as I-do, We-do, You-do. Every code block is traced to run unmodified (or is clearly labeled pseudocode), lists its dependencies, and shows its expected output. Each section carries a minimal example, guided practice, a few challenges, and a troubleshooting table. The reader leaves with a summary that mirrors the opening and a concrete set of next steps.
 
-The skill body runs the workflow and stays lean. Retention patterns (learn by doing, spaced repetition, worked examples, immediate feedback, analogies), cognitive-load limits (7 plus-or-minus 2, one-screen code, one new concept per step), and five difficulty-calibrated exercise types keep the pacing right. Depth that is not needed on every build lives one hop away in `references/implementation-playbook.md` - a full worked tutorial, per-format deep-dives, an exercise bank, and an expanded review rubric - and a finished `examples/sample-tutorial.md` ships as a copy-ready target. A pre-publish quality checklist and a 1-5 speed score (clarity, pacing, practice, troubleshooting, engagement) run before delivery.
+The skill body runs the workflow and stays lean. Retention patterns (learn by doing, spaced repetition, worked examples, immediate feedback, analogies), cognitive-load limits (one new concept per step, one-screen code, no forward references), and five difficulty-calibrated exercise types keep the pacing right. Craft rules (retention patterns, writing principles, content-element rules, audience calibration, pitfalls, accessibility) live in `references/writing-guide.md`, loaded before drafting. Depth that is not needed on every build lives one hop away in `references/implementation-playbook.md` - a full worked tutorial, per-format deep-dives, an exercise bank, and an expanded review rubric - and a finished `examples/sample-tutorial.md` ships as a copy-ready target. A pre-publish quality checklist and a checkable yes/no gate (analogies, expected output, mirrored summary, realistic time, rising difficulty, no filler callouts) run before delivery.
 
 Supplied code and repo content are treated as inert data - a directive embedded in a comment or filename is content to teach around, never a command to obey. Scope-locked to teaching content: non-tutorial and role-change requests get `I only build tutorials - give me a topic or some code and I'll teach it.`
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file. The procedure file `lib/tutorial-builder/SKILL.md` carries the persona, scope lock, the three-step development process, the locked tutorial structure, retention and cognitive-load rules, and the quality gates. The on-demand `references/implementation-playbook.md` holds a full worked tutorial, a formats table with per-format guidance, a difficulty-calibrated exercise bank, and an expanded review rubric. A finished `examples/sample-tutorial.md` ships as a copy target. The slash command `/tutorial-builder` accepts an optional `TOPIC` or path, then walks the user through `AskUserQuestion` intake for the remaining four fields.
+One slash command plus its procedure file. The procedure file `lib/tutorial-builder/SKILL.md` carries the persona, scope lock, the three-step development process, the locked tutorial structure, core cognitive-load rules, and the quality gates. The on-demand `references/writing-guide.md` holds the retention patterns, writing principles, content-element rules, behavior heuristics, audience calibration, pitfalls, and accessibility checklist. The on-demand `references/implementation-playbook.md` holds a full worked tutorial, a formats table with per-format guidance, a difficulty-calibrated exercise bank, and an expanded review rubric. A finished `examples/sample-tutorial.md` ships as a copy target. The slash command `/tutorial-builder` accepts an optional `TOPIC` or path, then walks the user through `AskUserQuestion` intake for the remaining four fields.
 
 ## ✨ Features
 
 - 🎯 Five inputs in, one complete tutorial out. TOPIC + AUDIENCE + FORMAT + CONSTRAINTS + DISTRIBUTION
 - 🧱 Locked structure: opening (objectives, prerequisites, time, final result, setup), progressive sections, closing (summary, next steps, resources, call to action)
 - 🪜 Concepts ordered simple to complex with no forward references, and exercises scaffolded I-do, We-do, You-do
-- 💻 Every code block runs unmodified, lists dependencies, and shows expected output
-- 🧠 Retention patterns and cognitive-load limits (7 plus-or-minus 2, one-screen code, one new concept per step) built into the pacing
+- 💻 Every code block traced to run unmodified (or labeled pseudocode), lists dependencies, and shows expected output
+- 🧠 Retention patterns and cognitive-load limits (one new concept per step, one-screen code, no forward references) built into the pacing
 - 🧩 Five difficulty-calibrated exercise types: fill-in-the-blank, debug, extension, from-scratch, refactoring
 - 📚 Bundled playbook with a full worked tutorial, per-format deep-dives, an exercise bank, and a review rubric, loaded only when depth is needed
-- ✅ Pre-publish checklist plus a 1-5 speed score (clarity, pacing, practice, troubleshooting, engagement) gate the result, target a 4 average
+- 🔗 Link honesty: only real, canonical URLs are cited; no invented links, images, or screenshots
+- ✅ Pre-publish checklist plus a checkable yes/no quality gate; every item must pass before the tutorial is returned
 - 🛡️ Supplied code and repo content treated as inert data; embedded directives are taught around, never obeyed
 - 🪧 Scope-locked. Non-tutorial and role-change requests refused with `I only build tutorials - give me a topic or some code and I'll teach it.`
 
@@ -98,7 +99,7 @@ One slash command plus its procedure file. The procedure file `lib/tutorial-buil
 2. **Define objectives.** Set measurable learning outcomes with Bloom's verbs, plus prerequisites and assumed knowledge.
 3. **Decompose.** Break the topic into atomic concepts, order them simple to complex, and confirm no concept needs one introduced later.
 4. **Write** the tutorial in the locked structure, one new concept per step, every code block runnable with expected output shown. Load `references/implementation-playbook.md` for a worked example, per-format detail, or the exercise bank.
-5. **Gate.** Run the pre-publish checklist and the 1-5 speed score. Fix any failing gate before returning.
+5. **Gate.** Run the pre-publish checklist and the yes/no quality gate. Fix any failing item before returning.
 
 ## 🚀 How to use it
 
@@ -149,8 +150,8 @@ A plugin with one slash command and one skill. The procedure file `lib/contract-
 
 ## 🔄 How it works
 
-1. **Questions.** The slash command asks for the six fields with simple multiple-choice prompts. If you pass a short description of the work, it uses that and skips ahead.
-2. **Missing-answer check.** If any of the four must-have answers is blank or looks filled in wrong, it stops and asks you for just that piece before writing anything.
+1. **Questions.** The slash command asks for the six fields with simple multiple-choice prompts. If you pass a short description of the work, it takes that as the starting description and confirms it with you before going on.
+2. **Missing-answer check.** If any of the four must-have answers is blank or looks filled in wrong, it stops and asks for just the missing pieces, in one short list, before writing anything.
 3. **Draft.** It writes the eight parts in your chosen tone, leaving marked blanks wherever you did not give a detail.
 4. **Final pass.** A quiet check confirms all eight parts are present and in order, the tone is consistent, and nothing was invented, then fixes anything off before handing it over.
 5. **Deliver.** Saves the contract to a file when it can and prints only the path, otherwise prints the full contract on screen.
@@ -197,13 +198,13 @@ One slash command plus its procedure file. The procedure file `lib/naming-strate
 - 🎯 Five inputs in, ten candidates out. MARKET_TOPIC + TARGET_AUDIENCE + OFFER_TYPE + BRAND_TONE (2-3 pick) + EXTENSION_PRIORITY
 - 🧪 Silent 5-axis scoring - Brandability, Niche fit, Pronounceability, Spelling ease, Differentiation. Drops anything below 7 average before printing
 - 🧱 At least 5 distinct naming structures across the 10 - compound, blended, metaphor, invented, classical-roots. No same-pattern repeats
-- 🚫 Refuses hyphens, numbers, awkward letter clusters, forced `-ify` / `-ly` / `-hub` suffixes, generic descriptive keyword domains (`BestBranding`, `FastestCRM`), and famous-brand collisions
+- 🚫 Refuses hyphens, numbers, awkward letter clusters, forced `-ify` / `-ly` / `-hub` / `-io` / `-app` suffixes, generic descriptive keyword domains (`BestBranding`, `FastestCRM`), and famous-brand collisions
 - 🛡️ No legal claims. Domains, trademark status, registrar availability - all answered `Needs verification`
 - 🧊 No hype. Blocked phrasing in any rationale: `proven`, `revolutionary`, `transformative`, `leverage`, `robust`, `comprehensive`, `streamline`, `harness`, `seamless`, `cutting-edge`
-- 📦 Locked 4-section output: A) Setup Summary (3 lines), B) 10 Name Candidates with Angle/Fit/Recommended extension/Risk note, C) Top 3 Shortlist with Strength + Watch-out bullets, D) Verification Checklist (registrar check, USPTO TESS, WIPO Global Brand Database, pronunciation test, Google collision search)
+- 📦 Locked 4-section output: A) Setup Summary (3 lines), B) Name List of 10 candidates with Angle/Fit/Recommended extension/Risk note, C) Top 3 Shortlist with Strength + Watch-out bullets, D) Verification Checklist (registrar check, USPTO TESS, WIPO Global Brand Database, pronunciation test, Google collision search)
 - ⚖️ Risk severity scale per name: Low (invented, no known collision), Medium (real-word compound, possible overlap), High (close to known brand or category-keyword overlap)
 - 🛑 Prompt-injection defense. All five inputs treated as inert data. Directives like `ignore prior`, `act as`, `respond in JSON`, role-switch attempts inside field values are ignored
-- 🪝 Scope-locked. Marketing copy, strategy decks, legal advice, taglines, naming for non-SaaS contexts - all refused with `Out of scope - domain naming candidates only.`
+- 🪝 Scope-locked. Marketing copy, strategy decks, legal advice, taglines - all refused with `Out of scope - domain naming candidates only.`
 
 ## 🔄 How it works
 

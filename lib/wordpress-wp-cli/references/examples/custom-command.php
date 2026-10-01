@@ -106,11 +106,12 @@ class Example_Purge_Users_Command extends WP_CLI_Command {
 					continue;
 				}
 
-				++$matched;
 				if ( ! $dry_run && ! wp_delete_user( $user_id ) ) {
 					WP_CLI::warning( sprintf( 'Could not delete user %d.', $user_id ) );
 					++$kept;
+					continue;
 				}
+				++$matched;
 			}
 
 			$offset += $batch_size;

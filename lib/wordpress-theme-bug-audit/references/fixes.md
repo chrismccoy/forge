@@ -20,7 +20,7 @@ If I agree (all, or the ones I pick):
 - **How to fix:**
   - Make the smallest fix that keeps the theme's current look and wording, in the theme's own code style.
   - Add no new code comments or docblocks. Only reword an existing comment that a fix makes wrong.
-  - If the theme has a build step (section 1), edit only its source files, never the built output. Run the build in the `<tools>/build/` copy after the fix to prove it builds and that the output contains the change, and list the rebuild command in Still to do. If it has none, its CSS and JS files are the source; edit them directly.
+  - If the theme has a build step (section 1), edit only its source files, never the built output. Run the build in the `<work>/build/<same-folder-name>/` copy after the fix to prove it builds and that the output contains the change, and list the rebuild command in Still to do. If it has none, its CSS and JS files are the source; edit them directly.
   - Run phpcs on every changed PHP file before and after; the fix must add no new violations. Reuse the phpcs install in `<tools>` (reinstall it the same way if it's gone). Use the theme's `phpcs.xml` or `phpcs.xml.dist` if it has one; otherwise use the WordPress standard minus the rules the theme's own code breaks in most of its PHP files, each evidenced by a count from the theme's own files. Use the same ruleset both times, and compare message by message, not just totals, so a violation you added isn't hidden by one you removed.
 - **Test the fixes.**
   - Before editing, build a test site from the unchanged theme with `new-site.sh`, replay the probe scripts from `<work>/probe/`, and reproduce each bug you can.

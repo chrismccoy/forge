@@ -98,6 +98,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `e2e-tests` | `/forge-code` |
 | `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
+| `explain-regex` | `/forge-code` |
 | `explain-sql` | `/forge-code` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |

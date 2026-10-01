@@ -1,8 +1,9 @@
 ================================================================================
-  FORGE  -  Code          ( /forge-code )          11 tools, 4 pages
+  FORGE  -  Code          ( /forge-code )          12 tools, 4 pages
 ================================================================================
   Everything here takes source you already have and analyses or documents it:
-  blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors.
+  blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors,
+  SQL queries, and regular expressions.
 
   STEP 2 - pick a tool
 
@@ -22,7 +23,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations, feature READMEs.                                        |
+  |         annotations, feature READMEs, regex teardowns.                       |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -42,7 +43,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
-  |         feature READMEs.                                                     |
+  |         feature READMEs, regex teardowns.                                    |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -63,7 +64,8 @@
   |         bulk.                                                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator and full stack feature READMEs.               |
+  |         The teaching annotator, full stack feature READMEs, and the regex    |
+  |         tutor.                                                               |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -78,6 +80,10 @@
   |  ( 2 )  Full stack feature README                      -> /fullstack-readme  |
   |         Plain-English README for a web app: title, description, and a        |
   |         categorized feature list traced to real code.                        |
+  |                                                                              |
+  |  ( 3 )  Explain a regex                                   -> /explain-regex  |
+  |         Verified 11-section plain-English teardown of one regex: examples,   |
+  |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -257,5 +263,31 @@
   |  # Name . 2-4 sentence description . ## plain-English categories, largest  |
   |  first, one-sentence bullets.  Two passes over every file; only features   |
   |  traced to real code.  No emoji, no en/em dashes, no hype words.           |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /explain-regex -
+  Up to 4 fields.  Only the regex is required; an argument seeds it (plus any
+  flavor, use case, or chat/file words after it).  Nothing is analyzed until
+  the output question is answered.
+
+  .--[Regex]-- the pattern to explain  (plain ask; asked first) ---------------.
+  |  ___ plain ask, not a menu - STOP for the reply.  Never guessed            |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- where the teardown goes  (asked before any analysis) ----------.
+  |  ( ) Chat - print the teardown here                                        |
+  |  ( ) File - save to REGEX-EXPLAINED.md                                     |
+  '----------------------------------------------------------------------------'
+  .--[Flavor]-- optional, never blocks ----------------------------------------.
+  |  ___ JavaScript, Python, PCRE, Go, .NET ...                                |
+  |      skipped -> common PCRE / JS / Python subset, stated in one line       |
+  '----------------------------------------------------------------------------'
+  .--[Use case]-- optional, never blocks --------------------------------------.
+  |  ___ e.g. "validating emails on a signup form"                             |
+  |      skipped -> best guess stated as an assumption                         |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- 11 numbered sections, every example engine-checked ------------.
+  |  Summary . tokens . structure . valid / invalid examples . walkthrough .   |
+  |  pitfalls . ReDoS verdict . alternatives . context . plain rewrite.        |
   '----------------------------------------------------------------------------'
 ================================================================================

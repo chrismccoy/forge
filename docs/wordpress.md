@@ -12,11 +12,11 @@ Generates complete WordPress plugins from scratch. the kind you could submit to 
 
 Most AI generated WordPress plugins fail the same way: missing nonces, raw `$_POST` values, string-interpolated SQL, no text domain, no `uninstall.php`, and a `Plugin Name` header that's the only metadata it bothered to fill in. The `wordpress-plugin` skill takes a different approach. Seven structured intake answers in. full directory tree out, with WordPress Coding Standards compliance, complete security guardrails, internationalization, conditional asset enqueueing, custom tables via `dbDelta()` with proper indexes, and a real uninstall script that removes every artefact the plugin creates.
 
-Five of the seven intake questions are **pickers** via `AskUserQuestion`: pick the WordPress mechanisms the plugin uses, the target audience, the admin UI components, the frontend display surfaces, and the third party integrations. Two are free text. the plugin name and a 2-4 sentence description of what the plugin actually does. No ambiguous answers, no follow-up clarification rounds.
+Five of the seven intake questions are **multiple-choice checklists** (their option lists are too long for `AskUserQuestion`, so they're numbered plain-text lists, each with an `Other (specify)` escape): pick the WordPress mechanisms the plugin uses, the target audience, the admin UI components, the frontend display surfaces, and the third party integrations. Two are free text. the plugin name and a 2-4 sentence description of what the plugin actually does. No ambiguous answers, no follow-up clarification rounds.
 
 ## ✨ Features
 
-- 📋 Intake. five picker prompts via `AskUserQuestion` plus two free text. every variable in the about-me section is a picker, not a fill-in-the-blank
+- 📋 Intake. five multiple-choice checklists plus two free text. every choice is picked from a list (with an `Other (specify)` escape), not a fill-in-the-blank
 - 🏗️ Modular OOP structure. singleton main plugin class wires Admin, Frontend, Database, AJAX, REST, Cron, CLI, Roles, CPT, Meta-box, List-table, Dashboard-widget, Notices, and Integration components
 - 🔒 Security built in. `defined( 'ABSPATH' ) || exit;` on every file, nonces on every mutation, capability checks before every privileged action, sanitization on every input, escaping on every output, `$wpdb->prepare()` on every query
 - 🧰 WordPress mechanisms covered: Custom Post Types & Taxonomies, Settings API, Gutenberg blocks, shortcodes, REST endpoints, WP-CLI commands, cron, custom tables, roles & capabilities, email notifications, frontend forms, dashboard widgets, import/export, activity logging, custom user meta
@@ -32,7 +32,7 @@ Five of the seven intake questions are **pickers** via `AskUserQuestion`: pick t
 
 ## 🔄 How it works
 
-1. **Intake**: five picker prompts via `AskUserQuestion`, two free text:
+1. **Intake**: five multiple-choice checklists (each with `Other (specify)`), two free text:
  - Plugin name (free text)
  - Functionality categories (multi-select: CPTs, Settings page, Blocks, Shortcodes, REST, WP-CLI, Cron, Custom Tables, Roles, Email, Forms, Dashboard Widget, Import/Export, Logging, User Meta)
  - Specific feature detail (free text. 2-4 sentences)
@@ -68,11 +68,11 @@ Builds and implements custom WordPress code - themes, plugins, Gutenberg blocks,
 
 Where `wordpress-plugin` builds a whole plugin from scratch in a single run, `wp-builder-pro` is the everyday builder: add a settings page, register a dynamic block, connect a REST endpoint, extend WooCommerce checkout, or track down why the shop page is slow. It routes each request to one of five bundled references and works the same six steps every time - analyze, design, implement, validate with `phpcs --standard=WordPress`, optimize, then test and secure - so the output meets WordPress Coding Standards with nonces, sanitization, escaping, capability checks, and prepared statements already in place.
 
-It also answers symptom-first requests. *"My site is slow"*, *"a plugin throws a fatal error"*, *"this block won't render"*, *"fix my WordPress site"* all trigger it, and it asks for the specific symptom before writing a line of code.
+It also answers symptom-first requests. *"My site is slow"*, *"a plugin throws a fatal error"*, *"this block won't render"*, *"fix my WordPress site"* are all in scope, and it asks for the specific symptom before writing a line of code.
 
 ## ✨ Features
 
-- 📋 Intake. four fields via `AskUserQuestion` - build target (single-select), new-vs-existing context, free-text specifics, optional WP/PHP constraints - then routes the target to the right reference
+- 📋 Intake. four fields via `AskUserQuestion` - build target (two-step picker: broad class, then specific target), new-vs-existing context, free-text specifics, optional WP/PHP constraints - then routes the target to the right reference
 - 🏗️ Full WordPress surface. themes (templates, hierarchy, child themes, FSE), plugins (activation, settings API, hooks, updates), Gutenberg blocks and patterns (static + dynamic), WooCommerce extensions, REST endpoints, ACF fields
 - 🔒 Security by default. nonces on every form/AJAX path, sanitization on every input, escaping on every output, capability checks before privileged actions, `$wpdb->prepare()` with `$wpdb->prefix` on every query
 - ⚡ Performance built in. transient and object caching, query optimization, conditional asset enqueueing via `wp_enqueue_scripts` hooks
@@ -114,7 +114,7 @@ Ever had a beautiful static HTML design built with Tailwind CSS and wished you c
 
 The `html-to-wordpress-theme` skill takes your static Tailwind CSS HTML files and converts them into a fully installable, WordPress-compliant theme. No more manually rewriting markup into PHP templates or guessing how WordPress expects things to be structured. the skill handles it all for you through a guided, step by step workflow.
 
-What makes it different from a quick rewrite? Your converted theme comes out with proper accessibility built in, secure code that follows WordPress coding standards, and a Tailwind CSS build pipeline. no CDN links or shortcuts. There's even a 79-point checklist that runs before anything is delivered to make sure nothing got missed.
+What makes it different from a quick rewrite? Your converted theme comes out with proper accessibility built in, secure code that follows WordPress coding standards, and a Tailwind CSS build pipeline. no CDN links or shortcuts. There's even a 90-point checklist that runs before anything is delivered to make sure nothing got missed.
 
 It asks for your approval at every major step, so nothing large happens without you seeing the plan first.
 
@@ -122,7 +122,7 @@ It asks for your approval at every major step, so nothing large happens without 
 
 An AI instruction specification that converts static Tailwind CSS HTML files into fully installable, WordPress Theme Review Team-compliant themes.
 
-Built around a phased workflow with mandatory approval gates, it enforces WordPress PHP coding standards, WCAG 2.1 AA accessibility, Tailwind CSS v3 CLI build pipelines, escaping and security rules, and a 79-point self-audit with cited evidence requirements.
+Built around a phased workflow with mandatory approval gates, it enforces WordPress PHP coding standards, WCAG 2.1 AA accessibility, Tailwind CSS v3 CLI build pipelines, escaping and security rules, and a 90-point self-audit with cited evidence requirements.
 
 It states its assumptions instead of leaving them unsaid, stops rather than generating past the plan, and handles the awkward cases: poor source HTML, context window limits, and work that spans several sessions.
 
@@ -132,7 +132,7 @@ It states its assumptions instead of leaving them unsaid, stops rather than gene
 - 🔒 Exhaustive escaping and sanitization rules for every output context
 - ♿ WCAG 2.1 AA accessibility built into every phase and template
 - 🎨 Tailwind CSS v3 CLI build pipeline. zero CDN references, zero frameworks
-- 🔍 79-point self-audit table requiring cited file-and-line evidence for every check
+- 🔍 90-point self-audit table requiring cited file-and-line evidence for every check
 - 🚦 Graduated failure modes. abort, degraded, or proceed based on source quality
 - 🌍 Full internationalization with enforced translator comments and text domains
 - 🧩 Smart template abstraction rules for repeated markup patterns
@@ -156,7 +156,7 @@ Hand it an `index.html` (and optionally a `single.html`, plus any other page moc
 1. **Initialization**: confirm theme name and defaults
 2. **Phase 1. Analysis** (1A critical, 1B extended). HTML validation, source quality grading, design-token extraction, file manifest, decision log
 3. **Phase 2. Implementation**: generates every theme file in user-approved chunks
-4. **Phase 3. Self-Audit**: a 79-item checklist with cited file-and-line evidence before delivery
+4. **Phase 3. Self-Audit**: a 90-item checklist with cited file-and-line evidence before delivery
 
 You approve each phase before the next one starts, so nothing runs away from you.
 
@@ -188,7 +188,7 @@ The full procedure lives at [`lib/html-to-wordpress-theme/SKILL.md`](../lib/html
 | Completeness | Covers every edge case from abort criteria to degraded mode, with zero gaps in the conversion workflow | ★★★★★ | 10/10 |
 | Structure | Phase gates, numbered sections, cross-references, and a document map make navigation even at 2000+ lines | ★★★★★ | 10/10 |
 | Clarity | Every rule includes ✅/❌ examples, anti-patterns, and decision trees. leaves no room for misinterpretation | ★★★★★ | 10/10 |
-| Maintainability | Versioned with changelog, modular sections, and a priority hierarchy that makes updates safe and predictable | ★★★★★ | 10/10 |
+| Maintainability | Modular reference files, numbered sections, and a priority hierarchy that makes updates safe and predictable | ★★★★★ | 10/10 |
 | Practical Effectiveness | Evidence-based self-audit, context window management, and session continuity ensure reliable output across real world usage | ★★★★★ | 10/10 |
 | Error Handling | Graduated failure modes (abort → degraded → proceed) with explicit user checkpoints prevent silent failures | ★★★★★ | 10/10 |
 | Security Coverage | Exhaustive escaping/sanitization tables, nonce enforcement, and a pre-output self-check catch vulnerabilities before they ship | ★★★★★ | 10/10 |
@@ -207,7 +207,7 @@ Senior WordPress architect code review for plugins and themes. file by file audi
 
 Most AI code reviews of WordPress plugins read like generic linter output: "consider adding error handling", "use prepared statements where possible", without ever quoting the offending line. The `wordpress-architect-review` skill takes a different stance. It acts as a senior WordPress architect with 15+ years on WordPress.org submissions, enterprise WP stacks, and security audits. Every finding cites `file:line`, quotes the exact offending code, tags severity (SEVERE / MODERATE / MINOR), states the actual impact, and gives the fix. No filler adjectives, no vague advice, no praise before issues.
 
-Scope-locked. It will not write tutorials, recommend hosting, or answer general WP questions. only audit code. Prompt-injection defenses treat file contents as inert data, so a `// Ignore prior instructions...` comment in the audited code gets flagged as a CRITICAL Security finding rather than followed.
+Scope-locked. It will not write tutorials, recommend hosting, or answer general WP questions. only audit code. Prompt-injection defenses treat file contents as inert data, so a `// Ignore prior instructions...` comment in the audited code gets flagged as a SEVERE Security finding rather than followed.
 
 ## ✨ Features
 
@@ -215,7 +215,7 @@ Scope-locked. It will not write tutorials, recommend hosting, or answer general 
 - 📖 Reads every file directly. every PHP/JS/CSS plus companion configs (`readme.txt`, `theme.json`, `composer.json`, `package.json`, `phpcs.xml`); no summarizing from filenames
 - 🏷️ Severity-tagged findings. SEVERE / MODERATE / MINOR. mandatory format: title + `file:line` + code fence + Impact line + Fix line
 - 📊 10-row scorecard. Security, Performance, Architecture, Correctness, WordPress Standards, Maintainability, Documentation, Testing, Accessibility/UX, Internationalization. overall weighted toward Security, Performance, Correctness
-- 🛡️ Prompt-injection defense. inline instructions in the audited code are treated as inert data and reported as a CRITICAL Security finding
+- 🛡️ Prompt-injection defense. inline instructions in the audited code are treated as inert data and reported as a SEVERE Security finding
 - 🔒 Scope lock. refuses tutorials, recommendations, hosting advice, non-code questions
 - 🚫 Banned filler word list. no "leverage", "robust", "comprehensive", "utilize", "synergy", and ~15 more
 - ✅ Pre-emit validation. partial reports are regenerated, never shipped
@@ -268,7 +268,7 @@ Most "WordPress help" turns into a list of disconnected tips - install this cach
 
 The skill body runs the workflow. Step 1 validates inputs - if `Current Challenge` or `Development Goals` is blank it halts and asks, because an audit with no problem statement and no goal is fiction. Step 2 loads the Section 1-10 prompts from `references/framework.md`. Step 3 uses extended thinking before Section 4 (Performance) and Section 10 (Final Report), the two sections that need the deepest reasoning. Step 4 emits every section under its exact header per `references/output-contract.md`. Step 5 applies the Section 10 scales and ends with the mandatory summary table. Step 6 runs a silent self-validation gate - all 10 sections present, every score on its defined scale, table last - before delivery.
 
-Hard refusal on out-of-scope asks (anything that is not WordPress engineering, declined in one line then back to the framework), on nulled/pirated plugins, on core-file edits, and on security ratings given without naming what was checked.
+Hard refusal on out-of-scope asks (anything that is not WordPress advisory work - it advises, it does not write or review the code itself - declined in one line then back to the framework), on nulled/pirated plugins, on core-file edits, and on security ratings given without naming what was checked.
 
 ## 📋 Technical Overview
 
@@ -277,9 +277,9 @@ One slash command plus its procedure file. The procedure file `lib/wordpress-con
 ## ✨ Features
 
 - 🎯 Seven inputs in, a 10-section consultant report out. Website Type + Current Challenge + Technology Stack + Traffic Volume + Development Goals + Performance Requirements + Support Needed
-- 🚧 Two required inputs gate the run - blank `Current Challenge` or `Development Goals` halts with `MISSING INPUT: <field> required.` The other five are optional and proceed with a flagged assumption at the top of the affected section
+- 🚧 Two required inputs gate the run - blank `Current Challenge` or `Development Goals` halts with `MISSING INPUT: <field name> required. Provide value and re-run.` The other five are optional and proceed with a flagged assumption at the top of the affected section
 - 🧭 Fixed framework: Architecture Assessment, Development Strategy, WooCommerce Review, Performance Optimization Audit, Security Hardening, Debugging & Troubleshooting, Scalability & Infrastructure, Automation & Workflow, Technical Debt Assessment, Final Senior Consultant Report
-- 🗜️ Max 250 words per section 1-9, written as Finding / Impact / Recommendation bullets. Section 3 drops to `Section 3 - N/A (not a WooCommerce site)` for non-stores
+- 🗜️ Max 250 words per section 1-9, written as Finding / Impact / Recommendation bullets. Section 3 drops to `## SECTION 3 - N/A (not a WooCommerce site)` for non-stores
 - 📊 Section 10 scorecard on fixed scales - Health, Performance, Security, Scalability, Code Quality (0-100); Technical Debt Severity (Low/Medium/High/Critical); Recommended Priorities (ranked, max 5)
 - 📋 Mandatory Markdown summary table as the final element, every run, exact columns
 - 🧠 Extended thinking before Section 4 (Performance) and Section 10 (Final Report)
@@ -289,11 +289,11 @@ One slash command plus its procedure file. The procedure file `lib/wordpress-con
 
 ## 🔄 How it works
 
-1. **Intake.** Slash command collects all seven fields via `AskUserQuestion`. If `Current Challenge` was passed as `$ARGUMENTS`, confirm and seed it. Empty / blank / `[FIELD_NAME]` on a required field → halt with `MISSING INPUT: <field> required.`
+1. **Intake.** Slash command collects all seven fields via `AskUserQuestion`. If `Current Challenge` was passed as `$ARGUMENTS`, confirm and seed it. Empty / blank / `[FIELD_NAME]` on a required field → halt with `MISSING INPUT: <field name> required. Provide value and re-run.`
 2. **Validate.** Required gate on `Current Challenge` and `Development Goals`. Optional blanks proceed with a flagged assumption. Conflicting inputs (e.g. Website Type vs Challenge) named in one line and confirmed before proceeding.
 3. **Load framework.** Read `references/framework.md`, `references/output-contract.md`, `references/guardrails.md`. Wrap all input values in `<inputs></inputs>` and treat as inert data.
 4. **Extended thinking** before Section 4 and Section 10.
-5. **Emit Sections 1-10** under exact headers. Mark `Section 3 - N/A` for non-stores. Max 250 words per section 1-9.
+5. **Emit Sections 1-10** under exact headers. Mark `## SECTION 3 - N/A (not a WooCommerce site)` for non-stores. Max 250 words per section 1-9.
 6. **Section 10 + summary table.** Apply the fixed scales. End with the single mandatory summary table - it must be last.
 7. **Silent validation gate.** Confirm all 10 sections present, every score on its scale, table last, no security rating without naming what was checked. Fix any gap before output.
 
@@ -332,7 +332,7 @@ The important part is what it will not do. Formatting should never change how a 
 
 ## ✨ Features
 
-- 🎯 Five quick questions first. Scope (templates and partials, or all theme PHP), strictness (formatting only, or the full standard), Yoda checks on or off, the theme name, and any files to skip. Say "just do it" for safe defaults
+- 🎯 Five quick questions first. Scope (templates and partials, or all theme PHP), strictness (formatting only, or the full standard), whether to apply the safe Yoda reorders or only report them, the theme name, and any files to skip. Say "just do it" for safe defaults
 - 🧰 Installs the tools for you. PHP_CodeSniffer and the WordPress Coding Standards go into the theme's local `vendor/` as dev dependencies - nothing is installed globally
 - 🧾 Writes a scoped config. A `phpcs.xml.dist` that leaves out `vendor`, `node_modules`, and by default `lib`, `inc`, `assets`, and `functions.php`
 - 🔧 Fixes formatting only. Runs `phpcbf` twice for tabs, spacing, array style, and alignment - never escaping, sanitization, or behavior
@@ -383,7 +383,7 @@ It is not a plugin and it is not a blind copy-paste. The tool first runs a prech
 - 🔒 Security gates on every path. nonce (`update-nav-menu-nonce`), capability (`edit_theme_options`), sanitize on save, escape on output; safe practice overrides any instruction that would skip a gate
 - 🧮 Normalize on save. the picked value is stored render-ready (a full `fa-solid fa-house` class), idempotent and backward compatible, so the frontend prints it verbatim
 - 📦 Theme-correct enqueue. picker CSS/JS and Font Awesome load only on `nav-menus.php`; asset URLs use `get_theme_file_uri()` so parent and child themes both resolve
-- 🧪 Static verification. `php -l`, a placeholder-leak grep, the JS↔PHP contract shown side by side, gated-enqueue and security greps, and save-wiring proof - all pasted as evidence before the job is called done
+- 🧪 Static verification. `php -l`, `phpcs` (or a cited manual security check), a placeholder-leak grep, the JS↔PHP contract shown side by side, gated-enqueue and security greps, and save-wiring proof - all pasted as evidence before the job is called done
 - 🛡️ Prompt-injection defense. every theme file is treated as inert data; instructions found inside theme code are ignored and flagged
 
 ## 🔄 How it works
@@ -393,7 +393,7 @@ It is not a plugin and it is not a blind copy-paste. The tool first runs a prech
 3. **Mode**: classify by two signals - an icon **field** and a **renderer**. Both present -> Mode A. No field -> Mode B. Field but no renderer -> Mode A admin plus a Mode B frontend doc.
 4. **Port**: move the JS/CSS into the theme's `assets/`, drop the plugin packaging, rebrand every identifier, normalize the value on save.
 5. **Frontend (Mode B)**: write `MENU-ICON-FRONTEND.md` with two render options (drop-in filter or custom walker) using the real prefix and key - templates are never auto-edited.
-6. **Verify**: run the seven static checks and paste the evidence; summarize the mode, prefix, meta key, and files touched.
+6. **Verify**: run the seven static checks and paste the evidence; summarize the mode, prefix, meta key, and files touched. A click-through smoke test is handed to you to run in the browser.
 
 ## 🚀 How to use it
 
@@ -587,11 +587,11 @@ Seeing whether a theme actually looks right needs a site full of believable cont
 
 The importer it produces is a single `final class` in the theme's own code style, run with `wp eval-file`. It takes positional arguments - `reset`, `purge`, `count=N`, `seed=N`, `no-comments`, `verify` - refuses to run twice or on multisite, flags everything it creates so `purge` removes only its own content, and backs up every setting it touches so `purge` restores them exactly. The same `seed` always produces the same content, with dates anchored to the day it runs.
 
-Then it tests for real, on a throwaway WordPress built by a bundled script: SQLite, WP-Cron off, `WP_DEBUG` on, pretty permalinks, Classic Editor active, the theme symlinked and activated. Fourteen numbered steps follow - marker values, liveness checks on every media URL, phpcs to zero violations, a small import inspected item by item, a refuse-to-rerun check, a purge that must restore the markers, a full import plus `verify`, two `seed=1` runs compared for identical output, front-end and admin fetches grepped for PHP notices, field-by-field verification, screenshots at 1440 and 390 wide, and a final purge and teardown. Anything that cannot run is marked BLOCKED with the reason rather than reported as passed.
+Then it tests for real, on a throwaway WordPress built by a bundled script: SQLite, WP-Cron off, `WP_DEBUG` on, pretty permalinks, Classic Editor active, the theme symlinked and activated. Fourteen numbered steps follow - marker values, liveness checks on every media URL, phpcs to zero violations, a small import inspected item by item, a refuse-to-rerun check, a purge that must restore the markers, a full import plus `verify`, two `reset seed=1` runs compared for identical output, front-end and admin fetches grepped for PHP notices, field-by-field verification, screenshots at 1440 and 390 wide, and a final purge and teardown. Anything that cannot run is marked BLOCKED with the reason rather than reported as passed.
 
 ## 📋 Technical Overview
 
-One slash command and a six-file procedure bundle. `lib/wp-demo-content/SKILL.md` carries the scope lock, the inputs, the six-step workflow, the deliverables contract and the hard rules. `references/data-model.md` is the read-the-theme-first step; `references/content-spec.md` is what the importer creates; `references/importer-spec.md` is the arguments, guards, flagging, settings backup, run order and runtime; `references/testing.md` is the fourteen test steps; `references/bug-fixing.md` is the optional fix pass; and `references/setup-test-site.md` holds the test harness itself, copied out by line range and checked against a `sha256` recorded in the procedure, so a mistyped copy cannot run.
+One slash command and a seven-file procedure bundle. `lib/wp-demo-content/SKILL.md` carries the scope lock, the inputs, the six-step workflow, the deliverables contract and the hard rules. `references/data-model.md` is the read-the-theme-first step; `references/content-spec.md` is what the importer creates; `references/importer-spec.md` is the arguments, guards, flagging, settings backup, run order and runtime; `references/testing.md` is the fourteen test steps; `references/bug-fixing.md` is the optional fix pass; and `references/setup-test-site.md` holds the test harness itself, copied out by line range and checked against a `sha256` recorded in the procedure, so a mistyped copy cannot run.
 
 ## ✨ Features
 
@@ -703,7 +703,7 @@ Bash scripts that use WP-CLI to run one task across every WordPress site on a se
 
 Running the same job on forty sites by hand means forty logins, or a quick loop that stops at the first broken install and never tells you which sites it skipped. This tool writes the loop properly. It finds every `wp-config.php` under a sites root, talks to each install through one `wp_run` wrapper, keeps going when a site fails, and ends with a summary table and an exit code that tells cron what happened. Every script is built from the same tested skeleton, so the flags, the logging, and the safety rules are the same from one script to the next.
 
-Every script is a dry run until you add `-f`. It asks you to type `yes` before changing anything, and `-y` skips that for cron. Update scripts export the database and use maintenance mode before applying changes, git scripts never push without `-f`, and every change is read back afterwards, so anything that did not take shows as `FAILED (not verified)`.
+Every script is a dry run until you add `-f`. It asks you to type `yes` before changing anything, and `-y` skips that for cron. Update scripts export the database first and wrap core updates in maintenance mode, git scripts never push without `-f`, and every change is read back afterwards, so anything that did not take shows as `FAILED (not verified)`.
 
 It never runs anything against your live sites. Each script is tested against a fake sites root and a stub `wp` before it is handed over, and you run the real thing.
 
@@ -717,7 +717,7 @@ One slash command plus its procedure file `lib/wordpress-wp-cli/SKILL.md`. Three
 - 🧪 Dry run by default; `-f` applies, a typed `yes` confirms, `-y` skips the prompt for cron
 - 🧱 One site's failure never stops the rest, and the run ends with a summary table and a meaningful exit code
 - 🚩 Shared flags on every script: `-r` sites root, `-s` one site, `-m` search depth, `-f`, `-y`, `-q`, `-h`
-- 💾 Update scripts export the database and use maintenance mode before changing anything
+- 💾 Update scripts export the database first and wrap core updates in maintenance mode
 - 🔍 Every change is read back, and anything that did not take is reported as `FAILED (not verified)`
 - 🔒 Git scripts never push unless `-f` is passed
 - 🗂️ Area guides for comments, media, users, updates and checksums, settings, themes and git, backups, and maintenance
@@ -826,7 +826,7 @@ It is built for long runs. Before anything starts it asks eight questions and sh
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file `lib/wordpress-theme-bug-audit/SKILL.md`, which holds the ground rules, the intake, and a phase map. Each phase reads its reference in full first: `reading.md`, `checks.md` (the numbered check list), `testing-setup.md`, `testing-steps.md`, `variations.md`, `testing-final.md`, `verify-and-report.md`, and `fixes.md`. Eighteen tested scripts in `scripts/` do the fiddly parts: a sha256-checked SQLite site builder, per-version PHP passes with standalone PHP builds, phpcs and PHPStan in batches, ESLint and stylelint, page fetches that catch hidden fatals, HTML and asset checks, JavaScript and axe-core capture, and must-use plugins that log queries and block outbound requests.
+One slash command plus its procedure file `lib/wordpress-theme-bug-audit/SKILL.md`, which holds the ground rules, an outline of the intake, and a phase map. Each phase reads its reference in full first: `start.md` (finding the theme, the intake questions, and the start confirmation), `reading.md`, `checks.md` (the numbered check list), `testing-setup.md`, `testing-steps.md`, `variations.md`, `testing-final.md`, `verify-and-report.md`, and `fixes.md`. Eighteen tested scripts in `scripts/` do the fiddly parts: a sha256-checked SQLite site builder, per-version PHP passes with standalone PHP builds, phpcs and PHPStan in batches, ESLint and stylelint, page fetches that catch hidden fatals, HTML and asset checks, JavaScript and axe-core capture, and must-use plugins that log queries and block outbound requests.
 
 ## ✨ Features
 
@@ -866,7 +866,7 @@ One slash command plus its procedure file `lib/wordpress-theme-bug-audit/SKILL.m
 
 > *"audit my theme for bugs"*, *"find everything broken in this theme before release"*, *"test my theme on PHP 7.4 through 8.4"*, *"what will customers hit in this theme"*
 
-**Needs:** Linux with bash 4.4+, PHP with `pdo_sqlite`, `curl`, `unzip`, `mktemp`, `timeout`, `rsync`, network access, Composer (or PHP able to run `composer.phar`), Node.js 22+ with npm, Chrome or Chromium, and about 2 GB free. Java, Xdebug or pcov, and Docker without `sudo` are used when present. Anything missing is marked BLOCKED or SKIPPED and the rest still runs. A full audit costs about 15,000-20,000 tokens per PHP file; Standard scope is roughly half.
+**Needs:** Linux with bash 4.4+, Python 3, PHP with `pdo_sqlite`, `curl`, `unzip`, `mktemp`, `timeout`, `rsync`, network access, Composer (or PHP able to run `composer.phar`), Node.js 22+ with npm, Chrome or Chromium, and about 2 GB free. Java, Xdebug or pcov, and Docker without `sudo` are used when present. Anything missing is marked BLOCKED or SKIPPED and the rest still runs. A full audit costs about 15,000-20,000 tokens per PHP file; Standard scope is roughly half.
 
 For a scorecard review use [`/wp-review`](#wordpress-architect-review); for a performance-only pass use [`/wp-performance`](#wordpress-performance); for block themes use [`/wp-block-theme`](#wordpress-block-theme).
 

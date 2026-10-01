@@ -1,6 +1,6 @@
 # Phase 1 - Analysis & Planning
 
-Read the provided `index.html` and `single.html` (and any additional HTML files confirmed during the Initialization Gate). Produce the analysis in two sub-phases. **Do not skip any section.**
+Read the provided `index.html` and any additional HTML files confirmed during the Initialization Gate (`single.html`, `page.html`, etc.). Produce the analysis in two sub-phases. **Do not skip any section.**
 
 ---
 
@@ -68,7 +68,7 @@ Produce ALL of the following sections. Number them exactly as shown. Section ③
 
 #### ① Template Mapping
 
-Apply the **Source HTML → WordPress Template Mapping** convention from the Initialization Gate (in `SKILL.md`) as the starting point. Each provided HTML file becomes the design source for its corresponding WordPress template; templates without a matching HTML file are derived from the closest available source per the convention's fallback rules (e.g. missing `single.html` derives from `index.html`, missing `archive.html` derives from `index.html`, missing `category.html` falls back to `archive.html`, etc.).
+Apply the **Source HTML → WordPress Template Mapping** convention from the Initialization Gate (in `template-mapping.md`) as the starting point. Each provided HTML file becomes the design source for its corresponding WordPress template; templates without a matching HTML file are derived from the closest available source per the convention's fallback rules (e.g. missing `single.html` derives from `index.html`, missing `archive.html` derives from `index.html`, missing `category.html` falls back to `archive.html`, etc.).
 
 Then break each provided HTML file down into its distinct content regions and map them:
 
@@ -238,7 +238,7 @@ Map every piece of content that will become dynamic. Miss nothing.
 | `CHANGELOG.md` | Release history starting with 1.0.0 | 5 | No |
 | `README.md` | Setup instructions + documentation | 5 | No |
 
-**`functions.php` size rule:** `functions.php` must contain only `define()` constants, `require` statements, and `add_action()` calls. All other logic must be extracted to files in `inc/`. Target: under 150 lines.
+**`functions.php` size rule:** `functions.php` must contain only `define()` constants, the file-scope `$content_width` assignment, `require` statements, and `add_action()` calls. All other logic must be extracted to files in `inc/`. Target: under 150 lines.
 
 The 150-line target counts non-blank, non-comment lines only (docblocks, blank lines, and inline comments are excluded from the count). If `functions.php` would exceed 150 non-blank, non-comment lines even after extracting all logic to `inc/`, document the reason in ⑨ Decision Log and proceed. This is a strong guideline, not a blocker - complex themes with many hook registrations may legitimately exceed it.
 

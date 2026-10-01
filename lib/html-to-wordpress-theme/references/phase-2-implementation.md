@@ -38,7 +38,7 @@ These line counts are approximations. The real constraint is output token limits
 
 Additional rules:
 - If a single file exceeds ~400 lines, it gets its own sub-chunk
-- If estimated total exceeds ~1000 lines, split the chunk and notify user: "Chunk N is large (~X lines). Splitting into Chunk Na and Chunk Nb."
+- If estimated total exceeds ~1200 lines, split the chunk and notify user: "Chunk N is large (~X lines). Splitting into Chunk Na and Chunk Nb."
 - Track running line count as you output. If approaching limits mid-chunk, stop cleanly at the next file boundary and state: "Remaining files for this chunk deferred to next sub-chunk."
 
 ---
@@ -127,7 +127,7 @@ if ( ! isset( $content_width ) ) {
 	$content_width = 1200;
 }
 
-// 3. Requires - in dependency order.
+// 3. Requires - in dependency order. Omit navigation.php / widgets.php when they are not in ⑪.
 require get_template_directory() . '/inc/template-functions.php';
 require get_template_directory() . '/inc/template-tags.php';
 require get_template_directory() . '/inc/navigation.php';
@@ -314,7 +314,7 @@ wp_enqueue_script(
 	get_template_directory_uri() . "/js/navigation{$suffix}.js",
 	[],
 	$version,
-	true
+	[ 'in_footer' => true, 'strategy' => 'defer' ]
 );
 ```
 
@@ -369,6 +369,8 @@ This ensures the missing screenshot is immediately obvious to anyone browsing th
 ## Optional Features Implementation Patterns
 
 These patterns apply only when the user opted into a feature during the Initialization Gate. If a feature wasn't opted in, do NOT implement it (don't add unrequested helpers, files, or hooks). Each opted-in feature should also have a corresponding row in ⑨ Decision Log and a self-audit row in Phase 3.
+
+In these patterns `{prefix}` means `THEME_PREFIX` without its trailing underscore (e.g. `flavor_studio`) and `{slug}` means `THEME_SLUG`.
 
 ### Customizer Settings
 
@@ -463,7 +465,7 @@ When a user requests changes to already-delivered files:
 
 | Change Size | Action |
 |-------------|--------|
-| < 20 lines changed | Provide a `diff` block showing the change in context |
+| ≤ 20 lines changed | Provide a `diff` block showing the change in context |
 | > 20 lines changed OR structural changes | Re-output the full file |
 | Change affects other files (dependency ripple) | List all affected files, then provide diffs or full files for each |
 
@@ -473,8 +475,8 @@ When a user requests changes to already-delivered files:
 +++ b/header.php
 @@ -15,7 +15,7 @@
  <nav class="main-nav" aria-label="<?php esc_attr_e( 'Primary', 'flavor-studio' ); ?>">
--    <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
-+    <?php wp_nav_menu( array( 'theme_location' => 'primary', 'depth' => 3 ) ); ?>
+-	<?php wp_nav_menu( [ 'theme_location' => 'primary' ] ); ?>
++	<?php wp_nav_menu( [ 'theme_location' => 'primary', 'depth' => 3 ] ); ?>
  </nav>
 ```
 

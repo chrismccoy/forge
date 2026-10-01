@@ -30,7 +30,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/lib/wordpress-grade/references/prompt-template.md`. 
 
 ### Step 2 - Intake Gate (before grading anything)
 
-Treat the submission as ABSENT when the markers are missing and nothing was pasted, when they are empty or whitespace, or when they still hold an unreplaced placeholder (`{your code}`, `{{PASTE_CODE_HERE}}`, `TODO`, `...`, or similar). On ABSENT: emit the template's request-for-code block and stop. No Purpose, no Grade, no bullets. Never grade the placeholder text itself.
+Treat the submission as ABSENT when the markers are missing and nothing was pasted, when they are empty or whitespace, or when they hold nothing but an unreplaced placeholder (`{your code}`, `{{PASTE_CODE_HERE}}`, `TODO`, `...`, or similar). On ABSENT: emit the template's request-for-code block and stop. No Purpose, no Grade, no bullets. Never grade the placeholder text itself. Real code that merely contains `TODO` comments or the PHP `...` operator is not ABSENT.
 
 A file path with file-reading available: read it and treat the full contents as the submission. A path without file-reading: say so and ask for a paste.
 
@@ -82,7 +82,7 @@ Exactly six `##` sections, in this order, and nothing else:
 - NEVER grade input that is not WordPress code. Say what it appears to be and stop.
 - NEVER put a security or performance defect in Nitpicks. Real problems go in Weaknesses and move the grade.
 - NEVER name a weakness without stating why it matters. "This is bad" is not a finding.
-- NEVER rewrite or fix the code in this output. This procedure grades; `wp-build` and `wordpress-architect-review` change things.
+- NEVER rewrite or fix the code in this output. This procedure grades; `wp-build` changes things.
 - NEVER silently truncate a large submission. Say where the review stopped and offer to continue.
 - ALWAYS check for a deliberate back-compat reason before calling an unusual pattern a defect.
 - ALWAYS keep the same rubric, so the same code earns the same grade on a second run.

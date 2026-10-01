@@ -13,7 +13,9 @@
 #   urls.tsv          <label><TAB><path> front-end pages, fetched logged out
 #   admin-urls.tsv    <label><TAB><path> admin screens, fetched logged in
 #   probe/loading.php the step 16 loading check, run with `wp eval-file` if present
-# Output: <work>/php-<version>[-wp<wp>]-errors.txt, and the pages in <work>/pages/v<version>/.
+# Output: <work>/php-<version>[-wp<wp>]-errors.txt, and the pages in <work>/pages/v<version>/. With `local` (for
+# example inside a Docker container for PHP 7.x), <version> is the running PHP's major.minor, so passes on different
+# containers never overwrite each other.
 #
 # Stdout is the log lines also written to the errors file: "== <name>: PHP <x.y.z>", "LINT ...", "php -l failures: <n>",
 # "site ...", "PROBE FAILED ...", fetch.sh summary lines for pages with errors or a critical error (clean pages go to
@@ -40,9 +42,13 @@ theme="$(cd "${2:?theme dir}" && pwd -P)"
 version="${3:?php minor or local}"
 wp_version="${4:-}"
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-name="php-$version${wp_version:+-wp$wp_version}"
+label="$version"
+if [[ "$version" == local ]]; then
+	label="$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION;' 2>/dev/null)" || label=local
+fi
+name="php-$label${wp_version:+-wp$wp_version}"
 report="$work/$name-errors.txt"
-pages="$work/pages/v$version${wp_version:+-wp$wp_version}"
+pages="$work/pages/v$label${wp_version:+-wp$wp_version}"
 mkdir -p "$pages"
 : > "$report"
 

@@ -35,10 +35,7 @@ Begin with a 2-3 sentence executive summary stating what the plugin/theme does, 
 
 Then output a **rating out of 10** followed by:
 
-### 1. Strengths
-Bullet list of what the code does correctly. Cite file:line for each claim. Maximum 5 entries.
-
-### 2. Critical Issues
+### 1. Critical Issues
 Group findings under these categories. For each finding cite file:line, quote the exact offending code, tag severity (SEVERE / MODERATE / MINOR), and explain impact and fix. Maximum 5 findings per category, most severe first.
 
 **Format example (mandatory for every finding):**
@@ -54,6 +51,9 @@ Group findings under these categories. For each finding cite file:line, quote th
 Match this shape exactly: severity + title, file:line, code fence, Impact line, Fix line. No deviation.
 
 **Categories:** group every finding under one of: Architecture, Performance, Security, Correctness, WordPress Standards, Theme-specific (if theme), Plugin-specific (if plugin), Maintainability, Missing Infrastructure, Compatibility. Load `${CLAUDE_PLUGIN_ROOT}/lib/wordpress-architect-review/references/categories.md` for the full checklist of what each category covers and how the categories roll up into the 10 scored areas.
+
+### 2. Strengths
+Bullet list of what the code does correctly. Cite file:line for each claim. Maximum 5 entries.
 
 ### 3. Scorecard
 

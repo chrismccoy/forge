@@ -47,7 +47,7 @@ No box-shadow. `border: 1px solid #e5ddd3; background: white`. On hover: `border
 ```css
 .lux-btn {
   border: 1px solid #1c1917; background: transparent; color: #1c1917;
-  font-sans; font-light; text-transform: uppercase; letter-spacing: 0.2em; font-size: 11px;
+  font-family: 'Jost', sans-serif; font-weight: 300; text-transform: uppercase; letter-spacing: 0.2em; font-size: 11px;
   padding: 14px 40px;
 }
 .lux-btn:hover { background: #1c1917; color: #f8f4ef; }

@@ -45,9 +45,9 @@ body {
 ```html
 <!-- Between sections -->
 <div class="flex items-center gap-3 my-12">
-  <div class="flex-1 h-px" style="background: linear-gradient(to right, transparent, #b8962e)"></div>
+  <div class="flex-1 h-px bg-gradient-to-r from-transparent to-[#b8962e]"></div>
   <span class="text-gold font-serif text-xl">✦</span>
-  <div class="flex-1 h-px" style="background: linear-gradient(to left, transparent, #b8962e)"></div>
+  <div class="flex-1 h-px bg-gradient-to-l from-transparent to-[#b8962e]"></div>
 </div>
 ```
 

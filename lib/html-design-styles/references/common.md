@@ -61,7 +61,7 @@ Some styles (Luxury, Scandinavian, Handwritten) explicitly avoid Font Awesome an
 
 ### Font Smoothing
 
-Apply `-webkit-font-smoothing: antialiased` (or Tailwind `antialiased`) on `<body>` for almost every style. Exceptions: Pixel and Handwritten styles deliberately turn smoothing off (`font-smooth: never`) for a rougher feel.
+Apply `-webkit-font-smoothing: antialiased` (or Tailwind `antialiased`) on `<body>` for almost every style. Exceptions: Pixel and Handwritten styles deliberately skip antialiasing for a rougher feel (`-webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale;` for Pixel, `-webkit-font-smoothing: auto` for Handwritten).
 
 ### Horizontal Overflow Guard
 
@@ -96,7 +96,7 @@ When in doubt, use `max-w-7xl mx-auto px-4` (or `px-6`).
 | `py-16 md:py-24` | Monolith and most utilitarian styles |
 | `py-20` | Memphis, Tropical, Corporate, Cottagecore - common default |
 | `py-24` | Swiss, Dark SaaS - generous default |
-| `py-32` | Enterprise Editorial, Japanese - dense/contemplative |
+| `py-32` | Enterprise Editorial, Japanese - spacious/contemplative |
 | `py-32 md:py-48` | Luxury - extreme whitespace |
 | `padding: 80px 0` | Bento, Clay, Acid Brutalist, Retro Terminal - fixed |
 

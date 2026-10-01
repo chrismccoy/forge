@@ -14,7 +14,9 @@ sorted by count descending, followed by the count of non-ASCII characters left.
 """
 
 import argparse
+import os
 import sys
+import tempfile
 import unicodedata
 
 # Specific rules. Applied before the catch-all; first match wins.
@@ -119,10 +121,18 @@ def main():
             print(f"Error: {path} not writable - no changes made.", file=sys.stderr)
             return 1
         cleaned, changes = clean(original)
+        # Write to a temp file in the same directory, then rename over the
+        # target, so a failed write can never leave a partial file behind.
+        tmp = None
         try:
-            with open(path, "w", encoding="utf-8") as fh:
+            fd, tmp = tempfile.mkstemp(dir=os.path.dirname(os.path.abspath(path)))
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
                 fh.write(cleaned)
+            os.chmod(tmp, os.stat(path).st_mode & 0o7777)
+            os.replace(tmp, path)
         except OSError:
+            if tmp and os.path.exists(tmp):
+                os.unlink(tmp)
             print(f"Error: {path} not writable - no changes made.", file=sys.stderr)
             return 1
         print(f"Mode: file - target {path}. Cleaned in place.")

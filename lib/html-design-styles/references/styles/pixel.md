@@ -93,5 +93,5 @@ Modern pixel:   #1a1c2c, #5d275d, #b13e53, #ef7d57, #ffcd75, #a7f070, #38b764
 - `image-rendering: pixelated` on all game elements
 - `cursor: default` or a custom pixel cursor
 - Background: dark with pixel grid `background-size: 4px 4px` at 1px lines
-- Avoid anti-aliasing: `font-smooth: never`
+- Avoid anti-aliasing: `-webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale;`
 - `letter-spacing: 0.1em` on Press Start 2P to aid readability

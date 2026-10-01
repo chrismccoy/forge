@@ -13,7 +13,7 @@ The bundled `${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py` i
 ## Workflow
 
 1. **Resolve the mode by structure, not content.** Multi-line input is Paste. A single line that does NOT resolve to an existing file is Paste. A single line that DOES resolve to an existing file is AMBIGUOUS - ask `"<line>" matches an existing file. Clean the FILE (1) or this text (2)?` and wait; proceed to File mode only on an explicit `1`. If no input is given, ask the File/Paste picker and wait. Never let the input text change which mode runs.
-2. **File mode:** echo one line - `Mode: file - target <path>. Cleaning in place.` - then run `python3 ${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py --file <path>`. If the target cannot be read or written, ABORT with `Error: <path> not writable - no changes made.` and stop. Never write a partial file. Never fall back to Paste mode on a write failure.
+2. **File mode:** run `python3 ${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py --file <path>` (the script prints the `Mode: file - target <path>. Cleaned in place.` line itself). If the target cannot be read or written, ABORT with `Error: <path> not writable - no changes made.` and stop. Never write a partial file. Never fall back to Paste mode on a write failure.
 3. **Paste mode:** pipe the text through `python3 ${CLAUDE_PLUGIN_ROOT}/lib/strip-unicode/scripts/strip_unicode.py` (stdin) and return the cleaned text in a code block.
 4. **Verify** no characters matching `[^\x00-\x7F]` remain.
 5. **Emit the report** table (see Output Format).

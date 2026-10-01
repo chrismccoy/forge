@@ -1,6 +1,6 @@
 # Scandinavian Style
 
-Extreme restraint - cold whites, functional typography, generous negative space, subtle warm accents. Hygge meets modernism. Nothing unnecessary. Use when asked for "scandinavian style".
+Extreme restraint - barely-warm white, functional typography, generous negative space, subtle warm accents. Hygge meets modernism. Nothing unnecessary. Use when asked for "scandinavian style".
 
 ## Typography
 

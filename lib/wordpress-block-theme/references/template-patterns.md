@@ -140,8 +140,8 @@ block-theme/
 
 ```html
 <!-- GOOD: References theme.json settings, user-customizable -->
-<!-- wp:group {"style":{"color":{"background":"var(--wp--preset--color--primary)"},"spacing":{"padding":"var(--wp--preset--spacing--50)"}}} -->
-<div class="wp-block-group">
+<!-- wp:group {"backgroundColor":"primary","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}}} -->
+<div class="wp-block-group has-primary-background-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)">
 	<!-- wp:post-title /-->
 </div>
 <!-- /wp:group -->
@@ -226,7 +226,7 @@ Custom page templates are registered in theme.json `customTemplates` and live in
 
 ```html
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|40","bottom":"var:preset|spacing|40"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull">
+<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--40)">
 	<!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"}} -->
 	<div class="wp-block-group">
 		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap"}} -->
@@ -247,12 +247,10 @@ Custom page templates are registered in theme.json `customTemplates` and live in
 
 ```html
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}},"backgroundColor":"contrast","textColor":"base","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull has-contrast-background-color has-base-color has-text-color has-background">
+<div class="wp-block-group alignfull has-contrast-background-color has-base-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)">
 	<!-- wp:group {"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"}} -->
 	<div class="wp-block-group">
-		<!-- wp:paragraph -->
-		<p>&copy; <?php echo esc_html( date( 'Y' ) ); ?> <?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
-		<!-- /wp:paragraph -->
+		<!-- wp:site-title {"level":0} /-->
 
 		<!-- wp:social-links {"iconColor":"base","iconColorValue":"#ffffff","className":"is-style-logos-only"} -->
 		<ul class="wp-block-social-links has-icon-color is-style-logos-only">

@@ -1,7 +1,7 @@
 ---
 description: Write a plain-English feature README for a full stack web app - title, short description, and a categorized feature list where every item is traced to real code.
 argument-hint: [optional path to the app folder, or a .zip]
-allowed-tools: AskUserQuestion, Read, Write, Glob, Grep, Bash
+allowed-tools: AskUserQuestion, Read, Write, Glob, Grep, Bash(unzip:*), Bash(mktemp:*)
 disable-model-invocation: true
 ---
 

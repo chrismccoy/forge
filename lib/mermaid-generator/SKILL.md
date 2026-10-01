@@ -173,6 +173,8 @@ Routing is by rule number, not by judgment about whether something counts as a r
 If the user gave no bullet list, ask them to paste one (plain prompt, then STOP for the
 reply). If a bullet list arrived with the command, treat it as the diagram input directly.
 
+The intake question is the only text this skill ever writes outside the output forms below.
+
 ## Examples
 
 Input:

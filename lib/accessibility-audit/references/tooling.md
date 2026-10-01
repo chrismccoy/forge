@@ -85,6 +85,46 @@ const auditor = new AccessibilityAuditor({ wcagLevel: "AA", wcagVersion: "2.2" }
 
 Playwright equivalent: `@axe-core/playwright` with the same `withTags` chain.
 
+### In-page snippet for browser MCP flows
+
+Flow 2 (browser MCP composition) has no Node process to run the class above. Paste this function into the MCP's evaluate tool instead (`evaluate_script`, `browser_evaluate`, `javascript_tool`, or the equivalent). It injects axe-core from cdnjs with a script tag, waits for it to load, and returns the violations. Set `level` and `version` from the chosen STANDARD first; the tag mapping is the same as `tagsFor` above. Replace `4.10.2` with a newer axe-core release from cdnjs when one is available.
+
+```javascript
+async () => {
+  const level = "AA";      // "AA" or "AAA", from STANDARD
+  const version = "2.1";   // "2.1" or "2.2", from STANDARD
+  const src = "https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js";
+
+  if (!window.axe) {
+    await new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error("axe-core failed to load (CSP or network)"));
+      document.head.appendChild(s);
+    });
+  }
+
+  const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
+  if (version === "2.2") tags.push("wcag22a", "wcag22aa");
+  if (level === "AAA") {
+    tags.push("wcag2aaa", "wcag21aaa");
+    if (version === "2.2") tags.push("wcag22aaa");
+  }
+
+  const results = await axe.run(document, { runOnly: { type: "tag", values: tags } });
+  return results.violations.map((v) => ({
+    id: v.id,
+    impact: v.impact,
+    help: v.help,
+    helpUrl: v.helpUrl,
+    nodes: v.nodes.map((n) => ({ target: n.target, failureSummary: n.failureSummary })),
+  }));
+}
+```
+
+If the script tag is blocked by the page's Content Security Policy, the promise rejects. Report that flow 2 failed and why, then fall through to flow 3.
+
 ## 2. Component tests with jest-axe
 
 Add these when fixing component-level violations so regressions get caught.

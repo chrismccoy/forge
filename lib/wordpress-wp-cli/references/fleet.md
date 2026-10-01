@@ -5,7 +5,7 @@ Most of these scripts run the same task on every WordPress install under one fol
 ## Finding Installs
 
 - Search `SITES_ROOT` for `wp-config.php` to a limited depth (`-m`, default 2). Unlimited depth finds staging copies, backups, and plugin test fixtures.
-- Skip anything under `node_modules/`, `vendor/`, `.git/`, and backup folders (`*/backup*/*`).
+- Skip anything under `node_modules/`, `vendor/`, `.git/`, and folders named `backup*` below the sites root (prune by folder name, so a sites root that is itself called `backup*` still works).
 - Sort shallowest first, and treat each `wp-config.php`'s folder as the install root.
 - `-s SITE` narrows the run to one install: a folder name under the root, or an absolute path. The single-site and whole-fleet versions of a task are **one script**, never two copies.
 - `wp-config.php` may sit one level above the WordPress files (a supported WordPress layout). If `wp-settings.php` isn't beside it, look one level down for the real root, or skip it with a clear message.
@@ -67,7 +67,7 @@ A run that takes more than a few seconds must show that it is moving:
 
 ## Summary and Exit
 
-The summary is a table of every site processed with its status (`changed`, `would change`, `unchanged`, `SKIPPED (reason)`, `FAILED (reason)`), then one totals line. Exit 2 if anything failed. See `conventions.md` for exit codes.
+The summary is a table of every site processed with its status (`changed`, `would change`, `unchanged`, `SKIPPED (reason)`, `FAILED (reason)`), then one totals line. Exit 2 if any site failed or was skipped for an error, or the run was interrupted. See `conventions.md` for exit codes.
 
 ## Reports by Email or Log
 

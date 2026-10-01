@@ -20,9 +20,16 @@
 #   --strict             Exit non-zero if any block was skipped
 #   -h, --help           Show this help
 #
-# Requires: bash 4+, jq, perl, claude (Claude Code CLI on PATH)
+# Requires: bash 4+, jq, perl, claude (Claude Code CLI on PATH).
+# Optional: timeout (or gtimeout on macOS) for a 60-second limit per call.
 
 set -euo pipefail
+
+if [[ -z "${BASH_VERSINFO:-}" || "${BASH_VERSINFO[0]}" -lt 4 ]]; then
+  echo "needs bash 4 or newer (found ${BASH_VERSION:-unknown})" >&2
+  echo "  macOS: brew install bash, then run with that bash" >&2
+  exit 1
+fi
 
 DIR=""
 DRY_RUN=0
@@ -75,6 +82,14 @@ command -v claude >/dev/null || {
   echo "  or see https://docs.claude.com/claude-code/setup" >&2
   exit 1
 }
+if command -v timeout >/dev/null; then
+  TIMEOUT_BIN=timeout
+elif command -v gtimeout >/dev/null; then
+  TIMEOUT_BIN=gtimeout
+else
+  TIMEOUT_BIN=""
+  echo "warning: timeout/gtimeout not found; claude calls will run without a time limit" >&2
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 EXTRACT_PL="$SCRIPT_DIR/extract-docblocks.pl"
@@ -122,13 +137,13 @@ echo "scanning ${#FILES[@]} file(s) under $DIR"
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
 
-export MODEL DRY_RUN BACKUP WORK_DIR EXTRACT_PL APPLY_PL
+export MODEL DRY_RUN BACKUP WORK_DIR EXTRACT_PL APPLY_PL TIMEOUT_BIN
 export PROMPT_HEADER
 
 process_file() {
   local file="$1"
   local pairs_json
-  pairs_json=$(perl "$EXTRACT_PL" "$file")
+  pairs_json=$(perl "$EXTRACT_PL" "$file") || { echo "  extract failed: $file" >&2; return 1; }
 
   local pair_count
   pair_count=$(echo "$pairs_json" | jq 'length')
@@ -140,7 +155,8 @@ process_file() {
   echo "  $file - $pair_count docblock(s)"
 
   local safe
-  safe=$(echo "$file" | tr / _ | tr -c 'A-Za-z0-9._-' _)
+  # hash of the full path keeps names unique (a/b.js vs a_b.js)
+  safe=$(perl -MDigest::MD5=md5_hex -e '($b = $ARGV[0]) =~ s{.*/}{}; $b =~ s/[^A-Za-z0-9._-]/_/g; print md5_hex($ARGV[0]), "-", $b' "$file")
   local plan="$WORK_DIR/$safe.plan"
   local skip_log="$WORK_DIR/$safe.skip"
   local rw_log="$WORK_DIR/$safe.rw"
@@ -163,8 +179,8 @@ process_file() {
 
     echo "    [$((i+1))/$pair_count] $sym" >&2
     local raw rc
-    raw=$(NO_COLOR=1 TERM=dumb timeout 60 claude --model "$MODEL" --print "$user_msg" 2>&1)
-    rc=$?
+    raw=$(NO_COLOR=1 TERM=dumb ${TIMEOUT_BIN:+"$TIMEOUT_BIN"} ${TIMEOUT_BIN:+60} \
+      claude --model "$MODEL" --print "$user_msg" 2>&1) && rc=0 || rc=$?
     if [[ "$rc" -ne 0 ]]; then
       echo "    claude rc=$rc: ${raw:0:200}" >&2
       printf '%s\t%s\tclaude_error\trc=%s\n' "$file" "$sym" "$rc" >> "$skip_log"
@@ -189,7 +205,7 @@ process_file() {
     i=$((i+1))
   done
 
-  apply_plan "$file" "$plan"
+  apply_plan "$file" "$plan" || { : > "$rw_log"; return 1; }
 }
 
 validate_output() {
@@ -197,6 +213,8 @@ validate_output() {
   if [[ -z "$out" ]]; then echo "empty"; return 1; fi
   if [[ "$out" == *$'\n'* ]]; then echo "multiline"; return 1; fi
   if [[ ! "$out" =~ ^//\  ]]; then echo "missing // prefix"; return 1; fi
+  if [[ ! "$out" =~ ^//\ [A-Z] ]]; then echo "first letter not capitalized"; return 1; fi
+  if [[ "$out" != *. || "$out" == *.. ]]; then echo "must end with a single period"; return 1; fi
   if (( ${#out} > 100 )); then echo ">100 chars (${#out})"; return 1; fi
   local banned
   banned=$(echo "$out" | grep -ioE '\b(instantiate|invoke|callback|promise|iterate|async|boolean|array|object|parameter|argument|mutate|hash|payload|instance|factory|singleton|polyfill|regex)\b' | head -1)
@@ -224,11 +242,20 @@ if [[ "${#FILES[@]}" -eq 0 ]]; then
   exit 0
 fi
 
+FAIL_LIST="$WORK_DIR/failed.list"
+: > "$FAIL_LIST"
+export FAIL_LIST
+
+RUN_RC=0
 if [[ "$CONCURRENCY" -le 1 ]]; then
-  for f in "${FILES[@]}"; do process_file "$f"; done
+  for f in "${FILES[@]}"; do
+    process_file "$f" || printf '%s\n' "$f" >> "$FAIL_LIST"
+  done
 else
   printf '%s\n' "${FILES[@]}" \
-    | xargs -P "$CONCURRENCY" -I{} bash -c 'process_file "$@"' _ {}
+    | xargs -P "$CONCURRENCY" -I{} bash -c \
+        'process_file "$1" || { printf "%s\n" "$1" >> "$FAIL_LIST"; exit 1; }' _ {} \
+    && RUN_RC=0 || RUN_RC=$?
 fi
 
 # summary report
@@ -254,8 +281,18 @@ if [[ "$SKIPPED" -gt 0 ]]; then
   echo
   echo "skipped blocks (left as original):"
   cat "${SKIP_FILES[@]}" | while IFS=$'\t' read -r f s r d; do
-    printf '  %s\n    [%s] %s — %s\n' "$f" "$r" "$s" "$d"
+    printf '  %s\n    [%s] %s - %s\n' "$f" "$r" "$s" "$d"
   done
+fi
+
+FAILED=$(wc -l < "$FAIL_LIST" | tr -d ' ')
+if [[ "$FAILED" -gt 0 || "$RUN_RC" -ne 0 ]]; then
+  echo
+  echo "files failed:     $FAILED (runner exit $RUN_RC)"
+  sed 's/^/  /' "$FAIL_LIST"
+  trap - EXIT
+  echo "logs kept in $WORK_DIR"
+  exit 1
 fi
 
 echo "done."

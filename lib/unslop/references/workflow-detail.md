@@ -1,0 +1,96 @@
+# unslop: Workflow Detail
+
+Per-pass mechanics, `verify.sh` usage, and repo-run procedure for the `unslop` skill. `SKILL.md` holds the rules summary and pass order; this file holds the how. Rule numbers refer to `${CLAUDE_PLUGIN_ROOT}/lib/unslop/references/full-ruleset.md`.
+
+## Intake branches
+
+- **File**: ask for the path, Read it, run Passes 1-9.
+- **Directory**: ask for the path, glob per Rule 11 include/exclude, then process per Rule 12 (smallest file first, stop after 5, one commit per file). See "Repo runs" below.
+- **Paste**: tell the user "paste code below; include language hint if not obvious", wait for the next message, apply Passes 2-5 inline, and emit the cleaned block plus the Pass 9 report. No filesystem write.
+
+If the first message already names a target (path, glob, or pasted code), skip the picker and go straight to the matching branch.
+
+## Pass 1: Read and identify language
+
+Read the full target file. Identify the language from the extension, then load only the matching Rule 10 subsection (search for `### <Language>`).
+
+- Languages: JavaScript, TypeScript, Python, Go, Rust, Java, C#, C/C++, Perl, Swift, Kotlin, PHP, Ruby, Elixir, Lua, SQL, PowerShell, Markdown, Shell.
+- Frameworks: React, Vue, Nuxt, Next.js, Astro, Alpine, Express, Vite, Webpack, Tailwind, WordPress, Laravel, Symfony, Twig, EJS, .env, knexfile.
+
+Before editing, run `verify.sh <file>` once to get baseline counts.
+
+## Pass 2: Vocabulary swap
+
+Apply Rule 2 (anthropomorphic words first, then engineering jargon), then Rule 2c sections A through R in order, then Rule 2d where it applies. Use the swap tables in the full ruleset. Edit in place with the Edit tool. Keep replacements small and targeted. Do not collapse multi-sentence explanations.
+
+## Pass 3: Voice rewrites
+
+Apply Rule 3. Rewrite each `we`/`us`/`our`/`let's` passage in one of:
+
+- **Imperative** ("saves the file"). Best default for docstrings.
+- **First-person singular** ("I save the file"). Use when imperative reads stilted.
+- **Descriptive third-person** ("the file is saved").
+
+Do not mix `I` and `we` in the same comment. Apply Rule 2c R3 to drop "the human" / "the user" reader references.
+
+## Pass 4: Em-dash and smart punctuation
+
+Apply Rule 2b. Replace U+2014 with a period, comma, parentheses, or colon depending on the clause boundary. Replace U+2013 the same way unless it sits in a real numeric range (e.g. "pages 5 to 10"). Apply Rule 2c H to smart quotes (U+2018/19/1C/1D), ellipsis (U+2026), and non-breaking space (U+00A0).
+
+Scope: comments, docstrings, log messages, exception/error messages, debug `print`/`console.log`. Not user-facing CLI help, `--help` output, end-user terminal output, or man pages.
+
+## Pass 5: Function renames
+
+For each AI-jargon name candidate (Rule 4 pattern catalog), run `grep -c "<name>" <file>` first. Confirm the identifier is not a substring of an unrelated identifier or string literal (don't rename `extract` if `extractor` exists). Then use Edit with `replace_all: true` on the full identifier name.
+
+## Pass 6: Syntax check
+
+- JS: `node --check <file>`
+- TS: `tsc --noEmit` (project-level)
+- Python: `python -m py_compile <file>`
+- Go: `gofmt -e <file>`
+- Rust: `cargo check`
+- PHP: `php -l <file>`
+- Ruby: `ruby -c <file>`
+
+## Pass 7: verify.sh
+
+`${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh` bundles every Rule 8 grep and reports per-category hit counts. It uses ripgrep when available and falls back to grep. Exit code = number of categories with hits (0 = clean).
+
+```bash
+${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh <file>                    # summary
+${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh --verbose <file>          # show matching lines
+${CLAUDE_PLUGIN_ROOT}/lib/unslop/scripts/verify.sh --category em-dash <file> # one category only
+```
+
+Categories (canonical list; the source of truth is the `verify.sh` header): `1pp em-dash en-dash anthropomorphic tutorial jargon marketing hyphen-compound num-word-compound britishism hedging tutorial-voice connectors padding filler empty-enum apologetic filler-intensifier passive-marketing tutorial-transition smart-punct emoji-decor pseudo-action so-voice marketing-intros self-ref empty-preamble docstring-openers human-user generic-id test-voice ai-artifacts defensive stale-meta placeholder-todo jsdoc-fluff type-cast pragma-py pragma-php pragma-rb pragma-go output-tells`
+
+Requirements: bash plus `rg`/`grep`, `sed`, `wc` (macOS, Linux, WSL, or Git Bash). On bare Windows/PowerShell without bash, skip the script and run the equivalent checks inline with the Grep tool: search each category's pattern (Rule 8 lists them) across the file and tally hits to build the same Pass 9 verification table. The script is a convenience, not a hard dependency.
+
+## Repo runs (Rules 11 and 12)
+
+File scope: use Rule 11 include globs, exclude globs, skip categories, and auto-generated detection (skip if the first 5 lines contain `DO NOT EDIT`, `AUTO-GENERATED`, `@generated`, `Code generated by`, or the other Rule 11 markers). `.env*` files: comments only, never keys or values. `*.md`: only when explicitly requested, then apply Rules DD, EE, FF.
+
+Procedure:
+
+1. **Dry-run first**: run `verify.sh` over each target file, report category counts, and review before changing anything.
+2. **Smallest file first**: build confidence on simple files before 2000-line ones.
+3. **Per-file commit**, subject naming the category: `chore(comments): vocab swap in src/foo.ts`, `chore(renames): rename AI-jargon fns in lib/bar.js`, `chore(docs): kill em-dashes in README.md`.
+4. **Stop after N files on the first pass** (default N=5). Review the diff, run tests, then continue.
+5. **Surface dense AI signal**: any category above 100 hits in one file deserves a closer look.
+
+## False-positive triage (Rule 13)
+
+Skip a match when it is inside a string literal, in a third-party type definition (`node_modules`, `@types/...`), in a copy-pasted RFC or spec quote, in a fenced code example inside docs, or the literal class/method name from an SDK the code calls. Rule 13 has the domain whitelist (`atomic`, `family`, `Service`/`Provider`/`Handler`, `walk`, `pictures`, `recipe`, and others). When unsure, leave the match and flag it in the report's Borderline section.
+
+## Precedence (Rule 15)
+
+User instruction this session, then repo style guides (`CLAUDE.md`, `AGENTS.md`, `STYLE.md`, `CONTRIBUTING.md`), then linter config, then existing project conventions (if the codebase uses `*Service` everywhere, leave it), then this skill as the lowest-priority default. When in doubt, ask before bulk-applying: a 500-file rename gone wrong is harder to revert than a 30-second clarification. Rule 15 never unlocks Rule 0.
+
+## Reviewer checklist (Rule 14)
+
+Rule 14 is the human pre-merge gate; the agent does not run it. For reviewers, "all Rule 8 greps return empty" is equivalent to every `verify.sh` category returning 0 hits (or only string-literal hits).
+
+## Tooling (Rule 16)
+
+Rule 16 covers faster greps, AST-aware rename tools, and safety nets for bulk runs.

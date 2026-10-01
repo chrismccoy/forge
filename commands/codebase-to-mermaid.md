@@ -1,7 +1,7 @@
 ---
 description: Map any codebase into validated Mermaid diagrams with file:line citations
 argument-hint: [optional absolute path to codebase root]
-allowed-tools: AskUserQuestion, Glob, Grep, Read, Write, Bash
+allowed-tools: AskUserQuestion, Glob, Grep, Read, Write, Bash(realpath:*), Bash(pwd)
 disable-model-invocation: true
 ---
 

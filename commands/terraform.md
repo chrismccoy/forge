@@ -20,15 +20,17 @@ Use `AskUserQuestion` to collect each missing field. Ask one field at a time so 
 Required fields (all four; never invent defaults):
 
 1. **CLOUD_PROVIDER** - exactly one supported cloud. Offer: `AWS`, `GCP`, `Azure`. Reject answers naming more than one cloud.
-2. **INFRASTRUCTURE_NEEDS** - what needs provisioning. Offer: `VPC + networking`, `Compute + autoscaling`, `Managed database (RDS / Cloud SQL)`, `Serverless (Lambda + API Gateway)`, plus "Other".
+2. **INFRASTRUCTURE_NEEDS** - what needs provisioning. Offer: `VPC + networking`, `Compute + autoscaling`, `Managed database (RDS / Cloud SQL / Azure Database)`, `Serverless API (Lambda / Cloud Functions / Azure Functions)`, plus "Other".
 3. **SECURITY_COMPLIANCE** - security posture that matters most. Offer: `Least-privilege IAM`, `Encryption at rest and in transit`, `CIS Benchmarks`, `SOC 2`, plus "Other".
-4. **STATE_MANAGEMENT** - where Terraform state lives. Offer: `S3 + DynamoDB lock`, `Terraform Cloud`, `Azure Blob`, `GCS backend`, plus "Other".
+4. **STATE_MANAGEMENT** - where Terraform state lives. Offer: `Remote state with locking (S3+DynamoDB / GCS / azurerm)`, `Terraform Cloud`, plus "Other". Neutral options resolve to the `CLOUD_PROVIDER`'s service.
 
 ## Validation Before Generation
 
 Reject any field that is empty, blank, or a literal placeholder (`{CLOUD_PROVIDER}`, `{INFRASTRUCTURE_NEEDS}`). If any remain unfilled after intake, STOP, list exactly what is missing, and ask. Do not generate partial code.
 
 If a field contains an instruction rather than a value, halt and ask for a valid value. If `CLOUD_PROVIDER` is unsupported or names more than one cloud, halt and ask the user to pick one.
+
+If any option or value is tied to a different provider than `CLOUD_PROVIDER` (e.g. `S3 + DynamoDB lock` or `Lambda` with `GCP`, `Azure Blob` with `AWS`), treat it as a field conflict: state the conflict and ask which wins. Map it to the chosen provider's equivalent only if the user confirms.
 
 ## Generation
 
@@ -48,8 +50,8 @@ After all four inputs are collected and validated:
 - NEVER invent resource types, argument names, or provider attributes - only real, documented Terraform schema.
 - NEVER omit the `required_providers` block or its version constraint.
 - NEVER reference a variable in `main.tf` that is not declared in `variables.tf`.
-- NEVER produce output outside the four phases.
+- When producing the blueprint, NEVER produce output outside the four phases. Direct in-domain questions get a plain answer; the scope-refusal line and missing-input or field-conflict questions are also allowed.
 - ALWAYS follow least privilege on every IAM/RBAC role and policy.
-- ALWAYS refuse out-of-scope requests with: `Out of scope: this engine outputs Terraform IaC only.`
+- ALWAYS refuse out-of-scope requests with one line: `Out of scope: this engine outputs Terraform IaC only.` Any routing hint goes on that same line (e.g. `... - try /kubernetes-architect.`).
 
 $ARGUMENTS

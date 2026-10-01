@@ -100,7 +100,8 @@ mkdir -p "$work/sites"
 setup_theme="$theme"
 [[ -n "${AUDIT_PARENT_DIR:-}" ]] && setup_theme="$(cd "$AUDIT_PARENT_DIR" && pwd -P)"
 log="$work/sites/setup-$php_version-$(date +%H%M%S).log"
-tmp="$(bash "$here/setup-test-site.sh" "$setup_theme" 0 "$work/sites" 2>"$log" | tail -1)"
+# `|| true`: under pipefail a failed setup would otherwise exit here, before the line below names the log.
+tmp="$(bash "$here/setup-test-site.sh" "$setup_theme" 0 "$work/sites" 2>"$log" | tail -1)" || true
 [[ -f "$tmp/env.sh" ]] || { printf 'new-site: setup failed; see %s\n' "$log" >&2; tmp=""; exit 1; }
 # shellcheck source=/dev/null
 source "$tmp/env.sh"

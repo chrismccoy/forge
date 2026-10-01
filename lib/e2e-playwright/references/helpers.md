@@ -1,5 +1,9 @@
 # Helpers and assertion techniques
 
+## Locators
+
+Take every locator from the page's views and client-side scripts, never from a guess. Where a page gives a control an `id` and a real `<label for>`, use it. Where the EJS wraps inputs in labels - which makes an accessible name swallow every option of a `<select>` - locate form controls by `[name="…"]:not([type="hidden"])` instead (the `field()` helper below). Buttons, links and headings go by role and visible text.
+
 ## Appendix A: the shared helpers module
 
 One module, `tests/e2e/support/app.js`, holding at least:

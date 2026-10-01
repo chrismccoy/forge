@@ -29,6 +29,7 @@ my $src = do {
     <$fh>;
 };
 my $original = $src;            # snapshot for dry-run diff
+my $mode = (stat $file)[2] & 07777;   # keep permissions on the rewritten file
 
 # parse and validate plan
 
@@ -116,6 +117,7 @@ open(my $nw, '>', $tmp_out) or die "write $tmp_out: $!";
 binmode $nw, ':raw';
 print $nw $src       or do { unlink $tmp_out; die "write error: $!\n" };
 close $nw            or do { unlink $tmp_out; die "close error: $!\n" };
+chmod($mode, $tmp_out)  or do { unlink $tmp_out; die "chmod: $!\n" };
 rename($tmp_out, $file) or do { unlink $tmp_out; die "rename: $!\n" };
 
 print "    wrote $file\n";

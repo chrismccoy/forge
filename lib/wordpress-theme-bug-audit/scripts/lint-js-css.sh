@@ -22,7 +22,7 @@ set -uo pipefail
 
 # Paths neither linter should read: build output, dependencies, and this audit's own files.
 readonly ESLINT_BASE_IGNORES='"**/*.min.js", "**/vendor/**", "**/node_modules/**", "**/audit/**", "**/.git/**",'
-readonly STYLELINT_BASE_IGNORES=(--ignore-pattern '**/*.min.css' --ignore-pattern 'vendor/**' --ignore-pattern 'node_modules/**' --ignore-pattern 'audit/**')
+readonly STYLELINT_BASE_IGNORES=(--ignore-pattern '**/*.min.css' --ignore-pattern '**/vendor/**' --ignore-pattern '**/node_modules/**' --ignore-pattern '**/audit/**')
 # browserslist query used when the theme declares none.
 readonly DEFAULT_BROWSERS='defaults'
 
@@ -105,7 +105,8 @@ cat > "$out/stylelint.config.json" <<JSON
 }
 JSON
 
-(cd "$theme" && "$tools/node_modules/.bin/eslint" --config "$out/eslint.config.mjs" --format json . > "$out/eslint.json" 2> "$out/eslint.err")
+(cd "$theme" && "$tools/node_modules/.bin/eslint" --config "$out/eslint.config.mjs" --no-error-on-unmatched-pattern \
+	--format json . > "$out/eslint.json" 2> "$out/eslint.err")
 (cd "$theme" && "$tools/node_modules/.bin/stylelint" --config "$out/stylelint.config.json" --formatter json \
 	"${STYLELINT_BASE_IGNORES[@]}" "${style_ignores[@]}" \
 	'**/*.{css,scss}' > "$out/stylelint.json" 2>&1)

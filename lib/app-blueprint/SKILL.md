@@ -20,8 +20,8 @@ Collect all five before generating. If any are missing, ask via `AskUserQuestion
 |-------|---------|---------|
 | APP_DESCRIPTION | What the app does, domain, users | "Multi-tenant SaaS for veterinary clinic scheduling" |
 | TECH_STACK | Primary frameworks, db, infra | "Next.js + Postgres + Prisma + Vercel" |
-| APP_TYPE | Workload class | "web app", "CLI", "mobile", "API service", "data pipeline" |
-| LANGUAGE | Implementation language | "TypeScript", "Python", "Go", "Rust" |
+| APP_TYPE | Workload class | "web app", "API service", "mobile", "CLI", "data pipeline", "desktop" |
+| LANGUAGE | Implementation language | "TypeScript", "Python", "Go", "Rust", "Java", "C#" |
 | SCALE | Concurrent users / req-per-sec / data volume | "100 tenants, ~5k DAU, 50 rps peak" |
 
 ## Workflow

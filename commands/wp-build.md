@@ -19,7 +19,7 @@ Use `AskUserQuestion` to collect each missing field. Ask one field at a time so 
 
 Fields:
 
-1. **BUILD_TARGET** (required) - what to build. `AskUserQuestion` caps a single question at 4 options, so present BUILD_TARGET as a **two-step drill-down**: first ask the broad class - `Theme`, `Plugin`, `Block/Pattern`, `Other` - then, if the answer needs narrowing (e.g. Plugin → WooCommerce extension / REST endpoint / Performance fix / Security hardening), ask a second 4-option question to pick the specific target. The full target set is: Theme (templates / FSE / child theme), Plugin (settings / hooks / activation), Gutenberg block or pattern, WooCommerce extension, REST API endpoint, Performance fix (slow site / slow query), Security hardening (nonce / sanitize / capability). The resolved target maps to bundled reference(s) - see Routing.
+1. **BUILD_TARGET** (required) - what to build. `AskUserQuestion` caps a single question at 4 options, so present BUILD_TARGET as a **two-step drill-down**: first ask the broad class - `Theme`, `Plugin / WooCommerce / REST`, `Block/Pattern`, `Performance or security fix` - then, if the answer needs narrowing, ask a second question to pick the specific target (`Plugin / WooCommerce / REST` → Plugin / WooCommerce extension / REST API endpoint; `Performance or security fix` → Performance fix / Security hardening). The full target set is: Theme (templates / FSE / child theme), Plugin (settings / hooks / activation), Gutenberg block or pattern, WooCommerce extension, REST API endpoint, Performance fix (slow site / slow query), Security hardening (nonce / sanitize / capability). The resolved target maps to bundled reference(s) - see Routing.
 2. **PROJECT_CONTEXT** (required) - new vs existing. Single-select: `New build (greenfield)`, `Existing project (have the path/files)`, plus "Other". If existing, ask for the theme/plugin path or paste the relevant file (functions.php, plugin header).
 3. **SPECIFICS** (required) - free-text feature detail. 1-3 sentences on the exact behavior wanted. Present 2-4 examples (e.g. `a settings page that stores an API key`, `a dynamic block listing recent posts`, `add gift-wrapping to WooCommerce checkout`, `cache the homepage product query`) plus rely on the "Other" escape hatch.
 4. **WP_CONSTRAINTS** (optional) - target environment. Free-text. Present 2-4 examples (e.g. `WordPress 6.4+, PHP 8.1`, `multisite network`, `block theme (FSE)`, `must stay PHP 7.4 compatible`) plus "Other". May be left empty; default to WordPress 6.4+ / PHP 8.1+.
@@ -40,7 +40,7 @@ Map `BUILD_TARGET` to the reference loaded before implementing (from the `wp-bui
 
 ## Validation Before Generation
 
-Reject any required field that is empty, blank, or a literal placeholder (`{BUILD_TARGET}`, `{PROJECT_CONTEXT}`, `{SPECIFICS}`). If `BUILD_TARGET`, `PROJECT_CONTEXT`, or `SPECIFICS` is missing after intake, ask one targeted question per missing field, then halt. Do not fabricate a target or invent a feature spec.
+Reject any required field that is empty, blank, or a literal placeholder (`{BUILD_TARGET}`, `{PROJECT_CONTEXT}`, `{SPECIFICS}`). If `BUILD_TARGET`, `PROJECT_CONTEXT`, or `SPECIFICS` is missing after intake, ask one targeted question per missing field; if it is still missing, halt. Do not fabricate a target or invent a feature spec.
 
 For an existing project with no path or pasted file, ask for the surrounding file before editing - do not guess the structure.
 

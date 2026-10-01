@@ -85,7 +85,7 @@ Requests it handles (type the command to run it - it never auto-triggers):
 
 > *"unslop this file"*, *"deslop the repo"*, *"remove AI tells from `src/auth.ts`"*, *"strip em-dashes from comments"*, *"rename `orchestrateDataProvider` to something human"*, *"audit this file for AI slop"*, *"clean the AI voice out of these comments"*, *"kill the marketing words in this codebase"*
 
-The full procedure lives at [`lib/unslop/SKILL.md`](../lib/unslop/SKILL.md), the slash command at [`commands/unslop.md`](../commands/unslop.md), the complete 16 rule, 19 language, 22 framework ruleset in [`references/full-ruleset.md`](../lib/unslop/references/full-ruleset.md), and verification greps in [`scripts/verify.sh`](../lib/unslop/scripts/verify.sh).
+The full procedure lives at [`lib/unslop/SKILL.md`](../lib/unslop/SKILL.md), the slash command at [`commands/unslop.md`](../commands/unslop.md), the complete 16 rule, 19 language, 22 framework ruleset in [`references/full-ruleset.md`](../lib/unslop/references/full-ruleset.md), per-pass mechanics and the repo-run procedure in [`references/workflow-detail.md`](../lib/unslop/references/workflow-detail.md), and verification greps in [`scripts/verify.sh`](../lib/unslop/scripts/verify.sh).
 
 ---
 
@@ -226,7 +226,7 @@ Python docstrings are treated as what they are: executable string expressions, n
 
 ## 📋 Technical Overview
 
-One slash command plus its procedure file `lib/strip-comments/SKILL.md`, with two reference files and four bundled scripts under the same folder. The command `/strip-comments` collects scope, languages, and batching, then asks about docstrings and markup comments only when those file types actually turn up. Comment removal only: no formatter, no linter autofix, no rename, no reorder, no import cleanup.
+One slash command plus its procedure file `lib/strip-comments/SKILL.md`, with two reference files, three bundled scripts, and the audit's pattern list under the same folder. The command `/strip-comments` collects scope, languages, and batching, then asks about docstrings and markup comments only when those file types actually turn up. Comment removal only: no formatter, no linter autofix, no rename, no reorder, no import cleanup.
 
 ## ✨ Features
 
@@ -238,7 +238,7 @@ One slash command plus its procedure file `lib/strip-comments/SKILL.md`, with tw
 - 🧪 Verification required. Parse-check plus a comment audit, with every `FLAG` resolved and every `SKIP` listed before anything is called done
 - 📦 Batching by directory or language on anything over roughly 50 files, so a mistake stays cheap to isolate
 - 🎨 Templates covered. `<script>` and `<style>` blocks inside `.vue`, `.svelte`, `.astro`, `.ejs`, `.hbs`, `.html`, and `.blade.php`
-- 🚪 Markup comments opt-in. HTML, Blade, Handlebars, Jinja, and Markdown of any kind are out of scope unless asked for
+- 🚪 Markup comments opt-in. HTML, Blade, Handlebars, Jinja, and EJS comments are out of scope unless asked for; Markdown, README, and CHANGELOG files are never touched
 - 🚩 Ambiguity flagged with a file and line, never resolved quietly
 
 ## 🔄 How it works

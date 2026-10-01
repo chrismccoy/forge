@@ -23,7 +23,7 @@
 - At least 5 of 10 candidates must use distinct naming structures from this set:
   - **Compound** - two real words joined (`Snowflake`, `Notion`-like blends)
   - **Blended** - portmanteau of two roots (`Pinterest`, `Spotify`)
-  - **Metaphor** - evocative noun from another domain (`Tesla`, `Slack`)
+  - **Metaphor** - evocative noun from another domain (`Stripe`, `Slack`)
   - **Invented** - fully constructed, no source word (`Sonos`, `Zappos`)
   - **Classical-roots** - Latin/Greek/Sanskrit fragments (`Aevi`, `Lumora`)
 - Avoid forced suffixes (`-ify`, `-ly`, `-hub`, `-io`, `-app`) unless they genuinely fit niche and tone.

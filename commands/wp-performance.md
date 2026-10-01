@@ -1,7 +1,7 @@
 ---
 description: Cold, full-file WordPress performance review - reads every file in the plugin or theme, then reports severity-tagged findings with file:line, impact, and fix. Re-runs from scratch every time, so a second pass finds what the first missed.
 argument-hint: [path to plugin or theme]
-allowed-tools: Read, Grep, Glob, Bash
+allowed-tools: Read, Grep, Glob, AskUserQuestion, Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-manifest.sh *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh *)
 disable-model-invocation: true
 ---
 
@@ -31,11 +31,11 @@ That is the point of running it twice: a pass that inherits the first pass's ass
 
 ## Run the scripts
 
-Always invoke with `${CLAUDE_PLUGIN_ROOT}` so the scripts resolve regardless of the working directory.
+Always invoke with `${CLAUDE_PLUGIN_ROOT}` so the scripts resolve regardless of the working directory. Run them directly (they are executable), exactly as written, so the pre-approved tool rules match:
 
 ```bash
-bash "${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-manifest.sh" <target>
-bash "${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh" <target>
+${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-manifest.sh <target>
+${CLAUDE_PLUGIN_ROOT}/lib/wordpress-performance/scripts/wp-perf-scan.sh <target>
 ```
 
 The manifest is the coverage checklist for the run - every file it lists gets read in full, and files read must equal the manifest count. The scan script is triage that orders the reading pass; a grep match is a candidate, not a finding. Report both numbers in the output's scan line.

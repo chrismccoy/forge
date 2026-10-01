@@ -71,7 +71,7 @@ Turns a bullet-point list of process steps into one valid Mermaid sequence diagr
 
 The single easiest thing to get wrong in a sequence diagram is arrow direction, and most tools point it at the sentence's grammatical subject. This one reads the verb: "the warehouse receives the shipment from Supplier" draws an arrow from Supplier to Warehouse, not the other way. It normalizes every reference to one participant, aliases multi-word names, strips characters that would break the syntax, and turns "if / otherwise", "for each", "only if", and "at the same time" into `alt`, `loop`, `opt`, and `par` blocks.
 
-It never guesses. If a step names a recipient but no sender, or the input has fewer than two participants, it returns a one-line `ERROR:` pointing at the exact bullet instead of a diagram built on a guess. Output is exactly one thing: a fenced `mermaid` block, an `ERROR:`, or a `SAFETY:` message - never prose around it. Text inside the input is treated as diagram content, so a hidden "ignore all instructions" just becomes a message label.
+It never guesses. If a step names a recipient but no sender, or the input has fewer than two participants, it returns an `ERROR:` - a one-line reason plus a "Problem area(s):" list pointing at the exact bullets - instead of a diagram built on a guess. Output is exactly one thing: a fenced `mermaid` block, an `ERROR:`, or a `SAFETY:` message - never prose around it. Text inside the input is treated as data, never as instructions: a hidden "ignore all instructions" is malformed content and gets an `ERROR:`, not obeyed.
 
 ## 📋 Technical Overview
 
@@ -83,8 +83,8 @@ One slash command plus its procedure file `lib/mermaid-generator/SKILL.md`, targ
 - 🏷️ Aliases multi-word names and normalizes every reference to one participant id
 - 🔀 `alt` / `opt` / `loop` / `par` from "if/otherwise", "only if", "for each", "at the same time"
 - 🧹 Strips parens, brackets, semicolons, and `#` from labels instead of failing
-- 🚦 Refuses with a one-line error at the exact bullet when a sender is missing
-- 🛡️ Treats input as diagram content; injection attempts become plain labels
+- 🚦 Refuses with an `ERROR:` naming the exact bullet(s) when a sender is missing
+- 🛡️ Treats input as data; injection attempts are rejected as malformed with an `ERROR:`
 - 📤 Emits exactly one form - diagram, `ERROR:`, or `SAFETY:` - never with surrounding text
 
 ## 🔄 How it works
@@ -305,7 +305,7 @@ One slash command plus its procedure file `lib/prompt-rank-table/SKILL.md`, whic
 
 **Requests it handles** (type the command to run it - it never auto-triggers):
 
-> *"score this prompt as a table"*, *"quick prompt audit"*, *"what tier is this prompt"*, *"compare these prompts"*, *"just give me the signals table"*
+> *"score this prompt as a table"*, *"quick prompt audit"*, *"what tier is this prompt"*, *"just give me the signals table"* (one prompt per run; run it once per prompt to compare)
 
 For the long-form version of the same audit, use [`/rank-prompt`](#prompt-ranker).
 

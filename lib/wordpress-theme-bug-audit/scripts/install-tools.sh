@@ -81,8 +81,11 @@ install_php_tools() {
 		|| printf 'install-tools: Composer install failed; see %s/composer.log\n' "$tools" >&2
 	if ! "${composer[@]}" require --no-interaction --no-progress --with-all-dependencies \
 		"${PHPCOMPAT_10_PACKAGES[@]}" >/dev/null 2>>composer.log; then
-		"${composer[@]}" require --no-interaction --no-progress "$PHPCOMPAT_FALLBACK_PACKAGE" >/dev/null 2>>composer.log
-		printf 'install-tools: only PHPCompatibility 9.x installed; phpcs checks nothing newer than PHP 7.4\n' >&2
+		if "${composer[@]}" require --no-interaction --no-progress "$PHPCOMPAT_FALLBACK_PACKAGE" >/dev/null 2>>composer.log; then
+			printf 'install-tools: only PHPCompatibility 9.x installed; phpcs checks nothing newer than PHP 7.4\n' >&2
+		else
+			printf 'install-tools: PHPCompatibility install failed; see %s/composer.log\n' "$tools" >&2
+		fi
 	fi
 }
 

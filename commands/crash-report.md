@@ -1,7 +1,7 @@
 ---
 description: Diagnose a macOS crash report in plain English - six fixed sections, every claim tied to a field in the report.
 argument-hint: [optional path to a .ips/.crash file, or a pasted report]
-allowed-tools: AskUserQuestion, Read, Glob, Bash
+allowed-tools: AskUserQuestion, Read, Glob, Bash(ls:*)
 disable-model-invocation: true
 ---
 
@@ -56,7 +56,7 @@ Once the report is in hand:
 
 Exactly one applies, never two. The test is mechanical: can the block be read?
 
-- **Unreadable** - empty, binary, mojibake, or truncated before the exception/termination block: one short question naming what is needed, no sections.
+- **Unreadable** - empty, binary, mojibake, truncated before the exception/termination block, or a fragment with no header fields at all: one short question naming what is needed, no sections.
 - **Readable but not an Apple log** - source code, another language's stack trace, prose, a question: the fixed reply `That isn't a macOS crash report - paste a .crash, .ips, or Console excerpt and I'll diagnose it.` No sections, no clarifying question.
 - **Readable Apple log**: all six sections, gaps included.
 

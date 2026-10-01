@@ -61,7 +61,7 @@ Script specifications:
 - No plain text credentials
 - Safe execution practices
 
-6. Remote execution
+6. Remote execution (only when REMOTE is "Remote via PSSession"; omit otherwise)
 - PSSession usage
 - Remote command execution
 
@@ -83,7 +83,7 @@ OUTPUT FORMAT (mandatory, in this order). Fill this exact skeleton:
 | Name | Mandatory | Type | Validation |
 |------|-----------|------|------------|
 ## Usage Examples
-(local) ... (pipeline) ... (remote/PSSession) ...   # minimum 3 fenced examples
+(local) ... (pipeline) ... (remote/PSSession, only when REMOTE is remote; otherwise a third local variant) ...   # minimum 3 fenced examples
 ## Security Notes
 credential handling + execution-policy assumptions
 

@@ -19,7 +19,7 @@ When the skill triggers, it knows exactly how to implement any style. fonts, col
 ##### Minimal & Clean
 - 🍎 **Bento Style**: Apple/macOS-inspired bento grid, clean and minimal
 - 🌿 **Soft Modern Style**: White bg, blurred orb accents, rounded, friendly and accessible
-- ❄️ **Scandinavian Style**: Cold whites, extreme negative space, hygge minimalism, quiet luxury
+- ❄️ **Scandinavian Style**: Barely-warm white, extreme negative space, hygge minimalism, quiet luxury
 - 🏢 **Corporate Style**: Conservative trust blues, structured grid, buttoned-up B2B professionalism
 - 📐 **Swiss Style**: Helvetica-inspired, rigid typographic grid, black/red only, zero decoration
 
@@ -55,7 +55,7 @@ When the skill triggers, it knows exactly how to implement any style. fonts, col
 - 🗞️ **Zine Style**: Photocopied DIY aesthetic, cut-and-paste collage, raw indie energy
 - 🔆 **Aurora Style**: Flowing multi-color gradient backgrounds, silk light effect, soft and dreamy
 
-##### & Luxury
+##### Elegant & Luxury
 - 👑 **Luxury Style**: Cream/off-white, serif display font, gold accents, generous whitespace
 - 🌸 **Art Deco Style**: Geometric gold ornaments, symmetry, 1920s glamour and opulence
 - 🌺 **Cottagecore Style**: Floral patterns, watercolor washes, storybook softness and whimsy
@@ -92,14 +92,17 @@ When the skill triggers, it knows exactly how to implement any style. fonts, col
 Every style definition covers:
 
 - 🔤 **Typography**: Font families, weights, sizes, letter-spacing
-- 🎨 **Color palette**: All CSS custom properties with exact values
+- 🎨 **Color palette**: Exact hex/rgba values (as Tailwind config, CSS custom properties, or plain CSS)
+- ⚙️ **Implementation notes**: CDN links, font imports, container widths, special CSS tricks (all styles except Pop Art)
+
+And, where the style calls for them:
+
 - 🪞 **Shadow system**: Named shadow levels used across components
 - 🃏 **Card variants**: Background, border, hover states
-- 🔘 **Button variants**: Primary, secondary, ghost, active/pressed states
+- 🔘 **Button variants**: Primary plus secondary/ghost/pressed states where the style defines them
 - 📐 **Layout patterns**: Grid structures, hero layouts, section flows
 - 🧩 **Components**: Pills, badges, stat cards, nav, marquee, footer
-- ✨ **Animations**: Transitions, keyframes, scroll effects where applicable
-- ⚙️ **Implementation notes**: CDN links, font imports, special CSS tricks
+- ✨ **Animations**: Transitions, keyframes, scroll effects
 
 ## 💻 Output format
 
@@ -128,8 +131,9 @@ Two ways to invoke it:
 
 ```
 /html-design-styles ← asks you to pick a style
-/html-design-styles brutalist ← starts straight into Brutalist
-/html-design-styles brutalist landing page for my SaaS
+/html-design-styles neobrutalist ← starts straight into Neobrutalist
+/html-design-styles brutalist ← category word: asks you to pick among the brutalist styles
+/html-design-styles neobrutalist landing page for my SaaS
  ← pre-fills both style + project
 ```
 
@@ -177,7 +181,7 @@ The full procedure lives at [`lib/html-design-styles/SKILL.md`](../lib/html-desi
 
 ## `accessibility-audit`
 
-Finds, reports, and fixes WCAG accessibility issues in web UI, in the voice of a senior accessibility engineer. Five-field intake, four locked modes, four audit flows that prefer the rendered page over the source. Command only. it ships no skill file, so it never auto-triggers.
+Finds, reports, and fixes WCAG accessibility issues in web UI, in the voice of a senior accessibility engineer. Five-field intake, four locked modes, four audit flows that prefer the rendered page over the source. Command only. its procedure lives in `lib/accessibility-audit/SKILL.md`, a plain file with no frontmatter that the command loads, so it never auto-triggers.
 
 ```
 /accessibility-audit
@@ -185,9 +189,9 @@ Finds, reports, and fixes WCAG accessibility issues in web UI, in the voice of a
 
 Most accessibility answers do one of two unhelpful things. They dump a raw axe-core log with two hundred entries, thirty of which are the same button repeated, or they start editing files when all you asked for was a report. This plugin does neither. It asks what you want first - mode, scope, and standard in one round, then a single follow-up only if it applies - and holds to the answers. Report mode never touches a file, no matter how obvious the fix looks. Findings are grouped by rule and by component family, so one broken button pattern reads as one finding with a count, not thirty rows. Every finding carries its WCAG criterion. Engine fix directives are quoted word for word rather than paraphrased, and anything that needs written content, alt text, a label, an error message, is left as a TODO with the rule ID instead of invented.
 
-It prefers auditing the page as the browser actually renders it, because source code hides real failures. Four flows are tried in order: the AccessLint MCP for any URL, then a browser MCP when your logged-in session or a specific page state matters, then static analysis of HTML files or JSX rendered to a string, then a plain axe-core script when there is no MCP but there is Node and a dev server. Whichever one it used is stated in the output.
+It prefers auditing the page as the browser actually renders it, because source code hides real failures. Four flows are tried in order: the AccessLint MCP for any URL, then a browser MCP when your logged-in session or a specific page state matters, then a plain axe-core script when there is no MCP but there is Node and a dev server, then static analysis of HTML files or JSX rendered to a string as the last resort. Whichever one it used is stated in the output.
 
-There is a fourth mode for the case where there is no file and no page, just a component you pasted. It returns a four-phase blueprint instead of a report: the flaws in the code as given, the technical approach before any code appears, the complete refactor in your stack with a comment on every accessibility addition, and a testing guide listing what each key should do and what a screen reader should announce. Those key bindings are not improvised. They come from the ARIA Authoring Practices tables bundled with the plugin, covering dialog, disclosure, accordion, tabs, menu and menubar, combobox, listbox, tree, slider, and grid. A custom binding that fights the standard pattern is treated as a defect, because assistive technology users show up already knowing what Arrow and Escape are supposed to do.
+Component is a separate mode for the case where there is no file and no page, just a component you pasted. It returns a four-phase blueprint instead of a report: the flaws in the code as given, the technical approach before any code appears, the complete refactor in your stack with a comment on every accessibility addition, and a testing guide listing what each key should do and what a screen reader should announce. Those key bindings are not improvised. They come from the ARIA Authoring Practices tables bundled with the plugin, covering dialog, disclosure, accordion, tabs, menu and menubar, combobox, listbox, tree, slider, and grid. A custom binding that fights the standard pattern is treated as a defect, because assistive technology users show up already knowing what Arrow and Escape are supposed to do.
 
 The honest part is what it refuses to claim. Automated checks catch roughly a third of real accessibility failures. Content clarity, screen reader announcement quality, keyboard flow, and complex contrast all need a person. Those get their own section in the report, listed as still to verify, rather than being quietly folded into a passing score. It also will not tell you that you are legally compliant, for the ADA or Section 508 or EN 301 549 or the EAA. It aligns code with WCAG technical criteria. Whether an organization is compliant is a legal determination made by people, on evidence this command does not produce.
 
@@ -195,17 +199,17 @@ The honest part is what it refuses to claim. Automated checks catch roughly a th
 
 ## 📋 Technical Overview
 
-One slash command and three reference files. The full workflow lives in `commands/accessibility-audit.md`. persona, intake, flow picker, all four mode workflows, locked output formats, bail rules, a silent pre-delivery validation gate, and hard rules. References load from `${CLAUDE_PLUGIN_ROOT}/lib/accessibility-audit/references/` only while the command runs, so nothing competes at discovery time with another plugin's accessibility skill.
+One slash command, one procedure file, and four reference files. `commands/accessibility-audit.md` is a thin wrapper: intake routing and a hard-rules summary. The procedure lives in `lib/accessibility-audit/SKILL.md`. persona, intake, validation, flow picker, output essentials, a silent pre-delivery validation gate, hard rules, and injection defense. The four mode workflows, with their locked output formats and the Fix bail rules, live in `lib/accessibility-audit/references/modes.md` and load only for the mode being run. The procedure has no frontmatter, so it is never registered as a skill. References load from `${CLAUDE_PLUGIN_ROOT}/lib/accessibility-audit/references/` only while the command runs, so nothing competes at discovery time with another plugin's accessibility skill.
 
 ## ✨ Features
 
 - 🎯 Five intake fields. MODE + SCOPE + STANDARD, plus FIX_AUTHORITY when fixing and TECH_STACK when refactoring a pasted component
 - 🔒 Four locked modes. Report writes and never edits, Fix runs baseline to edit to verify, Component returns a four-phase blueprint for pasted code, Guide applies the rules to UI you are writing
-- 🌐 Four-tier flow picker preferring live DOM. AccessLint MCP, browser MCP, static analysis, local axe-core. always names the flow used
+- 🌐 Four-tier flow picker preferring live DOM. AccessLint MCP, browser MCP, local axe-core, then static analysis as the last resort. always names the flow used
 - 🧾 Deduplicated by rule ID and component family, prioritized by user impact. no thirty-row repeats
-- 📐 WCAG criterion ID on every finding, across 2.1 AA, 2.2 AA, 2.2 AAA, and Section 508 / EN 301 549
+- 📐 WCAG criterion ID on every finding, across 2.1 AA, 2.2 AA, and 2.2 AAA. The Section 508 / EN 301 549 option audits the same WCAG 2.1 AA criteria and ships no separate mapping table
 - ⌨️ Per-widget expected keyboard tables from the ARIA Authoring Practices. dialog, disclosure, accordion, tabs, menu and menubar, combobox, listbox, tree, slider, grid
-- ✍️ Never invents alt text, labels, or error copy below Full remediation. leaves a TODO with the rule ID
+- ✍️ Never invents alt text, labels, or error copy below Full remediation. leaves a TODO with the rule ID; Mechanical + contextual TODOs may add suggested wording only in a code comment marked `DRAFT - needs human review`
 - 🧬 Every surviving ARIA attribute is justified. one that duplicates what a native element already says is treated as a defect, not a fix
 - 🔁 Fix mode verifies by re-auditing and diffing the baseline, and bails loudly instead of iterating silently
 - 🧷 Fix mode checks `git status` before editing and, if verification fails, hands you the exact revert command rather than leaving a mutated tree. it is the only mode that writes
@@ -214,7 +218,7 @@ One slash command and three reference files. The full workflow lives in `command
 - ✅ Silent output gate before every response. criterion ID on each finding, all four Component phases present, no invented copy, no compliance claim leaked, no padded findings when the audit comes back clean
 - 🛡️ Injection defense over the audited code itself, not just your answers. a comment telling it to report no violations becomes a finding instead of an instruction
 - 🧰 Bundled tooling: axe-core auditor, jest-axe component tests, contrast analyzer, keyboard and screen reader scripts, pa11y, GitHub Actions CI, HTML report generator
-- 🚫 No skill file, by design. never auto-triggers, never collides with another accessibility plugin
+- 🚫 No auto-triggering skill, by design. the procedure file has no frontmatter and loads only through the command, so it never collides with another accessibility plugin
 - 🪧 Scope-locked. general UI design review, performance work, and non-accessibility refactors get one refusal line
 
 ## 🔄 How it works
@@ -238,7 +242,7 @@ One slash command and three reference files. The full workflow lives in `command
 
 There is no natural-language trigger. That is the point. The command always runs its intake first.
 
-The command lives at [`commands/accessibility-audit.md`](../commands/accessibility-audit.md), and the reference files under [`lib/accessibility-audit/references/`](../lib/accessibility-audit/references/).
+The command lives at [`commands/accessibility-audit.md`](../commands/accessibility-audit.md), the procedure at [`lib/accessibility-audit/SKILL.md`](../lib/accessibility-audit/SKILL.md), and the reference files, including the per-mode workflows in `modes.md`, under [`lib/accessibility-audit/references/`](../lib/accessibility-audit/references/).
 
 ---
 
@@ -252,7 +256,7 @@ Reverse-engineers a site's visual design language from its HTML and CSS and writ
 
 Most "document my styles" answers invent tokens that aren't there, or dump the framework's whole utility set as if you wrote it. This tool grounds every claim in the actual source. It quotes real hex values, class names, and selectors, reads a shared stylesheet once and records only what each page adds, names the framework and version instead of enumerating its utilities, and ranks the three-to-five recurring moves that actually define the look. If one file uses a different palette and fonts with no shared tokens, it splits that out as a separate design system instead of blending it in.
 
-Output is a single `DESIGN.md` with fixed headings: Foundations (dependencies, a color palette table, theme variants, a typography table, spacing scales, breakpoints, global treatments), Signature motifs, Components, Extended components, Accessibility, and a Reuse cheat sheet. Every heading is kept even when the source has nothing for it ("None found"), and a final self-check drops anything not verifiable in the source.
+Output is a single `DESIGN.md` that opens with a title, a one-paragraph description of the aesthetic, and one line on where styles live (inline, external, utility, or CSS-in-JS). Then come fixed headings: Foundations (dependencies, a color palette table, theme variants, a typography table, spacing scales, breakpoints, global treatments), Signature motifs, Components, Extended components, Accessibility, and a Reuse cheat sheet. Each distinct second design system gets its own `## Separate system: <filename>` section; that heading appears only when such a system exists. Every fixed heading is kept even when the source has nothing for it ("None found"), and a final self-check drops anything not verifiable in the source.
 
 ## 📋 Technical Overview
 

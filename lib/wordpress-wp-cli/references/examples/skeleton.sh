@@ -12,7 +12,8 @@
 #   -q       quiet: only warnings, errors and the summary
 #   -h       help
 #
-# Exit codes: 0 all good, 1 usage or setup error, 2 one or more sites failed.
+# Exit codes: 0 all good, 1 usage or setup error, 2 a site failed or was
+# skipped for an error, or the run was interrupted.
 
 set -euo pipefail
 
@@ -33,6 +34,7 @@ FOUND=0
 CHANGED=0
 UNCHANGED=0
 FAILED=0
+SKIPPED=0
 
 if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
   C_RED=$'\033[0;31m' C_GREEN=$'\033[0;32m' C_YELLOW=$'\033[0;33m'
@@ -47,7 +49,7 @@ warn() { printf '%s[WARN]%s  %s\n' "$C_YELLOW" "$C_RESET" "$*" >&2; }
 die()  { printf '%s[ERROR]%s %s\n' "$C_RED" "$C_RESET" "$*" >&2; exit 1; }
 
 usage() {
-  sed -n '6,15p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '6,16p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
 }
 
@@ -63,9 +65,9 @@ print_summary() {
     IFS=$'\t' read -r site status <<< "$row"
     printf '%-32s %s\n' "$site" "$status"
   done
-  printf '\nsites: %d | %s: %d | unchanged: %d | failed: %d\n' \
+  printf '\nsites: %d | %s: %d | unchanged: %d | failed: %d | skipped: %d\n' \
     "$FOUND" "$( (( APPLY )) && echo changed || echo 'would change')" \
-    "$CHANGED" "$UNCHANGED" "$FAILED"
+    "$CHANGED" "$UNCHANGED" "$FAILED" "$SKIPPED"
   (( APPLY )) || printf '%sDry run: nothing was changed. Re-run with -f to apply.%s\n' "$C_YELLOW" "$C_RESET"
 }
 
@@ -102,11 +104,12 @@ wp_run() {
 }
 
 # Print one install root per line, shallowest first, skipping copies that
-# live inside dependency, backup, or cache folders.
+# live inside dependency, backup, or git folders. Folders are pruned by name
+# below the root only, so a sites root that is itself called backup* still works.
 find_installs() {
-  find "$SITES_ROOT" -maxdepth "$MAX_DEPTH" -type f -name wp-config.php \
-    -not -path '*/node_modules/*' -not -path '*/vendor/*' \
-    -not -path '*/backup*/*' -not -path '*/.git/*' 2>/dev/null \
+  find "$SITES_ROOT" -mindepth 1 -maxdepth "$MAX_DEPTH" \
+    \( -type d \( -name node_modules -o -name vendor -o -name .git -o -name 'backup*' \) -prune \) \
+    -o \( -type f -name wp-config.php -print \) 2>/dev/null \
     | awk -F/ '{ print NF "\t" $0 }' | sort -n | cut -f2- \
     | while IFS= read -r cfg; do dirname "$cfg"; done
 }
@@ -124,7 +127,7 @@ process_site() {
   local wp_path="$1" site current
   site="$(basename "$wp_path")"
 
-  if ! current="$(wp_run "$wp_path" option get blog_public 2>/dev/null)"; then
+  if ! current="$(wp_run "$wp_path" option get blog_public)"; then
     warn "[$site] could not read blog_public"
     add_row "$site" "FAILED (wp-cli error)"
     return 1
@@ -148,7 +151,7 @@ process_site() {
   fi
 
   # Verify: read the value back rather than trusting the write.
-  if [[ "$(wp_run "$wp_path" option get blog_public 2>/dev/null)" != "0" ]]; then
+  if [[ "$(wp_run "$wp_path" option get blog_public)" != "0" ]]; then
     warn "[$site] update reported success but blog_public is not 0"
     add_row "$site" "FAILED (not verified)"
     return 1
@@ -209,6 +212,7 @@ main() {
     if ! wp_run "$wp_path" core is-installed >/dev/null 2>&1; then
       warn "[$(basename "$wp_path")] not an installed WordPress (or DB error), skipped"
       add_row "$(basename "$wp_path")" "SKIPPED (not installed / DB error)"
+      SKIPPED=$((SKIPPED + 1))
       continue
     fi
     FOUND=$((FOUND + 1))
@@ -221,7 +225,7 @@ main() {
     esac
   done
 
-  (( FAILED == 0 )) || exit 2
+  (( FAILED == 0 && SKIPPED == 0 && ! INTERRUPTED )) || exit 2
 }
 
 main "$@"

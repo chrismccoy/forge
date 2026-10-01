@@ -75,7 +75,7 @@ Right side of hero: `p-4 border-b border-black text-xs font-bold bg-white` heade
 ## Buttons
 
 ```css
-.btn-utility { border: 1px solid #000; background: #fff; px-8 py-4; font-bold uppercase tracking-widest; }
+.btn-utility { border: 1px solid #000; background: #fff; padding: 1rem 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
 .btn-utility:hover { background: #000; color: #fff; }
 .btn-utility-alt { border: 1px solid #000; background: neutral-100; }
 .btn-utility-alt:hover { background: neutral-200; }

@@ -26,8 +26,8 @@ Use SVG filters for a hand-drawn wobble on borders:
   filter: url(#sketchy);
   border-radius: 2px 8px 4px 6px / 6px 2px 8px 4px;  /* irregular */
 }
-/* SVG filter in page (hidden): */
-/* <svg style="display:none"><filter id="sketchy">
+/* SVG filter in page (zero-size, not display:none, or the filter will not render): */
+/* <svg class="absolute w-0 h-0" aria-hidden="true" focusable="false"><filter id="sketchy">
   <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="noise"/>
   <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
 </filter></svg> */
@@ -91,6 +91,6 @@ Small decorative elements holding cards: colored tape strips (`.tape { backgroun
 
 - Google Fonts: Caveat + Lato
 - Apply SVG displacement filter for authentic sketch wobble
-- `antialiased` off (slightly) - `font-smooth: never` for more raw feel
+- `antialiased` off (slightly) - `-webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto;` (browser default, subpixel) for a more raw feel
 - Subtle paper background texture on body
 - Grid lines can be sketchy: `opacity: 0.3`

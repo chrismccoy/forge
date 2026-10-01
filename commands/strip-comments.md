@@ -1,7 +1,7 @@
 ---
 description: Strip every comment from a codebase except file headers, pragmas, and license notices - preview and approval required before any write.
 argument-hint: [optional path, or a scope like "src/ python only"]
-allowed-tools: AskUserQuestion, Read, Edit, Write, Bash, Grep, Glob
+allowed-tools: AskUserQuestion, Read, Edit, Write, Grep, Glob, Bash(git status:*), Bash(git diff:*), Bash(git branch:*), Bash(git rev-parse:*)
 disable-model-invocation: true
 ---
 

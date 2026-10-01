@@ -1,7 +1,7 @@
 ---
 description: Generate self-contained onboarding documentation for any codebase
 argument-hint: [optional absolute path to codebase root]
-allowed-tools: AskUserQuestion, Glob, Grep, Read, Write, Bash
+allowed-tools: AskUserQuestion, Glob, Grep, Read, Write, Bash(realpath:*), Bash(pwd)
 disable-model-invocation: true
 ---
 

@@ -23,11 +23,14 @@ Green check: #4ade80  (green-400)
 ## Stagger Animations
 
 ```css
-@keyframes fadeUp { "0%": { opacity: 0, transform: "translateY(24px)" }, "100%": { opacity: 1, transform: "translateY(0)" } }
+@keyframes fadeUp { 0% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: translateY(0); } }
 .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; }
 .stagger-1 { animation-delay: 0.1s; opacity: 0; }
 .stagger-2 { animation-delay: 0.2s; opacity: 0; }
 /* ... up to stagger-6 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up, [class*="stagger-"] { animation: none; opacity: 1; transform: none; }
+}
 ```
 
 Apply to hero headline, subtext, CTAs, trust chips in sequence.
@@ -50,9 +53,9 @@ Apply to hero headline, subtext, CTAs, trust chips in sequence.
 ## Buttons
 
 ```css
-.btn-primary { background: #0ea5e9; color: #fff; rounded-xl; font-bold; shadow-lg shadow-sky-500/20; }
+.btn-primary { background: #0ea5e9; color: #fff; border-radius: 0.75rem; font-weight: 700; box-shadow: 0 10px 15px -3px rgba(14,165,233,0.2), 0 4px 6px -4px rgba(14,165,233,0.2); }
 .btn-primary:hover { background: #38bdf8; }
-.btn-secondary { border: 1px solid #334155; color: #cbd5e1; rounded-xl; }
+.btn-secondary { border: 1px solid #334155; color: #cbd5e1; border-radius: 0.75rem; }
 .btn-secondary:hover { border-color: #475569; }
 ```
 

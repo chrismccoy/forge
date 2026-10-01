@@ -69,7 +69,7 @@ Slight rotation on hover adds organic feel.
 .organic-btn {
   background: #c4623a; color: #faf7f2;
   border-radius: 100px;
-  font-semibold; letter-spacing: 0.02em;
+  font-weight: 600; letter-spacing: 0.02em;
   box-shadow: 0 4px 14px rgba(196,98,58,0.3);
   border: none;
 }

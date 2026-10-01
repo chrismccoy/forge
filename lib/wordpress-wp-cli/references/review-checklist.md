@@ -48,7 +48,7 @@ The scans decide the reading order. They are never the basis for a finding.
 
 ## Robustness (it works until something unusual happens)
 
-- [ ] A hardcoded home path (`/home/chris/...`) or a relative default (`webapps`).
+- [ ] A hardcoded home path (`/home/<user>/...`) or a relative default (`webapps`).
 - [ ] Help text defaults that don't match the code.
 - [ ] `find` for `wp-config.php` with no depth limit and no exclusions (it picks up backups, staging copies, `node_modules`).
 - [ ] Treating `wp-config.php` existing as proof of a working install (no `wp core is-installed` check).

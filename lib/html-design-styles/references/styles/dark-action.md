@@ -36,7 +36,7 @@ Small top badge: `rounded-full bg-white/10 backdrop-blur-sm border border-white/
 ## Buttons
 
 ```css
-.btn-primary { background: #FCD34D; color: #111; rounded-lg; font-display font-bold uppercase tracking-wider; }
+.btn-primary { background: #FCD34D; color: #111; border-radius: 0.5rem; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 .btn-primary:hover { box-shadow: 0 0 30px rgba(252,211,77,0.4); transform: scale(1.05); }
 /* Gold pulse-glow: @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 15px rgba(252,211,77,0.2) } 50% { box-shadow: 0 0 25px rgba(252,211,77,0.5) } } */
 ```

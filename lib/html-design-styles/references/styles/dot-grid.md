@@ -40,7 +40,7 @@ shadow-hard-sm:  5px 5px 0px 0px #000000;
 ## Buttons (Nav)
 
 ```css
-.btn-primary { border: 2px solid black; background: black; color: white; font-bold; }
+.btn-primary { border: 2px solid black; background: black; color: white; font-weight: 700; }
 .btn-primary:hover { background: #F5276C; color: black; }
 .btn-secondary { border: 2px solid black; background: white; }
 .btn-secondary:hover { background: #F5276C; }

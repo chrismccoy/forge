@@ -14,7 +14,7 @@ Ever sat down to build something and realized the hardest part isn't writing the
 
 The `app-blueprint` skill behaves like a senior software architect with 15+ years of production experience. Hand it five inputs (what the app does, the tech stack, the workload type, the language, and the scale) and it produces an 11-section blueprint with the folder tree, the layer walkthrough, the data models, every API endpoint, dependency choices with reasoning, environment variables, a testing plan, a deploy plan justified by your scale, architect's notes, and a self-validation table that auto-repairs inconsistencies before delivery.
 
-What makes it different from a generic "design my app" prompt? It refuses to invent. no `MyApp`, no `UserService`, no `Entity1`. Every name derives from your `APP_DESCRIPTION`. It enforces consistency. every entity in the data-model section must appear in at least one API endpoint, every dependency must map to a folder or reference, the deployment target must be justified by your stated scale with a stated migration trigger. And it halts cleanly with `MISSING INPUT: <field> required` instead of guessing when an input is blank.
+What makes it different from a generic "design my app" prompt? It refuses to invent. no `MyApp`, no `UserService`, no `Entity1`. Every name derives from your `APP_DESCRIPTION`. It enforces consistency. every entity in the data-model section must appear in at least one API endpoint, every dependency must map to a folder, a reference, or an environment/config entry, the deployment target must be justified by your stated scale with a stated migration trigger. And it halts cleanly with `MISSING INPUT: <field name> required. Provide value and re-run.` instead of guessing when an input is blank.
 
 It produces the plan a senior engineer would draft in their first ten minutes on a project, at any size: a weekend side project, a team kickoff, or a `BLUEPRINT.md` for something going to production.
 
@@ -34,10 +34,10 @@ It names things after your app instead of using placeholder filler, halts on a m
 - 🚫 No generic placeholders. all names derive from `APP_DESCRIPTION` (no `MyApp`, no `UserService`, no `FooEntity`)
 - 🔁 Identical folder names in section 2 and layer names in section 3. parity enforced
 - 🔗 Every section 4 entity must appear in at least one section 5 endpoint
-- 📦 Every section 6 dependency must map to a folder (section 2) or a reference (section 8)
+- 📦 Every section 6 dependency must map to a folder (section 2), a reference (section 8), or an environment/config entry (section 7)
 - 🚀 Deployment target (section 9) justified by `SCALE` explicitly. migration trigger always stated
 - ✅ Section 11 validation table runs before output. any FAIL row repaired in place before delivery
-- ⛔ `MISSING INPUT: <field> required. Provide value and re-run.` halt on any blank or placeholder input
+- ⛔ `MISSING INPUT: <field name> required. Provide value and re-run.` halt on any blank or placeholder input
 - 🛡️ Prompt-injection defense. input field values treated as literal strings, never executed
 - 🔒 Prompt secrecy. the template is never revealed, paraphrased, or summarized in output
 - 📐 Output format. fenced code blocks for trees and config, tables for deps and env, domain-specific names everywhere
@@ -84,7 +84,7 @@ Sixteen documented pitfalls sit behind the design, each one a debugging cycle or
 
 ## 📋 Technical Overview
 
-One slash command and a four-file procedure bundle. `lib/e2e-playwright/SKILL.md` carries the role, the scope lock, the intake fields, the nine-step workflow, the permitted application changes and the seven-part report contract. `references/pitfalls.md` holds the sixteen known failures and is read first. `references/rig.md` holds the Playwright config, the shared ports module, the launcher, the fake upstream, the seed data design and the npm scripts. `references/helpers.md` holds the shared helpers module and the assertion technique for each journey type - canvas, "without a reload", public pages, zips, file drag and drop, clipboard.
+One slash command and a five-file procedure bundle. `lib/e2e-playwright/SKILL.md` carries the role, the scope lock, the input fields, the journey and failure rules, the nine-step workflow, the permitted application changes and the seven-part report contract. `references/intake.md` holds the one-field-at-a-time intake questions and the stop-and-ask validation checks. `references/pitfalls.md` holds the sixteen known failures and is read first. `references/rig.md` holds the rig architecture, the Playwright config, the shared ports module, the launcher, the fake upstream and its environment checklist, the seed data design, the npm scripts and what goes in `TESTING.md`. `references/helpers.md` holds the locator rules, the shared helpers module and the assertion technique for each journey type - canvas, "without a reload", public pages, zips, file drag and drop, clipboard.
 
 ## ✨ Features
 
@@ -124,7 +124,7 @@ The existing suite runs after every step, and its test count must change only by
 
 > *"add Playwright tests to this app"*, *"set up an end-to-end suite"*, *"I need browser tests for these journeys"*, *"e2e tests with a fake API server"*, *"test the upload flow in a real browser"*
 
-The full procedure lives at [`lib/e2e-playwright/SKILL.md`](../lib/e2e-playwright/SKILL.md), the pitfalls at [`lib/e2e-playwright/references/pitfalls.md`](../lib/e2e-playwright/references/pitfalls.md), the rig at [`lib/e2e-playwright/references/rig.md`](../lib/e2e-playwright/references/rig.md), the helpers at [`lib/e2e-playwright/references/helpers.md`](../lib/e2e-playwright/references/helpers.md), and the slash command at [`commands/e2e-tests.md`](../commands/e2e-tests.md).
+The full procedure lives at [`lib/e2e-playwright/SKILL.md`](../lib/e2e-playwright/SKILL.md), the pitfalls at [`lib/e2e-playwright/references/pitfalls.md`](../lib/e2e-playwright/references/pitfalls.md), the intake at [`lib/e2e-playwright/references/intake.md`](../lib/e2e-playwright/references/intake.md), the rig at [`lib/e2e-playwright/references/rig.md`](../lib/e2e-playwright/references/rig.md), the helpers at [`lib/e2e-playwright/references/helpers.md`](../lib/e2e-playwright/references/helpers.md), and the slash command at [`commands/e2e-tests.md`](../commands/e2e-tests.md).
 
 ## `explain-my-code`
 
@@ -296,10 +296,10 @@ Two ways to start:
 
 ```
 /readme-builder ./my-project   ← seeds the target folder, then asks write or print
-/readme-builder                ← documents the current folder
+/readme-builder                ← asks which folder (current directory or a path)
 ```
 
-**Plain language** (starts the skill on its own):
+**Requests it handles** (type the command to run it - it never auto-triggers):
 
 > *"write a README for this repo"*, *"generate a README.md"*, *"document this project"*, *"make a beginner friendly README"*, *"explain this repo in a README"*
 
@@ -327,10 +327,10 @@ One slash command, its procedure file, and one bundled script. The procedure fil
 
 - 📖 Reads the code change, not the message. `git show` / `git diff` is the source, so "fixes" and "and more" get unpacked into what really shipped
 - 🕰️ Covers the whole history. First commit to `HEAD`, no gaps. It will not take a date or version range - the scope is always everything
-- 🧪 Checks the repo first. Stops if the folder is not a git repo, warns when the copy is shallow (so it never claims full coverage), and handles a one-commit history
+- 🧪 Checks the repo first. Stops if the folder is not a git repo or has no commits, warns when the copy is shallow (so it never claims full coverage), and handles a one-commit history
 - 🗂️ Splits the history into eras. Contiguous per-release chunks by date and theme, using tags as the boundaries
 - 👥 Handles big histories. Over about 40 commits, or when a diff is too large to read in one pass, it splits the work across parallel helpers, then combines and double-checks anything surprising against the real code - it never quietly skips or samples
-- 🏷️ Sorts every change: feature, improvement, fix, security, breaking change, or internal
+- 🏷️ Sorts every change: feature, improvement, fix, security, design, or internal; breaking changes get their own section
 - 🕵️ Catches what messages hide. Lists features buried under "and more", drops fixes that only undo a break from the same batch, refuses to call reworded or moved code "new", and flags any commit whose message says more or less than the diff did
 - 🔒 Pulls security and breaking changes into their own sections, with the real mechanism (how a check or block works, what setting was removed or flipped)
 - 🛡️ Treats everything in the repo as data, not orders. A diff that says "ignore the above" gets described, never obeyed
@@ -389,7 +389,7 @@ It refuses to fabricate: no claiming to have read a file it never opened, no ski
 
 ## ✨ Features
 
-- 📋 16 fixed sections in fixed order. codebase overview, cross-file coupling, duplication, readability, naming, structure, side effects, error handling, performance, security, testing, complexity, design patterns, anti-patterns, refactoring recommendations, implementation plan
+- 📋 16 fixed sections in fixed order. codebase overview, cross-file coupling, duplication, readability, naming, KISS, DRY, single responsibility, nesting complexity, global state and side effects, portability, reusability, module organization, interface and API design, refactoring recommendations, implementation plan
 - 📍 Every finding cites `path:line`. no vague "somewhere in `auth/`"
 - 🎯 Priority labels. `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`. plain text. works in every terminal. no emoji
 - 📊 Three summary blocks. Top 5 Critical Issues, File Impact Matrix (files ranked by issue density), Issue Summary Table (every problem with effort estimate)
@@ -401,7 +401,7 @@ It refuses to fabricate: no claiming to have read a file it never opened, no ski
 - ✅ Silent STEP 17 self-validation. checks every claim, regenerates failed sections before output
 - 🔒 Prompt-injection defense. `TARGET_PATH` and `FOCUS_AREAS` treated as inert data. directives inside inputs are logged in Section 1 and ignored
 - 🚫 Refuses to fabricate. never claims to have analyzed an unread file. never invents line numbers
-- 💬 `/refactor` slash command with multiple-choice intake. path, focus areas (multi-select), scope (file / folder / recent / sample), depth (quick / standard / deep)
+- 💬 `/refactor` slash command with multiple-choice intake. path, focus areas (multi-select), scope (single file / whole folder / PR diff / sampled subset), depth (quick / standard / deep)
 
 ## 🔄 How it works
 
@@ -494,7 +494,7 @@ Ever inherited a codebase where every function has a perfectly-tagged PHPDoc blo
 
 The `docblock-rewrite` skill takes existing doc blocks and replaces each one with a single `// ` comment a non-coder could understand. Tech jargon banned (no `array`, no `callback`, no `instantiate`). 100-character cap. Capitalized, present-tense verb for functions, noun phrase for classes / files / constants. Tags stripped - `@param`, `@return`, `@throws`, `@since`, `@author`, `@version`, all of it. Doc blocks marked `@internal`, `@deprecated`, or `@ignore` are left alone.
 
-Two engines apply the same rules: an **interactive** Read / Edit walk the model runs directly for small jobs (1-20 files) when you want to tune the prompt or check edge cases by eye, and a **bundled bash + perl + claude --print runner** for bulk jobs (20+ files, repeat runs, CI / unattended). The script walks the directory, parses doc blocks with perl, calls Claude Haiku once per symbol, validates every response against the banned-word list and 100-char cap, and applies replacements right-to-left so byte offsets stay valid. Bad outputs leave the original block intact for human review. `.bak` files saved next to every modified file unless `--no-backup`.
+Two engines apply the same rules: an **interactive** Read / Edit walk the model runs directly for small jobs (1-20 files) when you want to tune the prompt or check edge cases by eye, and a **bundled bash + perl + claude --print runner** for bulk jobs (more than 20 files, repeat runs, CI / unattended). The script walks the directory, parses doc blocks with perl, calls Claude Haiku once per symbol, validates every response against the banned-word list and 100-char cap, and applies replacements right-to-left so byte offsets stay valid. Bad outputs leave the original block intact for human review. `.bak` files saved next to every modified file unless `--no-backup`.
 
 It turns wall of tags doc blocks into comments that read like a sentence, whichever the reason: shipping to non technical merchants, onboarding a teammate who keeps asking what each function does, or clearing a decade old PHPDoc graveyard before handing the repo off.
 
@@ -508,11 +508,11 @@ One slash command, its procedure file, and a bundled three-file runner (bash + 2
 - 🚫 Banned-word list (`instantiate`, `invoke`, `callback`, `promise`, `iterate`, `async`, `boolean`, `array`, `object`, `parameter`, `argument`, `mutate`, `hash`, `payload`, `instance`, `factory`, `singleton`, `polyfill`, `regex`) - validation rejects any output that contains them
 - 📏 100-character total cap including the leading `// `
 - 🏷️ Honors `@internal`, `@deprecated`, `@ignore` opt-out tags - leaves those blocks alone
-- 📄 File-level detection via `@file` / `@package` / `@module` or a post-block `declare` / `namespace` / `use` / `import` / `export` line
-- 🗂️ Walks `.php`, `.js`, `.ts`, `.jsx`, `.tsx`, `.mjs`, `.cjs` - skips `vendor`, `node_modules`, `dist`, `build`, `coverage`, `__tests__`, `.git`, `.next`, `.nuxt`, `out`, `tmp`, `*.min.js`, `*.min.css` by default
-- 🛟 `.bak` backup written next to every modified file unless `--no-backup`
+- 📄 File-level detection via `@file` / `@package` / `@module` or a post-block `declare` / `namespace` / `use` / `<?php` / `"use strict"` / `import` / `export` / `require` line
+- 🗂️ Walks `.php`, `.js`, `.ts`, `.jsx`, `.tsx`, `.mjs`, `.cjs` - skips `vendor`, `node_modules`, `dist`, `build`, `coverage`, `__tests__`, `.git`, `.svn`, `.hg`, `.next`, `.nuxt`, `out`, `tmp`, `*.min.js`, `*.generated.*` by default
+- 🛟 `.bak` backup written next to every modified file unless `--no-backup` (repeat runs add `.bak.1`, `.bak.2`, … and never overwrite the original `.bak`)
 - 🔍 `--dry-run` prints unified diffs without writing
-- 🚦 Validation gates per response: one-line, `// ` prefix, length cap, banned-word regex - failures leave the original block intact
+- 🚦 Validation gates per response: one-line, `// ` prefix, capital first letter, closing period, length cap, banned-word regex - failures leave the original block intact
 - ⚙️ Concurrency-tunable (`--concurrency N`, default 3) parallel `claude --print` calls via `xargs -P`
 - 🪓 Right-to-left byte-splice in `apply-plan.pl` keeps offsets valid across multi-block files
 - 🤖 Same prompt rules in both the inline skill engine and the scripted engine
@@ -522,7 +522,7 @@ One slash command, its procedure file, and a bundled three-file runner (bash + 2
 **Inline engine (skill, small jobs):**
 
 1. Model uses Grep / Glob to find candidate files
-2. For each file: `cp file file.bak`, Read the file, identify every `/** ... */` block and its following declaration, rewrite each one with Edit, self-check against the rule set before applying
+2. For each file: back it up to `file.bak`, Read the file, identify every `/** ... */` block and its following declaration, rewrite each one with Edit, self-check against the rule set before applying
 3. Report file count, blocks rewritten, blocks skipped, blocks needing review
 
 **Scripted engine (bulk):**
@@ -530,7 +530,7 @@ One slash command, its procedure file, and a bundled three-file runner (bash + 2
 1. `find` walks the path with the skip list
 2. `extract-docblocks.pl` slurps each file, emits JSON pairs of `(doc block, next non-blank line)`
 3. Bash loops the pairs, builds a prompt with the rule set + few-shot examples + the docblock + the symbol, pipes through `claude --model … --print`
-4. Output gets `head -n1` + trim, runs through `validate_output` (one line, `// ` prefix, length cap, banned-word grep)
+4. Output gets `head -n1` + trim, runs through `validate_output` (one line, `// ` prefix, capital first letter, closing period, length cap, banned-word grep)
 5. Validated outputs go into a per-file plan file as `start <TAB> len <TAB> base64(new)`
 6. `apply-plan.pl` applies plan entries right-to-left so earlier byte offsets stay valid, renames original to `.bak`, writes new contents
 
@@ -556,7 +556,7 @@ The full procedure lives at [`lib/docblock-rewrite/SKILL.md`](../lib/docblock-re
 
 ## Requirements (script only)
 
-`bash` 4+, `jq`, `perl` with `MIME::Base64`, `claude` CLI on `PATH` (Claude Code subscription auth, no API key required).
+`bash` 4+, `jq`, `perl` with `MIME::Base64` and `JSON::PP`, `diff` (for `--dry-run`), `timeout` (optional; `gtimeout` is used on macOS if present, otherwise calls run without a time limit), and the `claude` CLI on `PATH` (Claude Code subscription auth, no API key required).
 
 ---
 
@@ -684,5 +684,63 @@ One slash command plus its procedure file `lib/fullstack-feature-readme/SKILL.md
 For a beginner README with setup steps and a file tour use [`/readme-builder`](#readme-builder); for a WordPress theme or plugin use [`/wp-feature-readme`](wordpress.md#wordpress-feature-readme); for full onboarding docs use [`/explain-my-code`](#explain-my-code).
 
 The full procedure lives at [`lib/fullstack-feature-readme/SKILL.md`](../lib/fullstack-feature-readme/SKILL.md), the slash command at [`commands/fullstack-readme.md`](../commands/fullstack-readme.md), and the master template at [`lib/fullstack-feature-readme/references/prompt-template.md`](../lib/fullstack-feature-readme/references/prompt-template.md).
+
+---
+
+## `regex-tutor`
+
+Explain one regular expression in plain English: what it does, why each piece is there, how it behaves on real input, how it can fail, and what to use instead - with every example checked against real regex engines.
+
+```
+/explain-regex
+```
+
+A regex is a dense little program with no comments. `^(?=.*\d)[\w.+-]+@[\w-]+\.[a-z]{2,}$` reads as noise to a beginner, and even an experienced developer can miss that the lookahead changes what counts as valid, or that a nested quantifier will freeze a server on a crafted input. The `regex-tutor` skill acts as a patient tutor: it never assumes prior regex knowledge and never trades accuracy for simplicity, defining each unavoidable term the first time it appears.
+
+It does not rely on reasoning alone. Before a string is listed as matching or failing, it is run through a bundled checker against the whole pattern, anchors and flags included, in the engines that match the stated flavor - Python `re`, JavaScript via Node, Perl as a stand-in for PCRE, and Go RE2. Engines that disagree are reported as a flavor difference rather than quietly dropped, and anything no engine could confirm is marked "(unverified)".
+
+The ReDoS section (regular expression denial of service - an input that makes the engine backtrack for seconds or hours) opens with a one-word verdict: Safe, Caution, or Vulnerable. Attack strings are only ever run with a per-engine timeout, and a suspected blow-up is confirmed by comparing a shorter and a longer input rather than trusting one slow run.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/regex-tutor/SKILL.md`, which loads the section spec from `lib/regex-tutor/references/sections.md` and runs `lib/regex-tutor/scripts/regex_check.py` by absolute path. The command `/explain-regex` takes the regex plus optional flavor, use case, and output destination; only the regex is required, and the chat-or-file choice is asked before any analysis. The checker is the only shell command the command is allowed to run.
+
+## ✨ Features
+
+- 🧾 Eleven fixed sections: summary, token-by-token table, structure and capture groups, valid examples, invalid examples, a matching walkthrough, pitfalls, performance and ReDoS, alternatives, real-world context, and a plain-English rewrite
+- ✅ Every example verified. Strings in the valid and invalid tables are run through real engines, and the actual per-engine results are reported
+- 🧪 Four engines, picked by flavor. Python `re`, JavaScript, Perl for PCRE and PHP, and Go RE2, with the closest engine named and the result marked unverified for flavors that have none
+- 🔧 Input normalized first. Delimiters and flags are stripped with each flag's effect explained, host-language escaping such as Java `"\\d+"` is undone, and several regexes are analyzed one by one
+- 🩹 Broken patterns caught. A pattern that does not compile is flagged at the exact broken token, with the likely intended fix, and the fixed version is analyzed
+- ⏱️ ReDoS verdict with evidence. Attack strings always run under a timeout, and catastrophic backtracking is confirmed by growth across input lengths
+- 🔁 Alternatives compiled. Every suggested replacement is compiled in each flavor it is claimed to work in
+- 🎯 Scaled to the pattern. A simple regex gets a few lines per section and "Not applicable" where nothing real applies, never padding
+- 📄 Chat or file. Print the teardown, or save it to `REGEX-EXPLAINED.md` in the working directory with a short summary in chat
+
+## 🔄 How it works
+
+1. **Intake.** Take the regex from the arguments or ask for it, then ask chat or file before any analysis. Flavor and use case are optional and become stated assumptions when missing.
+2. **Normalize.** State the exact pattern under analysis after stripping delimiters, flags, and host-language escaping.
+3. **Compile.** Run the checker in the flavor's engines. If it does not compile, point at the broken token, propose the fix, and continue with the fixed pattern.
+4. **Verify.** Test every candidate example against the whole pattern, run attack strings under a timeout, and compile every alternative.
+5. **Deliver.** Print the 11 sections in chat, or write `REGEX-EXPLAINED.md` and reply with the path, the one-sentence summary, and the ReDoS verdict.
+
+## 🚀 How to use it
+
+```
+/explain-regex '^\d{3}-\d{4}$'                         ← regex passed inline
+/explain-regex /^[\w.+-]+@\w+\.\w+$/i JavaScript file   ← with flavor and output
+/explain-regex                                          ← asks for the regex
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"explain this regex"*, *"what does this pattern match"*, *"break down this regular expression"*, *"is this regex safe"*, *"check this regex for ReDoS"*, *"why doesn't my regex match"*, *"save a regex explanation to a file"*
+
+Requirements: `python3` for the checker. `node`, `perl`, and `go` are optional engines; any that are missing report `n/a` and the affected examples are marked unverified.
+
+For one SQL query use [`/explain-sql`](#sql-breakdown); for a jq filter over JSON use [`/jq`](devops-and-data.md#jq).
+
+The full procedure lives at [`lib/regex-tutor/SKILL.md`](../lib/regex-tutor/SKILL.md), the slash command at [`commands/explain-regex.md`](../commands/explain-regex.md), the section spec at [`lib/regex-tutor/references/sections.md`](../lib/regex-tutor/references/sections.md), and the checker at [`lib/regex-tutor/scripts/regex_check.py`](../lib/regex-tutor/scripts/regex_check.py).
 
 ---

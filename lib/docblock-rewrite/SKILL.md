@@ -42,14 +42,14 @@ Refuse and redirect when the user asks for:
 | Files in scope | Engine |
 |---|---|
 | 1-20 files, one-time, prompt may need tuning | **Inline (this skill)** - use Read/Edit, work through symbols one at a time |
-| 20+ files, repeat runs, unattended | **Script** - invoke `${CLAUDE_PLUGIN_ROOT}/lib/docblock-rewrite/scripts/docblock-rewrite.sh` via Bash |
-| Anywhere in between | Ask the user which they prefer |
+| More than 20 files, repeat runs, unattended or CI | **Script** - invoke `${CLAUDE_PLUGIN_ROOT}/lib/docblock-rewrite/scripts/docblock-rewrite.sh` via Bash |
+| Count near the boundary, or goals conflict (few files but unattended, many files but the user wants to tune wording) | Ask the user which they prefer |
 
 Both engines apply the same rewrite rules below.
 
 ### Before invoking the script
 
-The script is bash + Perl and needs `jq`, `perl`, and `claude` on `PATH`. **On Windows it will not run in native PowerShell - run it via WSL or Git Bash**, or fall back to the inline engine below (which needs no extra tools). Before invoking it for a bulk job, run a single Bash check:
+The script is bash + Perl and needs bash 4+, `jq`, `perl`, and `claude` on `PATH`. `timeout` is optional: the script uses `timeout` or `gtimeout` (macOS coreutils) for a 60-second limit per call, and runs without a limit (with a warning) if neither exists. **On Windows it will not run in native PowerShell - run it via WSL or Git Bash**, or fall back to the inline engine below (which needs no extra tools). Before invoking it for a bulk job, run a single Bash check:
 
 ```bash
 command -v jq && command -v perl && command -v claude
@@ -257,10 +257,11 @@ bash "${CLAUDE_PLUGIN_ROOT}/lib/docblock-rewrite/scripts/docblock-rewrite.sh" <p
 
 `<path>` may be a directory **or** a single file. Default behavior backs up
 each modified file as `<file>.bak`, validates every model response, and
-leaves the original block intact when validation fails. On repeat runs, an
-existing `.bak` is rotated to `.bak.1`, `.bak.2`, etc., so the oldest (true
-original) is the highest-numbered backup - keep that in mind when rolling back
-(see the rollback note in the command/README).
+leaves the original block intact when validation fails. On repeat runs, the
+existing `.bak` is never overwritten; each later run's pre-edit copy goes to
+`.bak.1`, `.bak.2`, and so on. So `.bak` is always the true original and the
+highest-numbered `.bak.N` is the state just before the most recent run (see
+the rollback note in the command file).
 
 Flags:
 
@@ -293,7 +294,10 @@ skipped blocks (left as original):
 Skip reasons:
 
 - `validation` - the model's output failed the rule checks (length, banned word, format). Detail tells you which rule.
-- `claude_error` - `claude --print` exited non-zero (timeout, rate limit, network). Detail shows the return code.
+- `claude_error` - `claude --print` exited non-zero (timeout, rate limit, network). Detail shows the return code (124 = timeout).
+
+If a whole file fails (for example its rewrite cannot be written), the summary
+adds a `files failed:` list, keeps the run's logs, and the script exits 1.
 
 Surface the summary to the user and offer to re-run on the skipped blocks if any.
 
@@ -301,7 +305,7 @@ Surface the summary to the user and offer to re-run on the skipped blocks if any
 
 Before applying an Edit (or letting the script accept an output):
 
-- [ ] One line, starts with `// `, ends with `.`
+- [ ] One line, starts with `// ` and a capital letter, ends with a single `.`
 - [ ] ≤100 characters total
 - [ ] No banned words
 - [ ] Reads as plain English to a non-coder

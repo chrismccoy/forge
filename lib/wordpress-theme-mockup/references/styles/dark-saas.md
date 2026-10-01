@@ -20,7 +20,7 @@ Green check: #4ade80  (green-400)
 
 ### Stagger Animations
 ```css
-@keyframes fadeUp { "0%": { opacity: 0, transform: "translateY(24px)" }, "100%": { opacity: 1, transform: "translateY(0)" } }
+@keyframes fadeUp { 0% { opacity: 0; transform: translateY(24px); } 100% { opacity: 1; transform: translateY(0); } }
 .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; }
 .stagger-1 { animation-delay: 0.1s; opacity: 0; }
 .stagger-2 { animation-delay: 0.2s; opacity: 0; }

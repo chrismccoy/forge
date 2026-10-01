@@ -37,7 +37,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/lib/wordpress-feature-readme/references/prompt-templ
 Identify the type from headers:
 
 ```bash
-grep -rl --include=style.css "Theme Name:" <dir>
+grep -rl --include=style.css "Theme Name:" <dir> --exclude-dir={vendor,node_modules,build,dist}
 grep -rl --include=*.php -m1 "Plugin Name:" <dir> --exclude-dir={vendor,node_modules,build,dist}
 ```
 
@@ -88,7 +88,7 @@ Confirm ALL of: one level 1 title from the `Theme Name` or `Plugin Name` header 
 ### Step 7 - Deliver
 
 - `OUTPUT = print`: output the README markdown only, with no text before or after it.
-- `OUTPUT = write`: write `README.md` in the target folder, then reply with its path in one line. Never write into a scratch extraction of a `.zip`; ask for a destination instead.
+- `OUTPUT = write`: write `README.md` in the target folder, then reply with its path in one line. Never write into a scratch extraction of a `.zip`; for a `.zip` target the destination folder is asked for during intake, together with `OUTPUT`.
 
 ## Output Format
 

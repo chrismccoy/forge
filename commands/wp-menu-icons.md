@@ -1,7 +1,7 @@
 ---
 description: Integrate a searchable Font Awesome menu-icon picker into a classic WordPress theme - click an icon per menu item instead of typing a class, with security gates and full rebranding.
 argument-hint: [optional theme path, defaults to current directory]
-allowed-tools: Read, Grep, Glob, Edit, Write, Bash
+allowed-tools: Read, Grep, Glob, Edit, Write, AskUserQuestion, Bash(php -l:*), Bash(phpcs:*), Bash(git status:*), Bash(grep:*)
 disable-model-invocation: true
 ---
 

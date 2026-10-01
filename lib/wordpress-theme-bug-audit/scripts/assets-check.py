@@ -20,10 +20,23 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-ASSET_ATTR = re.compile(
-    r'<(?:link[^>]+rel=["\']?stylesheet["\']?[^>]*href|script[^>]+src|img[^>]+src)=["\']([^"\']+)["\']', re.I)
+# A <link>, <script>, or <img> start tag, and its attributes (quoted or not, in any order).
+ASSET_TAG = re.compile(r'<(link|script|img)\b([^>]*)>', re.I)
+ATTRIBUTE = re.compile(r'([\w:-]+)\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s"\'>]+))')
 EXPECTED_TYPE = {'.css': 'text/css', '.js': 'javascript'}
 TIMEOUT = 30
+
+
+def asset_urls(html):
+    """The stylesheet hrefs, script srcs, and image srcs in a page."""
+    for tag, attributes in ASSET_TAG.findall(html):
+        values = {name.lower(): dq or sq or bare for name, dq, sq, bare in ATTRIBUTE.findall(attributes)}
+        tag = tag.lower()
+        if tag == 'link':
+            if 'stylesheet' in values.get('rel', '').lower().split() and values.get('href'):
+                yield values['href']
+        elif values.get('src'):
+            yield values['src']
 
 
 def local_assets(site, folder):
@@ -34,7 +47,7 @@ def local_assets(site, folder):
             html = open(path, errors='ignore').read()
         except OSError:
             continue
-        for url in ASSET_ATTR.findall(html):
+        for url in asset_urls(html):
             url = urllib.parse.urljoin(site + '/', url.replace('&#038;', '&').replace('&amp;', '&'))
             if urllib.parse.urlparse(url).netloc == host:
                 pages_by_asset[url].add(os.path.basename(path))

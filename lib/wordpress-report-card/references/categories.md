@@ -1,6 +1,6 @@
 # Finding Categories
 
-Group every finding under one of these categories. For each finding cite `file:line`, quote the exact offending code, tag severity (SEVERE / MODERATE / MINOR), and explain impact and fix. Maximum 5 findings per category, most severe first.
+Use these categories to organize the internal analysis behind each score. Findings are never printed - the output is the scorecard table and Tier line only - but every score must be defensible from specific code (`file:line`) in these categories.
 
 - **Architecture** - OOP vs procedural, namespacing, separation of concerns, file organization, prefix consistency, autoloading, dependency injection, single responsibility
 - **Performance** - DB query count, `get_option` patterns, autoload flag usage, transient/object caching, output buffering cost, asset enqueue strategy, regex complexity, N+1 queries, `WP_Query` efficiency, lazy loading

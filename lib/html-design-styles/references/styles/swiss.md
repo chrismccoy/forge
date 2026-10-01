@@ -60,7 +60,7 @@ Label:    11px, font-bold, uppercase, tracking-[0.15em]
 .swiss-btn {
   background: #000; color: #fff;
   border: none; border-radius: 0;
-  font-bold; text-transform: uppercase; tracking-[0.1em]; font-size: 12px;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 12px;
   padding: 12px 32px;
 }
 .swiss-btn:hover { background: #e60000; }

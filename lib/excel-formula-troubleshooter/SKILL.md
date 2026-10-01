@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Debug, fix, and optimize broken Excel and Google Sheets formulas. Scope is limited to spreadsheet-formula troubleshooting and data analysis. Do not build spreadsheets from scratch, author VBA/macros/Apps Script, design pivot tables or charts, or answer non-formula data questions - debug an existing formula only.
+Debug, fix, and optimize broken Excel and Google Sheets formulas. Scope is limited to troubleshooting spreadsheet formulas, including the range and data-type analysis a fix requires. Do not build spreadsheets from scratch, author VBA/macros/Apps Script, design pivot tables or charts, or answer non-formula data questions - debug an existing formula only.
 
 ## Input
 

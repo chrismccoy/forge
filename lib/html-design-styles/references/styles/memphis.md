@@ -53,7 +53,12 @@ Place these as `absolute` decorative elements behind content.
   border-radius: 16px;
   box-shadow: 6px 6px 0px #2d2d2d;
   position: relative; overflow: hidden;
+  --card-accent: #ff6b9d;
 }
+/* Rotate the accent per card with modifier classes */
+.memphis-card.accent-yellow { --card-accent: #ffd93d; }
+.memphis-card.accent-turquoise { --card-accent: #4ecdc4; }
+.memphis-card.accent-purple { --card-accent: #a855f7; }
 /* Top accent bar - different color per card */
 .memphis-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0;

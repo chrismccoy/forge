@@ -1,6 +1,6 @@
 ---
 description: Convert PHPDoc and JSDoc blocks into one-line plain-English // comments. Scripted bulk pass over a directory or single file. Backs up originals to .bak, validates output against banned-words list and 100-char cap, replaces in place. Honors @internal/@deprecated/@ignore opt-outs.
-allowed-tools: Read, Bash
+allowed-tools: Read, Bash(git status:*), Bash(git diff:*)
 disable-model-invocation: true
 ---
 
@@ -55,6 +55,9 @@ Surface this summary to the user so they can decide whether to re-run on the ski
 
 With `--strict`, the script returns exit code 2 when any block is skipped - useful for CI gates.
 
+If a whole file fails (for example its rewrite cannot be written), the summary
+adds a `files failed:` list, keeps the run's logs, and the script exits 1.
+
 ## Execution
 
 Run the script via Bash. Always invoke with `${CLAUDE_PLUGIN_ROOT}` so the
@@ -79,8 +82,10 @@ machine. Surface the error verbatim - do not paper over.
 
 - `bash` 4+
 - `jq`
-- `perl` (with `MIME::Base64`)
+- `perl` (with `MIME::Base64` and `JSON::PP`)
 - `claude` (Claude Code CLI on `PATH`)
+- `diff` (for `--dry-run`)
+- `timeout` (optional) - `gtimeout` is used on macOS if present; with neither, calls run without a time limit and the script prints a warning
 
 On Windows this runs under WSL or Git Bash, not native PowerShell. If none is available, use the `docblock-rewrite` procedure's inline engine instead (Read/Edit, no extra tools).
 
@@ -96,11 +101,13 @@ On Windows this runs under WSL or Git Bash, not native PowerShell. If none is av
 4. For each pair, invokes `claude --print` with the prompt rules baked
    into the script. First doc block in a file is treated as file-level
    when it carries `@file`/`@package`/`@module` or precedes a
-   `declare`/`namespace`/`use`/`import`/`export` line.
-5. Validates each response: one line, starts with `// `, ≤100 chars,
-   no banned words. Failures leave the original block intact.
+   `declare`/`namespace`/`use`/`<?php`/`"use strict"`/`import`/`export`/`require` line.
+5. Validates each response: one line, starts with `// ` and a capital
+   letter, ends with a single period, ≤100 chars, no banned words.
+   Failures leave the original block intact.
 6. Applies replacements via `apply-plan.pl` right-to-left so offsets
-   stay valid. Renames original to `.bak` before writing.
+   stay valid. Moves the previous version to `.bak` (or the next free
+   `.bak.N` if `.bak` exists) before writing.
 
 ## When to use the inline engine instead
 
@@ -108,20 +115,24 @@ If the user wants to rewrite just one or two files interactively, or
 wants to tune the prompt before scaling up, hand off to the
 `docblock-rewrite` procedure file instead - it operates inline with the model's
 own Read/Edit tools, no `claude --print` subprocesses. Use this command
-for 20+ files or any unattended run.
+for more than 20 files or any unattended run.
 
 ## After running
 
 If `--dry-run` was used, summarize the diff: file count, blocks
 rewritten, blocks skipped, blocks needing review.
 
-If a real run, mention the `.bak` files and how to roll back. This restores the
-most recent run's originals (`*.bak`):
+If a real run, mention the `.bak` files and how to roll back. The first run
+saves the original as `<file>.bak`; on repeat runs `.bak` is never overwritten
+and each later run's pre-edit copy goes to `.bak.1`, `.bak.2`, and so on. So
+`.bak` is always the true original and the highest-numbered `.bak.N` is the
+state just before the most recent run.
+
+Roll all the way back to the pre-first-run originals (`*.bak`):
 
 ```bash
 find <path> -name '*.bak' -exec sh -c 'mv "$1" "${1%.bak}"' _ {} \;
 ```
 
-On repeat runs the script rotates older backups to `.bak.1`, `.bak.2`, … (highest
-number = oldest/true original). To roll all the way back to the pre-first-run
-state, restore the highest-numbered `.bak.N` for each file instead of `*.bak`.
+To undo only the most recent run, restore the highest-numbered `.bak.N` for
+each file instead (or `.bak` if no numbered backups exist).

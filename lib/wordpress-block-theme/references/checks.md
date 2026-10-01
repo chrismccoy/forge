@@ -74,14 +74,14 @@ Check every file of each type present. Severity labels follow the definitions in
 ### Block templates (templates/*.html)
 
 **Required template:**
-- CRITICAL: Missing templates/index.html in block theme → Theme won't work
+- CRITICAL: Child block theme with no templates/index.html whose parent theme (style.css `Template:`) is missing → Theme won't work (a standalone theme without templates/index.html is already stopped by the Scope Lock)
 
 **Template file naming:**
 - INFO: Could add specific templates (single.html, page.html, archive.html, 404.html, search.html, home.html, front-page.html) for better hierarchy coverage
 
 **Block markup validation:**
 - CRITICAL: Invalid block comment syntax → Template won't parse
-- WARNING: Hardcoded inline style attributes → Defeats theme.json, users can't customize
+- WARNING: Hand-written inline style attributes, or inline styles with raw values → Defeats theme.json, users can't customize. A `style=""` that the block's own attributes generate from presets (`var(--wp--preset--...)`) is required markup, not a finding
 - WARNING: Hardcoded color hex values instead of theme.json presets
 - WARNING: Hardcoded pixel font sizes instead of theme.json fluid typography
 - Pattern: Use block attributes with theme.json preset references, not inline styles
@@ -97,7 +97,7 @@ Check every file of each type present. Severity labels follow the definitions in
 
 **Template part files:**
 - WARNING: templateParts registered in theme.json but files missing → 404 in Site Editor
-- WARNING: Template part files exist but not registered in theme.json → Won't show in UI with proper labels
+- INFO: Template part files exist but not registered in theme.json → Won't show in UI with proper labels (the part still works)
 - Pattern: parts/header.html, parts/footer.html, parts/sidebar.html
 
 **Area designation:**
@@ -131,7 +131,7 @@ Check every file of each type present. Severity labels follow the definitions in
 - Pattern: PHP file with comment block containing Title, Slug, Categories, Description, Keywords, Block Types, Viewport Width
 
 **Pattern file structure:**
-- WARNING: Pattern file without PHP tags → Won't process dynamic values
+- WARNING: Pattern file with visible text or theme image URLs but no PHP tags → Strings can't be translated or escaped, and image URLs can't use `get_theme_file_uri()`. A pattern with no text and no images needs no PHP
 - Pattern: `<?php ?>` tags for PHP code, then block markup
 
 **Block markup in patterns:**
@@ -178,7 +178,7 @@ Run from the theme root. The hits decide the reading order, and every file they 
 
 ```bash
 # Missing required files for block theme
-[ ! -f templates/index.html ] && [ -f theme.json ] && echo "CRITICAL: Block theme missing templates/index.html"
+parent=$(grep -m1 -i "^[[:space:]]*Template:" style.css | sed "s/.*Template:[[:space:]]*//I" | tr -d "\r"); [ ! -f templates/index.html ] && [ -n "$parent" ] && [ ! -d "../$parent" ] && echo "CRITICAL: Child theme missing templates/index.html and parent theme '$parent' not found"
 [ ! -f theme.json ] && [ -d templates ] && echo "CRITICAL: templates/ exists but theme.json missing"
 
 # theme.json with invalid or missing version

@@ -429,7 +429,7 @@ If at any point during implementation you discover:
 
 Then follow this exact protocol:
 
-1. Add an inline comment: `/* {THEME_PREFIX}TODO: [description of issue] */`
+1. Add an inline comment: `/* Known limitation: [description of issue] - see README.md § Known Limitations */` (never a `TODO` marker - TODOs are forbidden by the Pre-Output Self-Check and audit item #2)
 2. Implement the best possible fallback
 3. Add the issue to a running list in your response
 4. In the **final chunk**, compile all issues into a "Known Limitations" section

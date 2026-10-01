@@ -11,7 +11,7 @@
 
 ## Rules
 
-- **New posts are drafts by default.** Publishing is an explicit option (`-p` / `--publish`).
+- **New posts are drafts by default.** Publishing is an explicit option (`-p`).
 - **Editor-aware content.** Check which editor the post type uses before writing markup (see `settings.md`, Editor Detection). The classic editor gets shortcodes (`[gallery ids="1,2,3"]`, `[video src=... poster=...]`). The block editor gets block markup (`<!-- wp:gallery -->` with inner `wp:image` blocks, `<!-- wp:video {"id":N} -->`).
 - **Imports from a list file.** Skip blank lines and `#` comments, and trim whitespace. Validate each URL (`^https?://`) before trying it. A failed import is a warning, not a stop. If nothing was imported, create no post.
 - **Slugs.** Build them with `sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g'` after lowercasing. Reject an empty result. Check for duplicates before creating.

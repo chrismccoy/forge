@@ -1,6 +1,6 @@
 ---
 description: Grade your LLM token usage from four raw numbers - input efficiency, cache strategy, output discipline, a weighted overall letter, and one highest-impact fix.
-argument-hint: [optional pasted ---BEGIN TOKENS--- block]
+argument-hint: "[optional pasted ---BEGIN TOKENS--- block]"
 allowed-tools: AskUserQuestion, Read
 disable-model-invocation: true
 ---
@@ -28,7 +28,7 @@ Resolve the numbers in this order and stop at the first hit.
 
 Fields, in this order:
 
-1. **SESSION_LABEL** (required) - what period this run covers, since the benchmark is tracked over time. Offer: `this session`, `today`, `this week`, plus "Other" for a free-text label like `refactor sprint`.
+1. **SESSION_LABEL** (optional, default `this session`) - what period this run covers, since the benchmark is tracked over time. Offer: `this session (default)`, `today`, `this week`, plus "Other" for a free-text label like `refactor sprint`. When the input arrives as a pasted or assembled block, do not ask: use `this session` unless the user's request names a period.
 2. **INPUT_TOKENS** (required) - uncached input tokens. Free-text, non-negative integer.
 3. **OUTPUT_TOKENS** (required) - generated output tokens. Free-text, non-negative integer.
 4. **CACHE_CREATE_TOKENS** (required) - tokens written into the cache. Free-text, non-negative integer.

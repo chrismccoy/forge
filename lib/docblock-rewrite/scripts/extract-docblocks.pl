@@ -30,13 +30,22 @@ my $src = do {
 my @out;
 my $first_candidate = 1;
 
-# Match: /** block */, then any blank lines, then a real (non-/**) line.
-# The (?=\s) after /** rejects glob patterns like "./views/**/*.ejs" where /**
-# is followed by /. Real docblocks always have whitespace or newline after /**.
-while ($src =~ /(\/\*\*(?=\s)[\s\S]*?\*\/)((?:[ \t]*\n)*)((?!\/\*\*)[^\n]+)/g) {
+# Match one /** block */ that stops at its first */, so consecutive blocks are
+# handled separately. The (?=\s) after /** rejects glob patterns like
+# "./views/**/*.ejs" where /** is followed by /. Real docblocks always have
+# whitespace or newline after /**.
+my $doc_re = qr/\/\*\*(?=\s)(?:(?!\*\/)[\s\S])*\*\//;
+while ($src =~ /($doc_re)/g) {
     my $block = $1;
-    my $sym   = $3;
     my $start = $-[1];
+
+    # Symbol: after any blank lines and any further doc blocks, the next real
+    # (non-/**) line. Blocks with nothing after them are left alone.
+    my $end = pos($src);
+    my $found = $src =~ /\G(?:\s*$doc_re)*(?:[ \t]*\n)*((?![ \t]*\/\*\*)[^\n]+)/gc;
+    my $sym = $1;
+    pos($src) = $end;               # resume the scan right after this block
+    next unless $found;
 
     next if $block =~ /\@(?:internal|deprecated|ignore)\b/;
 
@@ -44,7 +53,7 @@ while ($src =~ /(\/\*\*(?=\s)[\s\S]*?\*\/)((?:[ \t]*\n)*)((?!\/\*\*)[^\n]+)/g) {
         $first_candidate = 0;
         my $is_file_level =
                $block =~ /\@(?:file|package|module)\b/
-            || $sym   =~ /^\s*(?:declare|namespace|use|<\?php|"use strict"|import|export|require)\b/;
+            || $sym   =~ /^\s*(?:(?:declare|namespace|use|import|export|require)\b|<\?php|(["'])use strict\1;?)/;
         $sym = '<file header>' if $is_file_level;
     }
 

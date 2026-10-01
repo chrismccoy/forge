@@ -1,6 +1,6 @@
 ---
 description: Apply a named design style (bento, brutalist, vaporwave, kawaii, glassmorphism…) to a page or component
-argument-hint: [style] [optional project description]
+argument-hint: "[style] [optional project description]"
 disable-model-invocation: true
 ---
 

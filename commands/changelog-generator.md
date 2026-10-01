@@ -1,7 +1,7 @@
 ---
 description: Build a user-facing changelog from a repo's entire git history by reading actual diffs, not commit messages
 argument-hint: [optional path to a git repository]
-allowed-tools: Bash, Read, Write, Grep, Glob, Task
+allowed-tools: Read, Write, Grep, Glob, Task, Agent, Bash(git log:*), Bash(git show:*), Bash(git diff:*), Bash(git tag:*), Bash(git rev-parse:*), Bash(git rev-list:*)
 disable-model-invocation: true
 ---
 

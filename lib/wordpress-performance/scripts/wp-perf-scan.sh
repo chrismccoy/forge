@@ -7,9 +7,20 @@
 set -uo pipefail
 
 TARGET="${1:-.}"
-EXCLUDES=( --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=.git
-           --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage
-           --exclude=*.min.js --exclude=*.min.css )
+
+if [ ! -d "$TARGET" ]; then
+  echo "ERROR: not a directory: $TARGET" >&2
+  exit 1
+fi
+
+# Same file set as wp-perf-manifest.sh (default mode), so every hit is in the manifest.
+EXCLUDES=( -I
+           --include='*.php' --include='*.inc' --include='*.js' --include='*.jsx'
+           --include='*.ts' --include='*.tsx' --include='*.json'
+           --exclude-dir=node_modules --exclude-dir=vendor --exclude-dir=.git
+           --exclude-dir=.svn --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage
+           --exclude='*.min.js' --exclude='*-min.js' --exclude='*.bundle.js'
+           --exclude='package-lock.json' )
 
 hits=0
 
@@ -36,9 +47,9 @@ scan WARNING "Uncached expensive core calls" "(url_to_postid|attachment_url_to_p
 scan WARNING "External HTTP (check caching + timeout)" "(wp_remote_get|wp_remote_post|file_get_contents[[:space:]]*\([[:space:]]*['\"]https?)"
 scan WARNING "Cookies / cache bypass"      "setcookie[[:space:]]*\("
 scan WARNING "Query cache disabled"        "cache_results[^;]*false"
-scan WARNING "Leading-wildcard LIKE"       "LIKE[[:space:]]*['\"]?%"
+scan WARNING "Leading-wildcard LIKE"       "LIKE[[:space:]]*['\"]%"
 scan WARNING "post__not_in exclusion"      "post__not_in"
-scan WARNING "meta_query value comparison" "'value'[[:space:]]*=>"
+scan WARNING "meta_query value comparison" "['\"]value['\"][[:space:]]*=>"
 scan WARNING "Dynamic transient keys"      "set_transient[[:space:]]*\([^)]*\\\$"
 scan WARNING "Cron schedule without guard" "wp_schedule_event[[:space:]]*\("
 scan WARNING "Full lodash import"          "import[[:space:]]+.*from[[:space:]]*['\"]lodash['\"]"
@@ -49,7 +60,7 @@ scan WARNING "Block styles (iframe per style)" "registerBlockStyle"
 
 echo "=== INFO ==="
 scan INFO "Asset enqueue (verify conditional + version)" "wp_enqueue_(script|style)[[:space:]]*\("
-scan INFO "in_array without strict flag"   "in_array[[:space:]]*\([^)]*\)"
+scan INFO "in_array (check strict flag + array size)" "in_array[[:space:]]*\([^)]*\)"
 scan INFO "get_template_part (check loops)" "get_template_part[[:space:]]*\("
 
 echo "=== TRIAGE SUMMARY ==="

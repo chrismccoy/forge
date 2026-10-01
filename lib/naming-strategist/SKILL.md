@@ -40,7 +40,7 @@ Produce 10 candidates obeying these rules (full list in `${CLAUDE_PLUGIN_ROOT}/l
 - Avoid awkward letter clusters, confusing spelling, hyphens, and numbers.
 - Avoid purely descriptive keyword domains that feel generic.
 - Mix structures: compound, blended, metaphor, invented, classical-roots. At least 5 distinct structures across the 10.
-- Do not use forced suffixes (`-ify`, `-ly`, `-hub`) unless they genuinely fit niche and tone.
+- Do not use forced suffixes (`-ify`, `-ly`, `-hub`, `-io`, `-app`) unless they genuinely fit niche and tone.
 - No hype, no guarantees, no "proven", no exaggerated claims, no sales copy.
 - Avoid famous brands, celebrity names, trademark-bait terms.
 

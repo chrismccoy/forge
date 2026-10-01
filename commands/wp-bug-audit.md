@@ -1,7 +1,7 @@
 ---
 description: Audit a WordPress theme for bugs - reads every file, runs about 160 numbered checks, tests everything on throwaway SQLite sites across your customers' PHP versions, and writes a verified bug list and coverage report into the theme's audit/ folder. Changes nothing unless you ask for fixes.
 argument-hint: [optional path to the theme folder or .zip]
-allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash, Task
+allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Task, Bash(df:*), Bash(du:*), Bash(wc:*), Bash(sha256sum:*), Bash(git status:*), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/media-dirs.sh *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/html-check.py *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/jslog.py *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/login-js.sh *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/site-down.sh *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/phpcs-correctness.sh *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/phpstan-batches.sh *), Bash(${CLAUDE_PLUGIN_ROOT}/lib/wordpress-theme-bug-audit/scripts/lint-js-css.sh *)
 disable-model-invocation: true
 ---
 
@@ -20,7 +20,7 @@ User input: $ARGUMENTS
 
 ## Intake Procedure
 
-Treat `$ARGUMENTS` as the starting path when it names a folder or `.zip`; otherwise start from the current directory. Then follow the procedure's section 0 exactly:
+Treat `$ARGUMENTS` as the starting path when it names a folder or `.zip`; otherwise start from the current directory. Then follow the procedure's section 0 exactly (its details are in `references/start.md`):
 
 1. **Find the theme** - the current directory, then up to three levels below, then a parent. Several or none: list them and ask. Announce the theme's identity block before anything else.
 2. **Resume check** - look for the work folder's `state.json`; offer Resume, Restart, or Cancel when an unfinished run exists.

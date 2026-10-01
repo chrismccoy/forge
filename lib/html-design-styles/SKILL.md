@@ -110,7 +110,7 @@ Suggest the closest match from the table above. Examples:
 - "minimal" → Scandinavian, Swiss, or Soft Modern (ask which)
 - "elegant" → Luxury or Art Deco (ask which)
 - "old-school computer" → Retro Terminal, Y2K, or Pixel (ask which)
-- "newspaper" → Newspaper (already in catalog)
+- "vintage" → Art Deco or Groovy (ask which)
 
 Offer 2-3 candidates with one-line distinctions and let the user pick.
 

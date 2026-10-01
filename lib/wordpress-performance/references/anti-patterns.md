@@ -22,9 +22,9 @@ Complete catalog of performance anti-patterns for WordPress code review.
 | `add_option` without autoload=no | WARNING | Bloats alloptions |
 | `setcookie()` on public pages | WARNING | Prevents caching |
 | `url_to_postid()` | WARNING | Uncached lookup |
-| `get_template_part` in loops | WARNING | Repeated file I/O |
+| `get_template_part` in loops | INFO | Cost is what the partial does, times the loop |
 | `admin-ajax.php` | WARNING | Full WP bootstrap |
-| `in_array()` without strict | WARNING | O(n) complexity at scale |
+| `in_array()` without strict | INFO / WARNING | O(n) at scale (INFO); loose comparison bugs (WARNING) |
 | `import _ from 'lodash'` | WARNING | Full library import bloats bundle |
 | Heredoc/nowdoc syntax | WARNING | Prevents late escaping |
 | Page builder plugins | WARNING | High query count |
@@ -700,7 +700,7 @@ wp_cache_set( 'visitor_count', $count, 'stats' );
 
 ## WP Cron Anti-Patterns
 
-### Default WP Cron Behavior (WARNING)
+### Default WP Cron Behavior (INFO)
 By default, WP Cron runs on page requests, adding latency.
 
 ```php

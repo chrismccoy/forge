@@ -24,9 +24,11 @@ The conversion proceeds through three phases with **user approval gates** betwee
 
 Load each reference file **only when you need it**. Don't pre-load all of them.
 
-- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/rules.md** - Always-active rules: escaping, sanitization, i18n, PHP coding standards, asset pipeline, accessibility baseline, error recovery, pattern abstraction, child-theme compatibility, source HTML JavaScript handling. **Read this at the start of any conversion** and keep these rules in mind across every phase and file.
-- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/phase-1-analysis.md** - Full Phase 1A and 1B procedures: HTML validation, source quality grading, all twelve structured analysis sections (①-⑫), abort criteria, degraded-mode triggers. Load when entering Phase 1.
-- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/phase-2-implementation.md** - Chunk planning, implementation rules, template architecture reference (theme setup, navigation, the loop, sidebars, comments, pagination, search, 404, custom page templates, .editorconfig, screenshot protocol), change management protocol. Load when entering Phase 2.
+- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/rules.md** - Always-active rules: naming, escaping, sanitization, i18n, PHP standards, asset pipeline, accessibility, error recovery, child-theme compatibility, source JS handling. **Read this at the start of any conversion** and keep these rules in mind across every phase and file.
+- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/phase-1-analysis.md** - Phase 1A and 1B procedures: HTML validation, source quality grading, analysis sections ①-⑫, abort criteria, degraded mode. Load when entering Phase 1.
+- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/phase-2-implementation.md** - Chunk planning, implementation rules, template architecture reference, optional-feature patterns, change management protocol. Load when entering Phase 2.
+- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/template-mapping.md** - Source HTML file → WordPress template mapping table with fallback rules. Load at the Initialization Gate when asking for source HTML.
+- **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/long-conversions.md** - Context window management and session continuity rules. Load when output limits or a multi-conversation conversion come into play.
 - **${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/phase-3-audit.md** - 90-item self-audit table, scoring & verdicts, README testing checklist. Load when entering Phase 3.
 
 ## Document Priority Order
@@ -42,24 +44,9 @@ When rules conflict, this is the override order (highest → lowest):
 
 All generated theme files go into a subdirectory named after the theme slug (e.g. `flavor-studio/`). Confirm the location with the user during the Initialization Gate.
 
-## Context Window Management
+## Long Conversions
 
-- Do not quote more than 10 consecutive lines of source HTML verbatim in any analysis section. Summarize with selectors and descriptions instead.
-- If a single chunk would exceed output limits, split the chunk further and note the split explicitly.
-- Never truncate a file mid-output. If a file will not fit, stop before it and state: `File [filename] deferred to next sub-chunk.`
-- When referencing previously output code, cite the file name and function/section - do not re-paste large blocks unless changes apply.
-
-## Session Continuity
-
-If a conversion must continue in a new conversation:
-
-1. User provides the approved Phase 1A + 1B analysis (or a summary)
-2. User states which chunks have been completed
-3. Resume from the next chunk without re-running analysis
-4. Re-read any previously generated files that the next chunk depends on
-5. Re-confirm `THEME_NAME`, `THEME_SLUG`, `THEME_PREFIX` before generating any code
-
-If the user cannot provide the prior analysis, re-run Phase 1A and 1B from scratch using the original HTML files.
+Load `${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/long-conversions.md` when a chunk risks hitting output limits, when quoting source HTML in analysis, or when a conversion must resume in a new conversation. Never truncate a file mid-output.
 
 ---
 
@@ -76,22 +63,7 @@ If the user cannot provide the prior analysis, re-run Phase 1A and 1B from scrat
 
 ### Source HTML → WordPress Template Mapping
 
-When asking for source HTML, present this mapping table to the user so they know which templates they can drive from their own designs (vs. letting Claude derive defaults). Match by filename:
-
-| Source HTML file | Drives WordPress template(s) | Required? |
-|-----------------|------------------------------|-----------|
-| `index.html` | `index.php` (homepage / archive fallback) | **Yes** |
-| `single.html` | `single.php` (single post) | Recommended - if absent, derive from `index.html` post-card structure with reasonable expansion. Flag this assumption in ⑩. |
-| `page.html` | `page.php` (static pages) | Optional - if absent, derive from `single.html` design with the post-meta stripped. |
-| `archive.html` | `archive.php`, `category.php`, `tag.php` (any archive view) - overridden by the more-specific files below if present | Optional |
-| `category.html` | `category.php` specifically (overrides `archive.html` for the category archive) | Optional |
-| `tag.html` | `tag.php` specifically (overrides `archive.html` for the tag archive) | Optional |
-| `search.html` | `search.php` (search results) | Optional |
-| `404.html` | `404.php` | Optional - if absent, generate a minimal styled 404 matching theme tokens. |
-| `comments.html` | Markup hint for `comments.php`, layered onto WordPress's `comment_form()` + `wp_list_comments()` output | Optional |
-| `landing.html`, `contact.html`, `about.html`, etc. (any name not above) | Custom page template at `template-pages/template-{name}.php`, surfaced in wp-admin under Page Attributes → Template | Optional |
-
-Echo this table back to the user when asking for source HTML so they can answer in one shot ("I have index.html, single.html, archive.html, and a contact.html"). If the user provides a file whose name doesn't fit this convention, ask which template it should drive before guessing.
+When asking for source HTML, load `${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/template-mapping.md` and echo its mapping table to the user so they can answer in one shot. Only `index.html` is required. If the user provides a file whose name doesn't fit the convention, ask which template it should drive before guessing.
 
 ### Proactive Questions
 
@@ -121,7 +93,7 @@ After source HTML is collected, present the following as a single block. The use
 >
 > | Setting | Default |
 > |---------|---------|
-> | `theme.json` (block editor support) | **Minimal** - include with `appearanceTools: false` and `settings.layout` only, to control block editor width and prevent default block styles from conflicting with Tailwind. Full block theme support only if explicitly requested. |
+> | `theme.json` (block editor support) | **Minimal** - the ⑫ baseline (`appearanceTools: false`, `settings.layout`, default color/typography/spacing controls off), to control block editor width and prevent default block styles from conflicting with Tailwind. Full block theme support only if explicitly requested. |
 > | JavaScript approach | **Vanilla JS** - no frameworks |
 > | Widget areas | **Editable via wp-admin** - sidebars/footers become widget areas |
 > | Custom post types | **Standard posts/pages only** - no CPTs in theme code |
@@ -145,22 +117,13 @@ Specifically:
 | Phase 1B | Output proposed chunk plan, then: "Shall I continue to Chunk 1?" | Approval |
 | Each chunk | "Chunk N of M complete. Files generated: [list]. Reply 'Continue' to proceed to Chunk N+1, or request changes to any file above." | "Continue" or change request |
 
-Never assume continuation. The phase gates are the contract with the user - they are how the user keeps control over a long, expensive generation.
+Never assume continuation - the gates keep the user in control of a long, expensive generation.
 
 ---
 
-## Naming Conventions (cheat sheet)
+## Naming Conventions
 
-All names derive from the confirmed theme name. Full table with examples in `${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/rules.md`.
-
-| Artifact | Convention |
-|----------|-----------|
-| `THEME_NAME` / `THEME_SLUG` / `THEME_PREFIX` | Title Case / lowercase-hyphens / lowercase_underscores_ |
-| Function/hook names | `{THEME_PREFIX}snake_case` |
-| Class names | `{THEME_PREFIX}PascalCase` |
-| Enqueue handles | `{THEME_SLUG}-descriptor` |
-| Constants | `{THEME_PREFIX}UPPER_SNAKE` |
-| Text domain | Always equals `THEME_SLUG` |
+All names (`THEME_NAME`, `THEME_SLUG`, `THEME_PREFIX`, functions, classes, handles, constants, text domain) derive from the confirmed theme name. Load the full table with examples from `${CLAUDE_PLUGIN_ROOT}/lib/html-to-wordpress-theme/references/rules.md` § Naming Conventions; the Quick Reference Card below summarizes it.
 
 ---
 
@@ -233,7 +196,7 @@ Phase gates: Never advance without user reply
              Phase 1A → "Continue" → Phase 1B → "Continue" → Chunk 1 → "Continue" → ...
 Self-check:  Run 14-item checklist on every file before output
 Self-audit:  PASS requires file + line evidence · no evidence = FAIL · 90 items
-Changes:     < 20 lines → diff block · > 20 lines → full file · always check ripple
+Changes:     ≤ 20 lines → diff block · > 20 lines → full file · always check ripple
 Tiebreaker:  WP core API > simpler > fewer files > native browser > progressive enhancement
 Generated:   "Generated by html-to-wordpress-theme skill" in README.md
 ```

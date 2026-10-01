@@ -38,7 +38,10 @@ Apply `.red-glow` to CTA buttons. Apply `.text-red-glow` to red accent text in h
 <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-red-900/20 blur-[140px]"></div>
 <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-red-800/10 blur-[100px]"></div>
 <!-- Subtle white grid -->
-<div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px); background-size: 80px 80px;"></div>
+<div class="absolute inset-0 opacity-5 cinema-grid"></div>
+```
+```css
+.cinema-grid { background-image: linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px); background-size: 80px 80px; }
 ```
 
 ### Floating Animated Labels

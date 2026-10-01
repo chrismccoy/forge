@@ -42,7 +42,7 @@ Write the complete script. Do not leave TODOs, stubs, placeholder functions, or 
 
 **Structure**
 
-- Begin the file as the language section says, then add a header comment giving the file name, purpose, usage, exit codes, dependencies, and any `Assumptions:`. Keep the whole header under 20 lines, and list at most 5 assumptions: only the choices a reader might disagree with, not every detail of the implementation.
+- Begin the file as the language section says, then add a header comment giving the file name, purpose, usage, exit codes, dependencies, and any `Assumptions:`. Parse and validate arguments, and support `--help` that prints the usage and exits 0. Keep the whole header under 20 lines, and list at most 5 assumptions: only the choices a reader might disagree with, not every detail of the implementation.
 - Split the logic into functions, classes, or modules as fits the language, and call them from one clear entry point.
 - Accept arguments where the task needs them, and validate them.
 

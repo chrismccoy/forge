@@ -78,12 +78,16 @@ NEON
 }
 
 # summarize_batch <json>: append the batch's errors to summary.txt; returns 1 when the JSON is missing or invalid.
+# PHP startup warnings (a standalone build can't load PHPStan's optional native extension) can land on stdout
+# before the report, so the report is read from its first line that starts with "{".
 summarize_batch() {
 	python3 - "$1" >> "$out/summary.txt" <<'PY'
-import json, sys
+import json, re, sys
 try:
-    with open(sys.argv[1]) as handle:
-        data = json.load(handle)
+    with open(sys.argv[1], errors='replace') as handle:
+        text = handle.read()
+    start = re.search(r'^\{', text, re.M)
+    data, _ = json.JSONDecoder().raw_decode(text[start.start():] if start else text)
 except (OSError, ValueError):
     sys.exit(1)
 if not isinstance(data, dict):

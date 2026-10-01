@@ -1,7 +1,7 @@
 ---
 description: Strip AI-generated voice from source files without changing behavior - picker for file, directory, or paste
 argument-hint: [optional path or pasted code]
-allowed-tools: AskUserQuestion, Read, Edit, Write, Bash, Grep, Glob
+allowed-tools: AskUserQuestion, Read, Edit, Write, Grep, Glob, Bash(git status:*), Bash(git diff:*), Bash(rg:*), Bash(grep:*), Bash(wc:*)
 disable-model-invocation: true
 ---
 

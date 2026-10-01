@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 70 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 71 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 42 guided helpers · 27 full toolkits.
+**At a glance:** 1 quick win · 43 guided helpers · 27 full toolkits.
 
 ## Small Utils
 
@@ -20,13 +20,14 @@ These ask you a few questions (or take a short description), then produce a comp
 |--------|------------------|----------------------|
 | `jq` | `/jq` | Builds a ready-to-paste command for pulling data out of JSON, and explains each step |
 | `sql-breakdown` | `/explain-sql` | Reviews one SQL query without running it - what each clause does, the business question it answers, a score out of 40, and what could give you wrong numbers |
+| `regex-tutor` | `/explain-regex` | Explains one regular expression in plain English across 11 sections - every piece, real examples that match and don't, the traps, whether a long input can freeze it, and safer alternatives - with every example checked against real regex engines |
 | `html-design-styles` | `/html-design-styles` | Restyles a web page in one of 53 named looks (bento, brutalist, glassmorphism, and more) |
 | `vgademo` | `/vgademo` | Walks you through a few choices, then writes a tiny retro 1990s-style graphics demo |
 | `tech-blog-article` | `/tech-blog-article` | Writes a polished technical blog post with a strong opening, clear examples, and honest trade-offs |
 | `language-tutor` | `/language-tutor` | Translates and explains a phrase, or corrects your writing with grammar and pronunciation tips |
 | `contract-framework` | `/draft-contract` | Writes a clear, fair freelance or consulting contract covering the work, the payment, and who owns the finished result, with anything legal flagged to check locally |
 | `readme-builder` | `/readme-builder` | Reads a whole project and writes one beginner friendly README in a fixed order, plain English, with hype words and long dashes kept out |
-| `tutorial-builder` | `/tutorial-builder` | Turns code or a topic into a step-by-step, hands-on tutorial that teaches, every code block runnable with its output shown, gated by a checklist and a 1-5 score |
+| `tutorial-builder` | `/tutorial-builder` | Turns code or a topic into a step-by-step, hands-on tutorial that teaches, every code block runnable with its output shown, gated by a checklist and a yes/no quality gate |
 | `naming-strategist` | `/name-domains` | Brainstorms 10 brandable domain names, picks the best 3, and gives you a checklist to verify them |
 | `refactoring-analyst` | `/refactor` | Reviews your code and returns a prioritized clean-up plan, every issue tied to a real file and line |
 | `kubernetes-architect` | `/kubernetes-architect` | Turns your app details into ready-to-use Kubernetes setup files |
@@ -97,7 +98,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 
 ## A few extra notes
 
-**Thirty-two tools have a command name that's different from the tool name:**
+**Thirty-three tools have a command name that's different from the tool name:**
 
 All sixteen WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
@@ -118,7 +119,7 @@ All sixteen WordPress tools share a short `wp-` command so they group together w
 - `wordpress-theme-bug-audit` → type `/wp-bug-audit`
 - `wordpress-theme-mockup` → type `/wp-mockup`
 
-And sixteen others are shortened or renamed:
+And seventeen others are shortened or renamed:
 
 - `excel-formula-troubleshooter` → type `/fix-formula`
 - `naming-strategist` → type `/name-domains`
@@ -136,15 +137,16 @@ And sixteen others are shortened or renamed:
 - `prompt-snippet` → type `/snippet`
 - `token-auditor` → type `/token-audit`
 - `fullstack-feature-readme` → type `/fullstack-readme`
+- `regex-tutor` → type `/explain-regex`
 
 The other 38 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 81 commands are pickers, not tools:**
+**Eleven of the 82 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 16, 6, 5, 4, 8, 3, 4, 11, 7 and 6 tools
+and go straight to one of the ten categories - 16, 6, 5, 4, 8, 3, 4, 12, 7 and 6 tools
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -153,7 +155,7 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 54 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 55 tools - the easiest way to start
 - **Asks a few questions directly:** 1 - `html-to-wordpress-theme`
 - **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 15 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`
 
@@ -161,4 +163,4 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 70 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 71 tools here.

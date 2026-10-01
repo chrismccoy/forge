@@ -1,7 +1,7 @@
 ---
 description: Build a complete WordPress block theme (theme.json v3, templates, parts, patterns, style variations, local fonts) from a short brief, or review an existing block theme with file:line findings, BAD/GOOD pairs, and a ship verdict.
 argument-hint: [optional theme path to review, or a brief for a new theme]
-allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash(rg:*), Bash(jq:*), Bash(php -l:*), Bash(python3 -m json.tool:*)
 disable-model-invocation: true
 ---
 
@@ -38,7 +38,7 @@ Stop and say so, rather than proceeding, when any of these hold:
 
 - **REVIEW target is not a block theme** - no `templates/index.html` and no block parent that provides it. Reply: "Not a block theme. This review covers block themes with full site editing only." and stop.
 - **The path does not exist.** Report it and stop.
-- **BUILD target folder already exists.** Ask for a different name or folder; never overwrite.
+- **BUILD target folder already exists.** Ask for a different name or folder; in a non-interactive run, use `./<slug>-new/` (stop if that exists too) and say so. Never overwrite.
 - **BUILD asks for a classic or hybrid theme.** Say this procedure builds block themes only.
 
 ## Generation

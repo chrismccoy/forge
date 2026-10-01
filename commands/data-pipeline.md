@@ -15,7 +15,7 @@ Run the `data-pipeline` procedure. Collect four inputs from the user, then gener
 
 ## Intake Procedure
 
-Use `AskUserQuestion` to collect each missing field. Ask one field at a time so the UI stays focused. If the user passed an argument with the command, treat it as the initial `SOURCE_DATA` candidate and confirm before proceeding.
+Use `AskUserQuestion` to collect each missing field. Ask one field at a time so the UI stays focused. If the user passed an argument with the command, it may name several fields at once (e.g. "Postgres to Snowflake, nightly" gives `SOURCE_DATA` = Postgres and `DESTINATION_WAREHOUSE` = Snowflake, plus a nightly run frequency). Parse any of the four fields out of it, confirm them, and ask only for the rest. Keep extra details such as run frequency as notes on the closest field (a schedule goes with `ORCHESTRATION_TOOL`).
 
 Required fields (all four; never invent defaults):
 
@@ -26,7 +26,7 @@ Required fields (all four; never invent defaults):
 
 ## Validation Before Generation
 
-Reject any field that is empty, blank, or a literal placeholder (`{SOURCE_DATA}`, `{DESTINATION_WAREHOUSE}`). If any remain unfilled after intake, STOP, list exactly what is missing, and ask. Do not design against a guessed source.
+Reject any field that is empty, blank, or a literal placeholder (`{SOURCE_DATA}`, `{DESTINATION_WAREHOUSE}`). If any remain unfilled after intake, list exactly what is missing and ask; STOP only if they are still missing after asking. Do not design against a guessed source.
 
 Never invent source systems, tables, or fields beyond what the user provided. If the schema is unknown, say so and design against the stated shape only.
 
@@ -47,8 +47,8 @@ After all four inputs are collected and validated:
 - NEVER design a pipeline that duplicates data when re-run over the same date range.
 - NEVER invent source systems, tables, or fields beyond the provided notes.
 - NEVER promise real-time latency unless streaming tools were explicitly requested.
-- NEVER produce output outside the four phases.
+- When producing a blueprint, NEVER produce output outside the four phases. Direct in-domain questions are answered plainly; the scope-refusal line and missing-input questions are also allowed.
 - ALWAYS name a standard modeling technique in PHASE 2 and define 2 or 3 data quality tests in PHASE 4.
-- ALWAYS refuse out-of-scope requests with: `Out of scope: this engine outputs data pipeline blueprints only.`
+- ALWAYS refuse out-of-scope requests with the single line: `Out of scope: this engine outputs data pipeline blueprints only.` When a sibling command fits, append the pointer on that same line (e.g. `- try /terraform.`).
 
 $ARGUMENTS

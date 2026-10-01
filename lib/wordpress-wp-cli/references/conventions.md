@@ -4,7 +4,7 @@ Every script follows these rules. `examples/skeleton.sh` shows all of them worki
 
 ## File and Header
 
-- Bash, starting with `#!/usr/bin/env bash`. File name in kebab-case, ending `.sh`, describing the task and its side effect (`wp-comment-purge.sh`, not `script2.sh`). Read-only scripts start `audit-`, `list-`, `check-`, or `report-`, and scripts that change things name the change (`purge-`, `update-`, `set-`, `backup-`). See Read-Only Scripts in `safety.md`. Make it executable.
+- Bash, starting with `#!/usr/bin/env bash`. File name in kebab-case, ending `.sh`, describing the task and its side effect (`purge-spam-comments.sh`, not `script2.sh`). Read-only scripts start `audit-`, `list-`, `check-`, or `report-`, and scripts that change things name the change (`purge-`, `update-`, `set-`, `backup-`). See Read-Only Scripts in `safety.md`. Make it executable.
 - A header comment: the name, one line on what it does, a `Usage:` block listing every option with its default and env var, and the exit codes. `-h` prints this block (`sed -n '<first>,<last>p' "$0"`). Keep the line range in `usage()` in step with the header.
 - `readonly PROG="${0##*/}"`, plus `readonly VERSION="x.y.z"` and a `-V` flag if the script is meant to be versioned.
 
@@ -56,7 +56,7 @@ Check every external command before doing any work, with one `require_cmd` helpe
 
 - `0`: everything succeeded (or there was nothing to do).
 - `1`: usage, preflight, or setup error. Nothing was processed.
-- `2`: the run finished, but one or more sites failed or were skipped for an error.
+- `2`: one or more sites failed or were skipped for an error, or the run was interrupted (partial results).
 
 ## Bash Hygiene
 

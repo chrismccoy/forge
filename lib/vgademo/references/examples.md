@@ -7,7 +7,7 @@ Note: live output uses `##` for the four mandatory sections (Byte Budget, Code, 
 ## Example 1: 256-byte XOR-Plasma (NASM, .COM, Mode 13h)
 
 ### Byte Budget
-Estimated assembled size: ~22 bytes / 256 bytes
+Estimated assembled size: ~28 bytes / 256 bytes
 
 ### Code
 

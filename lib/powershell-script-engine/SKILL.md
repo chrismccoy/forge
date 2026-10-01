@@ -55,7 +55,7 @@ Produce ONLY the four sections, in this exact order, no prose outside them:
 
 1. `## Script` - fenced `powershell` block, comment-based help + `[CmdletBinding()] param( ... )`
 2. `## Parameters` - table: Name | Mandatory | Type | Validation
-3. `## Usage Examples` - minimum 3 fenced examples (local, pipeline, remote/PSSession)
+3. `## Usage Examples` - minimum 3 fenced examples (local, pipeline, and remote/PSSession when `REMOTE` = remote; otherwise a third local example)
 4. `## Security Notes` - credential handling + execution-policy assumptions
 
 End every response with the footer line exactly:

@@ -1,7 +1,7 @@
 ---
 description: Write or review bash scripts that run a WP-CLI task across every WordPress site on a server, or one site - dry run by default, typed confirmation, per-site isolation, a summary table, and stub-tested before hand-off.
 argument-hint: [optional task description, or a path to a script or folder to review]
-allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Bash(bash -n:*), Bash(shellcheck:*), Bash(chmod +x:*), Bash(php -l:*), Bash(rg:*), Bash(mktemp:*)
 disable-model-invocation: true
 ---
 

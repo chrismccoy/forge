@@ -319,13 +319,13 @@ UI shows: "Dark Mode with Blue Accents"
  */
 ?>
 <!-- wp:cover {"url":"<?php echo esc_url( get_theme_file_uri( 'assets/images/hero.jpg' ) ); ?>","dimRatio":50,"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}}} -->
-<div class="wp-block-cover alignfull">
+<div class="wp-block-cover alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)">
 	<span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
 	<img class="wp-block-cover__image-background" alt="" src="<?php echo esc_url( get_theme_file_uri( 'assets/images/hero.jpg' ) ); ?>" data-object-fit="cover" />
 
 	<div class="wp-block-cover__inner-container">
-		<!-- wp:heading {"textAlign":"center","level":1,"style":{"typography":{"fontSize":"3rem"}}} -->
-		<h1 class="has-text-align-center" style="font-size:3rem"><?php echo esc_html_x( 'Welcome to Our Site', 'Pattern placeholder text', 'mytheme' ); ?></h1>
+		<!-- wp:heading {"textAlign":"center","level":1,"fontSize":"xx-large"} -->
+		<h1 class="wp-block-heading has-text-align-center has-xx-large-font-size"><?php echo esc_html_x( 'Welcome to Our Site', 'Pattern placeholder text', 'mytheme' ); ?></h1>
 		<!-- /wp:heading -->
 
 		<!-- wp:paragraph {"align":"center"} -->
@@ -421,24 +421,22 @@ Then use in pattern:
 /**
  * Title: Recent Posts Grid
  * Slug: mytheme/recent-posts
+ * Categories: featured
  */
-
-$recent_posts = get_posts( array(
-	'numberposts' => 3,
-	'post_status' => 'publish',
-) );
 ?>
 <!-- wp:group {"layout":{"type":"constrained"}} -->
 <div class="wp-block-group">
 	<!-- wp:heading -->
-	<h2><?php esc_html_e( 'Recent Posts', 'mytheme' ); ?></h2>
+	<h2 class="wp-block-heading"><?php esc_html_e( 'Recent Posts', 'mytheme' ); ?></h2>
 	<!-- /wp:heading -->
 
-	<?php foreach ( $recent_posts as $post ) : ?>
-		<!-- wp:heading {"level":3} -->
-		<h3><?php echo esc_html( get_the_title( $post ) ); ?></h3>
-		<!-- /wp:heading -->
-	<?php endforeach; ?>
+	<!-- wp:query {"query":{"perPage":3,"postType":"post","order":"desc","orderBy":"date","inherit":false}} -->
+	<div class="wp-block-query">
+		<!-- wp:post-template -->
+			<!-- wp:post-title {"level":3,"isLink":true} /-->
+		<!-- /wp:post-template -->
+	</div>
+	<!-- /wp:query -->
 </div>
 <!-- /wp:group -->
 ```
@@ -447,7 +445,7 @@ $recent_posts = get_posts( array(
 
 - Theme-specific asset URLs (`get_theme_file_uri()`)
 - Translated text (`esc_html__()`, `esc_html_x()`)
-- Dynamic queries (recent posts, featured content)
+- Never for post lists: pattern PHP runs once when the pattern is inserted, so queried posts would be frozen into the page. Use the Query Loop block, as above
 
 **CRITICAL: Escape all output**
 
@@ -928,8 +926,8 @@ Or via WordPress admin: Tools > Theme Check
 
 ```html
 <!-- GOOD: User-customizable via Site Editor -->
-<!-- wp:group {"style":{"color":{"background":"var(--wp--preset--color--primary)"},"typography":{"fontSize":"var(--wp--preset--font-size--medium)"}}} -->
-<div class="wp-block-group">
+<!-- wp:group {"backgroundColor":"primary","fontSize":"medium"} -->
+<div class="wp-block-group has-primary-background-color has-background has-medium-font-size">
 	<!-- wp:post-title /-->
 </div>
 <!-- /wp:group -->

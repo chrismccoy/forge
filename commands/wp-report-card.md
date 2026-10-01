@@ -1,7 +1,7 @@
 ---
 description: Scorecard-only WordPress review - detects the plugin or theme, reads every file, and prints just the 10-area /10 scorecard plus an overall score and tier. No findings, no fixes.
 argument-hint: [path to plugin or theme]
-allowed-tools: Read, Grep, Glob, Bash
+allowed-tools: Read, Grep, Glob, Bash(wc:*)
 disable-model-invocation: true
 ---
 

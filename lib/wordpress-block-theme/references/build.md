@@ -25,7 +25,7 @@ Take what the request already gives, and ask for the rest (with `AskUserQuestion
 
 ## 2. Files to Create
 
-Write to `./<slug>/`. If that folder exists, use `./<slug>-new/` and say so. Never overwrite anything.
+Write to `./<slug>/`. If that folder exists, ask for a different name or folder; in a non-interactive run, use `./<slug>-new/` (stop if that exists too) and say so. Never overwrite anything.
 
 ```
 <slug>/
@@ -69,7 +69,7 @@ A **child theme** gets only `style.css` (with `Template: <parent-slug>`), a `the
 
 **Templates, parts, and patterns**
 - Valid block markup only, and every block comment closes.
-- **No inline styles.** No `style=""`, hex colors, or pixel sizes in markup. Use block attributes that reference presets.
+- **No inline styles.** No hand-written `style=""`, hex colors, or pixel sizes in markup. Use block attributes that reference presets, and keep the `style=""` WordPress generates from those attributes (for example `style="padding-top:var(--wp--preset--spacing--40)"`) so the markup matches the block comment.
 - **Structure:**
   - Every template includes the header and footer through `<!-- wp:template-part {"slug":"header","area":"header"} /-->`.
   - Main content sits in a `<main>` group.

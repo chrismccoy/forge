@@ -94,7 +94,7 @@ Byline gray:   #888888
 ```css
 .annotation {
   position: absolute; right: -200px; width: 180px;
-  font-sans font-normal text-sm text-muted line-height-[1.5];
+  font-family: system-ui, sans-serif; font-weight: 400; font-size: 0.875rem; color: #6b6b6b; line-height: 1.5;
   border-left: 2px solid #c0392b; padding-left: 12px;
 }
 ```

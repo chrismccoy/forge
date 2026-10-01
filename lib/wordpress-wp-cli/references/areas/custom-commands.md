@@ -26,6 +26,6 @@ Keep bash for looping over sites. The bash fleet script calls the custom command
 - Batch with `'fields' => 'ids'` and `'no_found_rows' => true`, logging each batch. When the command deletes the items it queries, re-query the first page every time rather than paging, because deleting shifts the pages.
 - Use WordPress APIs (`wp_delete_user()` with a reassign ID, `wp_trash_comment()`), not raw SQL.
 - End with `WP_CLI::success()` and the counts. Use `WP_CLI\Utils\format_items()` for tables, so `--format=json` works too.
-- Lint with `php -l`. If the user has a throwaway test install, run it there with `--dry-run` only.
+- Lint with `php -l`. If the user points at a throwaway test install, run it there with `--require=<file>`, as a dry run first and then for real, and confirm both counts match (see Testing in `SKILL.md`).
 
 See `examples/custom-command.php` for a complete example.

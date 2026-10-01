@@ -29,7 +29,7 @@ Generate:
 
 ## 🛒 SECTION 3 - WooCommerce Review (If Applicable)
 
-Render only when the site is a store (Website Type = WooCommerce, or the Challenge/Stack implies commerce). Otherwise: `Section 3 - N/A (not a WooCommerce site)`.
+Render only when the site is a store (Website Type = WooCommerce, or the Challenge/Stack implies commerce). Otherwise emit only the line `## SECTION 3 - N/A (not a WooCommerce site)`.
 
 Analyze:
 - store performance
