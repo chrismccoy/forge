@@ -1,0 +1,14 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "color": {
+      "palette": [
+        { "color": "#2d1e2f", "name": "Contrast",    "slug": "contrast" },
+        { "color": "#f4a259", "name": "Accent",  "slug": "accent" },
+        { "color": "#f7f3ee", "name": "Base 2", "slug": "base-2" },
+        { "color": "#ffffff", "name": "Base",         "slug": "base" }
+      ]
+    }
+  }
+}

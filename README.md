@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 72 tools behind 83 slash commands.
+One Claude Code plugin - `forge` - holding 74 tools behind 85 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -30,6 +30,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-feature-readme`](docs/wordpress.md#wordpress-feature-readme). Writes a plain-English README for a WordPress theme or plugin: the name, a short description, and every user facing feature grouped into categories a site owner can read. Each feature is traced to real code, never taken from a readme or changelog, and the output carries no emojis, dashes, or hype words.
 - [`/wp-cli`](docs/wordpress.md#wordpress-wp-cli). Writes bash scripts that run one WP-CLI task across every WordPress site on a server, or on one site: comment and spam cleanup, media audits, user purges, updates and checksums, settings changes, theme git audits, backups, and maintenance. Every script is a dry run until `-f`, asks for a typed `yes` before changing anything, keeps going when one site fails, and ends with a summary table and a real exit code. It also reviews an existing script, lists what is wrong line by line, and fixes it. Scripts are tested against a stub `wp`, never against your live sites.
 - [`/wp-block-theme`](docs/wordpress.md#wordpress-block-theme). Builds a complete full-site-editing block theme from a short brief - theme.json version 3, templates, template parts, patterns, style variations, and local fonts - then reviews its own output until the verdict is ship. Or reviews an existing block theme and reports every problem by file and line, with a severity, the bad code and the fix, ending with a ship or don't-ship verdict. Review changes nothing; build never overwrites.
+- [`/wp-classic-to-block`](docs/wordpress.md#wordpress-classic-to-block). Moves a classic PHP theme to a block theme. ASSESS writes a migration plan: every file and view sorted by how much work it needs, every stored value the theme reads, a risk register, an hour estimate, and a verdict - full migration, hybrid, or rebuild. MIGRATE writes `theme.json`, block templates, parts, and patterns, and moves custom post types, metaboxes, and shortcodes into a companion plugin, keeping every meta key, option, and URL so existing content keeps working.
 - [`/wp-bug-audit`](docs/wordpress.md#wordpress-theme-bug-audit). Audits a WordPress theme for bugs: reads every file, checks the code against about 160 numbered bug checks, tests everything on throwaway WordPress sites across the PHP versions your customers run, and writes a verified bug list and a coverage report into the theme's `audit/` folder. It asks eight questions and confirms the cost before starting, can resume an interrupted run, and changes nothing in the theme unless you ask for fixes afterwards.
 - [`/wp-mockup`](docs/wordpress.md#wordpress-theme-mockup). Builds a clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles - bento, swiss, glassmorphism, retro terminal, y2k, and more. One page per theme template (blog index, single post, page, archives, search, 404), all sharing a header, sidebar, and footer and linking to each other. Built with Tailwind v3 and WordPress class names so `/wp-theme` can turn it into a real theme afterwards.
 
@@ -96,6 +97,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/fullstack-readme`](docs/code.md#fullstack-feature-readme). Writes a plain-English README for a web application, frontend, backend, or both: the name, a short description, and every user facing feature grouped into categories a non-technical user can read. Each feature is traced to real code, never taken from a readme, docs, or tests, and the output carries no emojis, dashes, hype words, or setup steps.
 - [`/explain-regex`](docs/code.md#regex-tutor). Explains one regular expression in plain English for beginners and experienced developers alike - a token-by-token breakdown, its structure and capture groups, examples that match and examples that fail, a step-by-step walkthrough, pitfalls, a catastrophic-backtracking (ReDoS) verdict, safer alternatives, and a jargon-free rewrite. Every example and alternative is checked against real regex engines, and the teardown prints in chat or saves to `REGEX-EXPLAINED.md`.
 - [`/script-refactor`](docs/code.md#script-refactor). Cleans up bash and Python scripts that another program or AI agent runs, keeping their output, exit codes, and written files exactly the same. It checks what calls each script, runs the old and new versions side by side to prove nothing changed, and lists any bug fix that would change behavior as a numbered proposal you approve before it is applied.
+- [`/blueprint-forge`](docs/code.md#blueprint-forge). Reads an existing codebase and writes one `BLUEPRINT.md` in 14 fixed sections - tech stack with every version's source, architecture, auth, a module map with every export's types, data models, every API route, features, UI, environment variables, tests, open questions, and step-by-step rebuild instructions - detailed enough to rebuild the app without the original code. Secrets are never copied, and a bundled checker confirms the format before you get it. Point it at a blueprint instead and it rebuilds the app: it proposes a plan, waits for your approval, then builds and verifies one step at a time. Afterwards it can scan the new app and compare it with the original blueprint, listing any endpoint, model, or environment variable the rebuild lost.
 
 **Docs & Diagrams**
 
@@ -125,7 +127,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 83 commands, nothing running in the background.
+That is the whole install. One plugin, 85 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -136,14 +138,14 @@ Then either browse the whole catalog:
 which asks for a category, then a tool, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 16 WordPress tools
+/forge-wordpress    # 17 WordPress tools
 /forge-design       # 6 design and frontend tools
 /forge-writing      # 5 writing and content tools
 /forge-devops       # 4 DevOps and data tools
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
 /forge-cleanup      # 4 code-cleanup tools
-/forge-code         # 13 code tools
+/forge-code         # 14 code tools
 /forge-docs         # 7 docs and diagram tools
 /forge-utils        # 6 utilities
 ```
@@ -166,6 +168,7 @@ Or call any tool directly:
 /wp-feature-readme              # plain-English feature README for a theme or plugin
 /wp-cli                         # write or review WP-CLI fleet scripts, dry run by default
 /wp-block-theme                 # build or review a full-site-editing block theme
+/wp-classic-to-block            # assess or migrate a classic theme to a block theme
 /wp-bug-audit                   # full theme bug audit on throwaway test sites
 /wp-mockup                      # static HTML theme mockup in one of 53 styles
 
@@ -225,6 +228,7 @@ Or call any tool directly:
 /fullstack-readme               # plain-English feature README for a web app
 /explain-regex                  # verified plain-English teardown of one regex
 /script-refactor                # clean up agent-run scripts, output kept identical
+/blueprint-forge                # codebase -> BLUEPRINT.md, or BLUEPRINT.md -> app
 
 # Docs & Diagrams
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
@@ -248,7 +252,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 83 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 85 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -272,20 +276,20 @@ description each.
 
 | Command | Tools | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 16 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-wordpress` | 17 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
 | `/forge-writing` | 5 | 3 + `More...`, then 2 |
 | `/forge-devops` | 4 | one |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
-| `/forge-code` | 13 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-code` | 14 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-docs` | 7 | 3 + `More...`, then 3 + `More...`, then 1 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
 
 
-A picker screen looks like this - `/forge-wordpress`, page 1 of 5:
+A picker screen looks like this - `/forge-wordpress`, page 1 of 6:
 
 ```
 Which tool?
@@ -343,12 +347,13 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              83 command files - 72 tools, 11 pickers
+commands/              85 command files - 74 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
   scripts/             deterministic runners
   assets/              output templates
+  examples/            worked before-and-after files the procedure reads
 ```
 
 `lib/` is deliberately not named `skills/`. Claude Code auto-discovers skills from a
@@ -359,7 +364,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 83 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 85 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -373,14 +378,14 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Tools | Reference |
 |---|---|---|
-| WordPress | 16 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 17 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
 | Writing & Content | 5 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 4 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
-| Code | 13 | [docs/code.md](docs/code.md) |
+| Code | 14 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 7 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
@@ -392,15 +397,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 83 slash commands: 11 pickers + 72 tools
-├── lib/                      ← 72 procedure folders (SKILL.md + bundled
-│                                references/scripts/assets). NOT a skills/ dir,
+├── commands/                 ← 85 slash commands: 11 pickers + 74 tools
+├── lib/                      ← 74 procedure folders (SKILL.md + bundled
+│                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 72 tools compared by how much each does
+├── SUMMARY.md                ← the 74 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

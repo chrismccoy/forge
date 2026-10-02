@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "title": "Ocean",
+  "settings": {
+    "color": {
+      "palette": [
+        { "color": "#0b2545", "name": "Contrast",    "slug": "contrast" },
+        { "color": "#13a89e", "name": "Accent",  "slug": "accent" },
+        { "color": "#eef4f8", "name": "Base 2", "slug": "base-2" },
+        { "color": "#ffffff", "name": "Base",         "slug": "base" }
+      ]
+    }
+  }
+}

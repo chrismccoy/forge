@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mytheme/event-details",
+	"title": "Event Details",
+	"category": "widgets",
+	"icon": "calendar-alt",
+	"description": "Event date, venue, banner, and optional call to action.",
+	"usesContext": [ "postId", "postType" ],
+	"attributes": {
+		"layout": { "type": "string", "enum": [ "card", "inline" ], "default": "card" },
+		"bannerId": { "type": "number" },
+		"showCta": { "type": "boolean", "default": false },
+		"ctaLabel": { "type": "string", "default": "" },
+		"ctaUrl": { "type": "string", "default": "" }
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide" ],
+		"color": { "background": true, "text": true },
+		"spacing": { "padding": true }
+	},
+	"textdomain": "mytheme-functionality",
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}

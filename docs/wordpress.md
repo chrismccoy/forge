@@ -806,9 +806,70 @@ One slash command plus its procedure file `lib/wordpress-block-theme/SKILL.md` a
 
 > *"build me a block theme for a recipe site"*, *"make an FSE theme in the bento style"*, *"review my theme.json"*, *"is this block theme ready for WordPress.org"*
 
-Block themes only. For converting static HTML into a classic theme use [`/wp-theme`](#html-to-wordpress-theme); for a full bug audit on test sites use [`/wp-bug-audit`](#wordpress-theme-bug-audit).
+Block themes only. To move a classic theme to a block theme use [`/wp-classic-to-block`](#wordpress-classic-to-block); for converting static HTML into a classic theme use [`/wp-theme`](#html-to-wordpress-theme); for a full bug audit on test sites use [`/wp-bug-audit`](#wordpress-theme-bug-audit).
 
 The full procedure lives at [`lib/wordpress-block-theme/SKILL.md`](../lib/wordpress-block-theme/SKILL.md), the references under [`lib/wordpress-block-theme/references/`](../lib/wordpress-block-theme/references/), and the slash command at [`commands/wp-block-theme.md`](../commands/wp-block-theme.md).
+
+---
+
+## `wordpress-classic-to-block`
+
+Move an existing classic PHP WordPress theme to a block theme. Point it at the theme and it writes a migration plan; ask it to migrate and it writes the block theme, plus a companion plugin for the business logic, in phases you can undo.
+
+```
+/wp-classic-to-block
+```
+
+Classic themes hide a lot of their behavior in PHP: custom post types and metaboxes in `functions.php`, Customizer settings, widgets, walkers, shortcodes, and filters that turn the block editor off. Switch themes carelessly and that content, and the settings behind it, can vanish. This tool treats the theme's stored data as the contract. Meta keys, option names, URLs, and hook names stay the same, so posts and settings keep working after the switch, and the classic theme stays available as a fallback until the new one is confirmed.
+
+**ASSESS** reads the whole theme, including `template-parts/`, `inc/`, and build files such as `package.json` and `tailwind.config.js`. It sorts every file and every rendered view into AUTO, MANUAL, PLUGIN, or DELETE, lists every stored value the theme reads (post, term, user, comment, and menu item meta, theme mods, options, widget settings, cron jobs), and ends with a risk register, an hour estimate per phase, and one verdict: full migration, hybrid, or rebuild. ASSESS is read-only.
+
+**MIGRATE** writes `theme.json` version 3 from the colors, fonts, and spacing the theme actually uses, then block templates, template parts, patterns, and style variations. It moves CPTs, taxonomies, metaboxes, shortcodes, REST routes, and cron into a companion plugin or an `inc/functionality/` folder, turns hand-coded metaboxes into block editor panels with the same keys and save rules, and finishes with WP-CLI data migrations that have a dry-run option and a checklist where every item has a "Verify:" command.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-classic-to-block/SKILL.md` and eighteen references, loaded at the gate that needs them: Gate 0 detection, ASSESS rates and the Phase 0 checklist, `theme.json` derivation, style variations, template conversion, patterns, plugin extraction, hand-coded and complex metaboxes, legacy features, site-state migration, large themes, hybrid and child themes, theme-bundled logic, WordPress.org requirements, verification, quality and deployment, and the anti-pattern list. `examples/` holds a classic theme, its converted block theme, a block child theme, and a complete companion plugin. `scripts/static-checks.sh` is a read-only check script: on a classic theme it lists what the theme contains, and on the migrated theme it checks syntax, block markup, pattern slugs, plugin blocks, and leftover block-editor sabotage.
+
+## ✨ Features
+
+- 🗂️ Inventories every PHP file and rendered view, scored by impact and effort
+- 🔎 Finds code that turns off block editor features and refuses to port it
+- 🧮 Field inventory of every stored value, with where it is saved, where it is printed, and whether it is still live
+- ⚖️ Go/no-go verdict on rendered views: straightforward, moderate, high-risk, or rebuild
+- ⏱️ Hour estimate per phase, with separate rates for small and very large themes
+- 🎨 `theme.json` version 3 with role-based color slugs, fluid type, and editor guardrails
+- 🌗 Customizer color schemes become style variations, including a per-visitor dark mode toggle
+- 🧩 Repeating sections become patterns; theme text and image paths stay out of `.html` templates
+- 🔌 Business logic moves to a companion plugin or `inc/functionality/`, with the plugin dependency spelled out
+- 🗝️ Hand-coded metaboxes become editor panels that keep every key, sanitizer, and empty-value rule
+- 🔁 Shortcodes keep working in old content while new content uses blocks
+- 🧭 Menus, widgets, Additional CSS, and page template assignments are exported and moved
+- ↩️ Reversible phases with the classic theme tagged as a fallback first
+- 🧪 Read-only check script plus a Playwright screenshot diff of the classic and block themes
+
+## 🔄 How it works
+
+1. **Intake.** Theme path, ASSESS or MIGRATE, where the logic lives, and how the theme is distributed, one question at a time.
+2. **Gate 0 and Gate 1.** Find block-editor sabotage and complexity markers, export site state (or list the export commands), and classify every file and view.
+3. **ASSESS:** summary, inventory table, complexity and hours, phased plan, risk register, plugin extraction list, field inventory, and the verdict.
+4. **MIGRATE:** plugin data layer, then plugin blocks, then the theme: `theme.json`, style variations, parts, templates, patterns, editor panels, and WP-CLI migrations. Large themes go one phase at a time.
+5. **Verify.** `static-checks.sh` on the new theme and plugin, a smoke test with the plugin off, and the acceptance checklist.
+
+## 🚀 How to use it
+
+```
+/wp-classic-to-block                              ← asks for the theme and the mode
+/wp-classic-to-block ~/themes/my-theme assess     ← migration plan only
+/wp-classic-to-block ~/themes/my-theme migrate    ← write the block theme
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"convert my classic theme to a block theme"*, *"how hard is it to move this theme to FSE"*, *"move these Customizer colors into theme.json"*, *"replace these metaboxes with Block Bindings"*, *"turn this shortcode into a block"*
+
+Classic themes only. For a new block theme or a review of one use [`/wp-block-theme`](#wordpress-block-theme); to fill every field with test content before migrating use [`/wp-demo`](#wp-demo-content); for a full bug audit on test sites use [`/wp-bug-audit`](#wordpress-theme-bug-audit).
+
+The full procedure lives at [`lib/wordpress-classic-to-block/SKILL.md`](../lib/wordpress-classic-to-block/SKILL.md), the references under [`lib/wordpress-classic-to-block/references/`](../lib/wordpress-classic-to-block/references/), and the slash command at [`commands/wp-classic-to-block.md`](../commands/wp-classic-to-block.md).
 
 ---
 

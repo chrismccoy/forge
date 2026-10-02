@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "title": "Dark",
+  "settings": {
+    "color": {
+      "palette": [
+        { "color": "#f5f5f5", "name": "Contrast",    "slug": "contrast" },
+        { "color": "#ff6b81", "name": "Accent",  "slug": "accent" },
+        { "color": "#26263d", "name": "Base 2", "slug": "base-2" },
+        { "color": "#12121f", "name": "Base",         "slug": "base" }
+      ]
+    }
+  },
+  "styles": {
+    "elements": {
+      "button": {
+        "color": { "text": "var(--wp--preset--color--base)" }
+      }
+    }
+  }
+}

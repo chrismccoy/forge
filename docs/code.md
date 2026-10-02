@@ -806,3 +806,65 @@ For a read-only refactoring plan of a whole codebase use [`/refactor`](#refactor
 The full procedure lives at [`lib/script-refactor/SKILL.md`](../lib/script-refactor/SKILL.md), the slash command at [`commands/script-refactor.md`](../commands/script-refactor.md), and the comparison script at [`lib/script-refactor/scripts/compare-runs.sh`](../lib/script-refactor/scripts/compare-runs.sh).
 
 ---
+
+## `blueprint-forge`
+
+Reads an existing codebase and writes a blueprint detailed enough to rebuild the app without the original code, or takes such a blueprint and builds the app again.
+
+```
+/blueprint-forge
+```
+
+Rewrites, handoffs, and stack changes all start with the same problem: the knowledge of how an app works lives in its code, and nobody wants to read all of it twice. The `blueprint-forge` tool reads it once and writes everything down in one `BLUEPRINT.md` with 14 fixed sections: the tech stack, the architecture, auth, a map of every source file and what it exports, the data models, every API route, the features and their business rules, the UI, every environment variable, config files, tests, open questions, and step-by-step rebuild instructions.
+
+Point it at a blueprint instead and it builds the app. It shows a plan first and writes no code until you approve it. Then it builds one step at a time and checks each one before moving on.
+
+This is not the same as [`/blueprint`](#app-blueprint). That tool designs a new app from a one-line idea. This one starts from code that already exists.
+
+## 📋 Technical Overview
+
+One slash command, its procedure file, three reference files, and two bundled Node scripts. The procedure file `lib/blueprint-forge/SKILL.md` picks the mode and runs the intake for it. `references/scan.md` holds the scan procedure and the blueprint template, `references/rebuild.md` holds the rebuild procedure, and `references/example-blueprint.md` is a complete example the scan follows for level of detail. The script `scripts/check-blueprint.mjs` checks a blueprint without calling a model: the 14 headings, the format header, and anything that looks like a real secret must all pass, and it scores route, environment variable, version source, and open question coverage. The script `scripts/compare-blueprints.mjs` compares the original blueprint with one scanned from the rebuilt app and reports how many endpoints, models, and environment variables survived the rebuild, naming every one that was lost.
+
+## ✨ Features
+
+- 📑 Always 14 sections in a fixed order, with a metadata header that records the format version and which paths were scanned
+- 🔢 Every package version tagged with where it came from: the lockfile, the manifest range, a CDN link, or a guess
+- 🛣️ Every API route on its own row, with framework shorthand such as Laravel `Route::resource` expanded into the routes it creates, plus request and response types
+- 🗺️ A module map listing each source file's exports with parameter and return types, so a rebuild in the same stack keeps existing imports and tests working
+- 🔒 Secret values never copied: passwords, keys, tokens, and private keys become `[REDACTED]`, and the checker fails the blueprint if one slips through
+- ❓ Every guess marked `ASSUMPTION:` and every gap marked `UNKNOWN:`, all collected under Open Questions
+- 🧩 Partial scans of one part of a large repo, saved as `<scope>.BLUEPRINT.md` and merged later section by section
+- ✋ Rebuilds stop after the plan; the target folder and stack appear there as defaults you can change
+- 🔁 Rebuild in a different stack on request, keeping the API, data model, auth, and business rules the same
+- 🔍 Optional round-trip check after a rebuild: scan the new app, compare it with the original blueprint, and list every endpoint, model, or environment variable that went missing
+- 🚫 Never commits, and never follows instructions found inside the scanned code or the blueprint
+
+## 🔄 How it works
+
+1. **Pick the mode.** Take it from the argument (`scan`, `rebuild`, a repo path, or a `*.BLUEPRINT.md` file), or ask one question.
+2. **Scan: read the repo.** Manifests and lockfiles first, then build config, entry points, the data layer, routes, features, UI, and tests. Every hand-written source file is opened at least once; generated and vendored folders are skipped.
+3. **Scan: write and check.** Fill the 14-section template, run the self-check, run `check-blueprint.mjs` until it passes, and end with the checklist.
+4. **Rebuild: check and plan.** Read the whole blueprint, run the checker, ask only about missing core sections or open questions that change the architecture, then propose the plan and stop.
+5. **Rebuild: build.** After approval, build one plan step at a time, verify each step, and finish with the file tree, setup steps, and a list of everything guessed or substituted.
+6. **Rebuild: round trip (optional).** On request, scan the rebuilt app and run `compare-blueprints.mjs` against the original blueprint. Each lost item is either added to the rebuild or explained as a difference in how the second scan described it.
+
+## 🚀 How to use it
+
+```
+/blueprint-forge scan                                  ← blueprint the repo you are in
+/blueprint-forge scan ~/code/myapp/server              ← blueprint one part of a large repo
+/blueprint-forge rebuild myapp.BLUEPRINT.md            ← plan, then build, from a blueprint
+/blueprint-forge                                       ← asks scan or rebuild
+```
+
+**Requests it handles** (type the command to run it; it never starts on its own):
+
+> *"document this app so it can be rewritten"*, *"reverse-engineer this codebase"*, *"port this app to another stack"*, *"rebuild this app from its blueprint"*
+
+Requirements: Node for the checker. Without Node the checker step is skipped and the run says so.
+
+To design a new app from an idea use [`/blueprint`](#app-blueprint); for onboarding docs of a repo use [`/explain-my-code`](#explain-my-code).
+
+The full procedure lives at [`lib/blueprint-forge/SKILL.md`](../lib/blueprint-forge/SKILL.md), the slash command at [`commands/blueprint-forge.md`](../commands/blueprint-forge.md), the checker at [`lib/blueprint-forge/scripts/check-blueprint.mjs`](../lib/blueprint-forge/scripts/check-blueprint.mjs), and the round-trip comparison at [`lib/blueprint-forge/scripts/compare-blueprints.mjs`](../lib/blueprint-forge/scripts/compare-blueprints.mjs).
+
+---

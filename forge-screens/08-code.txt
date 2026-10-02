@@ -1,14 +1,15 @@
 ================================================================================
-  FORGE  -  Code          ( /forge-code )          13 tools, 4 pages
+  FORGE  -  Code          ( /forge-code )          14 tools, 5 pages
 ================================================================================
   Everything here takes source you already have and analyses or documents it:
   blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors,
-  SQL queries, regular expressions, and the scripts an agent runs.
+  SQL queries, regular expressions, the scripts an agent runs, and whole
+  codebases turned into rebuildable blueprints.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/4) |
+  | [Tool]                                                 Which tool?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
   |         11-section senior-architect production blueprint for a new app.      |
@@ -23,13 +24,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations, feature READMEs, regex teardowns, script refactors.     |
+  |         annotations, feature READMEs, regex teardowns, script refactors,     |
+  |         codebase blueprints.                                                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/4) |
+  | [Tool]                                                 Which tool?  (pg 2/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
   |         Validated Mermaid diagrams of a codebase with file:line citations.   |
@@ -43,13 +45,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
-  |         feature READMEs, regex teardowns, script refactors.                  |
+  |         feature READMEs, regex teardowns, script refactors, codebase         |
+  |         blueprints.                                                          |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/4) |
+  | [Tool]                                                 Which tool?  (pg 3/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactoring plan                                       -> /refactor  |
   |         Evidence-first refactoring analysis with file:line citations. Read-  |
@@ -64,14 +67,14 @@
   |         bulk.                                                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator, full stack feature READMEs, the regex        |
-  |         tutor, and safe script refactors.                                    |
+  |         The teaching annotator, full stack feature READMEs, the regex tutor, |
+  |         safe script refactors, and codebase blueprints.                      |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/4) |
+  | [Tool]                                                 Which tool?  (pg 4/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
@@ -85,9 +88,22 @@
   |         Verified 11-section plain-English teardown of one regex: examples,   |
   |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
-  |  ( 4 )  Refactor a script safely                        -> /script-refactor  |
+  |  ( 4 )  More...                                                   -> page 5  |
+  |         Safe script refactors, and codebase blueprints with rebuilds.        |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 5/5) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Refactor a script safely                        -> /script-refactor  |
   |         Clean up bash and Python scripts an agent runs without changing      |
   |         their output; behavior fixes wait for approval.                      |
+  |                                                                              |
+  |  ( 2 )  Codebase blueprint or rebuild                   -> /blueprint-forge  |
+  |         Scan a codebase into a 14-section BLUEPRINT.md, or rebuild           |
+  |         a working app from one, plan first.                                  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -314,5 +330,26 @@
   |  Intake . per script: diff, contract check, comparison, changes,           |
   |  skipped . numbered behavior fixes, safety first . cross-script findings.  |
   |  Originals untouched until approved; fixes apply only by number.           |
+  '----------------------------------------------------------------------------'
+
+------------------------------------------------------------- /blueprint-forge -
+  NO menu when the argument says scan or rebuild, or names a repo or a
+  *.BLUEPRINT.md file.  Otherwise one question.  Rebuild asks for the
+  blueprint only when none can be found.
+
+  .--[Mode]-- scan or rebuild  (only when the argument does not say) ----------.
+  |  ( ) Scan a codebase   ( ) Rebuild from a blueprint                        |
+  '----------------------------------------------------------------------------'
+  .--[Scan]-- repo -> BLUEPRINT.md --------------------------------------------.
+  |  Manifests and lockfiles first . every source file opened . 14 fixed       |
+  |  sections . secrets [REDACTED] . self-check list . check-blueprint.mjs     |
+  |  must print PASS before the checklist is written.                          |
+  '----------------------------------------------------------------------------'
+  .--[Rebuild]-- BLUEPRINT.md -> app, STOP after the plan ---------------------.
+  |  Build order . Open Questions answers . version swaps . target folder and  |
+  |  stack shown as defaults.  After approval: one step at a time, each step   |
+  |  verified, then a handoff listing every guess and substitution.            |
+  |  Then, on request only: rescan the rebuild and compare-blueprints.mjs      |
+  |  lists every endpoint, model, and env var that went missing.               |
   '----------------------------------------------------------------------------'
 ================================================================================

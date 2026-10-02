@@ -1,0 +1,14 @@
+/* Excerpt of a classic theme's style.css — source values for theme.json derivation. */
+:root {
+  --color-primary: #1a1a2e;
+  --color-accent: #e94560;
+  --font-size-base: 16px;
+}
+body {
+  background-color: #ffffff;
+  color: var(--color-primary);
+  font-size: var(--font-size-base);
+}
+a {
+  color: var(--color-accent);
+}

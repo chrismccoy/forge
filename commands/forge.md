@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 72 tools in this plugin and then run it. This command
+Route the user to one of the 74 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,14 +29,14 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 16 WordPress tools |
+| `/forge-wordpress` | 17 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 5 writing and content tools |
 | `/forge-devops` | 4 DevOps and data tools |
 | `/forge-cloud` | 8 cloud and architecture tools |
 | `/forge-security` | 3 security tools |
 | `/forge-cleanup` | 4 code-cleanup tools |
-| `/forge-code` | 13 code tools |
+| `/forge-code` | 14 code tools |
 | `/forge-docs` | 7 docs and diagram tools |
 | `/forge-utils` | 6 utilities |
 
@@ -54,7 +54,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 16 tools. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 17 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help. 5 tools. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
@@ -73,7 +73,7 @@ such answer as a Step 0 direct hit.
 | Label | Description |
 |---|---|
 | Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 tools. |
-| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors. 13 tools. |
+| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints. 14 tools. |
 | Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, stencils. 7 tools. |
 | More... | Utilities. |
 
@@ -90,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (16 - page at 4)
+### WordPress (17 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -104,7 +104,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, bug-audit, and mockup tools. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, and mockup tools. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -118,12 +118,17 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, the theme bug audit, and theme mockups. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, and theme mockups. |
 
 | Label | Command | Description |
 |---|---|---|
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
+| Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
+| More... | - | The theme bug audit and theme mockups. |
+
+| Label | Command | Description |
+|---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
 
@@ -203,35 +208,40 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Clean README feature list | strip-emoji | Strip leading emoji from feature bullets, label dashes to colons, en and em dashes removed. |
 | Strip comments | strip-comments | Delete every comment except file headers, pragmas, and license notices. Preview and approval required. |
 
-### Code (13 - page at 4)
+### Code (14 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | App blueprint | blueprint | 11-section senior-architect production blueprint for a new app. |
 | Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors. |
+| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints. |
 
 | Label | Command | Description |
 |---|---|---|
 | Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
 | Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors. |
+| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 | Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, and safe script refactors. |
+| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, and codebase blueprints. |
 
 | Label | Command | Description |
 |---|---|---|
 | Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 | Full stack feature README | fullstack-readme | Plain-English README for a web app: title, description, and a categorized feature list traced to real code. |
 | Explain a regex | explain-regex | Verified 11-section plain-English teardown of one regex: examples, pitfalls, ReDoS verdict, alternatives. |
+| More... | - | Safe script refactors, and codebase blueprints with rebuilds. |
+
+| Label | Command | Description |
+|---|---|---|
 | Refactor a script safely | script-refactor | Clean up bash and Python scripts an agent runs without changing their output; behavior fixes wait for approval. |
+| Codebase blueprint or rebuild | blueprint-forge | Scan a codebase into a 14-section BLUEPRINT.md, or rebuild a working app from one, plan first. |
 
 ### Docs & Diagrams (7 - page at 4)
 
@@ -312,6 +322,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | wordpress-block-theme, block-theme, fse-theme | wp-block-theme |
 | wordpress-theme-bug-audit, theme-bug-audit, bug-audit, theme-audit | wp-bug-audit |
 | wordpress-theme-mockup, theme-mockup, mockup | wp-mockup |
+| wordpress-classic-to-block, classic-to-block, classic-to-block-theme-migrator, fse-migrate, theme-migrate, block-migrate | wp-classic-to-block |
 | readme-emoji | strip-emoji |
 | sql-breakdown | explain-sql |
 | regex-tutor, regex, explain-regular-expression | explain-regex |
@@ -319,6 +330,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | prompt-snippet, script-engine, write-script | snippet |
 | token-auditor, prompt-audit-usage | token-audit |
 | safe-refactor, refactor-script, script-cleanup | script-refactor |
+| blueprint-scan, blueprint-rebuild, reverse-blueprint | blueprint-forge |
 
 ## Rules
 

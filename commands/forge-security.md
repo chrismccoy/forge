@@ -68,6 +68,7 @@ answer as a Step 0 direct hit.
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
 | `blueprint` | `/forge-code` |
+| `blueprint-forge` | `/forge-code` |
 | `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
@@ -121,6 +122,7 @@ answer as a Step 0 direct hit.
 | `wp-block-theme` | `/forge-wordpress` |
 | `wp-bug-audit` | `/forge-wordpress` |
 | `wp-build` | `/forge-wordpress` |
+| `wp-classic-to-block` | `/forge-wordpress` |
 | `wp-cli` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-demo` | `/forge-wordpress` |

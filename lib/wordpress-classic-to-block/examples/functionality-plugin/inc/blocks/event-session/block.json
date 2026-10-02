@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mytheme/event-session",
+	"title": "Event Session",
+	"category": "widgets",
+	"icon": "clock",
+	"parent": [ "mytheme/event-sessions" ],
+	"attributes": {
+		"time": { "type": "string", "default": "" },
+		"title": { "type": "string", "default": "" },
+		"speaker": { "type": "string", "default": "" }
+	},
+	"supports": { "html": false, "reusable": false },
+	"textdomain": "mytheme-functionality",
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}

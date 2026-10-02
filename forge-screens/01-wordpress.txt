@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          16 tools, 5 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          17 tools, 6 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/5) |
+  | [Tool]                                                 Which tool?  (pg 1/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -27,7 +27,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/5) |
+  | [Tool]                                                 Which tool?  (pg 2/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -47,7 +47,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/5) |
+  | [Tool]                                                 Which tool?  (pg 3/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -68,7 +68,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/5) |
+  | [Tool]                                                 Which tool?  (pg 4/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -83,14 +83,14 @@
   |         and a categorized feature list traced to real code.                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         WP-CLI scripts, block themes, the theme bug audit, and theme         |
-  |         mockups.                                                             |
+  |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
+  |         bug audit, and theme mockups.                                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/5) |
+  | [Tool]                                                 Which tool?  (pg 5/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -100,11 +100,24 @@
   |         Build a full-site-editing block theme from a brief, or review one    |
   |         with file:line findings and a ship verdict.                          |
   |                                                                              |
-  |  ( 3 )  Theme bug audit                                    -> /wp-bug-audit  |
+  |  ( 3 )  Classic to block theme                      -> /wp-classic-to-block  |
+  |         Assess a classic theme for a block theme move, or migrate it:        |
+  |         theme.json, templates, and a companion plugin, keys kept.            |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 6  |
+  |         The theme bug audit and theme mockups.                               |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 6/6) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
   |         PHP versions; a verified bug list in audit/.                         |
   |                                                                              |
-  |  ( 4 )  Theme mockup in a design style                        -> /wp-mockup  |
+  |  ( 2 )  Theme mockup in a design style                        -> /wp-mockup  |
   |         Clickable static HTML mockup of a classic theme in one of 53 named   |
   |         styles, ready for /wp-theme.                                         |
   |                                                                              |
@@ -432,6 +445,33 @@
   |  local fonts; self-reviewed until SHIP.  REVIEW: findings by file:line,    |
   |  CRITICAL / WARNING / INFO with BAD/GOOD code, then SHIP, FIX WARNINGS,    |
   |  or DO NOT SHIP.  No templates/index.html STOPS the review.                |
+  '----------------------------------------------------------------------------'
+
+--------------------------------------------------------- /wp-classic-to-block -
+  Theme first, then the mode, one at a time.  A path argument sets the
+  theme; "assess" or "migrate" after it sets the mode.
+
+  .--[Theme]-- the classic theme ----------------------------------------------.
+  |  ( ) the current directory   ( ) a path I give                             |
+  |      templates/index.html present STOPS: already a block theme             |
+  '----------------------------------------------------------------------------'
+  .--[Mode]-- plan or convert -------------------------------------------------.
+  |  ( ) assess - migration plan first (default)                               |
+  |  ( ) migrate - write the block theme                                       |
+  '----------------------------------------------------------------------------'
+  .--[Code home]-- only when the theme holds business logic -------------------.
+  |  ( ) companion plugin {slug}-functionality (default)                       |
+  |  ( ) inside the theme in inc/functionality/                                |
+  '----------------------------------------------------------------------------'
+  .--[Distribution]-- where it ships ------------------------------------------.
+  |  ( ) single client site (default)   ( ) WordPress.org   ( ) commercial     |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- assess plans, migrate converts --------------------------------.
+  |  ASSESS: inventory by AUTO / MANUAL / PLUGIN / DELETE, field inventory,    |
+  |  risk register, hours per phase, verdict: full, hybrid, or rebuild.        |
+  |  MIGRATE: theme.json v3, templates, parts, patterns, companion plugin,     |
+  |  WP-CLI migrations with dry run; meta keys and options kept.  The classic  |
+  |  theme is never edited, and an untagged fallback waits for a yes.          |
   '----------------------------------------------------------------------------'
 
 ---------------------------------------------------------------- /wp-bug-audit -

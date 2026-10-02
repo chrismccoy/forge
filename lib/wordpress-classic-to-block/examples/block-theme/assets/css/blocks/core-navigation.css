@@ -1,0 +1,5 @@
+/* Leftover classic nav rules that theme.json cannot express. Loaded only when core/navigation renders. */
+.wp-block-navigation .current-menu-item > a {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}

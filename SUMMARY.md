@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 72 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 74 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 43 guided helpers · 28 full toolkits.
+**At a glance:** 1 quick win · 43 guided helpers · 30 full toolkits.
 
 ## Small Utils
 
@@ -90,18 +90,20 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `wp-demo-content` | `/wp-demo` | Reads a theme's whole data model, then writes and tests a one-file importer that fills an empty site with realistic demo content - posts, photos, video, comments, menus and every setting the theme reads - and hands back a list of the theme's own bugs |
 | `wordpress-wp-cli` | `/wp-cli` | Writes bash scripts that run one WP-CLI task across every WordPress site on a server - cleanup, updates, users, media, backups, settings - dry run by default with a typed confirmation, one site's failure never stopping the rest, and a summary table at the end. Also reviews and fixes scripts you already have, and tests every script against a stub before handing it over |
 | `wordpress-block-theme` | `/wp-block-theme` | Builds a complete full-site-editing block theme from a short brief - theme.json version 3, templates, parts, patterns, style variations, local fonts - and reviews it until it ships, or reviews an existing block theme by file and line with a ship verdict |
+| `wordpress-classic-to-block` | `/wp-classic-to-block` | Moves a classic PHP theme to a block theme - first a plan that sorts every file and view by how much work it needs, lists every stored value the theme reads, and gives an hour estimate and a verdict, then the converted theme with custom post types, metaboxes, and shortcodes moved into a companion plugin, every meta key, option, and URL kept |
 | `wordpress-theme-bug-audit` | `/wp-bug-audit` | Reads every file in a theme, runs about 160 numbered bug checks, tests everything on throwaway sites across your customers' PHP versions, and writes a verified bug list and coverage report - changing nothing unless you ask for fixes |
 | `wordpress-theme-mockup` | `/wp-mockup` | Builds a clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles - every template as a linked page with a shared header, sidebar, and footer - ready for `/wp-theme` to turn into a real theme |
 | `page-tailwindify` | `/page-tailwindify` | Rebuilds a live page's exact look in clean Tailwind, the framework's generated class hashes swapped for real utilities and every class traced to a real computed value (needs Claude in Chrome) |
 | `prompt-snippet` | `/snippet` | Asks three questions, then writes a complete standalone script in any of 19 languages - help text, exit codes, cleanup on interrupt, a dry run before anything destructive, and no secrets in the file |
 | `e2e-playwright` | `/e2e-tests` | Adds a browser test suite to a Node app: a throwaway database rebuilt each run, a stand-in for any paid API so no real one is called, one test per user journey, and a report of every bug and every change it made |
 | `script-refactor` | `/script-refactor` | Cleans up the bash and Python scripts another program or AI agent runs without changing their output, exit codes, or files, runs old and new side by side to prove it, and holds every behavior-changing bug fix for your approval |
+| `blueprint-forge` | `/blueprint-forge` | Reads a whole codebase and writes a 14-section blueprint detailed enough to rebuild the app without the original code - every route, model, export, and environment variable, secrets never copied, checked by a bundled script - or rebuilds a working app from one, plan first and each step verified, with an optional check that lists anything the rebuild lost |
 
 ## A few extra notes
 
-**Thirty-three tools have a command name that's different from the tool name:**
+**Thirty-four tools have a command name that's different from the tool name:**
 
-All sixteen WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+All seventeen WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
 - `wordpress-plugin` → type `/wp-plugin`
 - `wp-builder-pro` → type `/wp-build`
@@ -117,6 +119,7 @@ All sixteen WordPress tools share a short `wp-` command so they group together w
 - `wordpress-feature-readme` → type `/wp-feature-readme`
 - `wordpress-wp-cli` → type `/wp-cli`
 - `wordpress-block-theme` → type `/wp-block-theme`
+- `wordpress-classic-to-block` → type `/wp-classic-to-block`
 - `wordpress-theme-bug-audit` → type `/wp-bug-audit`
 - `wordpress-theme-mockup` → type `/wp-mockup`
 
@@ -140,14 +143,14 @@ And seventeen others are shortened or renamed:
 - `fullstack-feature-readme` → type `/fullstack-readme`
 - `regex-tutor` → type `/explain-regex`
 
-The other 39 use their own name as the command. Every tool has exactly one command.
+The other 40 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 83 commands are pickers, not tools:**
+**Eleven of the 85 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 16, 6, 5, 4, 8, 3, 4, 13, 7 and 6 tools
+and go straight to one of the ten categories - 17, 6, 5, 4, 8, 3, 4, 14, 7 and 6 tools
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -156,12 +159,12 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 55 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 56 tools - the easiest way to start
 - **Asks a few questions directly:** 1 - `html-to-wordpress-theme`
-- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 16 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 17 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`
 
 **Every tool runs only when you type its command:**
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 72 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 74 tools here.

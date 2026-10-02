@@ -1,0 +1,21 @@
+/*
+Theme Name: MyTheme
+Theme URI: https://example.com/mytheme
+Author: Your Name
+Author URI: https://example.com
+Description: Block theme converted from the MyTheme classic theme. Full Site Editing templates, patterns, and style variations.
+Requires at least: 6.6
+Tested up to: 6.8
+Requires PHP: 7.4
+Version: 2.0.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mytheme
+Tags: full-site-editing, block-patterns, block-styles, style-variations, wide-blocks, editor-style, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, blog
+*/
+
+/*
+ * WordPress does NOT enqueue this file automatically for any theme — functions.php does.
+ * Keep it small: everything expressible in theme.json belongs there.
+ * Only rules theme.json cannot express (e.g. complex selectors) stay here.
+ */

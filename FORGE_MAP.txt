@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  72 tools . 83 commands . 11 pickers . 0 skills . nothing auto-fires.
+  74 tools . 85 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  16 tools.    |
+  |         Build, review, format, and fill WP plugins and themes.  17 tools.    |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
@@ -63,7 +63,7 @@
   |                                                                              |
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
-  |         refactors, regex teardowns, script refactors.  13 tools.             |
+  |         refactors, regex teardowns, script refactors.  14 tools.             |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils.  7 tools.   |
@@ -91,10 +91,10 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  16 tools, 5 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  17 tools, 6 pages ----------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/5) |
+  | [Tool]                                                 Which tool?  (pg 1/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -115,7 +115,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/5) |
+  | [Tool]                                                 Which tool?  (pg 2/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -135,7 +135,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/5) |
+  | [Tool]                                                 Which tool?  (pg 3/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -156,7 +156,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/5) |
+  | [Tool]                                                 Which tool?  (pg 4/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -171,14 +171,14 @@
   |         and a categorized feature list traced to real code.                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         WP-CLI scripts, block themes, the theme bug audit, and theme         |
-  |         mockups.                                                             |
+  |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
+  |         bug audit, and theme mockups.                                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/5) |
+  | [Tool]                                                 Which tool?  (pg 5/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -188,11 +188,24 @@
   |         Build a full-site-editing block theme from a brief, or review one    |
   |         with file:line findings and a ship verdict.                          |
   |                                                                              |
-  |  ( 3 )  Theme bug audit                                    -> /wp-bug-audit  |
+  |  ( 3 )  Classic to block theme                      -> /wp-classic-to-block  |
+  |         Assess a classic theme for a block theme move, or migrate it:        |
+  |         theme.json, templates, and a companion plugin, keys kept.            |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 6  |
+  |         The theme bug audit and theme mockups.                               |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 6/6) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
   |         PHP versions; a verified bug list in audit/.                         |
   |                                                                              |
-  |  ( 4 )  Theme mockup in a design style                        -> /wp-mockup  |
+  |  ( 2 )  Theme mockup in a design style                        -> /wp-mockup  |
   |         Clickable static HTML mockup of a classic theme in one of 53 named   |
   |         styles, ready for /wp-theme.                                         |
   |                                                                              |
@@ -408,10 +421,10 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  13 tools, 4 pages --------------------------------
+--- Code  ( /forge-code )  -  14 tools, 5 pages --------------------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/4) |
+  | [Tool]                                                 Which tool?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
   |         11-section senior-architect production blueprint for a new app.      |
@@ -426,13 +439,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations, feature READMEs, regex teardowns, script refactors.     |
+  |         annotations, feature READMEs, regex teardowns, script refactors,     |
+  |         codebase blueprints.                                                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/4) |
+  | [Tool]                                                 Which tool?  (pg 2/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
   |         Validated Mermaid diagrams of a codebase with file:line citations.   |
@@ -446,13 +460,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
-  |         feature READMEs, regex teardowns, script refactors.                  |
+  |         feature READMEs, regex teardowns, script refactors, codebase         |
+  |         blueprints.                                                          |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/4) |
+  | [Tool]                                                 Which tool?  (pg 3/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactoring plan                                       -> /refactor  |
   |         Evidence-first refactoring analysis with file:line citations. Read-  |
@@ -467,14 +482,14 @@
   |         bulk.                                                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator, full stack feature READMEs, the regex        |
-  |         tutor, and safe script refactors.                                    |
+  |         The teaching annotator, full stack feature READMEs, the regex tutor, |
+  |         safe script refactors, and codebase blueprints.                      |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/4) |
+  | [Tool]                                                 Which tool?  (pg 4/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
@@ -488,9 +503,22 @@
   |         Verified 11-section plain-English teardown of one regex: examples,   |
   |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
-  |  ( 4 )  Refactor a script safely                        -> /script-refactor  |
+  |  ( 4 )  More...                                                   -> page 5  |
+  |         Safe script refactors, and codebase blueprints with rebuilds.        |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 5/5) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Refactor a script safely                        -> /script-refactor  |
   |         Clean up bash and Python scripts an agent runs without changing      |
   |         their output; behavior fixes wait for approval.                      |
+  |                                                                              |
+  |  ( 2 )  Codebase blueprint or rebuild                   -> /blueprint-forge  |
+  |         Scan a codebase into a 14-section BLUEPRINT.md, or rebuild           |
+  |         a working app from one, plan first.                                  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -608,8 +636,8 @@
    +-- WordPress ............. /forge-wordpress
    |    +-- wp-plugin  wp-build  wp-theme  wp-review  wp-consult  wp-format
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
-   |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-bug-audit
-   |    +-- wp-mockup
+   |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-classic-to-block
+   |    +-- wp-bug-audit  wp-mockup
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system
@@ -637,7 +665,7 @@
    |    +-- blueprint  e2e-tests  explain-my-code  codebase-to-mermaid
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
    |    +-- docblock-rewrite  code-teacher  fullstack-readme  explain-regex
-   |    +-- script-refactor
+   |    +-- script-refactor  blueprint-forge
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt
@@ -662,7 +690,8 @@
                     e2e-tests,  prompt-snippet / script-engine ->
                     snippet,  token-auditor / prompt-audit-usage ->
                     token-audit,  safe-refactor / refactor-script ->
-                    script-refactor, plus the long wordpress-* names ->
-                    their wp-* commands.
+                    script-refactor,  blueprint-scan / blueprint-rebuild
+                    -> blueprint-forge, plus the long wordpress-* names
+                    -> their wp-* commands.
 
 ================================================================================

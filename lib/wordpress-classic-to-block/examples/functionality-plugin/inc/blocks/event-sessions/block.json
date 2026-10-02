@@ -1,0 +1,14 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "mytheme/event-sessions",
+	"title": "Event Sessions",
+	"category": "widgets",
+	"icon": "list-view",
+	"description": "Repeater: an ordered list of session blocks.",
+	"allowedBlocks": [ "mytheme/event-session" ],
+	"supports": { "html": false },
+	"textdomain": "mytheme-functionality",
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}
