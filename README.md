@@ -85,7 +85,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 
 **Code**
 
-- [`/blueprint`](docs/code.md#app-blueprint). Produces a full production app blueprint from your idea - folder layout, data models, API design, dependencies, tests, and CI/CD.
+- [`/blueprint`](docs/code.md#app-blueprint). Produces a 12-section production blueprint from your idea, or from a random pick of 2,600 ready-made examples if you don't have one yet - folder layout, data models, API design, dependencies, tests, CI/CD, security, and a risk register - then hardens it: a fresh reviewer checks it against fact sheets for your stack and repairs what the framework doesn't actually do, a throwaway skeleton proves it builds, and short spikes test whatever is still risky. Every stage keeps a numbered version of the plan.
 - [`/e2e-tests`](docs/code.md#e2e-playwright). Adds a Playwright end-to-end suite to an existing Node/Express app without touching how the current tests run. Builds a throwaway install rebuilt from the app's own schema each run, a stand-in server for any paid API so the suite never makes a real call, one spec per user journey that needs a real browser, and `TESTING.md`. A real bug keeps its assertion, gets marked `test.fail()`, and is reported rather than fixed.
 - [`/explain-my-code`](docs/code.md#explain-my-code). Reads a whole repo and writes one self-contained onboarding document - architecture, folder map, app flow, design patterns, risks - in 13 fixed sections with Mermaid diagrams, so anyone new to the project can get up to speed just by reading it.
 - [`/codebase-to-mermaid`](docs/code.md#codebase-to-mermaid). Reads a codebase you don't know and draws accurate Mermaid flow, sequence, or class diagrams, with every box tied to a real file and line.
@@ -217,7 +217,7 @@ Or call any tool directly:
 /strip-comments                 # delete comments, keep headers and pragmas
 
 # Code
-/blueprint                      # 11-section production app blueprint
+/blueprint                      # app blueprint, reviewed, scaffolded, spiked
 /e2e-tests                      # Playwright end-to-end suite for a Node/Express app
 /explain-my-code                # 13-section onboarding doc for a whole repo
 /codebase-to-mermaid            # validated Mermaid diagrams with file:line cites

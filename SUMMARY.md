@@ -2,7 +2,7 @@
 
 A quick guide to what's in the `forge` plugin and how its 75 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 44 guided helpers · 30 full toolkits.
+**At a glance:** 1 quick win · 43 guided helpers · 31 full toolkits.
 
 ## Small Utils
 
@@ -33,7 +33,6 @@ These ask you a few questions (or take a short description), then produce a comp
 | `refactoring-analyst` | `/refactor` | Reviews your code and returns a prioritized clean-up plan, every issue tied to a real file and line |
 | `kubernetes-architect` | `/kubernetes-architect` | Turns your app details into ready-to-use Kubernetes setup files |
 | `docker-compose-architect` | `/docker-compose-architect` | Builds a secure Docker setup for your app - networks, storage, health checks, secrets kept safe |
-| `app-blueprint` | `/blueprint` | Turns a one-line app idea into a full plan: folders, data, APIs, libraries, tests, and deployment |
 | `wordpress-consultant` | `/wp-consult` | A senior WordPress audit across architecture, performance, security, and scaling, with a 0-100 scorecard |
 | `accessibility-audit` | `/accessibility-audit` | Checks a page, folder, or pasted component for accessibility problems, explains why each one matters, fixes them if you ask, and tells you which keys to test |
 | `system-design` | `/system-design` | Designs how a system should be built to handle real load - components, data flow, database choice, and what breaks first |
@@ -68,6 +67,7 @@ These ask you a few questions (or take a short description), then produce a comp
 The biggest tools. They run multi-step workflows, generate whole sets of files, or include built-in scripts and checklists. Best for bigger jobs where you want production-ready results, not just a draft.
 
 | Tool | How you start it | What it does for you |
+| `app-blueprint` | `/blueprint` | Turns an app idea - yours, or a random pick from 2,600 examples - into a full plan: folders, data, APIs, libraries, tests, deployment, security, and risks. Then a fresh reviewer checks it against fact sheets for your stack, a throwaway skeleton proves it builds, and short experiments test what's still risky |
 |--------|------------------|----------------------|
 | `wp-builder-pro` | `/wp-build` | Builds and fixes custom WordPress code - themes, plugins, blocks, WooCommerce, and more |
 | `wordpress-plugin` | `/wp-plugin` | Generates a complete, ready-to-submit WordPress plugin from scratch, security and cleanup included |

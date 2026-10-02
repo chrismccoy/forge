@@ -432,7 +432,7 @@
   | [Tool]                                                 Which tool?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
-  |         11-section senior-architect production blueprint for a new app.      |
+  |         12-section app blueprint, fact-checked review, scaffold, spikes.     |
   |                                                                              |
   |  ( 2 )  Playwright end-to-end suite                           -> /e2e-tests  |
   |         Add a Playwright E2E suite to a Node/Express app: seeded throwaway   |

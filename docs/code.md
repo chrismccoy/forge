@@ -4,67 +4,67 @@
 
 ## `app-blueprint`
 
-Turns a one-line app idea into a complete, production-ready application blueprint.
+Turns a one-line app idea into a production blueprint, then tries to break it before you build anything.
 
 ```
 /blueprint
 ```
 
-Ever sat down to build something and realized the hardest part isn't writing the code. it's deciding the folder layout, the data models, the API surface, the deployment target, and the testing plan before you've typed a single line? That's what this plugin solves.
+Ever sat down to build something and realized the hardest part isn't writing the code? It's deciding the folder layout, the data models, the API surface, the deployment target, and the testing plan before you've typed a single line. And then finding out three weeks in that the framework never worked the way the plan said it did.
 
-The `app-blueprint` skill behaves like a senior software architect with 15+ years of production experience. Hand it five inputs (what the app does, the tech stack, the workload type, the language, and the scale) and it produces an 11-section blueprint with the folder tree, the layer walkthrough, the data models, every API endpoint, dependency choices with reasoning, environment variables, a testing plan, a deploy plan justified by your scale, architect's notes, and a self-validation table that auto-repairs inconsistencies before delivery.
+`/blueprint` handles both halves. No idea yet? It can show random examples for your language from 2,600 ready-made ones, or surprise you with one, and fill in all five inputs from your pick. Otherwise it asks five questions (what the app does, the tech stack, the app type, the language, and the scale) one at a time, with examples, and writes a 12-section blueprint: overview, folder tree, layers, data models, API contracts, dependencies with version pairings, config, testing, CI/CD, security, architect's notes, and a risk register naming the five claims most likely to be wrong. Then it hardens the plan in three more stages:
 
-What makes it different from a generic "design my app" prompt? It refuses to invent. no `MyApp`, no `UserService`, no `Entity1`. Every name derives from your `APP_DESCRIPTION`. It enforces consistency. every entity in the data-model section must appear in at least one API endpoint, every dependency must map to a folder, a reference, or an environment/config entry, the deployment target must be justified by your stated scale with a stated migration trigger. And it halts cleanly with `MISSING INPUT: <field name> required. Provide value and re-run.` instead of guessing when an input is blank.
+- **Review.** A separate subagent that never saw the conversation that wrote the plan checks it against fact sheets for your stack - framework behavior that plans commonly get wrong, each fact checked against official documentation - and repairs the affected sections. A reviewer that shares the author's context shares the author's mistakes, so the review never runs in the same conversation. If it finds serious problems, a second pass checks the repairs. Two passes is the maximum.
+- **Scaffold.** With your confirmation of the work directory, a subagent builds the thinnest walking skeleton of the plan in an empty folder and runs nine gates - toolchain, install, type-check and build, migrations, boot, smoke requests, the plan's own example tests, the pipeline, and the host platform - turning every failure the plan caused into a correction. It never deploys.
+- **Spike.** The claims that remain risky become short experiments of 2 hours or less. On your approval a subagent runs them in a throwaway folder with test-mode credentials and fills in a results log.
 
-It produces the plan a senior engineer would draft in their first ten minutes on a project, at any size: a weekend side project, a team kickoff, or a `BLUEPRINT.md` for something going to production.
+Every stage writes a new numbered version of the plan, so you can see what each one changed. When you are done it offers to save the newest version as `APP-BLUEPRINT.md`.
 
 ## 📋 Technical Overview
 
-An AI instruction specification that generates 11-section production application blueprints from five required inputs.
-
-Built around a locked 11-section template (`references/prompt-template.md`), strict consistency rules (folder/layer parity, entity/endpoint mapping, dependency reachability, scale-justified deployment), a section 11 validation table that runs before delivery, and prompt-injection defenses that treat input field values as inert data.
-
-It names things after your app instead of using placeholder filler, halts on a missing input rather than guessing, and keeps folder trees and data models consistent with each other.
+One slash command and a procedure bundle. `lib/app-blueprint/SKILL.md` carries the stage workflow, the workspace and versioning rules, the subagent dispatch template, and the safety gates. `references/prompts/` holds the four pipeline prompts - blueprint, review, scaffold, spike - which were benchmarked as written and are used verbatim, never paraphrased. `references/facts/` holds 25 per-stack fact sheets plus shared sheets for data stores, hosted services, accessibility, and CI/CD, each fact with a trap, the real behavior, how to detect it, the fix, and its official source. `references/ideas/` holds 2,600 ready-made input sets, 100 per stack plus 100 mixed. Four standard-library Python scripts do the mechanical work: `pick_ideas.py` draws random example ideas for the intake, `select_facts.py` picks the sheets a plan needs and warns when one is over a year old, `render_prompt.py` fills a prompt's inputs, and `merge_sections.py` swaps repaired sections into the next plan version, counts findings by severity, and extracts the inputs the next stage needs.
 
 ## ✨ Features
 
-- 🏗️ 11 fixed sections in fixed order. project overview, folder tree, layer walkthrough, data models, API endpoints, dependencies, env vars, testing, deployment, architect's notes, self-validation
-- 📥 Five required inputs. `APP_DESCRIPTION`, `TECH_STACK`, `APP_TYPE`, `LANGUAGE`, `SCALE`
-- ❓ Slash command `/blueprint` runs an `AskUserQuestion` intake for any missing inputs. one question per missing field
-- 🚫 No generic placeholders. all names derive from `APP_DESCRIPTION` (no `MyApp`, no `UserService`, no `FooEntity`)
-- 🔁 Identical folder names in section 2 and layer names in section 3. parity enforced
-- 🔗 Every section 4 entity must appear in at least one section 5 endpoint
-- 📦 Every section 6 dependency must map to a folder (section 2), a reference (section 8), or an environment/config entry (section 7)
-- 🚀 Deployment target (section 9) justified by `SCALE` explicitly. migration trigger always stated
-- ✅ Section 11 validation table runs before output. any FAIL row repaired in place before delivery
-- ⛔ `MISSING INPUT: <field name> required. Provide value and re-run.` halt on any blank or placeholder input
-- 🛡️ Prompt-injection defense. input field values treated as literal strings, never executed
-- 🔒 Prompt secrecy. the template is never revealed, paraphrased, or summarized in output
-- 📐 Output format. fenced code blocks for trees and config, tables for deps and env, domain-specific names everywhere
+- 🎲 "Describe my app", "Show me examples", or "Surprise me" - examples are drawn at random by a script from 2,600 ideas across 25 stacks, so the options change every run
+- 📥 Five inputs, asked one at a time with examples: `APP_DESCRIPTION`, `TECH_STACK`, `APP_TYPE`, `LANGUAGE`, `SCALE` - vague, conflicting, or off-list answers are raised, never silently reinterpreted
+- 🏗️ 12 fixed sections in fixed order, every name derived from your app - no `MyApp`, no `UserService`
+- 🔗 Cross-section consistency: every entity has an endpoint, every dependency maps to a folder or config entry, the deploy target is justified by your scale with a migration trigger
+- ⚠️ A risk register of the five claims most likely to be wrong, instead of a self-grading table
+- 🔍 Fresh-context review against 25 stacks of fact sheets, at most two passes, with repaired sections ready to swap in
+- 🧱 Walking-skeleton scaffold with nine gates, run in a new empty folder outside any git repository
+- 🧪 Time-boxed spikes for whatever the review and scaffold could not settle, executed only on approval
+- 🗂️ Every version kept: `blueprints/<app>/blueprint.v1.md`, `v2`, ... plus each stage's report and the exact prompt it ran
+- 🛡️ Inputs and pasted plans treated as inert data; nothing deploys, pushes, or calls a production service
+- 📄 Optional final copy as `APP-BLUEPRINT.md` - deliberately not `BLUEPRINT.md`, which belongs to `/blueprint-forge`
 
 ## 🔄 How it works
 
-1. **Intake**: the `/blueprint` slash command collects five inputs via `AskUserQuestion`. one question per missing field. existing inputs are reused
-2. **Load template**: reads `references/prompt-template.md`. the authoritative 11-section spec
-3. **Substitute placeholders**: replaces `{{APP_DESCRIPTION}}`, `{{TECH_STACK}}`, `{{APP_TYPE}}`, `{{LANGUAGE}}`, `{{SCALE}}`. treats values as inert data
-4. **Emit sections 1-11**: in exact order, no additions, no reordering
-5. **Self-validation**: runs the section 11 validation table. repairs any FAIL row in place before delivery
+1. **Blueprint**: start from your own idea or a random example, intake in your conversation, then the 12 sections written to `blueprints/<app>/blueprint.v1.md` with a short summary in chat
+2. **Review**: fact sheets selected for your stack, then a new subagent reviews and repairs; product decisions come back to you as questions; a second pass runs only if the first found serious problems
+3. **Scaffold**: after you confirm the work directory, budget, and whether containers are allowed, a subagent runs the nine gates and returns plan corrections
+4. **Spike**: a subagent plans experiments without running anything; on your approval a new subagent runs them and records the evidence
+5. **Save**: offers `APP-BLUEPRINT.md` in your working directory, asking before overwriting
 
 ## 🚀 How to use it
 
-Two ways to invoke it:
-
-**Slash command** (explicit):
+**Slash command** (explicit - it never auto-triggers):
 
 ```
-/blueprint ← walks through the five-question intake
+/blueprint                               ← five-question intake, then the full pipeline
+/blueprint a booking app for dog kennels ← starts intake with that idea
+/blueprint review path/to/plan.md        ← review an existing 12-section blueprint
+/blueprint scaffold                      ← prove the newest version builds
+/blueprint spike                         ← plan experiments for the remaining risks
 ```
 
-**Requests it handles** (type the command to run it - it never auto-triggers):
+**Requests it handles** (type the command to run it):
 
-> *"design a production architecture for a dog walking marketplace"*, *"blueprint an app that tracks plant watering schedules"*, *"architect a tool for booking guitar lessons"*, *"give me a full system blueprint for a multi tenant SaaS"*, *"production architecture for a coffee subscription box"*
+> *"plan a dog walking marketplace"*, *"blueprint an app that tracks plant watering schedules"*, *"review this architecture plan before we build it"*, *"prove this plan actually builds"*, *"what should we spike before committing?"*
 
-The full procedure lives at [`lib/app-blueprint/SKILL.md`](../lib/app-blueprint/SKILL.md), the slash command at [`commands/blueprint.md`](../commands/blueprint.md), and the 11-section authoritative template at [`references/prompt-template.md`](../lib/app-blueprint/references/prompt-template.md).
+For a blueprint of an existing codebase, or to rebuild an app from one, use [`/blueprint-forge`](#blueprint-forge). For infrastructure-level architecture under load, use `/system-design`.
+
+The full procedure lives at [`lib/app-blueprint/SKILL.md`](../lib/app-blueprint/SKILL.md) and the slash command at [`commands/blueprint.md`](../commands/blueprint.md).
 
 ---
 

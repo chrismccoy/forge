@@ -36,7 +36,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 
 | Label | Command | Description |
 |---|---|---|
-| App blueprint | blueprint | 11-section senior-architect production blueprint for a new app. |
+| App blueprint | blueprint | 12-section blueprint for a new app, then fact-checked review, walking-skeleton scaffold, and spikes. |
 | Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
 | More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints. |

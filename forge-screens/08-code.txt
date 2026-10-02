@@ -12,7 +12,7 @@
   | [Tool]                                                 Which tool?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
-  |         11-section senior-architect production blueprint for a new app.      |
+  |         12-section app blueprint, fact-checked review, scaffold, spikes.     |
   |                                                                              |
   |  ( 2 )  Playwright end-to-end suite                           -> /e2e-tests  |
   |         Add a Playwright E2E suite to a Node/Express app: seeded throwaway   |
@@ -118,26 +118,34 @@
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 
 ---------------------------------------------------------------- /blueprint ---
-  5 fields, asked one at a time.  (arg seeds APP_DESCRIPTION, confirmed first.)
+  Opening pick, then 5 fields, one per message.  (arg seeds APP_DESCRIPTION
+  and skips the opening pick.)  A picked idea fills all 5: straight to confirm.
 
-  .--[App description]-- what the app does, domain, target users --------------.
-  |  ___                                                                       |
+  .--[Start]-- how do you want to start? --------------------------------------.
+  |  ( ) Describe my app   ( ) Show me examples   ( ) Surprise me              |
+  |      examples: 4 random ideas for your language, drawn from 2,600          |
+  |      Other = draw 4 new ones                                               |
   '----------------------------------------------------------------------------'
-  .--[App type]-- workload class  (4 shown of 6) ------------------------------.
-  |  ( ) web app   ( ) API service   ( ) mobile   ( ) CLI                      |
-  |      also: data pipeline, desktop                                          |
+  .--[App description]-- what the app does, domain, target users --------------.
+  |  ___  vague -> asked once for the domain and 2-3 core nouns                |
   '----------------------------------------------------------------------------'
   .--[Tech stack]-- primary frameworks, database, infra -----------------------.
   |  ___ e.g. "Next.js + Postgres + Prisma + Vercel"                           |
   '----------------------------------------------------------------------------'
-  .--[Language]-- implementation language  (4 shown of 6) ---------------------.
-  |  ( ) TypeScript   ( ) Python   ( ) Go   ( ) Rust                           |
-  |      also: Java, C#                                                        |
+  .--[App type]-- workload class  (8 options) ---------------------------------.
+  |  ( ) web app   ( ) API service   ( ) mobile   ( ) CLI                      |
+  |      also: data pipeline, desktop, plugin/extension, library               |
+  '----------------------------------------------------------------------------'
+  .--[Language]-- implementation language  (25 options) -----------------------.
+  |  ( ) TypeScript   ( ) Python   ( ) Go   ( ) Rust   ( ) PHP   ...           |
+  |      off-list answer -> asked once, then accepted as (custom)              |
   '----------------------------------------------------------------------------'
   .--[Scale]-- concurrent users / req-per-sec / data volume -------------------.
   |  ___ e.g. "100 tenants, ~5k DAU, 50 rps peak"                              |
+  |      no numbers -> asked once, then a conservative default (approx)        |
   '----------------------------------------------------------------------------'
-
+  Then: confirmation block, "Proceed? (yes / edit)".  Scaffold and spike ask
+  for the work directory, budget and containers before anything runs.
 
 ----------------------------------------------------------------- /e2e-tests ---
   5 fields, asked one at a time.  Any field the repository answers is skipped -
