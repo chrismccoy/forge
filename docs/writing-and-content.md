@@ -292,3 +292,60 @@ Two ways to invoke:
 The full procedure lives at [`lib/language-tutor/SKILL.md`](../lib/language-tutor/SKILL.md), the slash command at [`commands/language-tutor.md`](../commands/language-tutor.md), and the on-demand reference files at [`lib/language-tutor/references/prompt-template.md`](../lib/language-tutor/references/prompt-template.md), [`lib/language-tutor/references/constraints.md`](../lib/language-tutor/references/constraints.md), [`lib/language-tutor/references/output-spec.md`](../lib/language-tutor/references/output-spec.md).
 
 ---
+
+## `github-bio`
+
+Five GitHub profile bios from six plain questions, in the voice of a personal branding expert for developers. One question per message, a confirmation step before any writing, and a script that checks every bio against GitHub's 160-character limit.
+
+```
+/github-bio
+```
+
+Most "write my GitHub bio" prompts make you fill in a long template up front, then return bios that invent skills you never listed, stamp "Senior" on every role, repeat the same tool twice, and run well past the 160 characters GitHub's bio field allows. This plugin replaces that with an interview. It asks for your role, core stack, databases, cloud and auth platforms, DevOps skills, and specialty one at a time, each with an example, and lets you skip any category except your role. It shows your answers back and waits for a yes before writing. Then it writes one bio in each of five styles - categorized, modern and traditional blend, keyword dense, concise and professional, and visual and vertical - using only what you said, keeping your stated level (Junior, Senior, Lead) and adding none when your title has no level.
+
+The skill body runs the workflow. Step 1 asks the six questions as plain messages, never as menus, since every answer is free text. Step 2 shows the summary and waits for confirmation. Step 3 writes the five bios. Step 4 pipes all five drafts into `scripts/count_chars.py`, which prints a count for each and exits 1 when any bio is over 160 characters; flagged bios are rewritten and checked again. Step 5 prints each bio in its own code block with its final count.
+
+Scope-locked: anything other than a GitHub profile bio gets `Out of scope: this tool writes GitHub profile bios only.` and a pointer to `/readme-builder` for full READMEs. Answers are treated as data, so an instruction typed into an answer is recorded as text, never obeyed.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/github-bio/SKILL.md` carries the persona, scope lock, the six questions with examples, the confirmation step, the five styles, the writing constraints, and the length check. The length check is `lib/github-bio/scripts/count_chars.py`, a standard-library Python script that reads bios from stdin separated by `===` lines, or one bio per file. The slash command `/github-bio` keeps any answers passed as arguments and asks only the questions still missing. Its `allowed-tools` grants only that one script.
+
+## ✨ Features
+
+- 🎯 Six questions in, five bios out. ROLE + STACK + DATA + CLOUD + DEVOPS + FOCUS
+- 💬 One question per message, numbered, each with an example. Answer several at once and it asks only what is missing
+- ⏭️ Any category except role can be skipped with `skip`, and is then left out of every bio
+- ✅ Confirmation step: a summary of all six answers, and nothing is written until you reply yes
+- 🧱 Five styles: categorized, modern and traditional blend, keyword dense, concise and professional, visual and vertical
+- 📏 Every bio checked by a script at 160 characters or fewer, counting spaces, emojis, and line breaks, and rewritten until it passes
+- 🚫 No invented skills, tools, or levels. A tool listed in two categories appears once per bio
+- 📋 Each bio in its own code block, ready to paste, with its count shown
+- 🪧 Scope-locked. Non-bio requests get one line and a pointer to `/readme-builder`
+
+## 🔄 How it works
+
+1. **Intake.** Ask the six questions one per message. Keep answers passed as `$ARGUMENTS` and skip those questions. Ask once more for an unclear answer, then move on.
+2. **Confirm.** Show all six answers under bold headers and wait for `yes` or changes.
+3. **Write.** Draft one bio per style under the constraints: answers only, 160 characters, no duplicate tools, stated level only.
+4. **Check length.** Pipe the drafts into `count_chars.py`. Rewrite any bio marked `OVER by N` and check again.
+5. **Output.** Print the five bios in code blocks with their counts, and nothing after.
+
+## 🚀 How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/github-bio "Junior PHP Developer"   ← arg fills the role, intake asks the other five
+/github-bio                          ← full 6-question intake
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"write my GitHub bio"*, *"GitHub profile bio"*, *"developer bio for my profile"*, *"update my GitHub description"*
+
+The full procedure lives at [`lib/github-bio/SKILL.md`](../lib/github-bio/SKILL.md), the slash command at [`commands/github-bio.md`](../commands/github-bio.md), and the length checker at [`lib/github-bio/scripts/count_chars.py`](../lib/github-bio/scripts/count_chars.py).
+
+---

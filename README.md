@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 74 tools behind 85 slash commands.
+One Claude Code plugin - `forge` - holding 75 tools behind 86 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -50,6 +50,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/draft-contract`](docs/writing-and-content.md#contract-framework). Writes a clear, fair freelance or consulting contract from a few plain questions, covering the work, the payment, and who owns the finished result, with anything that depends on where you live flagged for you to check locally.
 - [`/name-domains`](docs/writing-and-content.md#naming-strategist). Brainstorms 10 brandable, easy-to-say domain names for your SaaS, with a shortlist of the best three and a checklist to verify them.
 - [`/language-tutor`](docs/writing-and-content.md#language-tutor). Translates and explains a phrase, or corrects and critiques your writing, with grammar notes, pronunciation tips, and better alternatives.
+- [`/github-bio`](docs/writing-and-content.md#github-bio). Writes five GitHub profile bios in five styles from six plain questions asked one at a time - your role, stack, databases, cloud, DevOps skills, and specialty. It confirms your answers first, uses only what you told it, and checks every bio with a script so each one fits GitHub's 160-character limit.
 
 **DevOps & Data**
 
@@ -127,7 +128,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 85 commands, nothing running in the background.
+That is the whole install. One plugin, 86 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -140,7 +141,7 @@ which asks for a category, then a tool, then runs it. Or jump straight to one ca
 ```
 /forge-wordpress    # 17 WordPress tools
 /forge-design       # 6 design and frontend tools
-/forge-writing      # 5 writing and content tools
+/forge-writing      # 6 writing and content tools
 /forge-devops       # 4 DevOps and data tools
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
@@ -186,6 +187,7 @@ Or call any tool directly:
 /draft-contract                 # plain-English service agreement
 /name-domains                   # 10 brandable SaaS domain candidates
 /language-tutor                 # translate, or correct and critique writing
+/github-bio                     # five GitHub profile bios, 160 characters each
 
 # DevOps & Data
 /docker-compose-architect       # production docker-compose stack
@@ -252,7 +254,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 85 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 86 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -278,7 +280,7 @@ description each.
 |---------|-------|---------|
 | `/forge-wordpress` | 17 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
-| `/forge-writing` | 5 | 3 + `More...`, then 2 |
+| `/forge-writing` | 6 | 3 + `More...`, then 3 |
 | `/forge-devops` | 4 | one |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
@@ -347,7 +349,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              85 command files - 74 tools, 11 pickers
+commands/              86 command files - 75 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -364,7 +366,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 85 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 86 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -380,7 +382,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 |---|---|---|
 | WordPress | 17 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
-| Writing & Content | 5 | [docs/writing-and-content.md](docs/writing-and-content.md) |
+| Writing & Content | 6 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 4 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
@@ -397,15 +399,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 85 slash commands: 11 pickers + 74 tools
-├── lib/                      ← 74 procedure folders (SKILL.md + bundled
+├── commands/                 ← 86 slash commands: 11 pickers + 75 tools
+├── lib/                      ← 75 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 74 tools compared by how much each does
+├── SUMMARY.md                ← the 75 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

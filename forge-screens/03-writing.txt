@@ -1,7 +1,7 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          5 tools, 2 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          6 tools, 2 pages
 ================================================================================
-  Articles, tutorials, contracts, naming, language help.
+  Articles, tutorials, contracts, naming, language help, GitHub profile bios.
 
   STEP 2 - pick a tool
 
@@ -33,6 +33,10 @@
   |  ( 2 )  Translate or correct writing                     -> /language-tutor  |
   |         Translate and explain a phrase, or correct and critique your         |
   |         writing.                                                             |
+  |                                                                              |
+  |  ( 3 )  Write a GitHub bio                                   -> /github-bio  |
+  |         Five GitHub profile bios in five styles from a six-question intake,  |
+  |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -154,5 +158,36 @@
   '----------------------------------------------------------------------------'
   .--[Depth]-- optional  (default: Full) --------------------------------------.
   |  ( ) Full   ( ) Quick                                                      |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------------ /github-bio -
+  6 free-text fields, asked one per message as plain questions (no menus).
+  Answers passed as an argument are kept; only missing questions are asked.
+
+  .--[Role]-- Q1 current role or title ----------------------------------------.
+  |  ___ e.g. Senior Full Stack Developer                                      |
+  '----------------------------------------------------------------------------'
+  .--[Stack]-- Q2 core languages and frameworks -------------------------------.
+  |  ___ e.g. Node.js, Express, PHP, Tailwind                                  |
+  '----------------------------------------------------------------------------'
+  .--[Data]-- Q3 databases and data tools -------------------------------------.
+  |  ___ e.g. MySQL, Postgres, Redis   (skip ok)                               |
+  '----------------------------------------------------------------------------'
+  .--[Cloud]-- Q4 cloud, auth, and hosting ------------------------------------.
+  |  ___ e.g. Vercel, Supabase, Clerk   (skip ok)                              |
+  '----------------------------------------------------------------------------'
+  .--[DevOps]-- Q5 DevOps and system admin ------------------------------------.
+  |  ___ e.g. Linux SysAdmin, Git   (skip ok)                                  |
+  '----------------------------------------------------------------------------'
+  .--[Focus]-- Q6 main focus or specialty -------------------------------------.
+  |  ___ e.g. Complex API Architectures   (skip ok)                            |
+  '----------------------------------------------------------------------------'
+  .--[Confirm]-- summary of all 6, then wait ----------------------------------.
+  |  Reply yes to continue, or say what to change.                             |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- 5 bios, each checked by count_chars.py ------------------------.
+  |  Categorized . modern & traditional . keyword dense . concise &            |
+  |  professional . visual/vertical.  Each <= 160 chars, shown with count.     |
   '----------------------------------------------------------------------------'
 ================================================================================

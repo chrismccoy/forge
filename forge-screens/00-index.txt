@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  74 tools . 85 commands . 11 pickers . 0 skills . nothing auto-fires.
+  75 tools . 86 commands . 11 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's tool screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -21,7 +21,8 @@
   |         tools.                                                              |
   |                                                                             |
   |  ( 3 )  Writing & Content                           -> open  03-writing.txt |
-  |         Articles, tutorials, contracts, naming, language help.  5 tools.    |
+  |         Articles, tutorials, contracts, naming, language help, GitHub       |
+  |         bios.  6 tools.                                                     |
   |                                                                             |
   |  ( 4 )  More...                                                   -> page 2 |
   |                                                                             |
@@ -81,7 +82,7 @@
     00-index.txtyou are here
     01-wordpress.txt  /forge-wordpress  . 17 tools
     02-design.txt     /forge-design     . 6 tools
-    03-writing.txt    /forge-writing    . 5 tools
+    03-writing.txt    /forge-writing    . 6 tools
     04-devops.txt     /forge-devops     . 4 tools
     05-cloud.txt      /forge-cloud      . 8 tools
     06-security.txt   /forge-security   . 3 tools

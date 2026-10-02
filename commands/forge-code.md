@@ -111,6 +111,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-prompt` | `/forge-docs` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
+| `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |
 | `jq` | `/forge-devops` |

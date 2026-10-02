@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  74 tools . 85 commands . 11 pickers . 0 skills . nothing auto-fires.
+  75 tools . 86 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -30,7 +30,8 @@
   |         tools.                                                               |
   |                                                                              |
   |  ( 3 )  Writing & Content                                                    |
-  |         Articles, tutorials, contracts, naming, language help.  5 tools.     |
+  |         Articles, tutorials, contracts, naming, language help, GitHub        |
+  |         bios.  6 tools.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |                                                                              |
@@ -255,7 +256,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Writing & Content  ( /forge-writing )  -  5 tools, 2 pages -----------------
+--- Writing & Content  ( /forge-writing )  -  6 tools, 2 pages -----------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/2) |
@@ -285,6 +286,10 @@
   |  ( 2 )  Translate or correct writing                     -> /language-tutor  |
   |         Translate and explain a phrase, or correct and critique your         |
   |         writing.                                                             |
+  |                                                                              |
+  |  ( 3 )  Write a GitHub bio                                   -> /github-bio  |
+  |         Five GitHub profile bios in five styles from a six-question intake,  |
+  |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -645,7 +650,7 @@
    |
    +-- Writing & Content ..... /forge-writing
    |    +-- tech-blog-article  tutorial-builder  draft-contract  name-domains
-   |    +-- language-tutor
+   |    +-- language-tutor  github-bio
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect
@@ -691,7 +696,8 @@
                     snippet,  token-auditor / prompt-audit-usage ->
                     token-audit,  safe-refactor / refactor-script ->
                     script-refactor,  blueprint-scan / blueprint-rebuild
-                    -> blueprint-forge, plus the long wordpress-* names
+                    -> blueprint-forge,  github-profile-bio / profile-bio
+                    -> github-bio, plus the long wordpress-* names
                     -> their wp-* commands.
 
 ================================================================================

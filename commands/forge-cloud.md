@@ -103,6 +103,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-sql` | `/forge-code` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |
+| `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `jq` | `/forge-devops` |
 | `kubernetes-architect` | `/forge-devops` |

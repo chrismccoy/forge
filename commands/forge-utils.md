@@ -94,6 +94,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-sql` | `/forge-code` |
 | `finops` | `/forge-cloud` |
 | `fullstack-readme` | `/forge-code` |
+| `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |
 | `jq` | `/forge-devops` |

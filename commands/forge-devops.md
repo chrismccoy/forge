@@ -87,6 +87,7 @@ a Step 0 direct hit.
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |
+| `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |
 | `language-tutor` | `/forge-writing` |

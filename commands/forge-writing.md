@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-writing - Writing & Content picker
 
-Route the user to one of the 5 Writing & Content tools and run it. Articles, tutorials, contracts, naming, and language help.
+Route the user to one of the 6 Writing & Content tools and run it. Articles, tutorials, contracts, naming, language help, and GitHub profile bios.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -47,6 +47,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
+| Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
 
 ## Step 2 - run it
 
