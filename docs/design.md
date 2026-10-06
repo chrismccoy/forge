@@ -4,7 +4,7 @@
 
 ## `html-design-styles`
 
-A curated catalog of 53 named design styles for frontend interfaces.
+A catalog of 53 named design styles for frontend interfaces.
 
 ```
 /html-design-styles
@@ -14,97 +14,97 @@ Tired of AI generated frontends that all look like the same generic SaaS landing
 
 When the skill triggers, it knows exactly how to implement any style. fonts, colors, shadows, layout patterns, components, animations, and more. producing HTML in a single output.
 
-## 🎨 Available styles
+## Available styles
 
 ##### Minimal & Clean
-- 🍎 **Bento Style**: Apple/macOS-inspired bento grid, clean and minimal
-- 🌿 **Soft Modern Style**: White bg, blurred orb accents, rounded, friendly and accessible
-- ❄️ **Scandinavian Style**: Barely-warm white, extreme negative space, hygge minimalism, quiet luxury
-- 🏢 **Corporate Style**: Conservative trust blues, structured grid, buttoned-up B2B professionalism
-- 📐 **Swiss Style**: Helvetica-inspired, rigid typographic grid, black/red only, zero decoration
+- **Bento Style**: Apple/macOS-inspired bento grid, clean and minimal
+- **Soft Modern Style**: White bg, blurred orb accents, rounded, friendly and accessible
+- **Scandinavian Style**: Barely-warm white, extreme negative space, hygge minimalism, quiet luxury
+- **Corporate Style**: Conservative trust blues, structured grid, buttoned-up B2B professionalism
+- **Swiss Style**: Helvetica-inspired, rigid typographic grid, black/red only, zero decoration
 
 ##### Dark & Atmospheric
-- 🌌 **Dark Cosmic Style**: Dark slate, glowing indigo/cyan, radial dot grid, glassmorphism
-- 🎬 **Dark Action Style**: Dark gradient bg, yellow/gold accents, Oswald font, cinematic energy
-- 🚀 **Dark SaaS Style**: Slate-950, sky blue accent, stagger animations, clean SaaS
-- 🎭 **Dark Cinema Style**: Near-black, red glow, Bebas Neue, noise overlay, floating labels
-- 💾 **Dark Mono Style**: Dark zinc surfaces, cyan + pink accents, monospace, scanline texture
-- 🌠 **Dark Neon Style**: Black background, multiple vivid neon glow colors, bleed and bloom effects
-- 🌌 **Vaporwave Style**: Purple/teal gradients, retro grid floors, synthwave glow and glitch effects
+- **Dark Cosmic Style**: Dark slate, glowing indigo/cyan, radial dot grid, glassmorphism
+- **Dark Action Style**: Dark gradient bg, yellow/gold accents, Oswald font, cinematic energy
+- **Dark SaaS Style**: Slate-950, sky blue accent, stagger animations, clean SaaS
+- **Dark Cinema Style**: Near-black, red glow, Bebas Neue, noise overlay, floating labels
+- **Dark Mono Style**: Dark zinc surfaces, cyan + pink accents, monospace, scanline texture
+- **Dark Neon Style**: Black background, multiple vivid neon glow colors, bleed and bloom effects
+- **Vaporwave Style**: Purple/teal gradients, retro grid floors, synthwave glow and glitch effects
 
 ##### Brutalist & Bold
-- ⬛ **Pure Brutalist Style**: Monochrome black/white, hard shadows, monospace, no color
-- ⚡ **Neobrutalist Style**: Hard black shadows with vivid neon color accents
-- ☢️ **Acid Brutalist Style**: Pure black, acid yellow + red, Anton/Bebas fonts, noise grain
-- 🔧 **Utility Terminal Style**: White bg, strict 1px borders, monospace, no rounding, grid texture
-- 🏗️ **Monolith Style**: White bg, dark navy shadows, thick top border accent, monospace brutalism
+- **Pure Brutalist Style**: Monochrome black/white, hard shadows, monospace, no color
+- **Neobrutalist Style**: Hard black shadows with vivid neon color accents
+- **Acid Brutalist Style**: Pure black, acid yellow + red, Anton/Bebas fonts, noise grain
+- **Utility Terminal Style**: White bg, strict 1px borders, monospace, no rounding, grid texture
+- **Monolith Style**: White bg, dark navy shadows, thick top border accent, monospace brutalism
 
 ##### Retro & Nostalgic
-- 📺 **Retro Terminal Style**: Green-on-black CRT monitor aesthetic with phosphor glow effects
-- 🕹️ **Pixel Style**: 8-bit pixelated fonts, game UI, sprite aesthetic, retro game feel
-- 🖥️ **Y2K Style**: Windows 95 beveled gray UI, system fonts, chunky pixel buttons, early internet
-- 🌊 **Groovy Style**: Warm oranges/browns, 70s swirls, rounded retro lettering, psychedelic curves
-- 🎨 **Memphis Style**: 80s/90s geometric shapes, bright pastels, squiggles and confetti
-- 🌴 **Tropical Style**: Coral, turquoise, warm vacation energy, Miami/resort vibes
+- **Retro Terminal Style**: Green-on-black CRT monitor aesthetic with phosphor glow effects
+- **Pixel Style**: 8-bit pixelated fonts, game UI, sprite aesthetic, retro game feel
+- **Y2K Style**: Windows 95 beveled gray UI, system fonts, chunky pixel buttons, early internet
+- **Groovy Style**: Warm oranges/browns, 70s swirls, rounded retro lettering, psychedelic curves
+- **Memphis Style**: 80s/90s geometric shapes, bright pastels, squiggles and confetti
+- **Tropical Style**: Coral, turquoise, warm vacation energy, Miami/resort vibes
 
 ##### Artistic & Expressive
-- 🎪 **Pop Art Style**: Cyan/pink/yellow on loud background, floating bordered container
-- 🍭 **Kawaii Style**: Super cute pastel, bubble rounded, character illustration accents
-- 💥 **Manga Style**: Speed lines, bold ink outlines, dramatic panel layouts, high contrast
-- 🌈 **Psychedelic Style**: Acid swirls, melting text, rainbow overflow, mind-bending distortion
-- 🗞️ **Zine Style**: Photocopied DIY aesthetic, cut-and-paste collage, raw indie energy
-- 🔆 **Aurora Style**: Flowing multi-color gradient backgrounds, silk light effect, soft and dreamy
+- **Pop Art Style**: Cyan/pink/yellow on loud background, floating bordered container
+- **Kawaii Style**: Super cute pastel, bubble rounded, character illustration accents
+- **Manga Style**: Speed lines, bold ink outlines, dramatic panel layouts, high contrast
+- **Psychedelic Style**: Acid swirls, melting text, rainbow overflow, mind-bending distortion
+- **Zine Style**: Photocopied DIY aesthetic, cut-and-paste collage, raw indie energy
+- **Aurora Style**: Flowing multi-color gradient backgrounds, silk light effect, soft and dreamy
 
 ##### Elegant & Luxury
-- 👑 **Luxury Style**: Cream/off-white, serif display font, gold accents, generous whitespace
-- 🌸 **Art Deco Style**: Geometric gold ornaments, symmetry, 1920s glamour and opulence
-- 🌺 **Cottagecore Style**: Floral patterns, watercolor washes, storybook softness and whimsy
-- 🌙 **Gothic Style**: Dark greens/blacks, ornate serif, candle-wax drips, moody atmosphere
-- ✒️ **Japanese Style**: Wabi-sabi imperfection, ink brush strokes, kanji-inspired negative space
+- **Luxury Style**: Cream/off-white, serif display font, gold accents, generous whitespace
+- **Art Deco Style**: Geometric gold ornaments, symmetry, 1920s glamour and opulence
+- **Cottagecore Style**: Floral patterns, watercolor washes, storybook softness and whimsy
+- **Gothic Style**: Dark greens/blacks, ornate serif, candle-wax drips, moody atmosphere
+- **Japanese Style**: Wabi-sabi imperfection, ink brush strokes, kanji-inspired negative space
 
 ##### Technical & Structured
-- 🔷 **Blueprint Style**: Deep blueprint blue, white grid lines, Courier Prime, technical drawing aesthetic
-- 🔴 **Dot Grid Style**: Gray dotted background, Archivo Black + Space Mono, hot pink accent, hard shadows
-- 🟣 **Pink Neo Style**: Hot pink dotted background, Archivo Black + Space Mono, pink/yellow/blue palette
-- 📊 **Dashboard Style**: Chart-forward, dense metrics, sidebar navigation, admin/analytics feel
-- 🤖 **Sci-Fi HUD Style**: Heads-up display, corner brackets, data readouts, radar and targeting UI
-- ⚠️ **Cyberpunk Style**: Yellow/black warning stripes, HUD overlays, neon on dark, danger aesthetics
+- **Blueprint Style**: Deep blueprint blue, white grid lines, Courier Prime, technical drawing aesthetic
+- **Dot Grid Style**: Gray dotted background, Archivo Black + Space Mono, hot pink accent, hard shadows
+- **Pink Neo Style**: Hot pink dotted background, Archivo Black + Space Mono, pink/yellow/blue palette
+- **Dashboard Style**: Chart-forward, dense metrics, sidebar navigation, admin/analytics feel
+- **Sci-Fi HUD Style**: Heads-up display, corner brackets, data readouts, radar and targeting UI
+- **Cyberpunk Style**: Yellow/black warning stripes, HUD overlays, neon on dark, danger aesthetics
 
 ##### Specialty & Immersive
-- 💎 **Glassmorphism Style**: Frosted glass cards on gradient mesh backgrounds, soft blurs and translucency
-- 🏛️ **Neumorphism Style**: Soft same-color shadows creating pushed/extruded soft UI on light gray
-- 📦 **Clay Style**: Clay morphism, chunky rounded cards with physical depth
-- 🖨️ **Newspaper Style**: Black ink on newsprint, serif fonts, editorial column layouts
-- 📖 **Longform Style**: Full-bleed hero images, pull quotes, drop caps, rich magazine editorial flow
-- 🎵 **Skeuomorphic Style**: Realistic material textures, depth and shadows mimicking physical objects
-- 🌸 **Organic Style**: Earthy tones, rounded organic shapes, a warm handmade look
-- ✍️ **Handwritten Style**: Hand-drawn borders, pencil textures, imperfect sketch-like lines
+- **Glassmorphism Style**: Frosted glass cards on gradient mesh backgrounds, soft blurs and translucency
+- **Neumorphism Style**: Soft same-color shadows creating pushed/extruded soft UI on light gray
+- **Clay Style**: Clay morphism, chunky rounded cards with physical depth
+- **Newspaper Style**: Black ink on newsprint, serif fonts, editorial column layouts
+- **Longform Style**: Full-bleed hero images, pull quotes, drop caps, rich magazine editorial flow
+- **Skeuomorphic Style**: Realistic material textures, depth and shadows mimicking physical objects
+- **Organic Style**: Earthy tones, rounded organic shapes, a warm handmade look
+- **Handwritten Style**: Hand-drawn borders, pencil textures, imperfect sketch-like lines
 
 ##### Energy & Motion
-- 🏆 **Athletic Style**: Diagonal cuts, bold color blocks, high-impact sport energy
-- 🌍 **Grunge Style**: Worn textures, splatter marks, distressed rough torn edges
-- 🔮 **Isometric Style**: 3D isometric grid illustrations, flat-color depth and layered objects
-- 🎭 **Maximalist Style**: Everything layered, dense pattern-on-pattern, opulent visual chaos
-- 🔣 **Enterprise Editorial Style**: White/dark alternating sections, indigo, large rounded app cards
+- **Athletic Style**: Diagonal cuts, bold color blocks, high-impact sport energy
+- **Grunge Style**: Worn textures, splatter marks, distressed rough torn edges
+- **Isometric Style**: 3D isometric grid illustrations, flat-color depth and layered objects
+- **Maximalist Style**: Everything layered, dense pattern-on-pattern, opulent visual chaos
+- **Enterprise Editorial Style**: White/dark alternating sections, indigo, large rounded app cards
 
-## 📦 What each style spec includes
+## What each style spec includes
 
 Every style definition covers:
 
-- 🔤 **Typography**: Font families, weights, sizes, letter-spacing
-- 🎨 **Color palette**: Exact hex/rgba values (as Tailwind config, CSS custom properties, or plain CSS)
-- ⚙️ **Implementation notes**: CDN links, font imports, container widths, special CSS tricks (all styles except Pop Art)
+- **Typography**: Font families, weights, sizes, letter-spacing
+- **Color palette**: Exact hex/rgba values (as Tailwind config, CSS custom properties, or plain CSS)
+- **Implementation notes**: CDN links, font imports, container widths, special CSS tricks (all styles except Pop Art)
 
 And, where the style calls for them:
 
-- 🪞 **Shadow system**: Named shadow levels used across components
-- 🃏 **Card variants**: Background, border, hover states
-- 🔘 **Button variants**: Primary plus secondary/ghost/pressed states where the style defines them
-- 📐 **Layout patterns**: Grid structures, hero layouts, section flows
-- 🧩 **Components**: Pills, badges, stat cards, nav, marquee, footer
-- ✨ **Animations**: Transitions, keyframes, scroll effects
+- **Shadow system**: Named shadow levels used across components
+- **Card variants**: Background, border, hover states
+- **Button variants**: Primary plus secondary/ghost/pressed states where the style defines them
+- **Layout patterns**: Grid structures, hero layouts, section flows
+- **Components**: Pills, badges, stat cards, nav, marquee, footer
+- **Animations**: Transitions, keyframes, scroll effects
 
-## 💻 Output format
+## Output format
 
 The skill generates a **single self-contained HTML file** with:
 
@@ -116,14 +116,14 @@ The skill generates a **single self-contained HTML file** with:
 
 No build step. Open the file in a browser and it works.
 
-## 🔄 How it works
+## How it works
 
 1. **Identify the style**: match the user's request against the 53-item catalog (or ask them to pick if ambiguous)
 2. **Get project context**: full page, single component, restyling existing markup, what content goes in
 3. **Load references**: `common.md` once per session for cross-cutting patterns, then `styles/<slug>.md` for the chosen style's complete spec
 4. **Apply faithfully**: use the exact color values, typography stack, shadow recipes, and component patterns from the spec, with no "similar" substitutions
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke it:
 
@@ -197,31 +197,31 @@ The honest part is what it refuses to claim. Automated checks catch roughly a th
 
 **Why it is command only.** Every tool in this plugin is command only, and accessibility is the clearest case for why. It is a crowded space: if another accessibility plugin is installed, two skills competing for "make this accessible" produces a coin flip. Nothing here registers as an auto-triggering skill, so there is no coin flip. Type the command and you get this workflow, every time.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command, one procedure file, and four reference files. `commands/accessibility-audit.md` is a thin wrapper: intake routing and a hard-rules summary. The procedure lives in `lib/accessibility-audit/SKILL.md`. persona, intake, validation, flow picker, output essentials, a silent pre-delivery validation gate, hard rules, and injection defense. The four mode workflows, with their locked output formats and the Fix bail rules, live in `lib/accessibility-audit/references/modes.md` and load only for the mode being run. The procedure has no frontmatter, so it is never registered as a skill. References load from `${CLAUDE_PLUGIN_ROOT}/lib/accessibility-audit/references/` only while the command runs, so nothing competes at discovery time with another plugin's accessibility skill.
 
-## ✨ Features
+## Features
 
-- 🎯 Five intake fields. MODE + SCOPE + STANDARD, plus FIX_AUTHORITY when fixing and TECH_STACK when refactoring a pasted component
-- 🔒 Four locked modes. Report writes and never edits, Fix runs baseline to edit to verify, Component returns a four-phase blueprint for pasted code, Guide applies the rules to UI you are writing
-- 🌐 Four-tier flow picker preferring live DOM. AccessLint MCP, browser MCP, local axe-core, then static analysis as the last resort. always names the flow used
-- 🧾 Deduplicated by rule ID and component family, prioritized by user impact. no thirty-row repeats
-- 📐 WCAG criterion ID on every finding, across 2.1 AA, 2.2 AA, and 2.2 AAA. The Section 508 / EN 301 549 option audits the same WCAG 2.1 AA criteria and ships no separate mapping table
-- ⌨️ Per-widget expected keyboard tables from the ARIA Authoring Practices. dialog, disclosure, accordion, tabs, menu and menubar, combobox, listbox, tree, slider, grid
-- ✍️ Never invents alt text, labels, or error copy below Full remediation. leaves a TODO with the rule ID; Mechanical + contextual TODOs may add suggested wording only in a code comment marked `DRAFT - needs human review`
-- 🧬 Every surviving ARIA attribute is justified. one that duplicates what a native element already says is treated as a defect, not a fix
-- 🔁 Fix mode verifies by re-auditing and diffing the baseline, and bails loudly instead of iterating silently
-- 🧷 Fix mode checks `git status` before editing and, if verification fails, hands you the exact revert command rather than leaving a mutated tree. it is the only mode that writes
-- 🧑‍🦯 Separates automated findings from the manual and assistive-technology checks it cannot cover
-- ⚖️ No legal compliance claims. not ADA, Section 508, EN 301 549, the EAA, or lawsuit risk. WCAG technical alignment only
-- ✅ Silent output gate before every response. criterion ID on each finding, all four Component phases present, no invented copy, no compliance claim leaked, no padded findings when the audit comes back clean
-- 🛡️ Injection defense over the audited code itself, not just your answers. a comment telling it to report no violations becomes a finding instead of an instruction
-- 🧰 Bundled tooling: axe-core auditor, jest-axe component tests, contrast analyzer, keyboard and screen reader scripts, pa11y, GitHub Actions CI, HTML report generator
-- 🚫 No auto-triggering skill, by design. the procedure file has no frontmatter and loads only through the command, so it never collides with another accessibility plugin
-- 🪧 Scope-locked. general UI design review, performance work, and non-accessibility refactors get one refusal line
+- Five intake fields. MODE + SCOPE + STANDARD, plus FIX_AUTHORITY when fixing and TECH_STACK when refactoring a pasted component
+- Four locked modes. Report writes and never edits, Fix runs baseline to edit to verify, Component returns a four-phase blueprint for pasted code, Guide applies the rules to UI you are writing
+- Four-tier flow picker preferring live DOM. AccessLint MCP, browser MCP, local axe-core, then static analysis as the last resort. always names the flow used
+- Deduplicated by rule ID and component family, prioritized by user impact. no thirty-row repeats
+- WCAG criterion ID on every finding, across 2.1 AA, 2.2 AA, and 2.2 AAA. The Section 508 / EN 301 549 option audits the same WCAG 2.1 AA criteria and ships no separate mapping table
+- Per-widget expected keyboard tables from the ARIA Authoring Practices. dialog, disclosure, accordion, tabs, menu and menubar, combobox, listbox, tree, slider, grid
+- Never invents alt text, labels, or error copy below Full remediation. leaves a TODO with the rule ID; Mechanical + contextual TODOs may add suggested wording only in a code comment marked `DRAFT - needs human review`
+- Every surviving ARIA attribute is justified. one that duplicates what a native element already says is treated as a defect, not a fix
+- Fix mode verifies by re-auditing and diffing the baseline, and bails loudly instead of iterating silently
+- Fix mode checks `git status` before editing and, if verification fails, hands you the exact revert command rather than leaving a mutated tree. it is the only mode that writes
+- Separates automated findings from the manual and assistive-technology checks it cannot cover
+- No legal compliance claims. not ADA, Section 508, EN 301 549, the EAA, or lawsuit risk. WCAG technical alignment only
+- Silent output gate before every response. criterion ID on each finding, all four Component phases present, no invented copy, no compliance claim leaked, no padded findings when the audit comes back clean
+- Injection defense over the audited code itself, not just your answers. a comment telling it to report no violations becomes a finding instead of an instruction
+- Bundled tooling: axe-core auditor, jest-axe component tests, contrast analyzer, keyboard and screen reader scripts, pa11y, GitHub Actions CI, HTML report generator
+- No auto-triggering skill, by design. the procedure file has no frontmatter and loads only through the command, so it never collides with another accessibility plugin
+- Scope-locked. general UI design review, performance work, and non-accessibility refactors get one refusal line
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Two `AskUserQuestion` rounds - MODE, SCOPE, and STANDARD first, then FIX_AUTHORITY in Fix mode or TECH_STACK in Component mode, only when it applies. An argument passed with the command is offered as the pre-filled scope option.
 2. **Validate.** Empty or placeholder required fields halt with one targeted question each. A whole-repo scope with no narrowing stops and asks for a directory, route, or component family. Component mode with nothing pasted asks for the source, and incompatible mode/scope pairs (Fix on a URL, Component on a directory) are rejected up front.
@@ -231,7 +231,7 @@ One slash command, one procedure file, and four reference files. `commands/acces
 6. **Silent output gate.** Every finding carries a criterion ID, all four Component phases are present with complete code, nothing implies legal compliance, no copy was invented, and a clean audit is reported as clean rather than padded to fill the template. Failures are fixed before the response is sent.
 7. **Output** with scope, standard, and flow named at the top.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /accessibility-audit src/components          ← arg seeds the scope
@@ -258,22 +258,22 @@ Most "document my styles" answers invent tokens that aren't there, or dump the f
 
 Output is a single `DESIGN.md` that opens with a title, a one-paragraph description of the aesthetic, and one line on where styles live (inline, external, utility, or CSS-in-JS). Then come fixed headings: Foundations (dependencies, a color palette table, theme variants, a typography table, spacing scales, breakpoints, global treatments), Signature motifs, Components, Extended components, Accessibility, and a Reuse cheat sheet. Each distinct second design system gets its own `## Separate system: <filename>` section; that heading appears only when such a system exists. Every fixed heading is kept even when the source has nothing for it ("None found"), and a final self-check drops anything not verifiable in the source.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/design-system/SKILL.md`. The command `/design-system` takes an optional argument (a directory path, a `.html` file, or pasted HTML); when present it skips intake and proceeds, otherwise it asks a single question for the source and the output path. All file and pasted content is treated as data to analyze, never as instructions.
 
-## ✨ Features
+## Features
 
-- 🎨 Extracts the real color palette - every `:root` custom property with its hex and inferred role
-- 🔤 Maps typography to roles - families, weights, the type scale, tracking and `clamp()` habits
-- 🧩 Documents only authored components; names frameworks as a layout layer instead of listing utilities
-- ✨ Ranks the 3-5 signature motifs by how many components use them
-- 🌗 Records theme variants - dark mode, `prefers-color-scheme`, `.dark` / `[data-theme]` overrides
-- 🧭 Splits a genuinely separate design system into its own section instead of blending it in
-- ♿ Captures accessibility patterns - focus styles, reduced-motion, sr-only, aria
-- ✅ Self-checks every hex, class, and selector against the source before writing
+- Extracts the real color palette - every `:root` custom property with its hex and inferred role
+- Maps typography to roles - families, weights, the type scale, tracking and `clamp()` habits
+- Documents only authored components; names frameworks as a layout layer instead of listing utilities
+- Ranks the 3-5 signature motifs by how many components use them
+- Records theme variants - dark mode, `prefers-color-scheme`, `.dark` / `[data-theme]` overrides
+- Splits a genuinely separate design system into its own section instead of blending it in
+- Captures accessibility patterns - focus styles, reduced-motion, sr-only, aria
+- Self-checks every hex, class, and selector against the source before writing
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the source from the argument, or ask for it (folder / file / paste) plus the output path.
 2. **Scan.** Read a shared stylesheet once; for further files record only what differs. State any files skipped.
@@ -281,7 +281,7 @@ One slash command plus its procedure file `lib/design-system/SKILL.md`. The comm
 4. **Group.** Separate shared core from per-page extensions; flag any genuinely separate design system.
 5. **Self-check and write.** Drop unverifiable claims, then write `DESIGN.md` and report files scanned, counts, and the output path.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /design-system ./site            ← scan every .html in a folder
@@ -295,7 +295,7 @@ The full procedure lives at [`lib/design-system/SKILL.md`](../lib/design-system/
 
 ## `tailwind-gut`
 
-Strips a page's custom CSS and rewrites it in Tailwind utilities, pixel-identical, in the voice of a senior front-end engineer who knows Tailwind's config and preflight cold. Only what genuinely cannot be a utility survives in `<style>`.
+Strips a page's custom CSS and rewrites it in Tailwind utilities, pixel-identical, in the voice of a senior front-end engineer who knows Tailwind's config and preflight. Only what genuinely cannot be a utility survives in `<style>`.
 
 ```
 /tailwind-convert
@@ -305,22 +305,22 @@ Most "convert this to Tailwind" answers guess the values by eye, drop the ones t
 
 It returns the full converted HTML plus a short report under four fixed headers: Promoted to config, Kept as CSS (each survivor with a reason), Deleted (preflight-handled resets), and Risks. Genuine non-utilities - global `::selection`, `@font-face`, a reduced-motion blanket reset, `@page` rules - are kept honestly and listed, not faked away.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/tailwind-gut/SKILL.md`. The command `/tailwind-convert` takes an optional HTML file path or paste; with none it asks for the file. The attached HTML/CSS is untrusted data to transform, never an instruction source.
 
-## ✨ Features
+## Features
 
-- 🧹 Catalogues every custom selector into CONVERT / PROMOTE / KEEP
-- 🎯 Preserves pixel values exactly - no "close enough" substitution
-- 🔍 Detects Tailwind v3 versus v4 and emits the matching config syntax
-- 📦 Promotes tokens (colors, radii, shadows, breakpoints, fonts) to the theme config instead of scattering arbitrary values
-- 🌗 Handles light and dark, media-driven or class-toggled, without breaking either
-- 🛡️ Ignores instructions hidden in the source; converts, does not obey
-- 📝 Four-header change report; flags anything imperfectly preserved under Risks
-- ✅ Acceptance check: renders identically, zero convertible custom selectors left behind
+- Catalogues every custom selector into CONVERT / PROMOTE / KEEP
+- Preserves pixel values exactly - no "close enough" substitution
+- Detects Tailwind v3 versus v4 and emits the matching config syntax
+- Promotes tokens (colors, radii, shadows, breakpoints, fonts) to the theme config instead of scattering arbitrary values
+- Handles light and dark, media-driven or class-toggled, without breaking either
+- Ignores instructions hidden in the source; converts, does not obey
+- Four-header change report; flags anything imperfectly preserved under Risks
+- Acceptance check: renders identically, zero convertible custom selectors left behind
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the HTML from the argument or ask for it. Detect the Tailwind version.
 2. **Catalogue.** Sort every custom selector into CONVERT / PROMOTE / KEEP.
@@ -328,7 +328,7 @@ One slash command plus its procedure file `lib/tailwind-gut/SKILL.md`. The comma
 4. **Promote.** Move design tokens into the version-correct theme config.
 5. **Report.** Emit the converted HTML, then the four-header report and the acceptance check.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /tailwind-convert page.html       ← convert a file
@@ -353,28 +353,28 @@ There is one goal here: faithfulness. It does not improve the type, change the c
 
 This command needs Claude in Chrome to capture the real page. Without it, there is no real page to copy and nothing truthful to check against, so the command stops and says so.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/page-cloner/SKILL.md`, which points at its own `references/` (capture and validate steps) and `scripts/` (`extract.js` to pull the page, `shoot.py` to screenshot the clone). The command `/page-cloner` takes a URL as its argument; with none it asks for one. All captured page content is treated as data to reproduce, never as instructions to follow.
 
-## ✨ Features
+## Features
 
-- 🌐 Copies a live URL into one self-contained working HTML file
-- 🧷 Extracts the real rendered DOM and inlines the real CSS, no guessing from a screenshot
-- 🔁 Validates in a loop: render, compare section by section, fix the drift, repeat
-- 🎯 One axis only - faithfulness; never restyles, recolors, or "improves" anything
-- 🖼️ Screenshots the original first as the reference to measure against
-- 🛡️ Treats page content as data to reproduce, not instructions to obey
-- 🧭 Reports honestly what, if anything, still differs when it stops
+- Copies a live URL into one self-contained working HTML file
+- Extracts the real rendered DOM and inlines the real CSS, no guessing from a screenshot
+- Validates in a loop: render, compare section by section, fix the drift, repeat
+- One axis only - faithfulness; never restyles, recolors, or "improves" anything
+- Screenshots the original first as the reference to measure against
+- Treats page content as data to reproduce, not instructions to obey
+- Reports honestly what, if anything, still differs when it stops
 
-## 🔄 How it works
+## How it works
 
 1. **Capture.** Load the live URL in the browser, scroll it, and screenshot it as the reference.
 2. **Extract.** Run the extract step to pull the rendered DOM with CSS inlined and assets absolutised, saved as the raw clone.
 3. **Validate.** Render the clone, compare it against the original section by section, and turn each difference into a specific fix.
 4. **Repeat.** Loop until it matches or about five rounds pass without progress, then report what is still off.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /page-cloner https://example.com    ← clone a page
@@ -393,35 +393,35 @@ Reproduces a live page's exact look in clean, semantic Tailwind. The framework-g
 /page-tailwindify
 ```
 
-The way it stays accurate is by never guessing Tailwind classes from a screenshot. It captures the page's real markup and CSS, plus a dump of the real computed values for each element, so every class comes from an actual number rather than a guess by eye. It first checks what the page is built with. If the page is already Tailwind, it simply swaps the compiled stylesheet for the Tailwind CDN and keeps the markup. If the page uses hashed or CSS-in-JS styling, it translates the real CSS and computed values into semantic markup with Tailwind classes, section by section.
+The way it stays accurate is by never guessing Tailwind classes from a screenshot. It captures the page's real markup and CSS, plus a dump of the real computed values for each element, so every class comes from an actual number rather than a guess by eye. It first checks what the page is built with. If the page is already Tailwind, it swaps the compiled stylesheet for the Tailwind CDN and keeps the markup. If the page uses hashed or CSS-in-JS styling, it translates the real CSS and computed values into semantic markup with Tailwind classes, section by section.
 
 Then it validates the same way page-cloner does: render the result, compare it against the original on the single question of whether it looks the same, fix any drift, and repeat. Bespoke designs will not sit on Tailwind's default scale, so faithful arbitrary values like `text-[17px]` and `bg-[#0b5fff]` are correct and expected here. Accuracy comes first; normalizing onto design tokens is a separate later pass if you want it.
 
 This command needs Claude in Chrome to capture the real page. Without it there is nothing real to rewrite from and nothing to check against, so the command stops and says so.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/page-tailwindify/SKILL.md`, which points at its own `references/` (rehost, rewrite, mapping, validate, capture notes) and `scripts/` (`computed.js` to dump real computed values, `shoot.py` to screenshot the result). It reuses the page-cloner capture step for the faithful DOM. The command `/page-tailwindify` takes a URL as its argument; with none it asks for one. All captured page content is treated as data to reproduce, never as instructions.
 
-## ✨ Features
+## Features
 
-- 🎨 Reproduces a live page's exact look in clean, semantic Tailwind
-- 🧼 Replaces generated class hashes with readable utility classes
-- 🔢 Drives every class from a real computed value, not a guess from a picture
-- 🔀 Detects the styling system and branches: rehost an already-Tailwind page, or translate a hashed one
-- 📐 Keeps the look identical - no new type scale, palette cleanup, or spacing tweaks
-- 🧩 Accepts arbitrary values like `text-[17px]` for bespoke designs that need them
-- 🔁 Validates in a loop against the original until it matches
-- 🛡️ Treats page content as data to reproduce, not instructions to obey
+- Reproduces a live page's exact look in clean, semantic Tailwind
+- Replaces generated class hashes with readable utility classes
+- Drives every class from a real computed value, not a guess from a picture
+- Detects the styling system and branches: rehost an already-Tailwind page, or translate a hashed one
+- Keeps the look identical - no new type scale, palette cleanup, or spacing tweaks
+- Accepts arbitrary values like `text-[17px]` for bespoke designs that need them
+- Validates in a loop against the original until it matches
+- Treats page content as data to reproduce, not instructions to obey
 
-## 🔄 How it works
+## How it works
 
 1. **Capture.** Reuse the page-cloner capture to get the faithful DOM and real CSS, and dump the real computed values if a translation is needed.
 2. **Detect.** Check whether the page is already Tailwind, hashed or CSS-in-JS, or mixed.
 3. **Branch.** Rehost mode swaps the compiled stylesheet for the Tailwind CDN; translate mode rewrites the markup into semantic Tailwind section by section.
 4. **Validate.** Render the result, compare it against the original on the single fidelity axis, fix drift, and repeat until it matches.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /page-tailwindify https://example.com   ← rebuild a page in Tailwind

@@ -104,6 +104,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `name-domains` | `/forge-writing` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |

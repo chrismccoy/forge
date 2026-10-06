@@ -18,38 +18,38 @@ Scope locked at the file edit layer. The skill will not refactor business logic,
 
 **Target picker**: when invoked without a target, the skill asks via a picker. **File** (one source file), **Directory** (folder, processed file by file per Rule 12), or **Paste** (paste code into chat, get cleaned version back, no filesystem write).
 
-## ✨ Features
+## Features
 
-- 🧽 **Vocabulary swap**: kills marketing words (`robust`, `seamless`, `comprehensive`, `world-class`, `powerful`, `elegant`, `crucial`, `vital`, `revolutionary`, `transformative`, `game-changing`, `mission-critical`, `bleeding-edge`, `bulletproof`, `holistic`, `supercharge`, `elevate`, `hand-crafted`, `purpose-built`) and AI tells (`delve`, `leverage`, `harness`, `tapestry`, `myriad`, `unleash`)
-- 💼 **Marketing hyphenated compounds**: drops `production-quality`, `production-ready`, `enterprise-grade`, `copy-paste`, `theme-building`, `baked-in`, `plug-and-play`, `turn-key`, `future-proof`
-- ✂️ **De-hyphenate technical compounds**: `open-source` → `open source`, `command-line` → `command line`, `third-party` → `third party`, `AI-generated` → `AI generated`, `file-by-file` → `file by file`, `step-by-step` → `step by step`
-- 🔢 **Number-word + noun compounds**: `seven-question intake`, `four-phase rollout`, `three-step process` → drop modifier or use digit
-- 👀 **Filler intensifiers (audit only)**: flags `incredibly`, `highly`, `thoroughly`, `extensive`, `significantly`, `key` (adj), `fully`, `simply`, `very` for human review
-- 🪞 **Empty enumeration intros (audit)**: flags `wide range of`, `a host of`, `a wealth of`, `an array of`, `a suite of`
-- ➖ **Em-dash kill**: strips U+2014 / U+2013 from developer prose (comments, docstrings, logs, errors). Keeps them in CLI help text and user-facing terminal output. Leaves real number ranges alone (`pages 5-10`)
-- 👥 **First-person plural**: drops `we`, `us`, `our`, `let's`. First-person singular (`I`, `my`) allowed
-- 🏷️ **Function renames**: `orchestrateDataProvider` → `loadUsers`, `handleData` → `parseRequest`. Verifies substring safety before applying
-- 🪢 **Padding cuts**: `in order to` → `to`, `due to the fact that` → `because`, `at this point in time` → `now`
-- 🗯️ **Hedging removal**: `perhaps`, `essentially`, `fundamentally`, `at its core`, `arguably`
-- 📚 **Tutorial voice**: drops `As you can see`, `Let's dive in`, `Imagine that`, `It's worth noting that`
-- 🙏 **Apologetic openers**: drops `Please note`, `Keep in mind`, `Bear in mind`, `As a reminder`
-- 📝 **Structure tics**: drops `This function...` / `This class...` openers, trailing wrap-up sentences that restate the docstring, decorative emojis/arrows/box-drawing in comments
-- 🔁 **Restatement comments**: drops `i++; // increment i` and similar
-- 🔇 **Linter-suppression markers**: flags unjustified `# noqa`, `// @ts-ignore`, `// @ts-expect-error`, `# rubocop:disable`, `//nolint`, `// eslint-disable-line`, `# pragma: no cover`, `@phpstan-ignore-line`, `@psalm-suppress`
-- 📅 **Author/date stamps**: drops what `git blame` already tracks
-- 🦺 **Defensive-check noise**: drops `// just in case`, `// defensive check`, `// shouldn't happen`
-- 🎓 **Latin show-offs + AI Britishisms**: drops `whilst`, `amongst`, `ergo`, `vis-à-vis`
-- 🧪 **Test name cleanup**: `should correctly do X` → `do X`
+- **Vocabulary swap**: kills marketing words (`robust`, `seamless`, `comprehensive`, `world-class`, `powerful`, `elegant`, `crucial`, `vital`, `revolutionary`, `transformative`, `game-changing`, `mission-critical`, `bleeding-edge`, `bulletproof`, `holistic`, `supercharge`, `elevate`, `hand-crafted`, `purpose-built`) and AI tells (`delve`, `leverage`, `harness`, `tapestry`, `myriad`, `unleash`)
+- **Marketing hyphenated compounds**: drops `production-quality`, `production-ready`, `enterprise-grade`, `copy-paste`, `theme-building`, `baked-in`, `plug-and-play`, `turn-key`, `future-proof`
+- **De-hyphenate technical compounds**: `open-source` → `open source`, `command-line` → `command line`, `third-party` → `third party`, `AI-generated` → `AI generated`, `file-by-file` → `file by file`, `step-by-step` → `step by step`
+- **Number-word + noun compounds**: `seven-question intake`, `four-phase rollout`, `three-step process` → drop modifier or use digit
+- **Filler intensifiers (audit only)**: flags `incredibly`, `highly`, `thoroughly`, `extensive`, `significantly`, `key` (adj), `fully`, `simply`, `very` for human review
+- **Empty enumeration intros (audit)**: flags `wide range of`, `a host of`, `a wealth of`, `an array of`, `a suite of`
+- **Em-dash kill**: strips U+2014 / U+2013 from developer prose (comments, docstrings, logs, errors). Keeps them in CLI help text and user-facing terminal output. Leaves real number ranges alone (`pages 5-10`)
+- **First-person plural**: drops `we`, `us`, `our`, `let's`. First-person singular (`I`, `my`) allowed
+- **Function renames**: `orchestrateDataProvider` → `loadUsers`, `handleData` → `parseRequest`. Verifies substring safety before applying
+- **Padding cuts**: `in order to` → `to`, `due to the fact that` → `because`, `at this point in time` → `now`
+- **Hedging removal**: `perhaps`, `essentially`, `fundamentally`, `at its core`, `arguably`
+- **Tutorial voice**: drops `As you can see`, `Let's dive in`, `Imagine that`, `It's worth noting that`
+- **Apologetic openers**: drops `Please note`, `Keep in mind`, `Bear in mind`, `As a reminder`
+- **Structure tics**: drops `This function...` / `This class...` openers, trailing wrap-up sentences that restate the docstring, decorative emojis/arrows/box-drawing in comments
+- **Restatement comments**: drops `i++; // increment i` and similar
+- **Linter-suppression markers**: flags unjustified `# noqa`, `// @ts-ignore`, `// @ts-expect-error`, `# rubocop:disable`, `//nolint`, `// eslint-disable-line`, `# pragma: no cover`, `@phpstan-ignore-line`, `@psalm-suppress`
+- **Author/date stamps**: drops what `git blame` already tracks
+- **Defensive-check noise**: drops `// just in case`, `// defensive check`, `// shouldn't happen`
+- **Latin show-offs + AI Britishisms**: drops `whilst`, `amongst`, `ergo`, `vis-à-vis`
+- **Test name cleanup**: `should correctly do X` → `do X`
 
-## 🌍 Languages covered
+## Languages covered
 
 JavaScript, TypeScript, Python, Go, Rust, Java, C#, C/C++, Perl, Swift, Kotlin, PHP, Ruby, Elixir, Lua, SQL, PowerShell, Markdown, Shell scripts. Each language has its own ruleset section with tips for that language's comment/docstring/identifier conventions.
 
-## 🛠️ Frameworks covered
+## Frameworks covered
 
 React (+ Next.js Server Components, hooks, props), Vue (+ Nuxt composables, auto-imports), Astro (islands, content collections, view transitions), Alpine.js (`x-*` directives), Express (+ Koa, Fastify, Hono), Vite, Webpack, Rollup, esbuild, Tailwind (utility classes, `@apply`, config files), WordPress (plugins, themes, hooks, nonces, translation calls), Laravel (+ Blade, Livewire, Eloquent, migrations), Symfony (controllers, Doctrine, services, voters), Twig (Symfony/Drupal/standalone), EJS templates, `.env` files, `knexfile` database config.
 
-## 🛡️ Safety rails
+## Safety rails
 
 - Never changes code behavior, function signatures, return types, or string literals shown to end users
 - Never touches CLI help text, README content, commit messages, license headers, CHANGELOG
@@ -58,7 +58,7 @@ React (+ Next.js Server Components, hooks, props), Vue (+ Nuxt composables, auto
 - Falls back to "leave it and flag for human review" on ambiguous cases
 - Ships with reviewer checklist and false-positive guide for when a flagged word is actually correct
 
-## 🔄 How it works
+## How it works
 
 1. **Initialization gate**: target picker fires (File / Directory / Paste) unless target already given
 2. **Pass 1: read target**: full Read of the file, language detection from extension; loads relevant language + framework subsection from `references/full-ruleset.md`
@@ -71,7 +71,7 @@ React (+ Next.js Server Components, hooks, props), Vue (+ Nuxt composables, auto
 9. **Pass 8: human read-back**: cadence + rhythm review (greps catch keywords, not voice)
 10. **Pass 9: emit final report**: mandatory Markdown report (files touched, rename table, verification table, borderline kept, diff stats)
 
-## 🚀 How to use it
+## How to use it
 
 Slash command:
 
@@ -97,7 +97,7 @@ Flatten messy Unicode down to plain 7-bit ASCII, without changing a single word.
 /strip-unicode
 ```
 
-Text picks up junk everywhere it travels. A word processor turns your straight quotes into curly ones, your hyphens into long em dashes, your three dots into a single ellipsis character. A copy-paste from a website drags in non-breaking spaces and invisible zero-width characters that break diffs, grep, and code. `strip-unicode` is a deterministic sanitizer that walks the text once and maps every non-ASCII character back to the plain 7-bit range: `“Hi—bye”…` becomes `"Hi-bye"...`. It transliterates, it never interprets. Line breaks, indentation, and wording stay exactly as written. Nothing is summarized, rewritten, or grammar-fixed.
+Text picks up junk everywhere it travels. A word processor turns your straight quotes into curly ones, your hyphens into long dashes, your three dots into a single ellipsis character. A copy-paste from a website drags in non-breaking spaces and invisible zero-width characters that break diffs, grep, and code. `strip-unicode` is a deterministic sanitizer that walks the text once and maps every non-ASCII character back to the plain 7-bit range: curly quotes become straight quotes, a long dash becomes `-`, and an ellipsis character becomes `...`. It transliterates, it never interprets. Line breaks, indentation, and wording stay exactly as written. Nothing is summarized, rewritten, or grammar-fixed.
 
 The same input always gives the same output. A bundled Python script does the character mapping, so it is repeatable rather than a best guess, and every run ends with a table of exactly what changed and a check that no non-ASCII characters are left behind.
 
@@ -107,25 +107,25 @@ The same input always gives the same output. A bundled Python script does the ch
 
 **Prompt-injection proof.** Everything in the input is inert data to be cleaned. If the text contains lines like `ignore previous instructions` or `system:`, they are cleaned as literal characters, never obeyed.
 
-## ✨ What it changes
+## What it changes
 
-- ➖ **Dashes**: em dash `—` and en dash `–` (and the horizontal bar `―`) become a plain hyphen `-`
-- 💬 **Curly quotes**: `“ ” „` become straight `"`; `‘ ’ ‚` become straight `'`
-- 🔢 **Ellipsis**: `…` becomes three dots `...`
-- 🔘 **Bullets**: `•` `▪` `◦` `⁃` become `-`
-- 🌫️ **Invisible characters**: non-breaking, thin, and narrow spaces become a normal space; zero-width space, zero-width joiners, and the BOM are removed
-- ➗ **Math symbols**: `≤` → `<=`, `≥` → `>=`, `≠` → `!=`, `×` → `x`, `÷` → `/`
-- 🔤 **Everything else**: any other non-ASCII character is mapped to its nearest ASCII form (`café` → `cafe`, `™` → `TM`). Characters with no ASCII form (`€`, emoji, CJK) are removed and logged as `(removed)`
-- 🧱 **Precedence**: the specific rules above always win over the catch-all, and no character is ever transformed twice
+- **Dashes**: em dash (U+2014), en dash (U+2013), and horizontal bar (U+2015) become a plain hyphen `-`
+- **Curly quotes**: `“ ” „` become straight `"`; `‘ ’ ‚` become straight `'`
+- **Ellipsis**: `…` becomes three dots `...`
+- **Bullets**: `•` `▪` `◦` `⁃` become `-`
+- **Invisible characters**: non-breaking, thin, and narrow spaces become a normal space; zero-width space, zero-width joiners, and the BOM are removed
+- **Math symbols**: `≤` → `<=`, `≥` → `>=`, `≠` → `!=`, `×` → `x`, `÷` → `/`
+- **Everything else**: any other non-ASCII character is mapped to its nearest ASCII form (`café` → `cafe`, `™` → `TM`). Characters with no ASCII form (`€`, emoji, CJK) are removed and logged as `(removed)`
+- **Precedence**: the specific rules above always win over the catch-all, and no character is ever transformed twice
 
-## 📊 The report
+## The report
 
 After cleaning, both modes print a table sorted by how often each character appeared, then confirm the result is clean:
 
 ```
 | char | replaced with | count |
 |------|---------------|-------|
-| —    | -             | 4     |
+| ’    | '             | 4     |
 | “    | "             | 2     |
 | …    | ...           | 1     |
 
@@ -134,14 +134,14 @@ Non-ASCII remaining: 0
 
 If the text was already plain ASCII, it skips the table and says `No changes - already 7-bit ASCII.` instead.
 
-## 🚀 How to use it
+## How to use it
 
 Slash command:
 
 ```
 /strip-unicode                 # File or Paste picker
 /strip-unicode notes.md        # matches a file, so it asks File (1) or text (2) first
-/strip-unicode “Hi—bye”…       # pasted text, cleaned in a code block
+/strip-unicode <pasted text>    # pasted text, cleaned in a code block
 ```
 
 Requests it handles (type the command to run it - it never auto-triggers):
@@ -162,27 +162,27 @@ Clean the feature list in a Markdown README: strip the leading emoji off each fe
 
 Feature lists collect decoration. A rocket in front of every bullet, an em dash doing the work a colon should do, an en dash range that a find-and-replace would flatten into nonsense. The `readme-emoji` skill does one pass over the feature section and nothing else - headings, paragraphs, tables, badges, HTML, link definitions, ordered lists, and every fenced or indented code block are out of scope and returned byte for byte, including the ones sitting inside the feature section.
 
-What counts as a feature section is a string comparison, not a judgment call. The heading text is normalized - leading emoji, emphasis markers, whitespace, trailing punctuation, case - and must then **equal** `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`. So `## 🚀 Features`, `## **Features**`, and `## features:` all match, while `Deprecated Features` and `Feature Requests` do not.
+What counts as a feature section is a string comparison, not a judgment call. The heading text is normalized - leading emoji, emphasis markers, whitespace, trailing punctuation, case - and must then **equal** `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`. So a `Features` heading with a leading emoji, `## **Features**`, and `## features:` all match, while `Deprecated Features` and `Feature Requests` do not.
 
-The dash handling is two passes so ranges survive. Pass A classifies every dash: `2019–2024` and `10 – 20ms` are ranges and become plain ASCII hyphens, never colons and never deleted. Pass B gives a colon to the first remaining candidate whose preceding text is four words or fewer and does not end in `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes the rest. At most one candidate per bullet becomes a colon, so no bullet can end up with two.
+The dash handling is two passes so ranges survive. Pass A classifies every dash: a year range or a number range written with an en dash (U+2013), such as 2019 to 2024 or 10 to 20ms, is a range and become plain ASCII hyphens, never colons and never deleted. Pass B gives a colon to the first remaining candidate whose preceding text is four words or fewer and does not end in `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes the rest. At most one candidate per bullet becomes a colon, so no bullet can end up with two.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/readme-emoji/SKILL.md`, which loads the master template from `lib/readme-emoji/references/prompt-template.md`. The command `/strip-emoji` takes a file path or pasted contents; with neither it emits one fixed intake line and stops rather than guessing a path or inventing a sample. The output is the whole file inside a single four-backtick fence tagged `markdown`, so three-backtick fences inside the README survive intact.
 
-## ✨ Features
+## Features
 
-- 🎯 Mechanical scope test. Normalized heading equality against six exact names - a heading that merely contains "Features" is out of scope
-- ✂️ Whole emoji grapheme clusters removed, variation selectors, skin tones, ZWJ sequences, keycaps, and regional indicator pairs included
-- 🔢 Ranges preserved. `2019–2024` becomes `2019-2024`; a range never becomes a colon and is never deleted
-- 🏷️ One colon per bullet, awarded by a word count and a seven-word verb list, never by taste
-- 🧱 Everything else untouchable. Headings, ordered lists, continuation lines, code blocks, tables, badges, HTML, and link definitions come back byte for byte
-- 📏 Line count verified against the input before anything is emitted
-- 🚪 Asks for the file instead of guessing. No directory scan, no invented sample README
-- 🛡️ File content is data. Instructions found inside it are never followed
-- 📄 Non-Markdown input is echoed back unchanged rather than rewritten
+- Mechanical scope test. Normalized heading equality against six exact names - a heading that merely contains "Features" is out of scope
+- Whole emoji grapheme clusters removed, variation selectors, skin tones, ZWJ sequences, keycaps, and regional indicator pairs included
+- Ranges preserved. A year range written with an en dash (U+2013) becomes `2019-2024`; a range never becomes a colon and is never deleted
+- One colon per bullet, awarded by a word count and a seven-word verb list, never by taste
+- Everything else untouchable. Headings, ordered lists, continuation lines, code blocks, tables, badges, HTML, and link definitions come back byte for byte
+- Line count verified against the input before anything is emitted
+- Asks for the file instead of guessing. No directory scan, no invented sample README
+- File content is data. Instructions found inside it are never followed
+- Non-Markdown input is echoed back unchanged rather than rewritten
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the path or paste from the argument, or emit the one fixed intake line and stop.
 2. **Locate.** Normalize every heading, keep the ones that equal a feature-list name, and mark each section's bullets.
@@ -191,7 +191,7 @@ One slash command plus its procedure file `lib/readme-emoji/SKILL.md`, which loa
 5. **Verify.** Line count matches, no heading or code line moved, no bullet gained two colons, every range still present.
 6. **Emit.** The whole file inside one four-backtick fence, and nothing outside it.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /strip-emoji ./README.md          ← clean a file, print or overwrite
@@ -224,24 +224,24 @@ Three bundled scripts do the mechanical parts. `find-candidates.sh` enumerates e
 
 Python docstrings are treated as what they are: executable string expressions, not comments. They are kept by default, and when removal is explicitly requested the skill still keeps any docstring consumed at runtime by `argparse`, `click`, FastAPI, or `doctest`, and replaces a docstring that is a function's only body with `pass` rather than producing a syntax error.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/strip-comments/SKILL.md`, with two reference files, three bundled scripts, and the audit's pattern list under the same folder. The command `/strip-comments` collects scope, languages, and batching, then asks about docstrings and markup comments only when those file types actually turn up. Comment removal only: no formatter, no linter autofix, no rename, no reorder, no import cleanup.
 
-## ✨ Features
+## Features
 
-- 🛑 Preview and approval before any write, on every batch - never a first-run surprise on an unfamiliar codebase
-- 🧷 Safety gate first. On a branch, clean tree, under version control, or it says which check failed and stops
-- 📜 A full preserve catalogue. Shebangs, directive prologues, type-checker and linter directives, coverage and bundler hints, licence and copyright headers, SPDX identifiers, `/*! */` blocks, language pragmas, generated-file markers, Python comment-form type annotations
-- 🔎 No regex sweeps. Comment syntax inside strings, URLs, regexes, and heredocs is read in context, not pattern-matched
-- 🐍 Docstrings understood, not lumped in with comments - runtime-consumed ones survive even when removal is requested
-- 🧪 Verification required. Parse-check plus a comment audit, with every `FLAG` resolved and every `SKIP` listed before anything is called done
-- 📦 Batching by directory or language on anything over roughly 50 files, so a mistake stays cheap to isolate
-- 🎨 Templates covered. `<script>` and `<style>` blocks inside `.vue`, `.svelte`, `.astro`, `.ejs`, `.hbs`, `.html`, and `.blade.php`
-- 🚪 Markup comments opt-in. HTML, Blade, Handlebars, Jinja, and EJS comments are out of scope unless asked for; Markdown, README, and CHANGELOG files are never touched
-- 🚩 Ambiguity flagged with a file and line, never resolved quietly
+- Preview and approval before any write, on every batch - never a first-run surprise on an unfamiliar codebase
+- Safety gate first. On a branch, clean tree, under version control, or it says which check failed and stops
+- A full preserve catalogue. Shebangs, directive prologues, type-checker and linter directives, coverage and bundler hints, licence and copyright headers, SPDX identifiers, `/*! */` blocks, language pragmas, generated-file markers, Python comment-form type annotations
+- No regex sweeps. Comment syntax inside strings, URLs, regexes, and heredocs is read in context, not pattern-matched
+- Docstrings understood, not lumped in with comments - runtime-consumed ones survive even when removal is requested
+- Verification required. Parse-check plus a comment audit, with every `FLAG` resolved and every `SKIP` listed before anything is called done
+- Batching by directory or language on anything over roughly 50 files, so a mistake stays cheap to isolate
+- Templates covered. `<script>` and `<style>` blocks inside `.vue`, `.svelte`, `.astro`, `.ejs`, `.hbs`, `.html`, and `.blade.php`
+- Markup comments opt-in. HTML, Blade, Handlebars, Jinja, and EJS comments are out of scope unless asked for; Markdown, README, and CHANGELOG files are never touched
+- Ambiguity flagged with a file and line, never resolved quietly
 
-## 🔄 How it works
+## How it works
 
 1. **Gate.** Branch, clean tree, version control. Stop and name the failure if any check fails.
 2. **Enumerate.** `find-candidates.sh` builds the eligible file list; present it before touching anything.
@@ -251,7 +251,7 @@ One slash command plus its procedure file `lib/strip-comments/SKILL.md`, with tw
 6. **Verify.** `syntax-check.sh`, then `audit-remaining.sh`, then the project's own tests and build.
 7. **Report.** Files changed, lines removed, files skipped and why, constructs preserved, every ambiguous case located.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /strip-comments src/              ← scope passed in, confirmed at intake

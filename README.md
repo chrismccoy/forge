@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 75 tools behind 86 slash commands.
+One Claude Code plugin - `forge` - holding 76 tools behind 87 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -61,9 +61,9 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 
 **Cloud & Architecture**
 
-- [`/system-design`](docs/cloud-and-architecture.md#system-design). Designs a scalable system architecture from four answers - components and data flow, datastore and caching choices, sync versus async communication, and how it survives failure. Infrastructure only, no code.
+- [`/system-design`](docs/cloud-and-architecture.md#system-design). Designs a system architecture from four answers - components and data flow, datastore and caching choices, sync versus async communication, and how it survives failure. Infrastructure only, no code.
 - [`/terraform`](docs/cloud-and-architecture.md#terraform). Writes production Terraform split into `main.tf`, `variables.tf`, and `outputs.tf`, with least-privilege IAM, a pinned provider, and a state backend recommendation.
-- [`/cicd-pipeline`](docs/cloud-and-architecture.md#cicd-pipeline). Builds an optimized pipeline file for GitHub Actions, GitLab CI, or Jenkins - dependency and Docker layer caching, test gates, and a checklist of every secret you need to set.
+- [`/cicd-pipeline`](docs/cloud-and-architecture.md#cicd-pipeline). Builds a pipeline file for GitHub Actions, GitLab CI, or Jenkins - dependency and Docker layer caching, test gates, and a checklist of every secret you need to set.
 - [`/data-pipeline`](docs/cloud-and-architecture.md#data-pipeline). Designs an idempotent ETL or ELT pipeline - extraction strategy, Bronze/Silver/Gold layers, a conceptual DAG for your orchestrator, quality tests, and a backfill plan.
 - [`/cloud-migration`](docs/cloud-and-architecture.md#cloud-migration). Plans a data-center exit on the 6 R's, with a landing zone built before any workload moves, a wave-by-wave roadmap, and risk and cost tables.
 - [`/sre-audit`](docs/cloud-and-architecture.md#sre-audit). Designs the observability you are missing - SLIs and SLOs with error budgets, tracing spans that close your blind spots, burn-rate alerts instead of noisy thresholds, and a logging schema.
@@ -105,10 +105,11 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/mermaid-to-ascii`](docs/docs-and-diagrams.md#mermaid-to-ascii). Turns a Mermaid diagram file into clean text-art you can paste into a comment, a README, or a terminal, saved next to the original as a `.txt`.
 - [`/mermaid-sequence`](docs/docs-and-diagrams.md#mermaid-generator). Turns a plain bullet-point list of steps into one valid Mermaid sequence diagram, getting the arrow directions right and refusing cleanly when a step is missing its sender.
 - [`/explain-prompt`](docs/docs-and-diagrams.md#prompt-dummy). Explains any AI prompt in plain, everyday English for a total beginner - what it is, what you get back, how it works, and how to use it - in eight fixed sections. It describes the prompt, it never runs it.
-- [`/analyze-prompt`](docs/docs-and-diagrams.md#prompt-summary). A rigorous, review-ready breakdown of any AI prompt - anatomy, techniques, output contract, failure modes, and concrete improvements - with the full prompt quoted verbatim in an appendix.
+- [`/analyze-prompt`](docs/docs-and-diagrams.md#prompt-summary). A review-ready breakdown of any AI prompt - anatomy, techniques, output contract, failure modes, and concrete improvements - with the full prompt quoted verbatim in an appendix.
 - [`/rank-prompt`](docs/docs-and-diagrams.md#prompt-ranker). Audits a prompt's architecture and scores it - a tier and a score on one anchored scale, strengths and risks each tied to real language in the prompt, a row per analysis dimension, and the single change that would move it up the most. It reviews the prompt; it never obeys it.
 - [`/prompt-rank-table`](docs/docs-and-diagrams.md#prompt-rank-table). The same eight-dimension prompt audit as `/rank-prompt`, reduced to three sections - a tier and score, one table row per dimension with the evidence quoted from the prompt itself, and a one-line verdict. Built for a fast read, or for putting several prompts side by side.
 - [`/prompt-stencil`](docs/docs-and-diagrams.md#prompt-stencil). Turns one image prompt that already works into a reusable template - the wording that makes the look is locked, at most three things become swappable, and you get a copy-ready template plus filled examples proving the swap works.
+- [`/prompt-bloat`](docs/docs-and-diagrams.md#prompt-bloat). Cleans up an overengineered prompt or skill file - trademarks, version banners, invented citations, self-scores, unused mode switches, and repeated text come out, while every rule, gate, score threshold, and output requirement stays. You get a list of every cut with its reason, anything it was unsure about kept and flagged, a check that no rule was lost, and the rewrite, with an offer to save it next to the original.
 
 **Utilities**
 
@@ -128,7 +129,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 86 commands, nothing running in the background.
+That is the whole install. One plugin, 87 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -147,7 +148,7 @@ which asks for a category, then a tool, then runs it. Or jump straight to one ca
 /forge-security     # 3 security tools
 /forge-cleanup      # 4 code-cleanup tools
 /forge-code         # 14 code tools
-/forge-docs         # 7 docs and diagram tools
+/forge-docs         # 8 docs and diagram tools
 /forge-utils        # 6 utilities
 ```
 
@@ -182,7 +183,7 @@ Or call any tool directly:
 /page-tailwindify               # rebuild a live page's exact look in clean Tailwind
 
 # Writing & Content
-/tech-blog-article              # front-page-quality technical article
+/tech-blog-article              # technical article from five inputs
 /tutorial-builder               # hands-on, step-by-step tutorial
 /draft-contract                 # plain-English service agreement
 /name-domains                   # 10 brandable SaaS domain candidates
@@ -196,9 +197,9 @@ Or call any tool directly:
 /jq                             # one explained, copy-paste-ready jq command
 
 # Cloud & Architecture
-/system-design                  # scalable architecture blueprint, no code
+/system-design                  # architecture blueprint, no code
 /terraform                      # production HCL: main.tf, variables.tf, outputs.tf
-/cicd-pipeline                  # optimized pipeline YAML + secrets checklist
+/cicd-pipeline                  # pipeline YAML + secrets checklist
 /data-pipeline                  # idempotent ETL/ELT design with quality tests
 /cloud-migration                # 6 R's plan, landing zone, wave roadmap
 /sre-audit                      # SLOs, tracing, burn-rate alerts, log schema
@@ -240,6 +241,7 @@ Or call any tool directly:
 /rank-prompt                    # tier and score a prompt's architecture
 /prompt-rank-table              # the same audit as a tier, a table, one verdict
 /prompt-stencil                 # cut a working image prompt into a reusable template
+/prompt-bloat                   # strip bloat from a prompt or skill file, rules kept
 
 # Utilities
 /snippet                        # a complete standalone script in 19 languages
@@ -254,7 +256,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 86 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 87 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -286,7 +288,7 @@ description each.
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
 | `/forge-code` | 14 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-docs` | 7 | 3 + `More...`, then 3 + `More...`, then 1 |
+| `/forge-docs` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
 
@@ -349,7 +351,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              86 command files - 75 tools, 11 pickers
+commands/              87 command files - 76 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -366,7 +368,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 86 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 87 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -388,7 +390,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
 | Code | 14 | [docs/code.md](docs/code.md) |
-| Docs & Diagrams | 7 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
+| Docs & Diagrams | 8 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
 
@@ -399,15 +401,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 86 slash commands: 11 pickers + 75 tools
-├── lib/                      ← 75 procedure folders (SKILL.md + bundled
+├── commands/                 ← 87 slash commands: 11 pickers + 76 tools
+├── lib/                      ← 76 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 75 tools compared by how much each does
+├── SUMMARY.md                ← the 76 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

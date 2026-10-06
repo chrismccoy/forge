@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 75 tools in this plugin and then run it. This command
+Route the user to one of the 76 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -37,7 +37,7 @@ Each category also has its own command, which skips Step 1 entirely:
 | `/forge-security` | 3 security tools |
 | `/forge-cleanup` | 4 code-cleanup tools |
 | `/forge-code` | 14 code tools |
-| `/forge-docs` | 7 docs and diagram tools |
+| `/forge-docs` | 8 docs and diagram tools |
 | `/forge-utils` | 6 utilities |
 
 If the user's input clearly names one category and no specific tool, mention the matching
@@ -74,7 +74,7 @@ such answer as a Step 0 direct hit.
 |---|---|
 | Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 tools. |
 | Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints. 14 tools. |
-| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, stencils. 7 tools. |
+| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, stencils, bloat remover. 8 tools. |
 | More... | Utilities. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which category?", header: "Category"
@@ -244,7 +244,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Refactor a script safely | script-refactor | Clean up bash and Python scripts an agent runs without changing their output; behavior fixes wait for approval. |
 | Codebase blueprint or rebuild | blueprint-forge | Scan a codebase into a 14-section BLUEPRINT.md, or rebuild a working app from one, plan first. |
 
-### Docs & Diagrams (7 - page at 4)
+### Docs & Diagrams (8 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -258,11 +258,12 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
 | Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
 | Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
-| More... | - | The image prompt stencil cutter. |
+| More... | - | The image prompt stencil cutter and prompt bloat remover. |
 
 | Label | Command | Description |
 |---|---|---|
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
+| Remove prompt bloat | prompt-bloat | Strip branding, fake authority, self-grading, and dead config from a prompt, keeping every rule. |
 
 ### Utilities (6 - page at 4)
 
@@ -332,6 +333,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | token-auditor, prompt-audit-usage | token-audit |
 | safe-refactor, refactor-script, script-cleanup | script-refactor |
 | blueprint-scan, blueprint-rebuild, reverse-blueprint | blueprint-forge |
+| prompt-bloat-fixer, debloat-prompt, debloat | prompt-bloat |
 | github-profile-bio, profile-bio, bio | github-bio |
 
 ## Rules

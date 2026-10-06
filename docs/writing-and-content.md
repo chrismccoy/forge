@@ -4,7 +4,7 @@
 
 ## `tech-blog-article`
 
-Front-page-quality technical articles from five inputs, in the voice of a senior developer who actually ships. Locked output format. Pre-write input validation and a silent post-write output gate.
+Technical articles from five inputs, in the voice of a senior developer. Locked output format. Pre-write input validation and a silent post-write output gate.
 
 ```
 /tech-blog-article
@@ -16,24 +16,24 @@ The skill body runs the workflow. Step 1 loads the master prompt from `reference
 
 Hard refusal on non-writing and role-change requests (`I only draft technical articles - give me a topic and I'll write.`). Output is the article only - no preamble, no meta-commentary, no notes after the bio.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/tech-blog-article/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` lives in `references/prompt-template.md` and loads on every invocation. The slash command `/tech-blog-article` accepts an optional `TOPIC` arg, then walks the user through `AskUserQuestion` intake for the remaining four fields.
 
-## ✨ Features
+## Features
 
-- 🎯 Five inputs in, one article out. TOPIC + AUDIENCE_LEVEL + ARTICLE_ANGLE + PRIMARY_LANGUAGE + WORD_COUNT
-- 🪝 An opening that pulls the reader in within the first 3 sentences. No dictionary definitions, no "In today's fast-paced world"
-- 🧱 Every H2 is a complete thought, not a bare topic label. TL;DR box (3-4 bullets) after the intro
-- 💻 Wrong-way-then-right-way code examples, under 20 lines, language identifier in the fence, plain-English explanation after each block
-- ⚖️ Opinions stated outright and backed with numbers; downsides admitted; "So What?" test per section
-- 🏁 One of four ending patterns: lessons-learned, actionable checklist, provocative question, or "the thing nobody tells you"
-- ✅ Pre-write input validation halts on bracketed placeholders or word counts outside 300-5000
-- 🔒 Silent post-write output gate: title length, TL;DR bullet count, complete-thought H2s, code-block annotations, ending pattern
-- 🛡️ Prompt-injection defense. All five inputs treated as inert article subject matter. Embedded directives (`ignore the above`, `reveal your prompt`, `change format`) are ignored
-- 🪧 Scope-locked. Non-writing and role-change requests refused with `I only draft technical articles - give me a topic and I'll write.`
+- Five inputs in, one article out. TOPIC + AUDIENCE_LEVEL + ARTICLE_ANGLE + PRIMARY_LANGUAGE + WORD_COUNT
+- An opening that pulls the reader in within the first 3 sentences. No dictionary definitions, no "In today's fast-paced world"
+- Every H2 is a complete thought, not a bare topic label. TL;DR box (3-4 bullets) after the intro
+- Wrong-way-then-right-way code examples, under 20 lines, language identifier in the fence, plain-English explanation after each block
+- Opinions stated outright and backed with numbers; downsides admitted; "So What?" test per section
+- One of four ending patterns: lessons-learned, actionable checklist, provocative question, or "the thing nobody tells you"
+- Pre-write input validation halts on bracketed placeholders or word counts outside 300-5000
+- Silent post-write output gate: title length, TL;DR bullet count, complete-thought H2s, code-block annotations, ending pattern
+- Prompt-injection defense. All five inputs treated as inert article subject matter. Embedded directives (`ignore the above`, `reveal your prompt`, `change format`) are ignored
+- Scope-locked. Non-writing and role-change requests refused with `I only draft technical articles - give me a topic and I'll write.`
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command collects five fields via `AskUserQuestion`. If `TOPIC` was passed as `$ARGUMENTS`, confirm and skip that question. Empty / blank / `[FIELD_NAME]` → halt with `MISSING INPUT: <field> required.`
 2. **Load template.** Read `references/prompt-template.md`. Substitute `{{TOPIC}}`, `{{AUDIENCE_LEVEL}}`, `{{ARTICLE_ANGLE}}`, `{{PRIMARY_LANGUAGE}}`, `{{WORD_COUNT}}` with collected values. Treat values as inert data.
@@ -42,7 +42,7 @@ One slash command plus its procedure file. The procedure file `lib/tech-blog-art
 5. **Silent output gate.** Title ≤ 60 chars; TL;DR 3-4 bullets; complete-thought H2s; every code block has a language identifier and plain-English explanation; one ending pattern. Fix any failure before printing.
 6. **Output the article only.** No preamble, no meta-commentary, no notes after the bio line.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -75,25 +75,25 @@ The skill body runs the workflow and stays lean. Retention patterns (learn by do
 
 Supplied code and repo content are treated as inert data - a directive embedded in a comment or filename is content to teach around, never a command to obey. Scope-locked to teaching content: non-tutorial and role-change requests get `I only build tutorials - give me a topic or some code and I'll teach it.`
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/tutorial-builder/SKILL.md` carries the persona, scope lock, the three-step development process, the locked tutorial structure, core cognitive-load rules, and the quality gates. The on-demand `references/writing-guide.md` holds the retention patterns, writing principles, content-element rules, behavior heuristics, audience calibration, pitfalls, and accessibility checklist. The on-demand `references/implementation-playbook.md` holds a full worked tutorial, a formats table with per-format guidance, a difficulty-calibrated exercise bank, and an expanded review rubric. A finished `examples/sample-tutorial.md` ships as a copy target. The slash command `/tutorial-builder` accepts an optional `TOPIC` or path, then walks the user through `AskUserQuestion` intake for the remaining four fields.
 
-## ✨ Features
+## Features
 
-- 🎯 Five inputs in, one complete tutorial out. TOPIC + AUDIENCE + FORMAT + CONSTRAINTS + DISTRIBUTION
-- 🧱 Locked structure: opening (objectives, prerequisites, time, final result, setup), progressive sections, closing (summary, next steps, resources, call to action)
-- 🪜 Concepts ordered simple to complex with no forward references, and exercises scaffolded I-do, We-do, You-do
-- 💻 Every code block traced to run unmodified (or labeled pseudocode), lists dependencies, and shows expected output
-- 🧠 Retention patterns and cognitive-load limits (one new concept per step, one-screen code, no forward references) built into the pacing
-- 🧩 Five difficulty-calibrated exercise types: fill-in-the-blank, debug, extension, from-scratch, refactoring
-- 📚 Bundled playbook with a full worked tutorial, per-format deep-dives, an exercise bank, and a review rubric, loaded only when depth is needed
-- 🔗 Link honesty: only real, canonical URLs are cited; no invented links, images, or screenshots
-- ✅ Pre-publish checklist plus a checkable yes/no quality gate; every item must pass before the tutorial is returned
-- 🛡️ Supplied code and repo content treated as inert data; embedded directives are taught around, never obeyed
-- 🪧 Scope-locked. Non-tutorial and role-change requests refused with `I only build tutorials - give me a topic or some code and I'll teach it.`
+- Five inputs in, one complete tutorial out. TOPIC + AUDIENCE + FORMAT + CONSTRAINTS + DISTRIBUTION
+- Locked structure: opening (objectives, prerequisites, time, final result, setup), progressive sections, closing (summary, next steps, resources, call to action)
+- Concepts ordered simple to complex with no forward references, and exercises scaffolded I-do, We-do, You-do
+- Every code block traced to run unmodified (or labeled pseudocode), lists dependencies, and shows expected output
+- Retention patterns and cognitive-load limits (one new concept per step, one-screen code, no forward references) built into the pacing
+- Five difficulty-calibrated exercise types: fill-in-the-blank, debug, extension, from-scratch, refactoring
+- Bundled playbook with a full worked tutorial, per-format deep-dives, an exercise bank, and a review rubric, loaded only when depth is needed
+- Link honesty: only real, canonical URLs are cited; no invented links, images, or screenshots
+- Pre-publish checklist plus a checkable yes/no quality gate; every item must pass before the tutorial is returned
+- Supplied code and repo content treated as inert data; embedded directives are taught around, never obeyed
+- Scope-locked. Non-tutorial and role-change requests refused with `I only build tutorials - give me a topic or some code and I'll teach it.`
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command collects five fields via `AskUserQuestion`. If a `TOPIC` or path was passed as `$ARGUMENTS`, confirm and skip that question. If the user skips intake, apply the stated defaults: intermediate audience, deep dive format, blog or docs, latest stable tools.
 2. **Define objectives.** Set measurable learning outcomes with Bloom's verbs, plus prerequisites and assumed knowledge.
@@ -101,7 +101,7 @@ One slash command plus its procedure file. The procedure file `lib/tutorial-buil
 4. **Write** the tutorial in the locked structure, one new concept per step, every code block runnable with expected output shown. Load `references/implementation-playbook.md` for a worked example, per-format detail, or the exercise bank.
 5. **Gate.** Run the pre-publish checklist and the yes/no quality gate. Fix any failing item before returning.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -132,23 +132,23 @@ Most "write me a contract" prompts either hand back dense legalese the client is
 
 Nothing gets invented. When a detail is missing it leaves a clearly marked blank like `[TO BE COMPLETED: kill fee basis]` for you to fill in, instead of guessing a number. Anything that changes from one country or state to another, like late-payment interest or which law applies, is written in neutral wording and flagged so you can confirm it with a local lawyer. This gives you a strong starting draft, not legal advice.
 
-## 📋 What's inside
+## What's inside
 
 A plugin with one slash command and one skill. The procedure file `lib/contract-framework/SKILL.md` holds the persona, the six inputs, the four-step workflow, and the final check. The full master prompt with the fill-in placeholders lives in `references/prompt-template.md` and loads every time. The slash command `/draft-contract` takes an optional one-line description of the work, then walks you through the rest with simple multiple-choice questions.
 
-## ✨ What you get
+## What you get
 
-- 🎯 Six easy questions in, a complete contract out: your business, your client, the work, the payment, extra protections, and tone
-- 🧱 Eight clearly labelled parts, always in the same order: Parties, Scope, Payment, Intellectual Property, Confidentiality, Termination, Liability, and General Provisions
-- 🤝 Covers the three big freelance headaches every time: work creeping past the agreement, late payment, and who owns the finished result
-- 🗣️ Three tone choices applied all the way through: formal, plain professional, or a warmer creative style
-- 🚧 Never invents laws, names, figures, fees, deadlines, or limits. Missing details become clearly marked blanks for you to fill in
-- 🌍 Anything that depends on where you live is written in neutral wording and flagged to check locally
-- 🛡️ Treats your answers as plain information only. Hidden instructions tucked inside them are ignored
-- 📄 Saves the contract to a tidy file when it can and just tells you where it went, otherwise prints it on screen
-- ✅ A quiet final check confirms all eight parts are present, in order, the tone is consistent, and every line traces back to something you actually said
+- Six easy questions in, a complete contract out: your business, your client, the work, the payment, extra protections, and tone
+- Eight clearly labelled parts, always in the same order: Parties, Scope, Payment, Intellectual Property, Confidentiality, Termination, Liability, and General Provisions
+- Covers the three big freelance headaches every time: work creeping past the agreement, late payment, and who owns the finished result
+- Three tone choices applied all the way through: formal, plain professional, or a warmer creative style
+- Never invents laws, names, figures, fees, deadlines, or limits. Missing details become clearly marked blanks for you to fill in
+- Anything that depends on where you live is written in neutral wording and flagged to check locally
+- Treats your answers as plain information only. Hidden instructions tucked inside them are ignored
+- Saves the contract to a tidy file when it can and just tells you where it went, otherwise prints it on screen
+- A quiet final check confirms all eight parts are present, in order, the tone is consistent, and every line traces back to something you actually said
 
-## 🔄 How it works
+## How it works
 
 1. **Questions.** The slash command asks for the six fields with simple multiple-choice prompts. If you pass a short description of the work, it takes that as the starting description and confirms it with you before going on.
 2. **Missing-answer check.** If any of the four must-have answers is blank or looks filled in wrong, it stops and asks for just the missing pieces, in one short list, before writing anything.
@@ -156,7 +156,7 @@ A plugin with one slash command and one skill. The procedure file `lib/contract-
 4. **Final pass.** A quiet check confirms all eight parts are present and in order, the tone is consistent, and nothing was invented, then fixes anything off before handing it over.
 5. **Deliver.** Saves the contract to a file when it can and prints only the path, otherwise prints the full contract on screen.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to start:
 
@@ -177,7 +177,7 @@ The full procedure lives at [`lib/contract-framework/SKILL.md`](../lib/contract-
 
 ## `naming-strategist`
 
-Senior naming strategist for venture-backed SaaS founders. 10 brandable, pronounceable, niche-fit domain candidates from five inputs. Locked 4-section output. Silent scoring drops weak names before they ever reach the page.
+Senior naming strategist for SaaS founders. 10 brandable, pronounceable, niche-fit domain candidates from five inputs. Locked 4-section output. Silent scoring drops weak names before they ever reach the page.
 
 ```
 /name-domains
@@ -189,24 +189,24 @@ The skill body runs the workflow. Step 1 loads the master prompt from `reference
 
 Hard refusal on legal-certainty claims (`Needs verification` instead), on hype copy (`proven`, `revolutionary`, `leverage`, `robust`, `seamless`, `cutting-edge`), and on out-of-scope asks (marketing copy, strategy decks, legal advice, taglines - all answered with `Out of scope - domain naming candidates only.`).
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/naming-strategist/SKILL.md` carries the scope lock, input handling, and 5-step workflow. The authoritative master prompt with `{{placeholders}}` lives in `references/prompt-template.md` and loads on every invocation. The hard constraints (blocked words, scoring rubric, silent validation gate) live in `references/constraints.md`. The output format (sections A-D, per-candidate block, worked calibration example) lives in `references/output-spec.md`. The slash command `/name-domains` accepts an optional `MARKET_TOPIC` arg, then walks the user through `AskUserQuestion` intake for the remaining four fields.
 
-## ✨ Features
+## Features
 
-- 🎯 Five inputs in, ten candidates out. MARKET_TOPIC + TARGET_AUDIENCE + OFFER_TYPE + BRAND_TONE (2-3 pick) + EXTENSION_PRIORITY
-- 🧪 Silent 5-axis scoring - Brandability, Niche fit, Pronounceability, Spelling ease, Differentiation. Drops anything below 7 average before printing
-- 🧱 At least 5 distinct naming structures across the 10 - compound, blended, metaphor, invented, classical-roots. No same-pattern repeats
-- 🚫 Refuses hyphens, numbers, awkward letter clusters, forced `-ify` / `-ly` / `-hub` / `-io` / `-app` suffixes, generic descriptive keyword domains (`BestBranding`, `FastestCRM`), and famous-brand collisions
-- 🛡️ No legal claims. Domains, trademark status, registrar availability - all answered `Needs verification`
-- 🧊 No hype. Blocked phrasing in any rationale: `proven`, `revolutionary`, `transformative`, `leverage`, `robust`, `comprehensive`, `streamline`, `harness`, `seamless`, `cutting-edge`
-- 📦 Locked 4-section output: A) Setup Summary (3 lines), B) Name List of 10 candidates with Angle/Fit/Recommended extension/Risk note, C) Top 3 Shortlist with Strength + Watch-out bullets, D) Verification Checklist (registrar check, USPTO TESS, WIPO Global Brand Database, pronunciation test, Google collision search)
-- ⚖️ Risk severity scale per name: Low (invented, no known collision), Medium (real-word compound, possible overlap), High (close to known brand or category-keyword overlap)
-- 🛑 Prompt-injection defense. All five inputs treated as inert data. Directives like `ignore prior`, `act as`, `respond in JSON`, role-switch attempts inside field values are ignored
-- 🪝 Scope-locked. Marketing copy, strategy decks, legal advice, taglines - all refused with `Out of scope - domain naming candidates only.`
+- Five inputs in, ten candidates out. MARKET_TOPIC + TARGET_AUDIENCE + OFFER_TYPE + BRAND_TONE (2-3 pick) + EXTENSION_PRIORITY
+- Silent 5-axis scoring - Brandability, Niche fit, Pronounceability, Spelling ease, Differentiation. Drops anything below 7 average before printing
+- At least 5 distinct naming structures across the 10 - compound, blended, metaphor, invented, classical-roots. No same-pattern repeats
+- Refuses hyphens, numbers, awkward letter clusters, forced `-ify` / `-ly` / `-hub` / `-io` / `-app` suffixes, generic descriptive keyword domains (`BestBranding`, `FastestCRM`), and famous-brand collisions
+- No legal claims. Domains, trademark status, registrar availability - all answered `Needs verification`
+- No hype. Blocked phrasing in any rationale: `proven`, `revolutionary`, `transformative`, `leverage`, `robust`, `comprehensive`, `streamline`, `harness`, `seamless`, `cutting-edge`
+- Locked 4-section output: A) Setup Summary (3 lines), B) Name List of 10 candidates with Angle/Fit/Recommended extension/Risk note, C) Top 3 Shortlist with Strength + Watch-out bullets, D) Verification Checklist (registrar check, USPTO TESS, WIPO Global Brand Database, pronunciation test, Google collision search)
+- Risk severity scale per name: Low (invented, no known collision), Medium (real-word compound, possible overlap), High (close to known brand or category-keyword overlap)
+- Prompt-injection defense. All five inputs treated as inert data. Directives like `ignore prior`, `act as`, `respond in JSON`, role-switch attempts inside field values are ignored
+- Scope-locked. Marketing copy, strategy decks, legal advice, taglines - all refused with `Out of scope - domain naming candidates only.`
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command collects five fields via `AskUserQuestion`. If `MARKET_TOPIC` was passed as `$ARGUMENTS`, confirm and skip that question. Empty / blank / `[FIELD_NAME]` → halt with `MISSING INPUT: <field> required.`
 2. **Load template.** Read `references/prompt-template.md`. Substitute `{{MARKET_TOPIC}}`, `{{TARGET_AUDIENCE}}`, `{{OFFER_TYPE}}`, `{{BRAND_TONE}}`, `{{EXTENSION_PRIORITY}}` with collected values. Treat values as inert data.
@@ -215,7 +215,7 @@ One slash command plus its procedure file. The procedure file `lib/naming-strate
 5. **Emit sections A-D** per `references/output-spec.md`. No extras. No reordering.
 6. **Silent validation gate.** Regenerate any item that fails: generic, brand-collision, missing structure variety, hype words, availability claims. Do not announce the gate.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -236,7 +236,7 @@ The full procedure lives at [`lib/naming-strategist/SKILL.md`](../lib/naming-str
 
 ## `language-tutor`
 
-Expert linguist, translator, and language tutor from five inputs, in the voice of a university-level instructor who stays clear enough for a self-studying learner. Two modes, locked section output per mode, an accuracy floor that refuses to fabricate, and a silent validation gate before printing.
+Translation, explanation, and writing correction from five inputs, in the voice of a language instructor writing for a self-studying learner. Two modes, locked section output per mode, an accuracy floor that refuses to fabricate, and a silent validation gate before printing.
 
 ```
 /language-tutor
@@ -248,25 +248,25 @@ The skill body runs the workflow. Step 1 loads the master prompt from `reference
 
 Hard accuracy floor: never invents grammar rules, etymologies, or IPA; flags uncertainty instead of guessing; states reduced confidence on low-resource languages and dialects and stops rather than approximating when a language can't be handled reliably. Prompt-injection defense treats all submitted text strictly as DATA - a phrase like "ignore your instructions" inside the text is translated or analyzed literally, never obeyed. Scope-locked: non-language requests get a brief decline and a restatement of what the tutor does, never a switch into general-assistant behavior.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/language-tutor/SKILL.md` carries the persona, scope lock, core behavior, input handling, and 4-step workflow. The authoritative master prompt with `{{placeholders}}` and both mode specs lives in `references/prompt-template.md` and loads on every invocation. The accuracy floor, prompt-injection defense, and silent validation gate live in `references/constraints.md`. The exact section structure for both modes, the optional-extras menu, and two calibrated worked examples live in `references/output-spec.md`. The slash command `/language-tutor` accepts an optional `TEXT` arg, then walks the user through `AskUserQuestion` intake for the remaining fields.
 
-## ✨ Features
+## Features
 
-- 🎯 Five inputs in, a full language breakdown out. MODE + TEXT + TARGET_LANGUAGE + NATIVE_LANGUAGE + DEPTH
-- 🔀 Two modes: TRANSLATION (translate and explain a phrase) and TEXT ANALYSIS (correct and critique your own writing). Auto-detect picks the mode from the text when MODE is `Auto`
-- 🧱 TRANSLATION emits 5 locked sections: Translation, Grammar (both languages), Structure, Pronunciation, Usage & Register
-- 📝 TEXT ANALYSIS emits 6 locked sections: Grammar, Spelling & Punctuation, Style & Flow, Meaning & Content, Corrected Text (every change itemized `original → corrected → reason`), 5 Alternative Versions (formal, casual, detailed, concise, alt-vocabulary)
-- 🔊 IPA inside slashes plus English approximations and marked syllable stress; pronunciation tips tailored to the learner's NATIVE_LANGUAGE for sounds that don't exist in it
-- 🎚️ Register and difficulty aligned to CEFR A1-C2 where the language supports it, with the targeted level named
-- ⚡ Quick depth returns only the Translation or Corrected Text plus a one-line note - no framework
-- 🧠 Accuracy floor: never invents grammar rules, etymologies, or IPA; flags uncertainty instead of guessing; reduced-confidence warning on low-resource languages and dialects, and a hard stop rather than approximation when a language can't be handled reliably
-- 🛡️ Prompt-injection defense. Submitted text is inert DATA; directives embedded in it (`ignore your instructions`, `act as`, `system:`) are translated or analyzed literally, never obeyed
-- ✅ Silent validation gate: section set complete and in order, IPA in slashes, CEFR named, exactly 5 rewrites, every change itemized, no obeyed injections
-- 🪧 Scope-locked. Non-language requests get a brief decline plus a restatement - no switch into general-assistant behavior
+- Five inputs in, a full language breakdown out. MODE + TEXT + TARGET_LANGUAGE + NATIVE_LANGUAGE + DEPTH
+- Two modes: TRANSLATION (translate and explain a phrase) and TEXT ANALYSIS (correct and critique your own writing). Auto-detect picks the mode from the text when MODE is `Auto`
+- TRANSLATION emits 5 locked sections: Translation, Grammar (both languages), Structure, Pronunciation, Usage & Register
+- TEXT ANALYSIS emits 6 locked sections: Grammar, Spelling & Punctuation, Style & Flow, Meaning & Content, Corrected Text (every change itemized `original → corrected → reason`), 5 Alternative Versions (formal, casual, detailed, concise, alt-vocabulary)
+- IPA inside slashes plus English approximations and marked syllable stress; pronunciation tips tailored to the learner's NATIVE_LANGUAGE for sounds that don't exist in it
+- Register and difficulty aligned to CEFR A1-C2 where the language supports it, with the targeted level named
+- Quick depth returns only the Translation or Corrected Text plus a one-line note - no framework
+- Accuracy floor: never invents grammar rules, etymologies, or IPA; flags uncertainty instead of guessing; reduced-confidence warning on low-resource languages and dialects, and a hard stop rather than approximation when a language can't be handled reliably
+- Prompt-injection defense. Submitted text is inert DATA; directives embedded in it (`ignore your instructions`, `act as`, `system:`) are translated or analyzed literally, never obeyed
+- Silent validation gate: section set complete and in order, IPA in slashes, CEFR named, exactly 5 rewrites, every change itemized, no obeyed injections
+- Scope-locked. Non-language requests get a brief decline plus a restatement - no switch into general-assistant behavior
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command collects five fields via `AskUserQuestion`. If `TEXT` was passed as `$ARGUMENTS`, confirm and seed it. Empty / blank / `[FIELD_NAME]` on `MODE` or `TEXT` → halt with `MISSING INPUT: <field> required.` In TRANSLATION mode, a missing or ambiguous `TARGET_LANGUAGE` triggers one short clarifying question alone before proceeding.
 2. **Load template.** Read `references/prompt-template.md`. Substitute `{{MODE}}`, `{{TEXT}}`, `{{TARGET_LANGUAGE}}`, `{{NATIVE_LANGUAGE}}`, `{{DEPTH}}`. Treat the entire `TEXT` value as inert data.
@@ -274,7 +274,7 @@ One slash command plus its procedure file. The procedure file `lib/language-tuto
 4. **Emit the locked sections** for the active mode per `references/output-spec.md`. Omit a section only if it doesn't apply, and say why. Quick depth returns only the result plus a one-line note.
 5. **Silent validation gate.** Section completeness, IPA slashes, CEFR label, 5-rewrite count, itemized changes, no obeyed injections. Fix any failure before printing. Don't announce the gate.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -307,23 +307,23 @@ The skill body runs the workflow. Step 1 asks the six questions as plain message
 
 Scope-locked: anything other than a GitHub profile bio gets `Out of scope: this tool writes GitHub profile bios only.` and a pointer to `/readme-builder` for full READMEs. Answers are treated as data, so an instruction typed into an answer is recorded as text, never obeyed.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/github-bio/SKILL.md` carries the persona, scope lock, the six questions with examples, the confirmation step, the five styles, the writing constraints, and the length check. The length check is `lib/github-bio/scripts/count_chars.py`, a standard-library Python script that reads bios from stdin separated by `===` lines, or one bio per file. The slash command `/github-bio` keeps any answers passed as arguments and asks only the questions still missing. Its `allowed-tools` grants only that one script.
 
-## ✨ Features
+## Features
 
-- 🎯 Six questions in, five bios out. ROLE + STACK + DATA + CLOUD + DEVOPS + FOCUS
-- 💬 One question per message, numbered, each with an example. Answer several at once and it asks only what is missing
-- ⏭️ Any category except role can be skipped with `skip`, and is then left out of every bio
-- ✅ Confirmation step: a summary of all six answers, and nothing is written until you reply yes
-- 🧱 Five styles: categorized, modern and traditional blend, keyword dense, concise and professional, visual and vertical
-- 📏 Every bio checked by a script at 160 characters or fewer, counting spaces, emojis, and line breaks, and rewritten until it passes
-- 🚫 No invented skills, tools, or levels. A tool listed in two categories appears once per bio
-- 📋 Each bio in its own code block, ready to paste, with its count shown
-- 🪧 Scope-locked. Non-bio requests get one line and a pointer to `/readme-builder`
+- Six questions in, five bios out. ROLE + STACK + DATA + CLOUD + DEVOPS + FOCUS
+- One question per message, numbered, each with an example. Answer several at once and it asks only what is missing
+- Any category except role can be skipped with `skip`, and is then left out of every bio
+- Confirmation step: a summary of all six answers, and nothing is written until you reply yes
+- Five styles: categorized, modern and traditional blend, keyword dense, concise and professional, visual and vertical
+- Every bio checked by a script at 160 characters or fewer, counting spaces, emojis, and line breaks, and rewritten until it passes
+- No invented skills, tools, or levels. A tool listed in two categories appears once per bio
+- Each bio in its own code block, ready to paste, with its count shown
+- Scope-locked. Non-bio requests get one line and a pointer to `/readme-builder`
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Ask the six questions one per message. Keep answers passed as `$ARGUMENTS` and skip those questions. Ask once more for an unclear answer, then move on.
 2. **Confirm.** Show all six answers under bold headers and wait for `yes` or changes.
@@ -331,7 +331,7 @@ One slash command plus its procedure file. The procedure file `lib/github-bio/SK
 4. **Check length.** Pipe the drafts into `count_chars.py`. Rewrite any bio marked `OVER by N` and check again.
 5. **Output.** Print the five bios in code blocks with their counts, and nothing after.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 

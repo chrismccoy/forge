@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  75 tools . 86 commands . 11 pickers . 0 skills . nothing auto-fires.
+  76 tools . 87 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -67,7 +67,7 @@
   |         refactors, regex teardowns, script refactors.  14 tools.             |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
-  |         Mermaid diagrams, prompt explainers, auditors, stencils.  7 tools.   |
+  |         Mermaid diagrams, prompt explainers, auditors, stencils.  8 tools.   |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |                                                                              |
@@ -529,7 +529,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Docs & Diagrams  ( /forge-docs )  -  7 tools, 3 pages ----------------------
+--- Docs & Diagrams  ( /forge-docs )  -  8 tools, 3 pages ----------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/3) |
@@ -567,7 +567,7 @@
   |         a one-line verdict.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The image prompt stencil cutter.                                     |
+  |         The image prompt stencil cutter and prompt bloat remover.            |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -578,6 +578,10 @@
   |  ( 1 )  Cut an image prompt stencil                      -> /prompt-stencil  |
   |         Turn a working image prompt into a reusable template: locks,         |
   |         variables, drift guards, filled proofs.                              |
+  |                                                                              |
+  |  ( 2 )  Remove prompt bloat                                -> /prompt-bloat  |
+  |         Strip branding, fake authority, self-grading, and dead config from a |
+  |         prompt, keeping every rule.                                          |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -674,7 +678,7 @@
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt
-   |    +-- rank-prompt  prompt-rank-table  prompt-stencil
+   |    +-- rank-prompt  prompt-rank-table  prompt-stencil  prompt-bloat
    |
    +-- Utilities ............. /forge-utils
         +-- snippet  session-stats  token-audit  vgademo  fix-formula
@@ -697,7 +701,8 @@
                     token-audit,  safe-refactor / refactor-script ->
                     script-refactor,  blueprint-scan / blueprint-rebuild
                     -> blueprint-forge,  github-profile-bio / profile-bio
-                    -> github-bio, plus the long wordpress-* names
+                    -> github-bio,  prompt-bloat-fixer / debloat-prompt
+                    -> prompt-bloat, plus the long wordpress-* names
                     -> their wp-* commands.
 
 ================================================================================

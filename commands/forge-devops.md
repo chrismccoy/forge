@@ -97,6 +97,7 @@ a Step 0 direct hit.
 | `page-cloner` | `/forge-design` |
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
+| `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |

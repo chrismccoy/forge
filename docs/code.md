@@ -20,25 +20,25 @@ Ever sat down to build something and realized the hardest part isn't writing the
 
 Every stage writes a new numbered version of the plan, so you can see what each one changed. When you are done it offers to save the newest version as `APP-BLUEPRINT.md`.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command and a procedure bundle. `lib/app-blueprint/SKILL.md` carries the stage workflow, the workspace and versioning rules, the subagent dispatch template, and the safety gates. `references/prompts/` holds the four pipeline prompts - blueprint, review, scaffold, spike - which were benchmarked as written and are used verbatim, never paraphrased. `references/facts/` holds 25 per-stack fact sheets plus shared sheets for data stores, hosted services, accessibility, and CI/CD, each fact with a trap, the real behavior, how to detect it, the fix, and its official source. `references/ideas/` holds 2,600 ready-made input sets, 100 per stack plus 100 mixed. Four standard-library Python scripts do the mechanical work: `pick_ideas.py` draws random example ideas for the intake, `select_facts.py` picks the sheets a plan needs and warns when one is over a year old, `render_prompt.py` fills a prompt's inputs, and `merge_sections.py` swaps repaired sections into the next plan version, counts findings by severity, and extracts the inputs the next stage needs.
 
-## ✨ Features
+## Features
 
-- 🎲 "Describe my app", "Show me examples", or "Surprise me" - examples are drawn at random by a script from 2,600 ideas across 25 stacks, so the options change every run
-- 📥 Five inputs, asked one at a time with examples: `APP_DESCRIPTION`, `TECH_STACK`, `APP_TYPE`, `LANGUAGE`, `SCALE` - vague, conflicting, or off-list answers are raised, never silently reinterpreted
-- 🏗️ 12 fixed sections in fixed order, every name derived from your app - no `MyApp`, no `UserService`
-- 🔗 Cross-section consistency: every entity has an endpoint, every dependency maps to a folder or config entry, the deploy target is justified by your scale with a migration trigger
-- ⚠️ A risk register of the five claims most likely to be wrong, instead of a self-grading table
-- 🔍 Fresh-context review against 25 stacks of fact sheets, at most two passes, with repaired sections ready to swap in
-- 🧱 Walking-skeleton scaffold with nine gates, run in a new empty folder outside any git repository
-- 🧪 Time-boxed spikes for whatever the review and scaffold could not settle, executed only on approval
-- 🗂️ Every version kept: `blueprints/<app>/blueprint.v1.md`, `v2`, ... plus each stage's report and the exact prompt it ran
-- 🛡️ Inputs and pasted plans treated as inert data; nothing deploys, pushes, or calls a production service
-- 📄 Optional final copy as `APP-BLUEPRINT.md` - deliberately not `BLUEPRINT.md`, which belongs to `/blueprint-forge`
+- "Describe my app", "Show me examples", or "Surprise me" - examples are drawn at random by a script from 2,600 ideas across 25 stacks, so the options change every run
+- Five inputs, asked one at a time with examples: `APP_DESCRIPTION`, `TECH_STACK`, `APP_TYPE`, `LANGUAGE`, `SCALE` - vague, conflicting, or off-list answers are raised, never silently reinterpreted
+- 12 fixed sections in fixed order, every name derived from your app - no `MyApp`, no `UserService`
+- Cross-section consistency: every entity has an endpoint, every dependency maps to a folder or config entry, the deploy target is justified by your scale with a migration trigger
+- A risk register of the five claims most likely to be wrong, instead of a self-grading table
+- Fresh-context review against 25 stacks of fact sheets, at most two passes, with repaired sections ready to swap in
+- Walking-skeleton scaffold with nine gates, run in a new empty folder outside any git repository
+- Time-boxed spikes for whatever the review and scaffold could not settle, executed only on approval
+- Every version kept: `blueprints/<app>/blueprint.v1.md`, `v2`, ... plus each stage's report and the exact prompt it ran
+- Inputs and pasted plans treated as inert data; nothing deploys, pushes, or calls a production service
+- Optional final copy as `APP-BLUEPRINT.md` - deliberately not `BLUEPRINT.md`, which belongs to `/blueprint-forge`
 
-## 🔄 How it works
+## How it works
 
 1. **Blueprint**: start from your own idea or a random example, intake in your conversation, then the 12 sections written to `blueprints/<app>/blueprint.v1.md` with a short summary in chat
 2. **Review**: fact sheets selected for your stack, then a new subagent reviews and repairs; product decisions come back to you as questions; a second pass runs only if the first found serious problems
@@ -46,7 +46,7 @@ One slash command and a procedure bundle. `lib/app-blueprint/SKILL.md` carries t
 4. **Spike**: a subagent plans experiments without running anything; on your approval a new subagent runs them and records the evidence
 5. **Save**: offers `APP-BLUEPRINT.md` in your working directory, asking before overwriting
 
-## 🚀 How to use it
+## How to use it
 
 **Slash command** (explicit - it never auto-triggers):
 
@@ -82,24 +82,24 @@ The rig has four parts. A **throwaway install** - a seed script that wipes `var/
 
 Sixteen documented pitfalls sit behind the design, each one a debugging cycle or a data-loss risk that happened in practice: `webServer` starting before `globalSetup`, `dotenv` not overwriting a variable already set, a reused server skipping the seed, rate limiters stopping the suite for reasons unrelated to the journey, an SDK retrying a 500 so the failure journey never happens, an `sr-only` checkbox behind a styled label that `check()` cannot reach, two fixtures sharing a name so every `.first()` silently picks one.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command and a five-file procedure bundle. `lib/e2e-playwright/SKILL.md` carries the role, the scope lock, the input fields, the journey and failure rules, the nine-step workflow, the permitted application changes and the seven-part report contract. `references/intake.md` holds the one-field-at-a-time intake questions and the stop-and-ask validation checks. `references/pitfalls.md` holds the sixteen known failures and is read first. `references/rig.md` holds the rig architecture, the Playwright config, the shared ports module, the launcher, the fake upstream and its environment checklist, the seed data design, the npm scripts and what goes in `TESTING.md`. `references/helpers.md` holds the locator rules, the shared helpers module and the assertion technique for each journey type - canvas, "without a reload", public pages, zips, file drag and drop, clipboard.
 
-## ✨ Features
+## Features
 
-- 🌱 Seeded throwaway install rebuilt from the app's own schema, with a path guard that has its own test
-- 🔒 Environment built from a short allow list, never `process.env`, so a real API key cannot reach the app
-- 🚀 A launcher process that runs the seed then the server, because Playwright starts servers before `globalSetup`
-- 🎭 Fake upstream with `fail-next`, a request log, `reset` and `health` control routes
-- 📼 Upstream response shapes recorded from the real API as envelopes, never invented - and never recorded without asking first
-- 🐞 A real application bug keeps its assertion, is marked `test.fail()`, and is reported with steps to reproduce
-- 🔢 Alphabetical spec ordering with two-digit prefixes, the destructive file at `99-`
-- 🧪 Both runners kept apart: the existing `test` script is untouched and neither side collects the other's files
-- 🌿 Work lands on an `e2e-playwright` branch, committed step by step, never pushed
-- 📋 Seven-part report: status, application bugs, docs that disagree with the code, envelope provenance, every application change, what was not covered, and notes
+- Seeded throwaway install rebuilt from the app's own schema, with a path guard that has its own test
+- Environment built from a short allow list, never `process.env`, so a real API key cannot reach the app
+- A launcher process that runs the seed then the server, because Playwright starts servers before `globalSetup`
+- Fake upstream with `fail-next`, a request log, `reset` and `health` control routes
+- Upstream response shapes recorded from the real API as envelopes, never invented - and never recorded without asking first
+- A real application bug keeps its assertion, is marked `test.fail()`, and is reported with steps to reproduce
+- Alphabetical spec ordering with two-digit prefixes, the destructive file at `99-`
+- Both runners kept apart: the existing `test` script is untouched and neither side collects the other's files
+- Work lands on an `e2e-playwright` branch, committed step by step, never pushed
+- Seven-part report: status, application bugs, docs that disagree with the code, envelope provenance, every application change, what was not covered, and notes
 
-## 🔄 How it works
+## How it works
 
 1. **Branch.** Create and switch to `e2e-playwright` if on the default branch. Never push.
 2. **Readiness route.** Add `GET /health`, mounted before the IP allow list and the session check, with a test.
@@ -113,7 +113,7 @@ One slash command and a five-file procedure bundle. `lib/e2e-playwright/SKILL.md
 
 The existing suite runs after every step, and its test count must change only by the tests added for it.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /e2e-tests                        ← reads the current directory, asks what it cannot read
@@ -134,30 +134,30 @@ Point Claude at any codebase. Get back one self-contained Markdown document that
 /explain-my-code
 ```
 
-Ever been handed a repo on day one with no docs, no diagram, and the one person who knew it left three months ago? You spend a week clicking through folders just to learn where the app starts and how a request reaches the database. This plugin replaces that week. Point it at a repo and it reads the actual source like a senior architect doing your onboarding for you, then writes a single `CODEBASE_DOCUMENTATION.md` you can hand to the next person who joins. No sit-down handover, no "ask whoever wrote it," no stale wiki.
+Ever been handed a repo on day one with no docs, no diagram, and the one person who knew it left three months ago? You spend a week clicking through folders just to learn where the app starts and how a request reaches the database. This plugin replaces that week. Point it at a repo and it reads the actual source the way a senior architect would during onboarding, then writes a single `CODEBASE_DOCUMENTATION.md` you can hand to the next person who joins. No sit-down handover, no "ask whoever wrote it," no stale wiki.
 
 The skill runs five phases. Phase 1 scopes the target (finds the repo root, reads manifests first - `package.json`, `go.mod`, `pom.xml`, `Cargo.toml`, `*.csproj`, Dockerfile, CI configs). Phase 2 identifies the foundations (tech stack, languages, frameworks, and whether it's a monolith, microservices, or modular). Phase 3 traverses folder-by-folder and module-by-module, inferring design patterns and tracing the data and dependency flow. Phase 4 writes all 13 sections with real file, class, and function names and embedded Mermaid diagrams. Phase 5 verifies before delivery - every section present and non-shallow, every cited symbol actually in the repo, every Mermaid block valid - then saves the file and tells you the path.
 
 Hard refusal on shallow summaries, skipped sections, invented symbols, and silent guessing (undocumented behavior is inferred out loud, with the assumption stated). Scope-locked to documentation - it won't do line-by-line review, refactor plans, or diagram-only output (those are different skills).
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/explain-my-code/SKILL.md` carries the five-phase procedure (Scope → Identify → Traverse → Write → Verify), the 13-section output contract, and the preserved source constraints. The slash command `/explain-my-code` accepts an absolute or relative path, or shows a two-option picker (current working directory vs custom path) when invoked bare.
 
-## ✨ Features
+## Features
 
-- 📖 Reads the whole project. Globs the tree, reads manifests first, then walks folder-by-folder - no skimming and guessing
-- 🧭 Works out the structure: tech stack, languages, frameworks, and monolith vs microservices vs modular
-- 🔁 Traces how it actually runs: entry points, startup sequence, request lifecycle, auth flow, and data flow from input → processing → storage
-- 🏷️ Names real things. Every component, class, and function in the doc is a real, `Grep`-verifiable symbol - no `MyApp`, no `FooService`
-- 📊 Embeds Mermaid `graph TD` for architecture and `sequenceDiagram` for flows, right inside the document
-- 📑 Always 13 sections, always in order. An inapplicable section keeps its heading and says `Not applicable - <reason>` rather than vanishing
-- 🧱 Skips the noise. `node_modules`, `vendor`, `dist`, `build` excluded from traversal and noted as skipped
-- 🧩 Big repo? Analyzes in chunks - manifests and entry points first, then module by module - and is honest about anything sampled rather than read in full
-- 📝 Writes one `CODEBASE_DOCUMENTATION.md` to the repo root and reports the path
-- 🚦 Scope-locked. Refuses code review, bug hunts, refactor plans, and diagram-only output
+- Reads the whole project. Globs the tree, reads manifests first, then walks folder-by-folder - no skimming and guessing
+- Works out the structure: tech stack, languages, frameworks, and monolith vs microservices vs modular
+- Traces how it actually runs: entry points, startup sequence, request lifecycle, auth flow, and data flow from input → processing → storage
+- Names real things. Every component, class, and function in the doc is a real, `Grep`-verifiable symbol - no `MyApp`, no `FooService`
+- Embeds Mermaid `graph TD` for architecture and `sequenceDiagram` for flows, right inside the document
+- Always 13 sections, always in order. An inapplicable section keeps its heading and says `Not applicable - <reason>` rather than vanishing
+- Skips the noise. `node_modules`, `vendor`, `dist`, `build` excluded from traversal and noted as skipped
+- Big repo? Analyzes in chunks - manifests and entry points first, then module by module - and is honest about anything sampled rather than read in full
+- Writes one `CODEBASE_DOCUMENTATION.md` to the repo root and reports the path
+- Scope-locked. Refuses code review, bug hunts, refactor plans, and diagram-only output
 
-## 🔄 How it works
+## How it works
 
 1. **Scope.** Find the repo root (default: current working directory). `Glob` the layout and read manifest/config files first. Stop and ask if there's no code at the target.
 2. **Identify.** Determine languages, frameworks, and infra split; classify the architecture; locate entry points and config loading.
@@ -165,7 +165,7 @@ One slash command plus its procedure file. The procedure file `lib/explain-my-co
 4. **Write.** Produce all 13 sections with real symbol names and embedded Mermaid. Where behavior is undocumented, infer it and state the assumption explicitly.
 5. **Verify.** Confirm every section is present and substantive, every cited symbol exists, every Mermaid block parses. `Write` the document and report its path.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -199,25 +199,25 @@ The skill runs five phases. Phase 1 globs the tree, reads manifests (`package.js
 
 Hard refusal on invented modules, decorative edges, paraphrasing the README instead of reading the code, and on out-of-scope asks (code review, refactor proposals, bug hunts, security/performance audits - those are different skills).
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/codebase-to-mermaid/SKILL.md` carries the five-phase procedure (Discover → Classify → Draft → Validate → Emit) and constraints. The bulky framework grep cheat sheet, archetype-to-diagram table, and 24 worked few-shot examples live in `references/` and load only when the model needs them - keeps base context light. The slash command `/codebase-to-mermaid` accepts an absolute or relative path, or shows a two-option picker (current working directory vs custom path) when invoked bare.
 
-## ✨ Features
+## Features
 
-- 🗺️ Reads the whole project. Globs the tree, reads manifests, greps framework signals - no skimming the README and guessing
-- 🔍 Auto-classifies the archetype across 19+ languages (JS, TS, PHP, Python, Go, Rust, Java, Kotlin, C#, C, C++, Ruby, Swift, Bash, Vue, Svelte, Razor) and 30+ framework families (React, Vue, Next.js, Nuxt, Astro, Remix, SvelteKit, Express, Fastify, NestJS, Hono, Koa, Laravel, Symfony, Livewire, Slim, Drupal, Magento, WordPress core / plugin / theme / Gutenberg / WooCommerce, WP-CLI, Spring Boot, Quarkus, Micronaut, Vert.x, ASP.NET Core, Blazor, MAUI, Unity, Qt, Drogon, Crow, axum, actix, rocket, leptos, yew, htmx, Alpine, chi, gin, echo, fiber, cobra, clap, FastAPI, Flask, Django, Rails, Airflow, Prefect, Dagster, Kafka, RabbitMQ)
-- 📐 Picks the right diagram kind: `flowchart TD` for branching control flow, `flowchart LR` for pipelines and service maps, `sequenceDiagram` per route, `classDiagram` for ORM models
-- 🏷️ Every node carries a `file:line` citation in the legend. Unverifiable node = deleted node
-- 🚫 No invented modules, no decorative edges. If you cannot `Grep` for the call, the edge is deleted
-- ✂️ Caps each diagram at 40 nodes. Bigger projects get an overview plus per-archetype zooms instead of one unreadable wall
-- ⚠️ Flags destructive steps (`wp db reset`, `wp search-replace`, `rm -rf`, `aws s3 rm --recursive`) with a distinct node style
-- 🤝 Pairs archetypes that travel together. WordPress plugin + WooCommerce, Laravel + Livewire, Go/chi + htmx + Alpine, Next.js + Prisma + tRPC - emits one diagram per layer plus a round-trip `sequenceDiagram`
-- 📝 Writes raw Mermaid to `flow.mmd` (or `flow-<archetype>.mmd` per diagram) with no fences and no commentary, so it pipes straight into `mmdc -i flow.mmd -o flow.svg`
-- 🖨️ Prints a Markdown report to chat: rendered diagram + legend (`node-id → relative/path.ext:line - one-line role`) + notes (external systems, async boundaries, anything skipped)
-- 🚦 Scope-locked. Refuses code review, refactor proposals, bug hunts, security/performance audits, README rewrites, "explain this function". Diagram + legend + notes only
+- Reads the whole project. Globs the tree, reads manifests, greps framework signals - no skimming the README and guessing
+- Auto-classifies the archetype across 19+ languages (JS, TS, PHP, Python, Go, Rust, Java, Kotlin, C#, C, C++, Ruby, Swift, Bash, Vue, Svelte, Razor) and 30+ framework families (React, Vue, Next.js, Nuxt, Astro, Remix, SvelteKit, Express, Fastify, NestJS, Hono, Koa, Laravel, Symfony, Livewire, Slim, Drupal, Magento, WordPress core / plugin / theme / Gutenberg / WooCommerce, WP-CLI, Spring Boot, Quarkus, Micronaut, Vert.x, ASP.NET Core, Blazor, MAUI, Unity, Qt, Drogon, Crow, axum, actix, rocket, leptos, yew, htmx, Alpine, chi, gin, echo, fiber, cobra, clap, FastAPI, Flask, Django, Rails, Airflow, Prefect, Dagster, Kafka, RabbitMQ)
+- Picks the right diagram kind: `flowchart TD` for branching control flow, `flowchart LR` for pipelines and service maps, `sequenceDiagram` per route, `classDiagram` for ORM models
+- Every node carries a `file:line` citation in the legend. Unverifiable node = deleted node
+- No invented modules, no decorative edges. If you cannot `Grep` for the call, the edge is deleted
+- Caps each diagram at 40 nodes. Bigger projects get an overview plus per-archetype zooms instead of one unreadable wall
+- Flags destructive steps (`wp db reset`, `wp search-replace`, `rm -rf`, `aws s3 rm --recursive`) with a distinct node style
+- Pairs archetypes that travel together. WordPress plugin + WooCommerce, Laravel + Livewire, Go/chi + htmx + Alpine, Next.js + Prisma + tRPC - emits one diagram per layer plus a round-trip `sequenceDiagram`
+- Writes raw Mermaid to `flow.mmd` (or `flow-<archetype>.mmd` per diagram) with no fences and no commentary, so it pipes straight into `mmdc -i flow.mmd -o flow.svg`
+- Prints a Markdown report to chat: rendered diagram + legend (`node-id → relative/path.ext:line - one-line role`) + notes (external systems, async boundaries, anything skipped)
+- Scope-locked. Refuses code review, refactor proposals, bug hunts, security/performance audits, README rewrites, "explain this function". Diagram + legend + notes only
 
-## 🔄 How it works
+## How it works
 
 1. **Discover.** `Glob` the tree for layout and manifest files. Read manifests for entry points and declared deps. `Grep` framework signals from the cheat sheet in `references/framework-signals.md`. Build an internal `{module → file → exported_symbols → callers}` inventory capped at the top ~50 modules by inbound edges.
 2. **Classify.** Pick the archetype from `references/archetype-table.md`. If two archetypes both fit, emit two diagrams. WordPress plugins/themes, Laravel/Symfony apps, and hypermedia stacks (htmx/Alpine/Livewire on top of a backend) almost always warrant at least two.
@@ -225,7 +225,7 @@ One slash command plus its procedure file. The procedure file `lib/codebase-to-m
 4. **Validate.** Self-check: every node id appears in the legend with a real `file:line`; every edge corresponds to a real call/import/route/hook/message you can `Grep` for; Mermaid syntax parses (balanced brackets, no reserved-word collisions, no orphan nodes, no labels with unwrapped special chars); diagram fits the 40-node cap or is split.
 5. **Emit.** `Write` the raw Mermaid source to `flow.mmd` (or per-archetype `.mmd` files) into the target directory. Print the Markdown report to chat.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -266,21 +266,21 @@ Most "write me a README" prompts either pad the page with hype ("a powerful, sea
 
 The tone is aimed at someone who has never seen this kind of project before: short sentences, no jargon, and any unavoidable technical word explained in plain words right after. Marketing filler is banned outright (words like "seamless", "robust", "powerful", "leverage", and "supercharge"), along with empty fillers like "simply" and "just". The punctuation is kept plain too: no long dashes, no fancy arrows, and straight quotes only. A final check runs over the draft before you get it.
 
-## 📋 What's inside
+## What's inside
 
 A plugin with one slash command and one skill. The procedure file `lib/readme-builder/SKILL.md` holds the writer persona, the five step workflow, the fixed section order, the banned word and punctuation lists, and the final quality check. The slash command `/readme-builder` takes an optional folder path, asks whether to write the file or print it, then runs the same workflow.
 
-## ✨ What you get
+## What you get
 
-- 📖 Reads the real project first, so the README matches what is actually there instead of being guessed
-- 🧱 A fixed set of sections in the same order every time: title, description, feature list, a file by file explanation, a folder tree, and how to use it
-- 🙂 Plain, friendly, everyday English with short sentences and no jargon
-- 🚫 Hype words like "seamless", "robust", and "powerful" are banned, so the README stays honest
-- ➖ No long dashes, no fancy arrows, and straight quotes only, which keeps the text clean and simple
-- 🌳 A folder tree with a short note on each key file, so readers can see the layout at a glance
-- ✅ A final check confirms every file and feature mentioned is real and a total beginner could follow it
+- Reads the real project first, so the README matches what is actually there instead of being guessed
+- A fixed set of sections in the same order every time: title, description, feature list, a file by file explanation, a folder tree, and how to use it
+- Plain, friendly, everyday English with short sentences and no jargon
+- Hype words like "seamless", "robust", and "powerful" are banned, so the README stays honest
+- No long dashes, no fancy arrows, and straight quotes only, which keeps the text clean and simple
+- A folder tree with a short note on each key file, so readers can see the layout at a glance
+- A final check confirms every file and feature mentioned is real and a total beginner could follow it
 
-## 🔄 How it works
+## How it works
 
 1. **Read the repo.** It opens every folder and reads the important files to learn what the project is and what each file does. Nothing is guessed.
 2. **Skip the noise.** Tooling and session folders (`.git`, `.claude`, `node_modules`, build output) are ignored and left out of the README.
@@ -288,7 +288,7 @@ A plugin with one slash command and one skill. The procedure file `lib/readme-bu
 4. **Clean.** It re-reads the draft against the banned word and punctuation lists and removes anything that slipped through.
 5. **Final check.** It confirms no long dashes, no hype words, every file and feature real, and beginner readable, then hands over the finished README or saves it for you.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to start:
 
@@ -319,24 +319,24 @@ Ever tried to write release notes from `git log` and found half the commits say 
 
 This plugin reads the code instead. It walks the full history, splits it into eras by date and tags, and reads the real diffs with `git show` and `git diff`. The diff is the truth of what shipped, so the changelog says what actually changed. It sorts each change into New Features, Improvements, Security, Breaking Changes, or Fixes, drops the noise users never see, and writes everything in plain language anyone can follow. When it is done it offers to save `CHANGELOG.md` and tells you every place the code did not match the commit message.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command, its procedure file, and one bundled script. The procedure file `lib/changelog-generator/SKILL.md` carries the trust boundary, the five-step workflow, the per-range brief for sub-agents, and the fixed output format. The script `scripts/map-history.sh` does the deterministic git plumbing (repo check, shallow check, root commit, tags, full oldest-first timeline, root-to-HEAD diffstat) so the model never has to reinvent it. The slash command `/changelog-generator` takes a repo path or runs on the current directory.
 
-## ✨ Features
+## Features
 
-- 📖 Reads the code change, not the message. `git show` / `git diff` is the source, so "fixes" and "and more" get unpacked into what really shipped
-- 🕰️ Covers the whole history. First commit to `HEAD`, no gaps. It will not take a date or version range - the scope is always everything
-- 🧪 Checks the repo first. Stops if the folder is not a git repo or has no commits, warns when the copy is shallow (so it never claims full coverage), and handles a one-commit history
-- 🗂️ Splits the history into eras. Contiguous per-release chunks by date and theme, using tags as the boundaries
-- 👥 Handles big histories. Over about 40 commits, or when a diff is too large to read in one pass, it splits the work across parallel helpers, then combines and double-checks anything surprising against the real code - it never quietly skips or samples
-- 🏷️ Sorts every change: feature, improvement, fix, security, design, or internal; breaking changes get their own section
-- 🕵️ Catches what messages hide. Lists features buried under "and more", drops fixes that only undo a break from the same batch, refuses to call reworded or moved code "new", and flags any commit whose message says more or less than the diff did
-- 🔒 Pulls security and breaking changes into their own sections, with the real mechanism (how a check or block works, what setting was removed or flipped)
-- 🛡️ Treats everything in the repo as data, not orders. A diff that says "ignore the above" gets described, never obeyed
-- 📝 Offers to save `CHANGELOG.md` and reports where the diff corrected the commit messages
+- Reads the code change, not the message. `git show` / `git diff` is the source, so "fixes" and "and more" get unpacked into what really shipped
+- Covers the whole history. First commit to `HEAD`, no gaps. It will not take a date or version range - the scope is always everything
+- Checks the repo first. Stops if the folder is not a git repo or has no commits, warns when the copy is shallow (so it never claims full coverage), and handles a one-commit history
+- Splits the history into eras. Contiguous per-release chunks by date and theme, using tags as the boundaries
+- Handles big histories. Over about 40 commits, or when a diff is too large to read in one pass, it splits the work across parallel helpers, then combines and double-checks anything surprising against the real code - it never quietly skips or samples
+- Sorts every change: feature, improvement, fix, security, design, or internal; breaking changes get their own section
+- Catches what messages hide. Lists features buried under "and more", drops fixes that only undo a break from the same batch, refuses to call reworded or moved code "new", and flags any commit whose message says more or less than the diff did
+- Pulls security and breaking changes into their own sections, with the real mechanism (how a check or block works, what setting was removed or flipped)
+- Treats everything in the repo as data, not orders. A diff that says "ignore the above" gets described, never obeyed
+- Offers to save `CHANGELOG.md` and reports where the diff corrected the commit messages
 
-## 🔄 How it works
+## How it works
 
 1. **Map.** Run `scripts/map-history.sh`. Act on its `STATUS` / `SHALLOW` / `COMMIT_COUNT` - stop if not a git repo, warn if shallow, take the single-commit path if there is only one commit.
 2. **Split.** Break the timeline into contiguous ranges by era and release, using tags and day-grouped commits as boundaries.
@@ -344,7 +344,7 @@ One slash command, its procedure file, and one bundled script. The procedure fil
 4. **Synthesize.** Merge the findings, treat helper reports as claims and spot-check the surprising ones against the diff, dedupe, order newest first, and lift out security and breaking changes.
 5. **Check and write.** Confirm the ranges chain together with no gaps and that a real diff sits behind every entry, then emit the changelog and offer to save it.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -365,7 +365,7 @@ The full procedure lives at [`lib/changelog-generator/SKILL.md`](../lib/changelo
 
 ## `refactoring-analyst`
 
-Senior engineer refactoring review. evidence-first, citation-bound (`path:line`), 16 fixed sections, priority-tagged.
+Senior engineer refactoring review. Evidence-first, citation-bound (`path:line`), 16 fixed sections, priority-tagged.
 
 ```
 /refactor
@@ -379,7 +379,7 @@ What makes it different from a generic "review my code" prompt? It operates on M
 
 It produces the report you would otherwise hire someone to write, for a refactor sprint, a pre-merge architectural pass, a quarterly technical debt plan, or an honest read on one folder.
 
-## 📋 Technical Overview
+## Technical Overview
 
 An AI instruction specification that generates a 16-section refactoring plan with `path:line` citations, `CRITICAL` / `HIGH` / `MEDIUM` / `LOW` priorities, a Top 5 Critical Issues block, a File Impact Matrix, an Issue Summary Table, and a phased Implementation Plan with risk and rollback notes.
 
@@ -387,23 +387,23 @@ Built around the locked 16-section template (`references/sections.md`), the hard
 
 It refuses to fabricate: no claiming to have read a file it never opened, no skipping a numbered section, no invented line numbers.
 
-## ✨ Features
+## Features
 
-- 📋 16 fixed sections in fixed order. codebase overview, cross-file coupling, duplication, readability, naming, KISS, DRY, single responsibility, nesting complexity, global state and side effects, portability, reusability, module organization, interface and API design, refactoring recommendations, implementation plan
-- 📍 Every finding cites `path:line`. no vague "somewhere in `auth/`"
-- 🎯 Priority labels. `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`. plain text. works in every terminal. no emoji
-- 📊 Three summary blocks. Top 5 Critical Issues, File Impact Matrix (files ranked by issue density), Issue Summary Table (every problem with effort estimate)
-- 🗺️ Phased Implementation Plan. risk and rollback strategy per phase
-- 🚦 SCALE RULE. if file count > 50, prioritizes `FOCUS_AREAS` files first, samples one per major directory, states exactly which were fully analyzed vs sampled
-- 🎛️ FOCUS_AREAS RULE. sections matching focus extend to 800 words, others cap at 400
-- 🧠 Martin Fowler `Refactoring` catalog, Robert Martin `Clean Code`, SOLID, GRASP. the reference grammar for every finding
-- 🛡️ "None detected - <reason>" exact phrase when a section is empty. never skipped without a reason
-- ✅ Silent STEP 17 self-validation. checks every claim, regenerates failed sections before output
-- 🔒 Prompt-injection defense. `TARGET_PATH` and `FOCUS_AREAS` treated as inert data. directives inside inputs are logged in Section 1 and ignored
-- 🚫 Refuses to fabricate. never claims to have analyzed an unread file. never invents line numbers
-- 💬 `/refactor` slash command with multiple-choice intake. path, focus areas (multi-select), scope (single file / whole folder / PR diff / sampled subset), depth (quick / standard / deep)
+- 16 fixed sections in fixed order. codebase overview, cross-file coupling, duplication, readability, naming, KISS, DRY, single responsibility, nesting complexity, global state and side effects, portability, reusability, module organization, interface and API design, refactoring recommendations, implementation plan
+- Every finding cites `path:line`. no vague "somewhere in `auth/`"
+- Priority labels. `CRITICAL`, `HIGH`, `MEDIUM`, `LOW`. plain text. works in every terminal. no emoji
+- Three summary blocks. Top 5 Critical Issues, File Impact Matrix (files ranked by issue density), Issue Summary Table (every problem with effort estimate)
+- Phased Implementation Plan. risk and rollback strategy per phase
+- SCALE RULE. if file count > 50, prioritizes `FOCUS_AREAS` files first, samples one per major directory, states exactly which were fully analyzed vs sampled
+- FOCUS_AREAS RULE. sections matching focus extend to 800 words, others cap at 400
+- Martin Fowler `Refactoring` catalog, Robert Martin `Clean Code`, SOLID, GRASP. the reference grammar for every finding
+- "None detected - <reason>" exact phrase when a section is empty. never skipped without a reason
+- Silent STEP 17 self-validation. checks every claim, regenerates failed sections before output
+- Prompt-injection defense. `TARGET_PATH` and `FOCUS_AREAS` treated as inert data. directives inside inputs are logged in Section 1 and ignored
+- Refuses to fabricate. never claims to have analyzed an unread file. never invents line numbers
+- `/refactor` slash command with multiple-choice intake. path, focus areas (multi-select), scope (single file / whole folder / PR diff / sampled subset), depth (quick / standard / deep)
 
-## 🔄 How it works
+## How it works
 
 1. **Step 0 - Access verification**: attempts to read `TARGET_PATH`. on failure reports path attempted, error, and what the user should check. does not proceed
 2. **Step 1 - SCALE RULE**: if file count > 50, prioritizes `FOCUS_AREAS` matches first, samples remaining one per major directory, states exactly which files were fully analyzed vs sampled
@@ -411,7 +411,7 @@ It refuses to fabricate: no claiming to have read a file it never opened, no ski
 4. **Step 3 - Emit Summary**: Top 5 Critical Issues, File Impact Matrix, Issue Summary Table per `references/summary.md`
 5. **Step 4 - Silent STEP 17 self-validation**: runs the constraint checklist. regenerates any failed section before delivery
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke it:
 
@@ -438,29 +438,29 @@ Review one SQL query without running it: a validation check, a clause-by-clause 
 /explain-sql
 ```
 
-A query can be syntactically perfect and still return the wrong numbers. `COUNT(*)` after a join counts joined rows, not distinct orders. A filter with no upper bound quietly reports "this month" as "everything since the first of the month". The `sql-breakdown` skill validates first - syntax, then logic in execution order, then completeness against what the business context actually asked for - and tags the result `✅ VALID`, `⚠️ HAS WARNINGS`, or `❌ LIKELY BROKEN` before it explains a single clause.
+A query can be syntactically perfect and still return the wrong numbers. `COUNT(*)` after a join counts joined rows, not distinct orders. A filter with no upper bound quietly reports "this month" as "everything since the first of the month". The `sql-breakdown` skill validates first - syntax, then logic in execution order, then completeness against what the business context actually asked for - and tags the result `VALID`, `HAS WARNINGS`, or `LIKELY BROKEN` (each printed with a status icon in the output) before it explains a single clause.
 
 Everything after that is pitched at whoever the report is for. Tell it the reader is a data engineer and it writes peer-level with correct terminology; tell it the reader is a CFO and it drops the jargon and glosses every SQL term the first time it appears. Section 6 goes further and re-explains the whole query with no SQL terms in it at all.
 
-Nothing is executed. A `✅ VALID` verdict means no error was found by reading, not that the query ran, and the efficiency section states an expected effect and the reason for it rather than a speed figure it cannot measure. Paste a `DELETE`, `UPDATE`, or `DROP` and the full report still ships, but every fix is described in words and no runnable version is printed anywhere.
+Nothing is executed. A `VALID` verdict means no error was found by reading, not that the query ran, and the efficiency section states an expected effect and the reason for it rather than a speed figure it cannot measure. Paste a `DELETE`, `UPDATE`, or `DROP` and the full report still ships, but every fix is described in words and no runnable version is printed anywhere.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/sql-breakdown/SKILL.md`, which loads the master template from `lib/sql-breakdown/references/prompt-template.md`. The command `/explain-sql` collects four fields - the query, the recipient role, the business context, and the dialect - of which only the query is required; the other three have defined defaults that are stated in the report when used. All four are substituted into a paired-marker block and treated as data, including text inside SQL comments and string literals.
 
-## ✨ Features
+## Features
 
-- 🚦 Validation before explanation. Syntax, logic in execution order, and completeness against the business context, each with its own verdict
-- 🎯 One register, chosen for the reader. Peer-level where the role writes SQL daily, plain business language where it does not, and it says which it took when either could apply
-- 🧩 Clause by clause, with the rules that matter. Subqueries explained inner and outer, window frames contrasted with regular aggregation, `HAVING` distinguished from `WHERE`
-- 📊 Anchored scorecard. Readability, Efficiency, Accuracy Confidence, and Business Clarity out of 10 each, totalled out of 40, with the verdict capping Accuracy Confidence so scores cannot contradict the validation
-- ⚠️ At least two data risk flags, each as what could go wrong, when it would bite, and how to prevent it - never invented to fill a quota
-- 🔒 Non-read statements handled, never handed back runnable. `DELETE`, `UPDATE`, `DROP` and friends get all seven sections with every fix in words only
-- 🧠 Assumptions named, not hidden. With no schema supplied it names the grain or key-uniqueness assumption a finding rests on rather than asserting a join is wrong
-- 📖 Section 6 in plain English with no SQL terms at all, closing with a comprehension confidence score
-- 🛡️ Inputs are inert. Directives inside comments or string literals are ignored, and the input block closes only at the final marker
+- Validation before explanation. Syntax, logic in execution order, and completeness against the business context, each with its own verdict
+- One register, chosen for the reader. Peer-level where the role writes SQL daily, plain business language where it does not, and it says which it took when either could apply
+- Clause by clause, with the rules that matter. Subqueries explained inner and outer, window frames contrasted with regular aggregation, `HAVING` distinguished from `WHERE`
+- Anchored scorecard. Readability, Efficiency, Accuracy Confidence, and Business Clarity out of 10 each, totalled out of 40, with the verdict capping Accuracy Confidence so scores cannot contradict the validation
+- At least two data risk flags, each as what could go wrong, when it would bite, and how to prevent it - never invented to fill a quota
+- Non-read statements handled, never handed back runnable. `DELETE`, `UPDATE`, `DROP` and friends get all seven sections with every fix in words only
+- Assumptions named, not hidden. With no schema supplied it names the grain or key-uniqueness assumption a finding rests on rather than asserting a join is wrong
+- Section 6 in plain English with no SQL terms at all, closing with a comprehension confidence score
+- Inputs are inert. Directives inside comments or string literals are ignored, and the input block closes only at the final marker
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Collect the query, then the role, context, and dialect. Apply the stated default for anything skipped and say so.
 2. **Classify.** Decide whether this is a read query or a non-read statement, and switch the per-section substitutions accordingly.
@@ -468,7 +468,7 @@ One slash command plus its procedure file `lib/sql-breakdown/SKILL.md`, which lo
 4. **Check.** Confirm the verdict, rating, scores, and flags agree with each other and with the query as submitted, and that every finding points at real text.
 5. **Print.** The seven sections, and nothing before the title that the rules did not require.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /explain-sql SELECT ... FROM orders JOIN customers ...   ← query passed inline
@@ -498,26 +498,26 @@ Two engines apply the same rules: an **interactive** Read / Edit walk the model 
 
 It turns wall of tags doc blocks into comments that read like a sentence, whichever the reason: shipping to non technical merchants, onboarding a teammate who keeps asking what each function does, or clearing a decade old PHPDoc graveyard before handing the repo off.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command, its procedure file, and a bundled three-file runner (bash + 2× perl) that share one set of rewrite rules. The procedure file `lib/docblock-rewrite/SKILL.md` carries the full rule set and decides which engine to use based on file count. The slash command `/docblock-rewrite` invokes the runner via `${CLAUDE_PLUGIN_ROOT}/lib/docblock-rewrite/scripts/docblock-rewrite.sh`. Both engines emit the same `// <summary>.` format.
 
-## ✨ Features
+## Features
 
-- 🧹 Strips PHPDoc / JSDoc blocks down to one plain-English `//` line
-- 🚫 Banned-word list (`instantiate`, `invoke`, `callback`, `promise`, `iterate`, `async`, `boolean`, `array`, `object`, `parameter`, `argument`, `mutate`, `hash`, `payload`, `instance`, `factory`, `singleton`, `polyfill`, `regex`) - validation rejects any output that contains them
-- 📏 100-character total cap including the leading `// `
-- 🏷️ Honors `@internal`, `@deprecated`, `@ignore` opt-out tags - leaves those blocks alone
-- 📄 File-level detection via `@file` / `@package` / `@module` or a post-block `declare` / `namespace` / `use` / `<?php` / `"use strict"` / `import` / `export` / `require` line
-- 🗂️ Walks `.php`, `.js`, `.ts`, `.jsx`, `.tsx`, `.mjs`, `.cjs` - skips `vendor`, `node_modules`, `dist`, `build`, `coverage`, `__tests__`, `.git`, `.svn`, `.hg`, `.next`, `.nuxt`, `out`, `tmp`, `*.min.js`, `*.generated.*` by default
-- 🛟 `.bak` backup written next to every modified file unless `--no-backup` (repeat runs add `.bak.1`, `.bak.2`, … and never overwrite the original `.bak`)
-- 🔍 `--dry-run` prints unified diffs without writing
-- 🚦 Validation gates per response: one-line, `// ` prefix, capital first letter, closing period, length cap, banned-word regex - failures leave the original block intact
-- ⚙️ Concurrency-tunable (`--concurrency N`, default 3) parallel `claude --print` calls via `xargs -P`
-- 🪓 Right-to-left byte-splice in `apply-plan.pl` keeps offsets valid across multi-block files
-- 🤖 Same prompt rules in both the inline skill engine and the scripted engine
+- Strips PHPDoc / JSDoc blocks down to one plain-English `//` line
+- Banned-word list (`instantiate`, `invoke`, `callback`, `promise`, `iterate`, `async`, `boolean`, `array`, `object`, `parameter`, `argument`, `mutate`, `hash`, `payload`, `instance`, `factory`, `singleton`, `polyfill`, `regex`) - validation rejects any output that contains them
+- 100-character total cap including the leading `// `
+- Honors `@internal`, `@deprecated`, `@ignore` opt-out tags - leaves those blocks alone
+- File-level detection via `@file` / `@package` / `@module` or a post-block `declare` / `namespace` / `use` / `<?php` / `"use strict"` / `import` / `export` / `require` line
+- Walks `.php`, `.js`, `.ts`, `.jsx`, `.tsx`, `.mjs`, `.cjs` - skips `vendor`, `node_modules`, `dist`, `build`, `coverage`, `__tests__`, `.git`, `.svn`, `.hg`, `.next`, `.nuxt`, `out`, `tmp`, `*.min.js`, `*.generated.*` by default
+- `.bak` backup written next to every modified file unless `--no-backup` (repeat runs add `.bak.1`, `.bak.2`, … and never overwrite the original `.bak`)
+- `--dry-run` prints unified diffs without writing
+- Validation gates per response: one-line, `// ` prefix, capital first letter, closing period, length cap, banned-word regex - failures leave the original block intact
+- Concurrency-tunable (`--concurrency N`, default 3) parallel `claude --print` calls via `xargs -P`
+- Right-to-left byte-splice in `apply-plan.pl` keeps offsets valid across multi-block files
+- Same prompt rules in both the inline skill engine and the scripted engine
 
-## 🔄 How it works
+## How it works
 
 **Inline engine (skill, small jobs):**
 
@@ -534,7 +534,7 @@ One slash command, its procedure file, and a bundled three-file runner (bash + 2
 5. Validated outputs go into a per-file plan file as `start <TAB> len <TAB> base64(new)`
 6. `apply-plan.pl` applies plan entries right-to-left so earlier byte offsets stay valid, renames original to `.bak`, writes new contents
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -576,27 +576,27 @@ Inference is marked. Anything you told it about - a bug you hit, a tool that beh
 
 Then it checks itself. Before returning, it re-reads the annotated version against your original and confirms in the Verification section that every original line of executable code is still present, unchanged, and in the same order, that nothing was added except comments, and that every `INFERRED:` claim points at a real line.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/code-teacher/SKILL.md`, which loads the master template from `lib/code-teacher/references/prompt-template.md`. The command `/code-teacher` takes code inline or as a file path, or asks for it - and when it asks, it also asks for the bugs, surprises, and design decisions that are not visible in the code alone, because that is what turns an annotation into a lesson. Language is detected automatically unless you name one; the audience level defaults to intermediate.
 
-## ✨ Features
+## Features
 
-- 🧭 Plan first. At most eight lines naming the hardest parts and the consequential design choices, before any annotated code
-- 📑 Header block covering purpose, why it is tricky, the high-level algorithm, usage, and requirements
-- 💬 Inline comments on every meaningful block - what it does and why it is written that way, not a restatement
-- 🔁 State explained. Every value tracked across a loop or several steps gets its purpose spelled out
-- 🎓 Teaching points. Three to five bullets on the lessons this specific code actually teaches
-- 🔍 Inference marked. Unattributed claims carry `INFERRED:` and a line anchor, or they are cut
-- ✅ Self-verification. Confirms the original code came back unchanged, in order, with only comments added
-- 🗣️ Audience aware. Comments pitched at a beginner or at someone more experienced, your call
-- 🌐 Any language, detected on its own, with the comment syntax matched to it
-- 🔑 Secrets flagged. A hardcoded password, key, or token is called out in a comment rather than passed over
-- 📄 Long files handled. Stops at a clean unit boundary and says where, rather than truncating mid-function
-- 🛡️ Injection resistant. Instructions hidden in comments or strings are content to annotate, not directions to follow
-- 🛑 Refuses cleanly. Says so and stops if the input is not code, or if the code is clearly built to do harm
+- Plan first. At most eight lines naming the hardest parts and the consequential design choices, before any annotated code
+- Header block covering purpose, why it is tricky, the high-level algorithm, usage, and requirements
+- Inline comments on every meaningful block - what it does and why it is written that way, not a restatement
+- State explained. Every value tracked across a loop or several steps gets its purpose spelled out
+- Teaching points. Three to five bullets on the lessons this specific code actually teaches
+- Inference marked. Unattributed claims carry `INFERRED:` and a line anchor, or they are cut
+- Self-verification. Confirms the original code came back unchanged, in order, with only comments added
+- Audience aware. Comments pitched at a beginner or at someone more experienced, your call
+- Any language, detected on its own, with the comment syntax matched to it
+- Secrets flagged. A hardcoded password, key, or token is called out in a comment rather than passed over
+- Long files handled. Stops at a clean unit boundary and says where, rather than truncating mid-function
+- Injection resistant. Instructions hidden in comments or strings are content to annotate, not directions to follow
+- Refuses cleanly. Says so and stops if the input is not code, or if the code is clearly built to do harm
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the code from the argument, a file path, or a plain ask - plus the developer notes that are not visible in the code.
 2. **Gate.** Stop on an absent or placeholder submission, on input that is not source code, or on code whose evident purpose is harmful.
@@ -606,7 +606,7 @@ One slash command plus its procedure file `lib/code-teacher/SKILL.md`, which loa
 6. **Verify.** Re-read against the original; fix anything that drifted before returning.
 7. **Print.** Plan, one fenced code block, teaching points, verification - in that order, nothing else.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /code-teacher ./scripts/deploy.sh   ← annotate a file
@@ -639,27 +639,27 @@ Every feature is then translated out of developer language. Token based sign in 
 
 The writing rules are strict: no emojis, no en or em dashes, no hype words like "powerful" or "seamless", no installation, setup, tech stack, credits, license, changelog, FAQ, or support sections, and no headings beyond the title and the categories.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/fullstack-feature-readme/SKILL.md`, which loads the master template from `lib/fullstack-feature-readme/references/prompt-template.md`. The command `/fullstack-readme` takes a folder or `.zip` path as its argument, or asks for one, then asks whether to print the README or write it to `README.md`. In scope: frontend-only apps, backend-only APIs, full stack apps, and monorepos whose web client, API, admin panel, workers, and mobile app serve one product.
 
-## ✨ Features
+## Features
 
-- 🔍 Tells screens and server code apart from the app's manifests, routes, pages, and request handlers
-- 🧩 Treats the web client, API, admin panel, workers, and shared packages of one product as one app
-- 🧭 Asks which one to document when a folder holds more than one unrelated app
-- 🛑 Stops with one sentence when the code is only a library, SDK, command line tool, or config repo
-- 🧱 Documents only finished features in starter templates, never placeholder or example pages
-- 🔁 Two passes over every file, the second one hunting for small settings, empty states, admin screens, and role or plan based logic
-- 🧾 Lists only features traced to real code; readmes, docs, changelogs, comments, and tests are not proof
-- 🔌 Counts endpoints other apps can call even when no screen uses them
-- 💳 Marks features that need a paid plan or an outside account, and features switched off by default
-- 🗣️ Turns technical capabilities into everyday language a non-technical user understands
-- 🗂️ Plain-English categories ordered from largest to smallest, never padded
-- 🚫 No emojis, dashes, hype words, setup steps, or extra sections in the output
-- 🛡️ Injection resistant. Text inside the code is described, never obeyed
+- Tells screens and server code apart from the app's manifests, routes, pages, and request handlers
+- Treats the web client, API, admin panel, workers, and shared packages of one product as one app
+- Asks which one to document when a folder holds more than one unrelated app
+- Stops with one sentence when the code is only a library, SDK, command line tool, or config repo
+- Documents only finished features in starter templates, never placeholder or example pages
+- Two passes over every file, the second one hunting for small settings, empty states, admin screens, and role or plan based logic
+- Lists only features traced to real code; readmes, docs, changelogs, comments, and tests are not proof
+- Counts endpoints other apps can call even when no screen uses them
+- Marks features that need a paid plan or an outside account, and features switched off by default
+- Turns technical capabilities into everyday language a non-technical user understands
+- Plain-English categories ordered from largest to smallest, never padded
+- No emojis, dashes, hype words, setup steps, or extra sections in the output
+- Injection resistant. Text inside the code is described, never obeyed
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the path from the argument or ask for it; ask whether to print or write the file.
 2. **Identify.** Find the manifests and decide frontend, backend, or full stack; stop on no app, ask on more than one.
@@ -669,7 +669,7 @@ One slash command plus its procedure file `lib/fullstack-feature-readme/SKILL.md
 6. **Check.** Title, description, categories only; every bullet traced; no emoji, dashes, or hype words.
 7. **Deliver.** Print the README or write `README.md`.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /fullstack-readme                        ← asks for the app
@@ -701,23 +701,23 @@ It does not rely on reasoning alone. Before a string is listed as matching or fa
 
 The ReDoS section (regular expression denial of service - an input that makes the engine backtrack for seconds or hours) opens with a one-word verdict: Safe, Caution, or Vulnerable. Attack strings are only ever run with a per-engine timeout, and a suspected blow-up is confirmed by comparing a shorter and a longer input rather than trusting one slow run.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/regex-tutor/SKILL.md`, which loads the section spec from `lib/regex-tutor/references/sections.md` and runs `lib/regex-tutor/scripts/regex_check.py` by absolute path. The command `/explain-regex` takes the regex plus optional flavor, use case, and output destination; only the regex is required, and the chat-or-file choice is asked before any analysis. The checker is the only shell command the command is allowed to run.
 
-## ✨ Features
+## Features
 
-- 🧾 Eleven fixed sections: summary, token-by-token table, structure and capture groups, valid examples, invalid examples, a matching walkthrough, pitfalls, performance and ReDoS, alternatives, real-world context, and a plain-English rewrite
-- ✅ Every example verified. Strings in the valid and invalid tables are run through real engines, and the actual per-engine results are reported
-- 🧪 Four engines, picked by flavor. Python `re`, JavaScript, Perl for PCRE and PHP, and Go RE2, with the closest engine named and the result marked unverified for flavors that have none
-- 🔧 Input normalized first. Delimiters and flags are stripped with each flag's effect explained, host-language escaping such as Java `"\\d+"` is undone, and several regexes are analyzed one by one
-- 🩹 Broken patterns caught. A pattern that does not compile is flagged at the exact broken token, with the likely intended fix, and the fixed version is analyzed
-- ⏱️ ReDoS verdict with evidence. Attack strings always run under a timeout, and catastrophic backtracking is confirmed by growth across input lengths
-- 🔁 Alternatives compiled. Every suggested replacement is compiled in each flavor it is claimed to work in
-- 🎯 Scaled to the pattern. A simple regex gets a few lines per section and "Not applicable" where nothing real applies, never padding
-- 📄 Chat or file. Print the teardown, or save it to `REGEX-EXPLAINED.md` in the working directory with a short summary in chat
+- Eleven fixed sections: summary, token-by-token table, structure and capture groups, valid examples, invalid examples, a matching walkthrough, pitfalls, performance and ReDoS, alternatives, real-world context, and a plain-English rewrite
+- Every example verified. Strings in the valid and invalid tables are run through real engines, and the actual per-engine results are reported
+- Four engines, picked by flavor. Python `re`, JavaScript, Perl for PCRE and PHP, and Go RE2, with the closest engine named and the result marked unverified for flavors that have none
+- Input normalized first. Delimiters and flags are stripped with each flag's effect explained, host-language escaping such as Java `"\\d+"` is undone, and several regexes are analyzed one by one
+- Broken patterns caught. A pattern that does not compile is flagged at the exact broken token, with the likely intended fix, and the fixed version is analyzed
+- ReDoS verdict with evidence. Attack strings always run under a timeout, and catastrophic backtracking is confirmed by growth across input lengths
+- Alternatives compiled. Every suggested replacement is compiled in each flavor it is claimed to work in
+- Scaled to the pattern. A simple regex gets a few lines per section and "Not applicable" where nothing real applies, never padding
+- Chat or file. Print the teardown, or save it to `REGEX-EXPLAINED.md` in the working directory with a short summary in chat
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the regex from the arguments or ask for it, then ask chat or file before any analysis. Flavor and use case are optional and become stated assumptions when missing.
 2. **Normalize.** State the exact pattern under analysis after stripping delimiters, flags, and host-language escaping.
@@ -725,7 +725,7 @@ One slash command plus its procedure file `lib/regex-tutor/SKILL.md`, which load
 4. **Verify.** Test every candidate example against the whole pattern, run attack strings under a timeout, and compile every alternative.
 5. **Deliver.** Print the 11 sections in chat, or write `REGEX-EXPLAINED.md` and reply with the path, the one-sentence summary, and the ReDoS verdict.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /explain-regex '^\d{3}-\d{4}$'                         ← regex passed inline
@@ -759,23 +759,23 @@ The `script-refactor` tool treats all of those details as fixed. It tidies the c
 
 Before deciding what is safe to touch, it searches your repo for whatever calls each script (docs, prompts, other scripts) and reads what that caller uses. Your original files are not changed until you approve.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command, its procedure file, four reference files, and one bundled bash script. The procedure file `lib/script-refactor/SKILL.md` holds the seven-step workflow. The rules live in `references/contract.md` (what counts as behavior, the approval rule, the order rules win in, and the intake defaults), `references/hazards.md` (cleanups that quietly change behavior), `references/improvements.md`, and `references/report-format.md`. The script `scripts/compare-runs.sh` runs an old and a new script with the same arguments and reports whether their output, error messages, and exit code match.
 
-## ✨ Features
+## Features
 
-- 🔒 Keeps the script's arguments, output, exit codes, error messages, and written files exactly the same
-- 🔎 Searches the repo for what calls each script, so it knows which output and exit codes really matter
-- 🧪 Runs old and new versions side by side with `compare-runs.sh` on small test files in a temporary folder, never against real servers or real data
-- ✋ Lists every behavior-changing bug fix as a numbered diff with an example input, safety bugs first, and applies only the numbers you approve
-- ⚠️ Knows the common cleanups that break scripts: `set -e` and `pipefail`, `echo` to `printf`, quoting a variable that relied on word splitting, `argparse`, `os.system` to `subprocess`, `pathlib` path changes, and error handling that hides a failure
-- 📏 Flags output lines where a value with a space in it (a folder name, for example) would make the line hard to read back
-- 🧾 Backs up every bug it reports with a concrete input and what actually happens
-- 📐 Scales the work to the script, so a short script gets a header and a few checks rather than a rewrite
-- 🚫 Never commits, never edits originals before approval, never uses `sudo`
+- Keeps the script's arguments, output, exit codes, error messages, and written files exactly the same
+- Searches the repo for what calls each script, so it knows which output and exit codes really matter
+- Runs old and new versions side by side with `compare-runs.sh` on small test files in a temporary folder, never against real servers or real data
+- Lists every behavior-changing bug fix as a numbered diff with an example input, safety bugs first, and applies only the numbers you approve
+- Knows the common cleanups that break scripts: `set -e` and `pipefail`, `echo` to `printf`, quoting a variable that relied on word splitting, `argparse`, `os.system` to `subprocess`, `pathlib` path changes, and error handling that hides a failure
+- Flags output lines where a value with a space in it (a folder name, for example) would make the line hard to read back
+- Backs up every bug it reports with a concrete input and what actually happens
+- Scales the work to the script, so a short script gets a header and a few checks rather than a rewrite
+- Never commits, never edits originals before approval, never uses `sudo`
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the scripts from the argument (paths, a folder, or a glob), or ask once which scripts to use. Work out the language, the oldest bash or Python version to support, and the order, without more questions.
 2. **Find the callers.** Search the repo for each script's name and read what the callers use: output lines, exit codes, error messages, files.
@@ -785,7 +785,7 @@ One slash command, its procedure file, four reference files, and one bundled bas
 6. **Report and wait.** Show a diff per script, the comparison results, what changed and what was skipped, and the numbered list of behavior fixes. Then stop.
 7. **Apply what you approve.** Write the refactor over the originals, apply only the fixes you named, rerun the comparisons, and update any docs or callers that describe the changed behavior.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /script-refactor scripts/                    ← every bash and Python script in a folder
@@ -821,25 +821,25 @@ Point it at a blueprint instead and it builds the app. It shows a plan first and
 
 This is not the same as [`/blueprint`](#app-blueprint). That tool designs a new app from a one-line idea. This one starts from code that already exists.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command, its procedure file, three reference files, and two bundled Node scripts. The procedure file `lib/blueprint-forge/SKILL.md` picks the mode and runs the intake for it. `references/scan.md` holds the scan procedure and the blueprint template, `references/rebuild.md` holds the rebuild procedure, and `references/example-blueprint.md` is a complete example the scan follows for level of detail. The script `scripts/check-blueprint.mjs` checks a blueprint without calling a model: the 14 headings, the format header, and anything that looks like a real secret must all pass, and it scores route, environment variable, version source, and open question coverage. The script `scripts/compare-blueprints.mjs` compares the original blueprint with one scanned from the rebuilt app and reports how many endpoints, models, and environment variables survived the rebuild, naming every one that was lost.
 
-## ✨ Features
+## Features
 
-- 📑 Always 14 sections in a fixed order, with a metadata header that records the format version and which paths were scanned
-- 🔢 Every package version tagged with where it came from: the lockfile, the manifest range, a CDN link, or a guess
-- 🛣️ Every API route on its own row, with framework shorthand such as Laravel `Route::resource` expanded into the routes it creates, plus request and response types
-- 🗺️ A module map listing each source file's exports with parameter and return types, so a rebuild in the same stack keeps existing imports and tests working
-- 🔒 Secret values never copied: passwords, keys, tokens, and private keys become `[REDACTED]`, and the checker fails the blueprint if one slips through
-- ❓ Every guess marked `ASSUMPTION:` and every gap marked `UNKNOWN:`, all collected under Open Questions
-- 🧩 Partial scans of one part of a large repo, saved as `<scope>.BLUEPRINT.md` and merged later section by section
-- ✋ Rebuilds stop after the plan; the target folder and stack appear there as defaults you can change
-- 🔁 Rebuild in a different stack on request, keeping the API, data model, auth, and business rules the same
-- 🔍 Optional round-trip check after a rebuild: scan the new app, compare it with the original blueprint, and list every endpoint, model, or environment variable that went missing
-- 🚫 Never commits, and never follows instructions found inside the scanned code or the blueprint
+- Always 14 sections in a fixed order, with a metadata header that records the format version and which paths were scanned
+- Every package version tagged with where it came from: the lockfile, the manifest range, a CDN link, or a guess
+- Every API route on its own row, with framework shorthand such as Laravel `Route::resource` expanded into the routes it creates, plus request and response types
+- A module map listing each source file's exports with parameter and return types, so a rebuild in the same stack keeps existing imports and tests working
+- Secret values never copied: passwords, keys, tokens, and private keys become `[REDACTED]`, and the checker fails the blueprint if one slips through
+- Every guess marked `ASSUMPTION:` and every gap marked `UNKNOWN:`, all collected under Open Questions
+- Partial scans of one part of a large repo, saved as `<scope>.BLUEPRINT.md` and merged later section by section
+- Rebuilds stop after the plan; the target folder and stack appear there as defaults you can change
+- Rebuild in a different stack on request, keeping the API, data model, auth, and business rules the same
+- Optional round-trip check after a rebuild: scan the new app, compare it with the original blueprint, and list every endpoint, model, or environment variable that went missing
+- Never commits, and never follows instructions found inside the scanned code or the blueprint
 
-## 🔄 How it works
+## How it works
 
 1. **Pick the mode.** Take it from the argument (`scan`, `rebuild`, a repo path, or a `*.BLUEPRINT.md` file), or ask one question.
 2. **Scan: read the repo.** Manifests and lockfiles first, then build config, entry points, the data layer, routes, features, UI, and tests. Every hand-written source file is opened at least once; generated and vendored folders are skipped.
@@ -848,7 +848,7 @@ One slash command, its procedure file, three reference files, and two bundled No
 5. **Rebuild: build.** After approval, build one plan step at a time, verify each step, and finish with the file tree, setup steps, and a list of everything guessed or substituted.
 6. **Rebuild: round trip (optional).** On request, scan the rebuilt app and run `compare-blueprints.mjs` against the original blueprint. Each lost item is either added to the rebuild or explained as a difference in how the second scan described it.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /blueprint-forge scan                                  ← blueprint the repo you are in

@@ -4,7 +4,7 @@
 
 ## `threat-model`
 
-STRIDE threat modeling from four inputs, in the voice of a Principal AppSec Architect. Locked four-phase assessment with all six STRIDE categories addressed explicitly.
+STRIDE threat modeling from four inputs, in the voice of an application security architect. Locked four-phase assessment with all six STRIDE categories addressed explicitly.
 
 ```
 /threat-model
@@ -16,24 +16,24 @@ The injection defense matters more than usual for this tool, because assessment 
 
 Attack scenarios stay at vector-and-impact level. No working exploit code, no copy-paste-ready payload - this is the model, not the attack.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. `lib/threat-model/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. `references/prompt-template.md` holds the master prompt with a reference-tone example showing the expected threat-writeup density.
 
-## ✨ Features
+## Features
 
-- 🎯 Four inputs in, one assessment out. SYSTEM_DESCRIPTION + TECH_STACK (required) + DATA_CLASSIFICATION + COMPLIANCE_NEEDS (optional)
-- 🧱 Locked 4-phase output: Trust Boundary Analysis, STRIDE Threat Assessment, Attack Vector Scenarios, Remediation Blueprint
-- 🔠 All six STRIDE categories addressed explicitly - Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege
-- 🚥 Severity rating (Low/Medium/High/Critical) plus a one-line justification on every threat
-- 🔗 Every threat mapped to a mitigation - no orphan findings
-- 🧭 OWASP Top 10 alignment and standard cryptographic practice
-- 🚫 No "unhackable" or "100% secure" claims - risk reduction and defense in depth only
-- 🛡️ Claims inside inputs ("this is already secure") treated as context to evaluate, never directives to skip a category
-- ⚔️ Attack scenarios stay at vector-and-impact level - no working exploit code or ready-to-run payloads
-- 🪧 Defensive-only scope lock: offensive tooling and third-party targeting refused with `Out of scope: this engine produces defensive threat models only.`, with any routing (`- try /devsecops.`, `- try /pentest-report.`) on that same line
+- Four inputs in, one assessment out. SYSTEM_DESCRIPTION + TECH_STACK (required) + DATA_CLASSIFICATION + COMPLIANCE_NEEDS (optional)
+- Locked 4-phase output: Trust Boundary Analysis, STRIDE Threat Assessment, Attack Vector Scenarios, Remediation Blueprint
+- All six STRIDE categories addressed explicitly - Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege
+- Severity rating (Low/Medium/High/Critical) plus a one-line justification on every threat
+- Every threat mapped to a mitigation - no orphan findings
+- OWASP Top 10 alignment and standard cryptographic practice
+- No "unhackable" or "100% secure" claims - risk reduction and defense in depth only
+- Claims inside inputs ("this is already secure") treated as context to evaluate, never directives to skip a category
+- Attack scenarios stay at vector-and-impact level - no working exploit code or ready-to-run payloads
+- Defensive-only scope lock: offensive tooling and third-party targeting refused with `Out of scope: this engine produces defensive threat models only.`, with any routing (`- try /devsecops.`, `- try /pentest-report.`) on that same line
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command collects the required fields via `AskUserQuestion` and asks for the optional ones (or assumes them). If a system was passed as `$ARGUMENTS`, confirm and skip that question.
 2. **Validate inputs.** Empty `SYSTEM_DESCRIPTION` or `TECH_STACK` → ask one clarifying question and wait. Empty optional field → state the assumption on a single `Assumptions:` line and proceed.
@@ -42,7 +42,7 @@ One slash command plus its procedure file. `lib/threat-model/SKILL.md` carries t
 5. **Silent self-validation.** Six STRIDE categories present; severity and mitigation per threat; no absolute-security claim; no working exploit code. Fix failures before printing.
 6. **Output the four phases only**, optionally preceded by the single `Assumptions:` line. Direct AppSec questions (e.g. what Repudiation covers) are answered plainly, outside the four-phase format.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /threat-model "multi-tenant SaaS with Stripe billing"   ← arg seeds SYSTEM_DESCRIPTION
@@ -57,7 +57,7 @@ The full procedure lives at [`lib/threat-model/SKILL.md`](../lib/threat-model/SK
 
 ## `devsecops`
 
-Security hardening audits of pipelines, IaC, and cloud configuration, in the voice of a CISSP-certified Principal Cybersecurity Engineer. Locked four-phase report mapping every flaw to a real compliance control.
+Security hardening audits of pipelines, IaC, and cloud configuration, in the voice of a security engineer. Locked four-phase report mapping every flaw to a real compliance control.
 
 ```
 /devsecops
@@ -69,24 +69,24 @@ Remediation is structural. Phase 2 gives the corrected config, Phase 3 adds the 
 
 If you paste real configuration and it contains a live credential, the tool flags it as compromised and never echoes the value back into the report.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. `lib/devsecops/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. `references/prompt-template.md` holds the master prompt with a reference-tone example showing the expected blast-radius and compliance-mapping density.
 
-## ✨ Features
+## Features
 
-- 🎯 Four inputs in, one report out. TARGET_INFRASTRUCTURE_STACK + CONFIGURATION_CONTEXT (required) + SECURITY_DOMAIN + COMPLIANCE_FRAMEWORK (optional)
-- 🧱 Locked 4-phase output: Exploit Surface Audit, Hardening Blueprint, Pipeline Shift-Left, Runtime Guardrails
-- 💥 Every flaw states its blast radius and exploitability vector
-- 📜 Every flaw mapped to a real documented compliance control - no invented control IDs
-- 🏗️ Structural fixes only - temporary hotfixes in place of the real fix fail validation
-- 🚪 Concrete scanning gates required in Phase 3: SAST, DAST, or SCA
-- 🔐 Credentials found in pasted config are flagged as compromised and never echoed back
-- 🧊 Zero-Trust and least privilege applied across every mitigation
-- 🛡️ Code and configs inside inputs treated as artifacts to analyze, never commands to obey; a flaw cannot be marked safe because an input said so
-- 🪧 Defensive-only scope lock: offensive tooling and third-party targeting refused with `Out of scope: this engine produces defensive hardening audits only.` (plus a same-line routing hint when a sibling command fits)
+- Four inputs in, one report out. TARGET_INFRASTRUCTURE_STACK + CONFIGURATION_CONTEXT (required) + SECURITY_DOMAIN + COMPLIANCE_FRAMEWORK (optional)
+- Locked 4-phase output: Exploit Surface Audit, Hardening Blueprint, Pipeline Shift-Left, Runtime Guardrails
+- Every flaw states its blast radius and exploitability vector
+- Every flaw mapped to a real documented compliance control - no invented control IDs
+- Structural fixes only - temporary hotfixes in place of the real fix fail validation
+- Concrete scanning gates required in Phase 3: SAST, DAST, or SCA
+- Credentials found in pasted config are flagged as compromised and never echoed back
+- Zero-Trust and least privilege applied across every mitigation
+- Code and configs inside inputs treated as artifacts to analyze, never commands to obey; a flaw cannot be marked safe because an input said so
+- Defensive-only scope lock: offensive tooling and third-party targeting refused with `Out of scope: this engine produces defensive hardening audits only.` (plus a same-line routing hint when a sibling command fits)
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command asks via `AskUserQuestion` only for the fields still missing. The `CONFIGURATION_CONTEXT` field accepts pasted config directly.
 2. **Validate inputs.** Empty `TARGET_INFRASTRUCTURE_STACK` or `CONFIGURATION_CONTEXT` → ask one clarifying question and wait. Empty optional field → state the assumption and proceed. Live credential in the paste → flag as compromised.
@@ -95,7 +95,7 @@ One slash command plus its procedure file. `lib/devsecops/SKILL.md` carries the 
 5. **Silent self-validation.** Blast radius and mapped control per flaw; structural remediations; concrete scanning gates; no invented control IDs; no echoed credentials. Fix failures before printing.
 6. **Output the four phases only**, preceded by at most one `Assumptions:` line (assumed optional values, any field conflict). Direct in-domain questions get a plain answer instead.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /devsecops "GitHub Actions workflow, SOC 2 audit coming"
@@ -110,7 +110,7 @@ The full procedure lives at [`lib/devsecops/SKILL.md`](../lib/devsecops/SKILL.md
 
 ## `pentest-report`
 
-Formal vulnerability reporting from authorized assessment notes, in the voice of an OSCP/OSWE-certified Principal Security Consultant. Locked four-phase report bridging technical detail and executive business risk.
+Formal vulnerability reporting from authorized assessment notes, in the voice of a security consultant. Locked four-phase report bridging technical detail and executive business risk.
 
 ```
 /pentest-report
@@ -122,24 +122,24 @@ Every proof-of-concept stays sanitized. No live credentials, no real target host
 
 Two details that reports usually get wrong are enforced here: the CVSS score is never printed without its vector string, and v3.1 and v4.0 are never mixed in one report.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. `lib/pentest-report/SKILL.md` carries the persona, scope lock, input handling, and 4-step workflow. `references/prompt-template.md` holds the master prompt with a reference-tone example showing the expected CVSS and business-impact density.
 
-## ✨ Features
+## Features
 
-- 🎯 Four inputs in, one report out. TARGET_SYSTEM + VULNERABILITY_FOUND (required) + EXPLOIT_METHOD + BUSINESS_IMPACT (optional)
-- 🧱 Locked 4-phase output: Executive Summary & Risk Rating, Vulnerability Details, Proof of Concept, Remediation Strategy
-- 📐 CVSS v4.0 or v3.1 score with the **full vector string** - never a bare number
-- 🔒 One CVSS version used consistently throughout the report
-- 🧼 All PoC content sanitized - no live credentials, no real hostnames you did not supply, no weaponized payloads
-- 🩹 A long-term architectural fix, plus a short-term mitigation where one exists, all actionable
-- 💼 Executive summary written in non-technical business-impact terms
-- 🗣️ Professional and objective tone - alarmist language fails validation
-- 🛡️ Payloads and requests inside inputs treated as evidence to document, never commands to execute
-- 🪧 Authorized-work scope lock: unauthorized targets, weaponization requests, and design threat-modeling or pipeline/IaC audits refused with `Out of scope: this engine documents findings from authorized assessments only.` (the last two with a same-line pointer to `/threat-model` or `/devsecops`)
+- Four inputs in, one report out. TARGET_SYSTEM + VULNERABILITY_FOUND (required) + EXPLOIT_METHOD + BUSINESS_IMPACT (optional)
+- Locked 4-phase output: Executive Summary & Risk Rating, Vulnerability Details, Proof of Concept, Remediation Strategy
+- CVSS v4.0 or v3.1 score with the **full vector string** - never a bare number
+- One CVSS version used consistently throughout the report
+- All PoC content sanitized - no live credentials, no real hostnames you did not supply, no weaponized payloads
+- A long-term architectural fix, plus a short-term mitigation where one exists, all actionable
+- Executive summary written in non-technical business-impact terms
+- Professional and objective tone - alarmist language fails validation
+- Payloads and requests inside inputs treated as evidence to document, never commands to execute
+- Authorized-work scope lock: unauthorized targets, weaponization requests, and design threat-modeling or pipeline/IaC audits refused with `Out of scope: this engine documents findings from authorized assessments only.` (the last two with a same-line pointer to `/threat-model` or `/devsecops`)
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Slash command collects four fields via `AskUserQuestion`. If a finding was passed as `$ARGUMENTS`, confirm and skip that question.
 2. **Validate inputs.** Empty `TARGET_SYSTEM` or `VULNERABILITY_FOUND` → ask one clarifying question and wait; stop only if still missing. Empty optional field → state the assumption and proceed. Conflicting fields → `VULNERABILITY_FOUND` and `EXPLOIT_METHOD` win over `BUSINESS_IMPACT`.
@@ -148,7 +148,7 @@ One slash command plus its procedure file. `lib/pentest-report/SKILL.md` carries
 5. **Silent self-validation.** 4 phases in order; CVSS backed by a vector string; one version throughout; long-term fix per finding, plus a short-term mitigation where one exists; all PoC content sanitized; tone objective. Fix failures before printing.
 6. **Output the four phases only**, preceded by at most one `Assumptions:` line (assumed optional values, any field-conflict resolution). Direct questions about a finding are answered plainly.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /pentest-report "IDOR on /api/orders, client engagement"

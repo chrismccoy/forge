@@ -16,25 +16,25 @@ It handles all the common Mermaid types: sequence diagrams become vertical lifel
 
 It asks one thing before it starts: which file to convert. If you named the file in your request it uses that; if you didn't, it asks and waits rather than guessing. Anything written inside the diagram is treated as plain drawing data, so a label that happens to read like an instruction just gets drawn, never obeyed. If a diagram is too wide for a terminal it splits into stacked sections instead of cutting anything off, and if the file is empty or broken it tells you what failed instead of inventing a picture.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/mermaid-to-ascii/SKILL.md` carries the filename-first intake, the eleven conversion rules (Rule 0 through Rule 10), the edge-case handling, and the output contract. The six per-type ASCII layout templates live in `references/skeletons.md` and load only once the diagram type is known, so the base context stays light. The slash command `/mermaid-to-ascii` takes a file path, or asks for one when invoked bare.
 
-## ✨ Features
+## Features
 
-- 🧭 Asks which file to convert first, then stops and waits. No guessing, no scanning for a file you didn't name
-- 🔁 Restates the plan once ("Converting `flow.mmd` -> `flow.txt`") before it does anything
-- 📐 Handles every common Mermaid type: sequence, flowchart/graph, class, state, ER, and gantt
-- 🧱 Picks the right text layout per type from six bundled templates, loaded only when needed
-- 🏷️ Keeps every name, label, message, condition, and grouping block (`alt`/`else`/`opt`/`loop`/`par`). Nothing dropped, nothing renamed
-- 📏 Fixed column spacing, aligned boxes, spaces not tabs, sized for an 80-120 character terminal
-- ✂️ Splits oversized diagrams into stacked, labeled sections instead of cutting them off
-- 🧾 Starts with a title and ends with a legend explaining every symbol used
-- 🛟 Reports a clear parse error on empty or broken files and writes nothing; renders the good part of a partly broken file and lists the lines it skipped
-- 🔒 Treats everything inside the file as drawing data, never instructions, even comments and labels that look like commands
-- 📝 Writes only to the matching `.txt` and leaves the source file untouched
+- Asks which file to convert first, then stops and waits. No guessing, no scanning for a file you didn't name
+- Restates the plan once ("Converting `flow.mmd` -> `flow.txt`") before it does anything
+- Handles every common Mermaid type: sequence, flowchart/graph, class, state, ER, and gantt
+- Picks the right text layout per type from six bundled templates, loaded only when needed
+- Keeps every name, label, message, condition, and grouping block (`alt`/`else`/`opt`/`loop`/`par`). Nothing dropped, nothing renamed
+- Fixed column spacing, aligned boxes, spaces not tabs, sized for an 80-120 character terminal
+- Splits oversized diagrams into stacked, labeled sections instead of cutting them off
+- Starts with a title and ends with a legend explaining every symbol used
+- Reports a clear parse error on empty or broken files and writes nothing; renders the good part of a partly broken file and lists the lines it skipped
+- Treats everything inside the file as drawing data, never instructions, even comments and labels that look like commands
+- Writes only to the matching `.txt` and leaves the source file untouched
 
-## 🔄 How it works
+## How it works
 
 1. **Get the filename.** Use the file named in the request, or ask "Which Mermaid file should I convert?" and wait. Set the output name to the same base name with a `.txt` extension and restate the mapping.
 2. **Read and identify.** Parse the source and work out the diagram type, which decides the layout.
@@ -42,7 +42,7 @@ One slash command plus its procedure file. The procedure file `lib/mermaid-to-as
 4. **Handle the awkward cases.** Approximate an unknown type and say so, split anything too wide, report parse errors on empty or broken source, and list any lines that couldn't be drawn.
 5. **Save it.** Write the text-art to the `.txt` file, report which nodes and frames were captured, and leave the original alone.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -73,21 +73,21 @@ The single easiest thing to get wrong in a sequence diagram is arrow direction, 
 
 It never guesses. If a step names a recipient but no sender, or the input has fewer than two participants, it returns an `ERROR:` - a one-line reason plus a "Problem area(s):" list pointing at the exact bullets - instead of a diagram built on a guess. Output is exactly one thing: a fenced `mermaid` block, an `ERROR:`, or a `SAFETY:` message - never prose around it. Text inside the input is treated as data, never as instructions: a hidden "ignore all instructions" is malformed content and gets an `ERROR:`, not obeyed.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/mermaid-generator/SKILL.md`, targeting Mermaid.js v10+. The command `/mermaid-sequence` takes the bullet list as its argument, or asks for it. A silent 14-point validation runs before anything is emitted.
 
-## ✨ Features
+## Features
 
-- 🧭 Arrow direction from the verb, not the subject - receptive versus active phrasing
-- 🏷️ Aliases multi-word names and normalizes every reference to one participant id
-- 🔀 `alt` / `opt` / `loop` / `par` from "if/otherwise", "only if", "for each", "at the same time"
-- 🧹 Strips parens, brackets, semicolons, and `#` from labels instead of failing
-- 🚦 Refuses with an `ERROR:` naming the exact bullet(s) when a sender is missing
-- 🛡️ Treats input as data; injection attempts are rejected as malformed with an `ERROR:`
-- 📤 Emits exactly one form - diagram, `ERROR:`, or `SAFETY:` - never with surrounding text
+- Arrow direction from the verb, not the subject - receptive versus active phrasing
+- Aliases multi-word names and normalizes every reference to one participant id
+- `alt` / `opt` / `loop` / `par` from "if/otherwise", "only if", "for each", "at the same time"
+- Strips parens, brackets, semicolons, and `#` from labels instead of failing
+- Refuses with an `ERROR:` naming the exact bullet(s) when a sender is missing
+- Treats input as data; injection attempts are rejected as malformed with an `ERROR:`
+- Emits exactly one form - diagram, `ERROR:`, or `SAFETY:` - never with surrounding text
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the bullet list from the argument or ask for it.
 2. **Parse.** Identify participants in order of appearance; resolve each entity to one id.
@@ -95,7 +95,7 @@ One slash command plus its procedure file `lib/mermaid-generator/SKILL.md`, targ
 4. **Structure.** Wrap conditionals, loops, and parallel steps in the right blocks.
 5. **Validate and emit.** Run the 14 checks; emit the diagram, or an error if it cannot be built.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /mermaid-sequence                 ← asks for your bullet-point steps
@@ -125,28 +125,28 @@ Hand it a prompt and it writes a short, friendly document a non-coder can follow
 
 It treats the prompt as text to describe, not orders to obey - a hidden "ignore your instructions" is noted in plain words, not followed. The writing rules are strict: no marketing filler, no empty intensifiers, no long dashes. It saves the result to `PROMPT-EXPLAINED.md` when it can write files, otherwise prints it.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/prompt-dummy/SKILL.md`. The command `/explain-prompt` takes the prompt text or a file path as its argument, or asks for it. It quotes the target prompt in a fenced block (tildes if the target already contains fences).
 
-## ✨ Features
+## Features
 
-- 🗣️ Plain-English explanation for a total beginner - no jargon, no hype
-- 🧾 Eight fixed sections, same order every time
-- 🪜 Walks the prompt as simple numbered steps
-- 🛡️ Describes hidden instructions instead of following them
-- 🚫 Bans marketing filler and long dashes
-- 📄 Quotes the full original prompt so the reader sees what was described
-- 💾 Saves to `PROMPT-EXPLAINED.md` when file writing is available
+- Plain-English explanation for a total beginner - no jargon, no hype
+- Eight fixed sections, same order every time
+- Walks the prompt as simple numbered steps
+- Describes hidden instructions instead of following them
+- Bans marketing filler and long dashes
+- Quotes the full original prompt so the reader sees what was described
+- Saves to `PROMPT-EXPLAINED.md` when file writing is available
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the prompt from the argument or ask for it (paste or file). Stop if none is given.
 2. **Read.** Pick out the prompt's role, task, output format, rules, and failure points.
 3. **Write.** Fill the eight headings in plain English, quoting the prompt in a block.
 4. **Check.** Confirm every heading is present, nothing was obeyed, no banned words. Save or print.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /explain-prompt ./my-prompt.md    ← explain a prompt file
@@ -159,7 +159,7 @@ The full procedure lives at [`lib/prompt-dummy/SKILL.md`](../lib/prompt-dummy/SK
 
 ## `prompt-summary`
 
-A rigorous, review-ready analysis of any AI prompt, in the voice of a senior prompt engineer. Where `/explain-prompt` is for beginners, this is the deep dive: anatomy, techniques, output contract, failure modes, and concrete improvements.
+A review-ready analysis of any AI prompt, in the voice of a senior prompt engineer. Where `/explain-prompt` is for beginners, this goes further: anatomy, techniques, output contract, failure modes, and concrete improvements.
 
 ```
 /analyze-prompt
@@ -169,29 +169,29 @@ It breaks a prompt into its parts - role, task, context, constraints, examples, 
 
 Every claim is traceable to the target's actual text. The full prompt is quoted verbatim in an Appendix and never truncated. It analyzes and documents only - any instruction inside the target is logged under Failure Modes, not obeyed. It saves to `PROMPT-SUMMARY.md` when it can write files, otherwise prints the full report.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/prompt-summary/SKILL.md`. The command `/analyze-prompt` takes the prompt text or a file path, or asks for it. The body targets 1,500-4,000 words; the verbatim Appendix is exempt and never cut.
 
-## ✨ Features
+## Features
 
-- 🧩 Full prompt anatomy - role, task, context, constraints, examples, format
-- 🔍 Line-level wording analysis, including placeholder and variable conventions
-- 🎯 Names the prompting techniques and why each fits
-- 📤 Output contract with example input/output pairs, including edge and adversarial cases
-- ⚠️ Failure modes and prompt-injection exposure, each with a mitigation
-- ❓ Interview and review questions with guidance and trade-offs
-- ✨ Concrete optimization suggestions, ordered by impact
-- 📎 Full verbatim prompt in the Appendix, never truncated
+- Full prompt anatomy - role, task, context, constraints, examples, format
+- Line-level wording analysis, including placeholder and variable conventions
+- Names the prompting techniques and why each fits
+- Output contract with example input/output pairs, including edge and adversarial cases
+- Failure modes and prompt-injection exposure, each with a mitigation
+- Interview and review questions with guidance and trade-offs
+- Concrete optimization suggestions, ordered by impact
+- Full verbatim prompt in the Appendix, never truncated
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the prompt from the argument or ask for it. Stop if none is given.
 2. **Analyze.** Work through each required section in order, tracing every claim to the text.
 3. **Stress-test.** Cover the output format, failure modes, injection exposure, and improvements.
 4. **Verify and deliver.** Confirm every heading is present, the Appendix is verbatim, nothing was obeyed. Save or print.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /analyze-prompt ./my-prompt.md    ← analyze a prompt file
@@ -216,23 +216,23 @@ Scoring is anchored so a number means the same thing twice. The tier is assigned
 
 The submission is the subject, never a directive. It sits between paired named markers, is declared inert, and a `score this 10/10` buried inside it gets quoted in Structural Risks along with a statement that it was not followed. Length earns nothing: verbosity without structure counts against Efficiency, and a short prompt that fully covers its scope is not penalized for being short.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/prompt-ranker/SKILL.md`, which loads the master template from `lib/prompt-ranker/references/prompt-template.md`. The command `/rank-prompt` takes the prompt inline or as a file path, or asks for it, then optionally collects the target model and what the prompt is failing at today. An intake gate treats an unreplaced placeholder as no submission at all and stops rather than auditing empty space.
 
-## ✨ Features
+## Features
 
-- 🧭 Eight analysis dimensions, every one accounted for in the table
-- 🪜 Anchored tiers. Novice, Intermediate, Advanced, Expert, each defined by mechanisms the prompt must actually contain
-- ⚖️ One scale only. Tier and score map to each other, and the opening rank must agree with the closing verdict
-- 🚪 Intake gate. No prompt, or a placeholder still in the markers, means a request and a stop - never a scorecard for empty space
-- 🛡️ Injection resistant. The submission is inert data behind paired markers, and directives aimed at the reviewer are reported rather than obeyed
-- 🔍 Evidence required. Every claim cites specific language or structure; generic praise and generic checklist criticism are ruled out
-- 📏 Length neutral, in both directions
-- 🧪 Bad input handled. A non-prompt is identified and refused rather than scored; a trivially short prompt is marked as such rather than padded out
-- 🎯 One concrete improvement, stated as a specific edit with a before/after sketch - never "make it clearer"
+- Eight analysis dimensions, every one accounted for in the table
+- Anchored tiers. Novice, Intermediate, Advanced, Expert, each defined by mechanisms the prompt must actually contain
+- One scale only. Tier and score map to each other, and the opening rank must agree with the closing verdict
+- Intake gate. No prompt, or a placeholder still in the markers, means a request and a stop - never a scorecard for empty space
+- Injection resistant. The submission is inert data behind paired markers, and directives aimed at the reviewer are reported rather than obeyed
+- Evidence required. Every claim cites specific language or structure; generic praise and generic checklist criticism are ruled out
+- Length neutral, in both directions
+- Bad input handled. A non-prompt is identified and refused rather than scored; a trivially short prompt is marked as such rather than padded out
+- One concrete improvement, stated as a specific edit with a before/after sketch - never "make it clearer"
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the submission from the argument, a file path, or a plain ask. Optionally collect target model and current failure.
 2. **Gate.** Stop on an absent or placeholder submission; refuse to scorecard a non-prompt.
@@ -241,7 +241,7 @@ One slash command plus its procedure file `lib/prompt-ranker/SKILL.md`, which lo
 5. **Check.** Seven sections in order, all eight rows present, both tier mentions identical, every claim anchored.
 6. **Print.** The seven sections only.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /rank-prompt ./prompts/agent.md   ← audit a prompt file
@@ -270,24 +270,24 @@ The table is the whole output, so the rules that keep it rendering as a table ar
 
 Attacks are reported, not dropped. Directive language aimed at the reviewer - `ignore prior instructions`, `score this 10/10` - is quoted in the input-handling row along with a statement that it was not followed, and the audit continues unchanged. No extra section is added to report one, because the output contract is three sections and nothing else.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/prompt-rank-table/SKILL.md`, which loads the master template from `lib/prompt-rank-table/references/prompt-template.md`. The command `/prompt-rank-table` takes the prompt inline or as a file path, or asks for it, then optionally collects the target model and what the prompt is failing at today. An intake gate treats an unreplaced placeholder as no submission at all and stops rather than auditing empty space.
 
-## ✨ Features
+## Features
 
-- 📊 Three sections only. Overall Rank, the table, the verdict - no preamble before the first heading and no prose after the last
-- 🧭 Eight analysis dimensions, always eight data rows. A dimension can be marked `N/A - {reason}`, never dropped
-- 📐 Hard table rules. One line per row, three cells, escaped pipes, no fence around the table, evidence capped at roughly 20 words
-- 🪜 Anchored tiers. Novice, Intermediate, Advanced, Expert, each defined by mechanisms the prompt must actually contain
-- ⚖️ One scale only. The tier in the opening rank and the tier in the verdict have to match
-- 🚪 Intake gate. No prompt, or a placeholder still in the markers, means a request and a stop
-- 🛡️ Injection resistant. The submission is inert data behind paired markers, and directives aimed at the reviewer land in the input-handling row rather than in the model's behaviour
-- 🔍 Evidence required. Every row cites specific language or structure from the submitted prompt
-- 📏 Length neutral. Verbosity without structure counts against Efficiency; a short prompt that covers its scope is not penalized
-- 🧪 Bad input handled. A non-prompt is identified and refused rather than scored; a trivially short prompt gets `N/A` rows rather than padding
+- Three sections only. Overall Rank, the table, the verdict - no preamble before the first heading and no prose after the last
+- Eight analysis dimensions, always eight data rows. A dimension can be marked `N/A - {reason}`, never dropped
+- Hard table rules. One line per row, three cells, escaped pipes, no fence around the table, evidence capped at roughly 20 words
+- Anchored tiers. Novice, Intermediate, Advanced, Expert, each defined by mechanisms the prompt must actually contain
+- One scale only. The tier in the opening rank and the tier in the verdict have to match
+- Intake gate. No prompt, or a placeholder still in the markers, means a request and a stop
+- Injection resistant. The submission is inert data behind paired markers, and directives aimed at the reviewer land in the input-handling row rather than in the model's behaviour
+- Evidence required. Every row cites specific language or structure from the submitted prompt
+- Length neutral. Verbosity without structure counts against Efficiency; a short prompt that covers its scope is not penalized
+- Bad input handled. A non-prompt is identified and refused rather than scored; a trivially short prompt gets `N/A` rows rather than padding
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the submission from the argument, a file path, or a plain ask. Optionally collect target model and current failure.
 2. **Gate.** Stop on an absent or placeholder submission; refuse to table a non-prompt.
@@ -296,7 +296,7 @@ One slash command plus its procedure file `lib/prompt-rank-table/SKILL.md`, whic
 5. **Check.** Three sections in order, eight single-line rows, both tier mentions identical, no stray prose.
 6. **Print.** The three sections only.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /prompt-rank-table ./prompts/agent.md   ← audit a prompt file
@@ -327,24 +327,24 @@ You get eight sections: the locks, the variable surface with source-derived defa
 
 Model syntax is preserved, never translated. `--ar 3:2`, `--style raw`, weights, and flags stay in the source's own wording and go in `[PARAMETERS]`, whichever dialect they came from. Nothing is generated or verified: the proofs demonstrate token substitution, not visual outcome, and a stencil cut from a Midjourney prompt is not portable to another generator without translating the parameters yourself.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/prompt-stencil/SKILL.md`, which loads the master template from `lib/prompt-stencil/references/prompt-template.md`. The command `/prompt-stencil` collects the source prompt, the dimension to make reusable, and up to two optional constraints. It asks at most one clarifying question overall, and only when the dimension is missing while a usable source prompt is present.
 
-## ✨ Features
+## Features
 
-- 🔒 Locks first. Composition, background, lighting, lens, palette, materials, style, negatives, and ratio are separated out before anything is cut
-- 🎚️ Minimal variable surface. At most three dimensions, each chosen for the widest reuse, and never a lock the user did not ask to change
-- 🧵 Dependency threading. A token rewrites only the clauses that logically depend on it; unrelated locks are left alone
-- 📋 Copy-ready template in four labelled blocks, with no notes, ellipses, or advice inside the code block
-- 🗺️ Propagation map. One row per token: what it rewrites, what it must never touch
-- 🧪 At least two filled proofs with materially different values and identical locks
-- 🚧 Drift guards kept separate from locks - guards say what to keep out, locks say what to keep
-- 🧰 Model syntax preserved verbatim, never translated between dialects
-- 🩹 Seam repair. A source that is itself a filled template gets its doubled articles and stranded prepositions fixed, and the notes say how
-- 🚫 Three named failure states instead of a half-built artifact: Missing Material, Variable Conflict, Capability Boundary
+- Locks first. Composition, background, lighting, lens, palette, materials, style, negatives, and ratio are separated out before anything is cut
+- Minimal variable surface. At most three dimensions, each chosen for the widest reuse, and never a lock the user did not ask to change
+- Dependency threading. A token rewrites only the clauses that logically depend on it; unrelated locks are left alone
+- Copy-ready template in four labelled blocks, with no notes, ellipses, or advice inside the code block
+- Propagation map. One row per token: what it rewrites, what it must never touch
+- At least two filled proofs with materially different values and identical locks
+- Drift guards kept separate from locks - guards say what to keep out, locks say what to keep
+- Model syntax preserved verbatim, never translated between dialects
+- Seam repair. A source that is itself a filled template gets its doubled articles and stranded prepositions fixed, and the notes say how
+- Three named failure states instead of a half-built artifact: Missing Material, Variable Conflict, Capability Boundary
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Source prompt, the dimension to make swappable, optional constraints.
 2. **Parse.** Break the source into visual clauses and mark each invariant, variable-dependent, or conflict-sensitive.
@@ -353,7 +353,7 @@ One slash command plus its procedure file `lib/prompt-stencil/SKILL.md`, which l
 5. **Cut and assemble.** Style-lock block and drift guards from the invariants, then the four-block template.
 6. **Prove and check.** Build the filled variants, then verify the artifact against the source and the request.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /prompt-stencil ./prompts/product-hero.txt   ← cut a saved prompt
@@ -365,3 +365,57 @@ One slash command plus its procedure file `lib/prompt-stencil/SKILL.md`, which l
 > *"make this image prompt reusable"*, *"turn this into a template"*, *"I want to swap the subject and keep the look"*, *"variables for my Midjourney prompt"*, *"stop my prompt drifting when I change the product"*
 
 The full procedure lives at [`lib/prompt-stencil/SKILL.md`](../lib/prompt-stencil/SKILL.md) and the slash command at [`commands/prompt-stencil.md`](../commands/prompt-stencil.md).
+
+---
+
+## `prompt-bloat`
+
+Hand it an overengineered prompt or skill file. Get back the same prompt with the decoration stripped out and every working rule still in place.
+
+```
+/prompt-bloat
+```
+
+Prompts and skill files pick up clutter over time: made-up trademarks and version banners, invented citations, a section where the file scores its own quality, mode switches that nothing ever reads, the same rule repeated in three places, and heavy dividers that change nothing. Cutting that by hand is risky, because real rules often sit right next to the clutter. A banner line might be followed by a sentence that limits what the output may contain, and that sentence is easy to delete along with the banner. `prompt-bloat` finds the clutter that is actually in the file rather than ticking off a fixed checklist, cuts it, and checks that nothing that changes behavior went with it.
+
+It keeps, exactly: what the prompt does and does not cover, phase order and stop conditions, scoring rubrics and their thresholds, input requirements, "must" and "must not" output rules, prompt-injection handling, the output format with all its fields, and any rule that stops the model from faking success. Anything that might be decoration or might be load-bearing is kept and flagged for you to decide, never guessed. Shorter is a side effect, not the goal - nothing is trimmed just to make the file smaller.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/prompt-bloat/SKILL.md`, which loads `lib/prompt-bloat/references/bloat-patterns.md` for detection signals, examples, and the traps where functional rules hide inside decorative text. The command `/prompt-bloat` takes a file path or pasted text as its argument, or asks for it. Its `allowed-tools` grants `Read`, `Write`, and `Glob` - `Write` is used only when you accept the save offer.
+
+## Features
+
+- Diagnoses what is actually there: branding, fabricated authority, self-grading, dead configuration, repetition, decorative formatting, invented theory, inflated claims
+- Keeps every functional rule: scope, gates, halt conditions, rubrics, thresholds, input validation, output contract, safety and injection handling
+- Cut list with one line per removal and the reason for it
+- Uncertain items kept in the rewrite and listed separately for your call
+- Preservation check: every rule in the original is listed and confirmed present in the rewrite before anything is output
+- Full rewrite in one code block, with an outer fence longer than any fence inside so nested code blocks never break it
+- Offers to save as `<name>.slim.<ext>` next to the source; never overwrites the original unless you ask
+- Asks for the file instead of guessing when nothing was given or the input looks cut off
+
+## How it works
+
+1. **Confirm input.** Read the file or take the paste. Ask when it is missing or looks truncated.
+2. **Diagnose.** Find the bloat categories that are actually present.
+3. **Preserve.** Mark every functional rule, including ones buried in decorative sections.
+4. **Classify.** Each candidate cut is either a clear cut or uncertain and kept.
+5. **Verify.** Confirm every functional rule appears in the rewrite; restore anything missing.
+6. **Output.** Cut list, uncertain list, preservation check, rewrite, word counts.
+7. **Offer to save.** Write `<name>.slim.<ext>` only on your yes.
+
+## How to use it
+
+```
+/prompt-bloat ./skills/my-skill/SKILL.md   ← clean a skill file
+/prompt-bloat                              ← asks you to paste the prompt
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"remove the bloat from this prompt"*, *"clean up this skill file"*, *"strip the theater out of this SKILL.md"*, *"slim this system prompt without losing behavior"*
+
+To explain what a prompt does, use [`/explain-prompt`](#prompt-dummy). To score its architecture, use [`/rank-prompt`](#prompt-ranker).
+
+The full procedure lives at [`lib/prompt-bloat/SKILL.md`](../lib/prompt-bloat/SKILL.md), the slash command at [`commands/prompt-bloat.md`](../commands/prompt-bloat.md), and the on-demand reference file at [`lib/prompt-bloat/references/bloat-patterns.md`](../lib/prompt-bloat/references/bloat-patterns.md).

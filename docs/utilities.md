@@ -14,24 +14,24 @@ A script that merely works and a script you can leave running are different arti
 
 Nineteen languages have their own conventions section - bash, clojure, csharp, elixir, erlang, go, haskell, java, javascript, lua, perl, php, powershell, python, ruby, rust, swift, typescript, zsh - covering how the file starts, how options are parsed, how errors are reported, which tools run other programs, and which formatter to match. Only the one section that applies is read, and where it differs from the general rules, it wins.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command and a two-file procedure bundle. `lib/prompt-snippet/SKILL.md` carries the one-question-at-a-time intake, the general structure, reliability, state and style rules, and the two delivery formats. `lib/prompt-snippet/references/languages.md` holds the 19 language sections plus an "Any other language" fallback; exactly one section is loaded per run. Intake takes an answer from anywhere in the conversation, so an argument that already names the language and the task leaves only the output question.
 
-## ✨ Features
+## Features
 
-- 🗣️ Three questions, one per reply - no code block, no preamble, no list of the other fields
-- 🌐 19 language sections plus a general fallback; only the matching section is read
-- 📄 Header comment with file name, purpose, usage, exit codes, dependencies and up to 5 `Assumptions:`
-- 🛡️ stderr for errors, non-zero exit on failure, cleanup on exit and interrupt
-- 🔐 No hardcoded secrets, no `eval` of input, no shell commands built from input strings
-- 🧯 Validation and a `--dry-run` before anything destructive
-- 💧 Streamed reads for large inputs; atomic replace-by-rename for file writes
-- 📁 XDG config/state/log locations on Linux and macOS, `%APPDATA%`/`%LOCALAPPDATA%` on Windows
-- 📤 Two delivery modes: one bare code block in the chat, or a saved file plus a four-line summary
-- 🚫 No TODOs, stubs, placeholder functions, or `...` sections
+- Three questions, one per reply - no code block, no preamble, no list of the other fields
+- 19 language sections plus a general fallback; only the matching section is read
+- Header comment with file name, purpose, usage, exit codes, dependencies and up to 5 `Assumptions:`
+- stderr for errors, non-zero exit on failure, cleanup on exit and interrupt
+- No hardcoded secrets, no `eval` of input, no shell commands built from input strings
+- Validation and a `--dry-run` before anything destructive
+- Streamed reads for large inputs; atomic replace-by-rename for file writes
+- XDG config/state/log locations on Linux and macOS, `%APPDATA%`/`%LOCALAPPDATA%` on Windows
+- Two delivery modes: one bare code block in the chat, or a saved file plus a four-line summary
+- No TODOs, stubs, placeholder functions, or `...` sections
 
-## 🔄 How it works
+## How it works
 
 1. **Ask for the language.** One short question, naming a few examples. Skipped if already known.
 2. **Ask what the script should do.** Skipped if already known.
@@ -40,7 +40,7 @@ One slash command and a two-file procedure bundle. `lib/prompt-snippet/SKILL.md`
 5. **Write the complete script** - structure, reliability and safety, state and logging if the task needs them, style.
 6. **Deliver it.** One fenced code block and nothing else, or the saved file plus `Saved:` / `Run:` / `Exit codes:` / `Dependencies:`.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /snippet                                      ← asks all three questions
@@ -65,30 +65,30 @@ Session transcripts are rich but unreadable as raw `.jsonl`, and the one number 
 
 Pricing follows the current Claude API catalog via a per-model table (Opus, Sonnet, Haiku, Fable), defaulting to Opus 4.8 = $5/$25 per MTok in/out, cache write $6.25, cache read $0.50. A model with no table entry renders cost as `N/A` rather than $0. Override any rate per MTok with the `IN_RATE`, `OUT_RATE`, `CW_RATE`, `CR_RATE` environment variables. Every number traces to the transcript; absent fields render as `N/A`, never a guess.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command, its procedure file, two scripts, and a template asset. The procedure file `lib/session-stats/SKILL.md` carries the trigger phrases, the two-step workflow, and the stats-only constraint. `scripts/scan_jsonl.py` produces a metrics JSON object; `scripts/build_stats_html.py` consumes it and the fixed `assets/template.html` to emit the document. The slash command `/session-stats` resolves the current session transcript (or an explicit `.jsonl` path) and runs the pipeline.
 
-## ✨ Features
+## Features
 
-- 🎯 KPI cards: duration, prompts, tool calls, files written/edited, output tokens, est. cost
-- 📊 Per-tool usage table (calls, share bar, percent) plus a token-bucket table (input, output, cache created, cache read)
-- 💰 Cost computed from token `usage` times per-model pricing; current Opus 4.8 catalog rates; `IN_RATE`/`OUT_RATE`/`CW_RATE`/`CR_RATE` overrides
-- 🧮 promptCount excludes slash-command and system turns; cost groups assistant messages by model and sums input/output/cache-write/cache-read tokens times rates / 1e6
-- 🌑 Fixed dark template; restyle via the `:root` CSS variables only
-- 📦 Self-contained output: one `<!DOCTYPE html>` file, no `<script>`, no external assets, no fonts
-- 🔌 Offline two-stage pipeline; pure Python stdlib; no external dependency
-- 🚫 Stats only. No observations, narrative retros, or recommendations
-- 🧾 Every number traces to the transcript; missing fields render as `N/A`
+- KPI cards: duration, prompts, tool calls, files written/edited, output tokens, est. cost
+- Per-tool usage table (calls, share bar, percent) plus a token-bucket table (input, output, cache created, cache read)
+- Cost computed from token `usage` times per-model pricing; current Opus 4.8 catalog rates; `IN_RATE`/`OUT_RATE`/`CW_RATE`/`CR_RATE` overrides
+- promptCount excludes slash-command and system turns; cost groups assistant messages by model and sums input/output/cache-write/cache-read tokens times rates / 1e6
+- Fixed dark template; restyle via the `:root` CSS variables only
+- Self-contained output: one `<!DOCTYPE html>` file, no `<script>`, no external assets, no fonts
+- Offline two-stage pipeline; pure Python stdlib; no external dependency
+- Stats only. No observations, narrative retros, or recommendations
+- Every number traces to the transcript; missing fields render as `N/A`
 
-## 🔄 How it works
+## How it works
 
 1. **Resolve the transcript.** The slash command uses an explicit `.jsonl` path, or finds the newest transcript for the current project under `~/.claude/projects/<slug>/`.
 2. **Scan.** `scan_jsonl.py --in <session.jsonl>` emits a metrics JSON object, computing cost from token usage times per-model pricing.
 3. **Render.** `build_stats_html.py --out session-stats.html` injects the metrics into the dark template and writes a standalone document. Pipe the two stages, or run them separately.
 4. **Report.** State the output path; the page opens in any browser.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -117,23 +117,23 @@ A session's token counts are easy to read and hard to judge. 40,000 input tokens
 
 Six stages run in order and each gates the next: PARSE, VALIDATE, CALCULATE, GRADE, VERIFY, RENDER. Only the four values, the total, the five rounded metrics and the four letters cross a stage boundary, so a grade is defensible from the numbers alone rather than from how the run felt. Ten edge-case rows are evaluated under a precedence rule: the first six HALT on first match, the last four continue and all matching rows apply, because one run can hit several undefined denominators at once.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command and a two-file procedure bundle. `lib/token-auditor/SKILL.md` carries the intake block format, the six-stage workflow, the edge-case precedence table, and the output contract. `lib/token-auditor/references/rules.md` holds the formulas, letter values, bands, worked examples, and five named rules - `RULE precision`, `RULE residual`, `RULE conditionals`, `RULE verify-retry`, `RULE repair` - which win over any other section that disagrees with them. The command accepts a pasted `---BEGIN TOKENS---` block or collects the six fields one at a time, assembling them into that same block so both paths run identical validation.
 
-## ✨ Features
+## Features
 
-- 🎯 Three banded metrics plus a weighted overall letter, A through F, from a fixed table
-- 🧮 Grades are weighted, never raw metrics - grade first, then weight A=4 through F=0
-- 📐 `RULE precision`: full precision, rounded once, half away from zero, never banker's rounding
-- 🧾 `RULE residual`: four independently rounded shares do not sum to 100.0, so the residual lands on the largest of rows 1, 3 and 4 - never on the output row, whose share is itself a banded metric
-- 🚦 Ten edge-case rows under a precedence rule: rows 1-6 HALT on first match, rows 7-10 all apply
-- ⭐ Row 9 fallback scale marks its letter with `*` and says so, since a marked B is not comparable to an unmarked one
-- 🔁 `RULE verify-retry`: a disagreeing letter re-runs CALCULATE and GRADE once, and HALTs only if the second pass still disagrees, rather than guessing
-- 🚫 Never estimates a value that was not supplied - a missing required number is a HALT
-- 📊 Working shown for every ratio and for the weighted score; raw values stated once outside the table
+- Three banded metrics plus a weighted overall letter, A through F, from a fixed table
+- Grades are weighted, never raw metrics - grade first, then weight A=4 through F=0
+- `RULE precision`: full precision, rounded once, half away from zero, never banker's rounding
+- `RULE residual`: four independently rounded shares do not sum to 100.0, so the residual lands on the largest of rows 1, 3 and 4 - never on the output row, whose share is itself a banded metric
+- Ten edge-case rows under a precedence rule: rows 1-6 HALT on first match, rows 7-10 all apply
+- Row 9 fallback scale marks its letter with `*` and says so, since a marked B is not comparable to an unmarked one
+- `RULE verify-retry`: a disagreeing letter re-runs CALCULATE and GRADE once, and HALTs only if the second pass still disagrees, rather than guessing
+- Never estimates a value that was not supplied - a missing required number is a HALT
+- Working shown for every ratio and for the weighted score; raw values stated once outside the table
 
-## 🔄 How it works
+## How it works
 
 1. **Parse.** Read the `---BEGIN TOKENS---` block, ignoring anything outside the delimiters, blank lines, and `#` comments. Identical repeated keys collapse; conflicting ones HALT.
 2. **Validate.** Walk the ten edge-case rows under `RULE precedence`.
@@ -142,7 +142,7 @@ One slash command and a two-file procedure bundle. `lib/token-auditor/SKILL.md` 
 5. **Verify.** Recheck the arithmetic and each letter against its band row; re-run stages 3 and 4 once on disagreement, and HALT only if the second pass still disagrees.
 6. **Render.** Emit the output contract verbatim: metrics table, three ratios with working, four grades, one recommendation.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /token-audit                                  ← asks for each field in turn
@@ -171,7 +171,7 @@ What makes it different from a generic "write me asm" prompt? It enforces demosc
 
 It ships a 256 byte intro, a boot sector that fits in 510 bytes, or a worked example of how the demoscene squeezes plasma out of a handful of opcodes.
 
-## 📋 Technical Overview
+## Technical Overview
 
 An AI instruction specification that generates byte budget constrained 16 bit real mode x86 assembly in the style of early 1990s demoscene productions.
 
@@ -179,29 +179,29 @@ Built around a strict scope lock (refuses anything outside MS-DOS / BIOS / boot 
 
 It behaves like a real sizecoder: show the technique, name the opcode, move on. No marketing register, no buzzwords, no tutorials. Includes prompt injection defenses that treat `{{placeholder}}` content as inert data.
 
-## ✨ Features
+## Features
 
-- 🎨 14 placeholder variables driving every demo: visual effect, size budget, target platform, video mode, CPU mode, assembler, binary format, entry point, performance priority, loop style, allowed tricks, memory model, dependencies, and comments toggle
-- 🎯 4-round multiple-choice intake via `AskUserQuestion`. each question auto-includes an "Other" option for custom values (custom visual effects like starfield, metaballs, voxel landscape pass through verbatim)
-- 📏 Strict size budgets enforced with a per-opcode byte calibration table. 256b intros, 512b boot sectors, 1KB / 4KB. 15% safety margin built in
-- 🧮 Byte estimate emitted before the code block. no surprise overruns
-- 💾 Multi-target. MS-DOS `.COM`, raw boot sector (with `0AA55h` signature), raw binary, BIOS-only mode
-- 🖼️ Multi-mode rendering. Mode 13h (320x200x256 VGA), text mode (`B800h`, 80x25), VGA planar / Mode X
-- 🔧 Four assembler syntaxes. NASM, FASM, TASM, MASM
-- 🪄 Demoscene tricks. self-modifying code, undocumented opcodes, FPU, lookup tables, approximate trig, intentional overflow
-- 🔁 Loop styles. single loop (`LOOP` instruction), unrolled, self-modifying
-- 🎵 Optional PC speaker or AdLib-style sound when the byte budget allows
-- 📋 Mandatory output format. Byte Budget → Code → Core Trick (mechanism + key instructions + register reuse map) → Tradeoffs (size won by / cycles cost / sacrificed)
-- 🛡️ Single-line refusal codes. `REFUSE: scope|size|contradiction|platform|placeholder|injection`. no elaboration, no side-channel leaks
-- 🔒 Scope lock refuses tutorials, history lessons, modern code (SSE/AVX/x86_64), and any request that breaches the declared `CPU_MODE`
-- ⚡ Demoscene rules enforced. register reuse, implicit operands (AX/SI/DI), fused operations, bit-shifts for mul/div, no PUSH/POP for preservation, no functions or macros beyond minimum
-- 📚 Two worked reference examples bundled. 256b XOR-plasma `.COM` (Mode 13h) and 512b text-mode color-bars boot sector (BIOS only)
-- ⚠️ Negative anti-pattern example included. shows what to refuse cleanly instead of "fixing and emitting"
-- 🎚️ Suggested low-temperature runtime (`temperature=0.3`, `top_p=0.9`). sizecoding needs low variance for stable byte counts
-- 🚫 Hacker-engineer voice. no marketing register, no corporate jargon, no consultancy-speak
-- 🔐 Prompt-injection defense. instructions embedded inside `{{...}}` placeholders are treated as inert data, refusal output is uniform to prevent side-channel inference
+- 14 placeholder variables driving every demo: visual effect, size budget, target platform, video mode, CPU mode, assembler, binary format, entry point, performance priority, loop style, allowed tricks, memory model, dependencies, and comments toggle
+- 4-round multiple-choice intake via `AskUserQuestion`. each question auto-includes an "Other" option for custom values (custom visual effects like starfield, metaballs, voxel landscape pass through verbatim)
+- Strict size budgets enforced with a per-opcode byte calibration table. 256b intros, 512b boot sectors, 1KB / 4KB. 15% safety margin built in
+- Byte estimate emitted before the code block. no surprise overruns
+- Multi-target. MS-DOS `.COM`, raw boot sector (with `0AA55h` signature), raw binary, BIOS-only mode
+- Multi-mode rendering. Mode 13h (320x200x256 VGA), text mode (`B800h`, 80x25), VGA planar / Mode X
+- Four assembler syntaxes. NASM, FASM, TASM, MASM
+- Demoscene tricks. self-modifying code, undocumented opcodes, FPU, lookup tables, approximate trig, intentional overflow
+- Loop styles. single loop (`LOOP` instruction), unrolled, self-modifying
+- Optional PC speaker or AdLib-style sound when the byte budget allows
+- Mandatory output format. Byte Budget → Code → Core Trick (mechanism + key instructions + register reuse map) → Tradeoffs (size won by / cycles cost / sacrificed)
+- Single-line refusal codes. `REFUSE: scope|size|contradiction|platform|placeholder|injection`. no elaboration, no side-channel leaks
+- Scope lock refuses tutorials, history lessons, modern code (SSE/AVX/x86_64), and any request that breaches the declared `CPU_MODE`
+- Demoscene rules enforced. register reuse, implicit operands (AX/SI/DI), fused operations, bit-shifts for mul/div, no PUSH/POP for preservation, no functions or macros beyond minimum
+- Two worked reference examples bundled. 256b XOR-plasma `.COM` (Mode 13h) and 512b text-mode color-bars boot sector (BIOS only)
+- Negative anti-pattern example included. shows what to refuse cleanly instead of "fixing and emitting"
+- Suggested low-temperature runtime (`temperature=0.3`, `top_p=0.9`). sizecoding needs low variance for stable byte counts
+- Hacker-engineer voice. no marketing register, no corporate jargon, no consultancy-speak
+- Prompt-injection defense. instructions embedded inside `{{...}}` placeholders are treated as inert data, refusal output is uniform to prevent side-channel inference
 
-## 🔄 How it works
+## How it works
 
 1. **Intake**: the `/vgademo` slash command runs four `AskUserQuestion` rounds collecting 14 placeholders:
  - **Round 1 - Visual & Platform**: effect (plasma / fire / tunnel / rotozoomer / Other), size (256b / 512b / 1KB / 4KB), platform (MS-DOS .COM / boot sector / BIOS), video mode (Mode 13h / text mode / VGA planar)
@@ -212,7 +212,7 @@ It behaves like a real sizecoder: show the technique, name the opcode, move on. 
 3. **Pre-emit checklist** (silent): byte estimate ≤ 0.85 × size limit, zero forbidden instructions, register reuse covers every named register, mechanism matches the named trick
 4. **Emit**: mandatory four-section output. Byte Budget, Code (single asm block), Core Trick (≤200 words), Tradeoffs (≤120 words)
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke it:
 
@@ -238,27 +238,27 @@ Debug, fix, and optimize broken Excel and Google Sheets formulas.
 
 A broken formula is rarely broken where it looks broken. `=VLOOKUP(A2,Sheet2!A:B,3,0)` throws `#REF!` not because the syntax is wrong but because the column index counts inside the range, and `A:B` only has two columns. The `excel-formula-troubleshooter` skill traces the formula like a spreadsheet engine does - function by function, parentheses balance, argument count and order, range references, data types (text vs number, dates as serials), circular references - then names the exact root cause, returns a copy-paste-ready corrected formula, explains the fix in plain bullets, and where it helps, suggests a modern alternative (`XLOOKUP` over `VLOOKUP`, `IFERROR` to mask error values).
 
-Output is locked to four sections so every answer reads the same: ❌ The Issue, ✅ Corrected Formula, 🛠️ How the Fix Works, 🚀 Better Alternative (omitted when none applies). Function names come back UPPERCASE, ready to paste. Scope is locked to spreadsheet-formula troubleshooting: it does not build spreadsheets, write VBA, macros, or Apps Script, design pivot tables or charts, or answer general spreadsheet or data questions outside a broken formula.
+Output is locked to four sections so every answer reads the same: The Issue, Corrected Formula, How the Fix Works, and Better Alternative (omitted when none applies). Function names come back UPPERCASE, ready to paste. Scope is locked to spreadsheet-formula troubleshooting: it does not build spreadsheets, write VBA, macros, or Apps Script, design pivot tables or charts, or answer general spreadsheet or data questions outside a broken formula.
 
-## ✨ Features
+## Features
 
-- 🔎 Silent pre-answer trace - function-by-function, parentheses balance, argument count/order, range references, data types, circular references - the reasoning never clutters the output
-- 🎯 Exact root cause - mismatched parentheses, wrong syntax, text-vs-number mismatch, circular reference, incorrect range, wrong column index - not "consider checking your ranges"
-- 📋 Copy-paste-ready corrected formula with UPPERCASE function names
-- 🧾 Beginner-friendly bulleted explanation of why the fix works
-- 🚀 Optional modern alternative - `XLOOKUP` over `VLOOKUP`, `INDEX/MATCH`, `IFERROR` to mask `#N/A` - omitted cleanly when nothing better applies
-- 📦 Locked 4-section output format - identical layout on every answer
-- 🚪 Asks for the issue instead of guessing when only a formula is supplied
-- 🔒 Scope lock - spreadsheet-formula troubleshooting only
+- Silent pre-answer trace - function-by-function, parentheses balance, argument count/order, range references, data types, circular references - the reasoning never clutters the output
+- Exact root cause - mismatched parentheses, wrong syntax, text-vs-number mismatch, circular reference, incorrect range, wrong column index - not "consider checking your ranges"
+- Copy-paste-ready corrected formula with UPPERCASE function names
+- Beginner-friendly bulleted explanation of why the fix works
+- Optional modern alternative - `XLOOKUP` over `VLOOKUP`, `INDEX/MATCH`, `IFERROR` to mask `#N/A` - omitted cleanly when nothing better applies
+- Locked 4-section output format - identical layout on every answer
+- Asks for the issue instead of guessing when only a formula is supplied
+- Scope lock - spreadsheet-formula troubleshooting only
 
-## 🔄 How it works
+## How it works
 
 1. **Intake**: the `/fix-formula` slash command parses the broken formula and the issue - pipe-separated (`formula | issue`), tag-wrapped (`<broken_formula>` / `<issue>`), or interactive prompt when either is missing
 2. **Silent trace**: walks the formula function-by-function, checking parentheses, arguments, ranges, data types, and circular references - reasoning is not shown
 3. **Diagnose**: names the single exact root cause
 4. **Emit**: the locked four-section answer. The Issue, Corrected Formula, How the Fix Works, optional Better Alternative
 
-## 🚀 How to use it
+## How to use it
 
 **Slash command** (explicit):
 
@@ -292,25 +292,25 @@ Length tracks evidence rather than filling a quota. Each section has a structura
 
 Damaged input has defined behaviour rather than a guess. A report cut off after the exception block is diagnosed from what survived and flagged incomplete on the input-type line. An unsymbolicated backtrace is diagnosed from the Binary Images table, Termination Reason, and Exception Type, with the matching `.dSYM` requested in section 5. A paste holding several crashes gets the most recent one analyzed and the others counted. Only a wholly unreadable paste stops the report.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file `lib/crash-report/SKILL.md`, which loads the master template from `lib/crash-report/references/prompt-template.md`. The command `/crash-report` takes a path or a pasted report, or offers to read the newest file in `~/Library/Logs/DiagnosticReports`. The report is substituted into a paired-tag block and treated as machine-generated data throughout. Every response, including the two fixed replies, ends with the version line `macOS Crash Report Analyzer v1.1`.
 
-## ✨ Features
+## Features
 
-- 🧭 Six fixed sections, same order every time, as exact Markdown H2 headers - never merged, reordered, renamed, or dropped
-- 📌 Every claim names its source field, thread, frame, or quoted string, or it is not made
-- 🕳️ Gaps admitted by name. A missing OS Version marks that one section and leaves the other five intact
-- 📄 Reads what a Mac actually writes: `.ips` JSON, legacy `.crash`, hang reports, spindumps, samples, Console excerpts
-- 🧩 Damaged input handled. Truncated reports, unsymbolicated backtraces, and multi-crash pastes each have defined behaviour
-- ⚖️ A mechanical response-type test. Unreadable means one short question; readable but not an Apple log means a fixed reply; readable Apple log means the full six sections
-- ✂️ Structural caps counted before sending, treated as ceilings rather than targets
-- 📖 Every macOS-specific term defined parenthetically on first use, however long the response runs
-- 🔀 Contested diagnoses stay contested. Where evidence supports two readings, section 2 leads with the favoured one and names what would confirm the alternative
-- 🛡️ Instruction-like text inside the report is reported as tampering on its own line and never followed
-- 🚫 Never recommends disabling SIP, Gatekeeper, or code-signing verification as a user-side fix
+- Six fixed sections, same order every time, as exact Markdown H2 headers - never merged, reordered, renamed, or dropped
+- Every claim names its source field, thread, frame, or quoted string, or it is not made
+- Gaps admitted by name. A missing OS Version marks that one section and leaves the other five intact
+- Reads what a Mac actually writes: `.ips` JSON, legacy `.crash`, hang reports, spindumps, samples, Console excerpts
+- Damaged input handled. Truncated reports, unsymbolicated backtraces, and multi-crash pastes each have defined behaviour
+- A mechanical response-type test. Unreadable means one short question; readable but not an Apple log means a fixed reply; readable Apple log means the full six sections
+- Structural caps counted before sending, treated as ceilings rather than targets
+- Every macOS-specific term defined parenthetically on first use, however long the response runs
+- Contested diagnoses stay contested. Where evidence supports two readings, section 2 leads with the favoured one and names what would confirm the alternative
+- Instruction-like text inside the report is reported as tampering on its own line and never followed
+- Never recommends disabling SIP, Gatekeeper, or code-signing verification as a user-side fix
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Take the report from a path, a paste, or the newest file in `~/Library/Logs/DiagnosticReports`.
 2. **Classify.** Apply the mechanical test - can the block be read, and is it an Apple log?
@@ -319,7 +319,7 @@ One slash command plus its procedure file `lib/crash-report/SKILL.md`, which loa
 5. **Check.** Count sentences and steps against the caps, confirm the headers and term definitions, cut anything over.
 6. **Close.** The version line, last, always.
 
-## 🚀 How to use it
+## How to use it
 
 ```
 /crash-report ~/Library/Logs/DiagnosticReports/MyApp-2026-09-03.ips

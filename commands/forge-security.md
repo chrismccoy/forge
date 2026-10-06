@@ -100,6 +100,7 @@ answer as a Step 0 direct hit.
 | `page-cloner` | `/forge-design` |
 | `page-tailwindify` | `/forge-design` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |

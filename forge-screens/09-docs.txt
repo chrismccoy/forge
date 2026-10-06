@@ -1,7 +1,8 @@
 ================================================================================
-  FORGE  -  Docs & Diagrams          ( /forge-docs )          7 tools, 3 pages
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          8 tools, 3 pages
 ================================================================================
-  Mermaid diagrams, prompt explainers, auditors, and the stencil cutter.
+  Mermaid diagrams, prompt explainers, auditors, the stencil cutter, and the
+  bloat remover.
 
   STEP 2 - pick a tool
 
@@ -41,7 +42,7 @@
   |         a one-line verdict.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The image prompt stencil cutter.                                     |
+  |         The image prompt stencil cutter and prompt bloat remover.            |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -52,6 +53,10 @@
   |  ( 1 )  Cut an image prompt stencil                      -> /prompt-stencil  |
   |         Turn a working image prompt into a reusable template: locks,         |
   |         variables, drift guards, filled proofs.                              |
+  |                                                                              |
+  |  ( 2 )  Remove prompt bloat                                -> /prompt-bloat  |
+  |         Strip branding, fake authority, self-grading, and dead config from a |
+  |         prompt, keeping every rule.                                          |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -148,5 +153,14 @@
   '----------------------------------------------------------------------------'
   .--[Constraints]-- up to two material constraints  (optional) ---------------.
   |  ___ asked once, in one line; a skip records "None"                        |
+  '----------------------------------------------------------------------------'
+
+------------------------------------------------------------ /prompt-bloat -----
+  NO menu.  If no prompt arg, one plain prompt (STOP for reply):
+
+  .--[Prompt]-- paste the prompt or skill file, or give a path ----------------.
+  |  ___ the prompt or SKILL.md to strip of bloat, every rule kept             |
+  |  Output: cut list, uncertain list, preservation check, rewrite.            |
+  |  Then offers to save <name>.slim.<ext>; never overwrites the original.     |
   '----------------------------------------------------------------------------'
 ================================================================================
