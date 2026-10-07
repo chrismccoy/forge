@@ -101,6 +101,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
+| `book-summary` | `/forge-writing` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `cloud-migration` | `/forge-cloud` |
 | `crash-report` | `/forge-utils` |

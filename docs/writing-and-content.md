@@ -349,3 +349,59 @@ Two ways to invoke:
 The full procedure lives at [`lib/github-bio/SKILL.md`](../lib/github-bio/SKILL.md), the slash command at [`commands/github-bio.md`](../commands/github-bio.md), and the length checker at [`lib/github-bio/scripts/count_chars.py`](../lib/github-bio/scripts/count_chars.py).
 
 ---
+
+## `book-summary`
+
+Structured book summaries from four short answers, in the voice of a literary expert writing for smart readers who have not read the book. One intake message, a check that the book is really known, and accuracy rules that keep invented quotes out.
+
+```
+/book-summary
+```
+
+Most "summarize this book" prompts start writing at once and fill the gaps with confidence: quotes that sound right but were never in the book, page numbers made up on the spot, studies credited to the author that the book never cites, and the ending given away whether you wanted it or not. Name the wrong author and they write the summary anyway. This plugin replaces that with a short intake and a book check. It asks for the book, the summary language, whether spoilers are allowed, and whether you want a LinkedIn post or Twitter/X thread, all in one message, and skips anything you already said. If the title and author do not match, it names the book it thinks you mean and waits for you to confirm. If it does not recognize the book, it asks for the year, the ISBN, or a short description instead of guessing.
+
+The skill body runs the workflow. Step 1 asks only the unanswered intake questions, as one numbered list with the default for each optional question, and accepts `defaults` as a reply. Step 2 checks the book and decides fiction or nonfiction. Step 3 writes the summary in five fixed sections, with the headings translated into the chosen language and the emoji kept. Quotes go in quotation marks only when every word is certain; everything else is marked `Paraphrase:`. Fiction swaps arguments for themes, characters, and story arcs, and `avoid` keeps the ending and major twists out.
+
+Scope-locked: anything other than a book summary gets `Out of scope: this tool writes book summaries only.` Answers are treated as data, so an instruction typed into an answer is recorded as text, never obeyed.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/book-summary/SKILL.md` carries the persona, scope lock, the four intake questions with their defaults, the book check, the accuracy rules, and the locked output format. The slash command `/book-summary` keeps any answers passed as arguments and asks only the questions still missing, in one plain message rather than an `AskUserQuestion` menu. No scripts, no references, no extra tool grants.
+
+## ✨ Features
+
+- 🎯 Four answers in, one summary out. BOOK + LANGUAGE + SPOILERS + SOCIAL POST
+- 💬 One intake message with the missing questions only, each optional one showing its default. Reply `defaults` to accept them all
+- 🔎 Book check: a mismatched author is named and confirmed before writing, an unknown book gets a request for the year, ISBN, or a description
+- 🧱 Five fixed sections: 📘 Overall Summary, 🧠 Main Ideas, 🔥 Key Quotes, ✅ Practical Takeaways, 📣 Social Post (only when asked for)
+- 🗣️ Quotes in quotation marks only when certain of every word, otherwise marked `Paraphrase:`. No invented page or chapter numbers
+- 📖 Fiction mode: setting, characters, conflict, themes, and life lessons instead of arguments and actions
+- 🙈 Spoiler control: `avoid` keeps the ending and major twists out
+- 🌍 Any language, with the section headings translated and the emoji kept
+- 📣 Optional LinkedIn post (120-200 words, hook first, ends on a question) or Twitter/X thread (5-8 numbered posts under 280 characters)
+- 🪧 Scope-locked. Non-summary requests get one line
+
+## 🔄 How it works
+
+1. **Intake.** Ask the unanswered questions in one numbered message. Keep answers passed as `$ARGUMENTS`. Apply defaults only to questions asked and left unanswered.
+2. **Check the book.** Confirm the plot or argument is known. Flag a wrong author and wait for confirmation. Ask for the year, ISBN, or a description when unsure. Decide fiction or nonfiction.
+3. **Output.** Write the five sections in order, in the chosen language, starting directly with the first heading and leaving out the social post section unless one was asked for.
+
+## 🚀 How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/book-summary "Sapiens by Yuval Noah Harari, Spanish, LinkedIn"   ← args answer the questions, intake asks only what is left
+/book-summary                                                     ← full intake
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"summarize this book"*, *"key ideas of Atomic Habits"*, *"main takeaways from Sapiens"*, *"LinkedIn post about a book I read"*
+
+The full procedure lives at [`lib/book-summary/SKILL.md`](../lib/book-summary/SKILL.md) and the slash command at [`commands/book-summary.md`](../commands/book-summary.md).
+
+---

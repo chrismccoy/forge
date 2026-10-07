@@ -1,12 +1,13 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          6 tools, 2 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          7 tools, 3 pages
 ================================================================================
-  Articles, tutorials, contracts, naming, language help, GitHub profile bios.
+  Articles, tutorials, contracts, naming, language help, GitHub profile bios,
+  book summaries.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Tool]                                                 Which tool?  (pg 1/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Technical article                             -> /tech-blog-article  |
   |         Front-page-quality technical article from topic, audience, angle,    |
@@ -25,7 +26,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
+  | [Tool]                                                 Which tool?  (pg 2/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Name a product                                     -> /name-domains  |
   |         10 brandable SaaS domain candidates, scored, in a locked A-D format. |
@@ -37,6 +38,19 @@
   |  ( 3 )  Write a GitHub bio                                   -> /github-bio  |
   |         Five GitHub profile bios in five styles from a six-question intake,  |
   |         each 160 characters or fewer.                                        |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 3  |
+  |         The book summary writer.                                             |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 3/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Summarize a book                                   -> /book-summary  |
+  |         Structured book summary: main ideas, checked quotes, takeaways,      |
+  |         optional social post.                                                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -189,5 +203,32 @@
   .--[Result]-- 5 bios, each checked by count_chars.py ------------------------.
   |  Categorized . modern & traditional . keyword dense . concise &            |
   |  professional . visual/vertical.  Each <= 160 chars, shown with count.     |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------------- /book-summary -
+  Up to 4 questions in ONE plain message (numbered list, no menus).
+  Answers passed as an argument are kept; only missing questions are asked.
+  Reply "defaults" to accept every default.
+
+  .--[Book]-- Q1 title and author  (required) ---------------------------------.
+  |  ___ e.g. Sapiens by Yuval Noah Harari                                     |
+  '----------------------------------------------------------------------------'
+  .--[Language]-- Q2 optional  (default: English) -----------------------------.
+  |  ___ e.g. Spanish                                                          |
+  '----------------------------------------------------------------------------'
+  .--[Spoilers]-- Q3 optional  (default: allowed) -----------------------------.
+  |  ( ) allowed   ( ) avoid ending and major twists                           |
+  '----------------------------------------------------------------------------'
+  .--[Social post]-- Q4 optional  (default: none) -----------------------------.
+  |  ( ) none   ( ) LinkedIn post   ( ) Twitter/X thread                       |
+  '----------------------------------------------------------------------------'
+  .--[Book check]-- only if the book is unclear, then wait --------------------.
+  |  Wrong author -> "Did you mean <book>?"  Unknown -> ask for the            |
+  |  publication year, the ISBN, or a short description.                       |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one summary, headings in the chosen language ------------------.
+  |  Overall Summary . Main Ideas . Key Quotes . Practical Takeaways           |
+  |  . Social Post (only if chosen).  Quotes exact or "Paraphrase:".           |
   '----------------------------------------------------------------------------'
 ================================================================================
