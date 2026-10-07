@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 79 tools in this plugin and then run it. This command
+Route the user to one of the 80 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -31,7 +31,7 @@ Each category also has its own command, which skips Step 1 entirely:
 |---|---|
 | `/forge-wordpress` | 17 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
-| `/forge-writing` | 7 writing and content tools |
+| `/forge-writing` | 8 writing and content tools |
 | `/forge-devops` | 4 DevOps and data tools |
 | `/forge-cloud` | 8 cloud and architecture tools |
 | `/forge-security` | 3 security tools |
@@ -56,7 +56,7 @@ such answer as a Step 0 direct hit.
 |---|---|
 | WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 17 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
-| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries. 7 tools. |
+| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites. 8 tools. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which category?", header: "Category"
@@ -147,25 +147,26 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Clone a web page | page-cloner | Copy a live URL into one self-contained working HTML file, faithful, no redesign. |
 | Rebuild a page in Tailwind | page-tailwindify | Reproduce a live page's exact look in clean Tailwind, generated class hashes replaced. |
 
-### Writing & Content (7 - page at 4)
+### Writing & Content (8 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Technical article | tech-blog-article | Front-page-quality technical article from topic, audience, angle, and length. |
 | Hands-on tutorial | tutorial-builder | Step-by-step tutorial built from code or a topic. |
 | Service contract | draft-contract | Plain-English eight-section service-agreement framework. |
-| More... | - | Naming, language, GitHub bio, and book summary tools. |
+| More... | - | Naming, language, GitHub bio, book summary, and Claude Puppy tools. |
 
 | Label | Command | Description |
 |---|---|---|
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 | Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
-| More... | - | The book summary writer. |
+| More... | - | The book summary writer and the Claude Puppy rewriter. |
 
 | Label | Command | Description |
 |---|---|---|
 | Summarize a book | book-summary | Structured book summary: main ideas, checked quotes, takeaways, optional social post. |
+| Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 
 ### DevOps & Data (4)
 
@@ -345,6 +346,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | code-explainer, explain-snippet, explain-this | explain-code |
 | github-profile-bio, profile-bio, bio | github-bio |
 | summarize-book, book-notes, book | book-summary |
+| claude-puppy, puppy, puppy-voice | claudepuppy |
 
 ## Rules
 

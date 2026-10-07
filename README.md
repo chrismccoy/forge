@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 79 tools behind 90 slash commands.
+One Claude Code plugin - `forge` - holding 80 tools behind 91 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -52,6 +52,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/language-tutor`](docs/writing-and-content.md#language-tutor). Translates and explains a phrase, or corrects and critiques your writing, with grammar notes, pronunciation tips, and better alternatives.
 - [`/github-bio`](docs/writing-and-content.md#github-bio). Writes five GitHub profile bios in five styles from six plain questions asked one at a time - your role, stack, databases, cloud, DevOps skills, and specialty. It confirms your answers first, uses only what you told it, and checks every bio with a script so each one fits GitHub's 160-character limit.
 - [`/book-summary`](docs/writing-and-content.md#book-summary). Writes a clear, sectioned summary of any book - an overview, the main ideas, key quotes, and practical takeaways, plus an optional LinkedIn post or Twitter/X thread. It asks a few questions in one message, checks it really knows the book (and flags a wrong author), and paraphrases rather than inventing quotes.
+- [`/claudepuppy`](docs/writing-and-content.md#claudepuppy). Rewrites a blog post you wrote in the voice of The Claude Puppy - practical writing about working with Claude, told by a patient dog trainer. You pick a dog flavor (light, medium, or strong), and it keeps every fact, number, link, and code block exactly as you wrote them, then returns the post with a title, summary, category, tags, and reading time, plus a short list of what changed and any sentence it added.
 
 **DevOps & Data**
 
@@ -132,7 +133,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 90 commands, nothing running in the background.
+That is the whole install. One plugin, 91 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -145,7 +146,7 @@ which asks for a category, then a tool, then runs it. Or jump straight to one ca
 ```
 /forge-wordpress    # 17 WordPress tools
 /forge-design       # 6 design and frontend tools
-/forge-writing      # 7 writing and content tools
+/forge-writing      # 8 writing and content tools
 /forge-devops       # 4 DevOps and data tools
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
@@ -193,6 +194,7 @@ Or call any tool directly:
 /language-tutor                 # translate, or correct and critique writing
 /github-bio                     # five GitHub profile bios, 160 characters each
 /book-summary                   # sectioned book summary, quotes checked
+/claudepuppy                    # blog draft in the Claude Puppy voice
 
 # DevOps & Data
 /docker-compose-architect       # production docker-compose stack
@@ -262,7 +264,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 90 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 91 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -288,7 +290,7 @@ description each.
 |---------|-------|---------|
 | `/forge-wordpress` | 17 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
-| `/forge-writing` | 7 | 3 + `More...`, then 3 + `More...`, then 1 |
+| `/forge-writing` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-devops` | 4 | one |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
@@ -357,7 +359,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              90 command files - 79 tools, 11 pickers
+commands/              91 command files - 80 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -374,7 +376,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 90 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 91 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -390,7 +392,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 |---|---|---|
 | WordPress | 17 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
-| Writing & Content | 7 | [docs/writing-and-content.md](docs/writing-and-content.md) |
+| Writing & Content | 8 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 4 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
@@ -407,15 +409,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 90 slash commands: 11 pickers + 79 tools
-├── lib/                      ← 79 procedure folders (SKILL.md + bundled
+├── commands/                 ← 91 slash commands: 11 pickers + 80 tools
+├── lib/                      ← 80 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 79 tools compared by how much each does
+├── SUMMARY.md                ← the 80 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

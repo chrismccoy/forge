@@ -78,6 +78,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `book-summary` | `/forge-writing` |
 | `changelog-generator` | `/forge-code` |
 | `cicd-pipeline` | `/forge-cloud` |
+| `claudepuppy` | `/forge-writing` |
 | `cloud-migration` | `/forge-cloud` |
 | `code-teacher` | `/forge-code` |
 | `codebase-to-mermaid` | `/forge-code` |

@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 79 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 80 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 47 guided helpers · 31 full toolkits.
+**At a glance:** 1 quick win · 48 guided helpers · 31 full toolkits.
 
 ## Small Utils
 
@@ -27,6 +27,7 @@ These ask you a few questions (or take a short description), then produce a comp
 | `language-tutor` | `/language-tutor` | Translates and explains a phrase, or corrects your writing with grammar and pronunciation tips |
 | `github-bio` | `/github-bio` | Asks six questions one at a time, then writes five GitHub profile bios in five styles, each checked by a script to fit GitHub's 160-character limit |
 | `book-summary` | `/book-summary` | Asks about the book, language, spoilers, and an optional social post in one message, checks it really knows the book, then writes a sectioned summary that paraphrases instead of inventing quotes |
+| `claudepuppy` | `/claudepuppy` | Takes a blog draft and a dog flavor (light, medium, or strong), asking for whichever is missing, then rewrites the post in The Claude Puppy dog-trainer voice with every fact and code block kept exact and any added sentence listed |
 | `contract-framework` | `/draft-contract` | Writes a clear, fair freelance or consulting contract covering the work, the payment, and who owns the finished result, with anything legal flagged to check locally |
 | `readme-builder` | `/readme-builder` | Reads a whole project and writes one beginner friendly README in a fixed order, plain English, with hype words and long dashes kept out |
 | `tutorial-builder` | `/tutorial-builder` | Turns code or a topic into a step-by-step, hands-on tutorial that teaches, every code block runnable with its output shown, gated by a checklist and a yes/no quality gate |
@@ -149,14 +150,14 @@ And eighteen others are shortened or renamed:
 - `regex-tutor` → type `/explain-regex`
 - `code-explainer` → type `/explain-code`
 
-The other 44 use their own name as the command. Every tool has exactly one command.
+The other 45 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 90 commands are pickers, not tools:**
+**Eleven of the 91 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 17, 6, 7, 4, 8, 3, 4, 15, 9 and 6 tools
+and go straight to one of the ten categories - 17, 6, 8, 4, 8, 3, 4, 15, 9 and 6 tools
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -166,11 +167,11 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 **How each one gets what it needs from you:**
 
 - **Asks multiple-choice questions** (just pick from a menu): 57 tools - the easiest way to start
-- **Asks a few questions directly:** 3 - `html-to-wordpress-theme`, `github-bio`, `book-summary`
+- **Asks a few questions directly:** 4 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`
 - **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 19 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`
 
 **Every tool runs only when you type its command:**
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 79 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 80 tools here.

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-writing - Writing & Content picker
 
-Route the user to one of the 7 Writing & Content tools and run it. Articles, tutorials, contracts, naming, language help, GitHub profile bios, and book summaries.
+Route the user to one of the 8 Writing & Content tools and run it. Articles, tutorials, contracts, naming, language help, GitHub profile bios, book summaries, and Claude Puppy rewrites.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -48,13 +48,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 | Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
-| More... | - | The book summary writer. |
+| More... | - | The book summary writer and the Claude Puppy rewriter. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
 
 | Label | Command | Description |
 |---|---|---|
 | Summarize a book | book-summary | Structured book summary: main ideas, checked quotes, takeaways, optional social post. |
+| Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 
 ## Step 2 - run it
 

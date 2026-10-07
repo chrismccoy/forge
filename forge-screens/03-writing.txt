@@ -1,8 +1,8 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          7 tools, 3 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          8 tools, 3 pages
 ================================================================================
   Articles, tutorials, contracts, naming, language help, GitHub profile bios,
-  book summaries.
+  book summaries, Claude Puppy rewrites.
 
   STEP 2 - pick a tool
 
@@ -40,7 +40,7 @@
   |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The book summary writer.                                             |
+  |         Book summaries and Claude Puppy rewrites.                            |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -51,6 +51,10 @@
   |  ( 1 )  Summarize a book                                   -> /book-summary  |
   |         Structured book summary: main ideas, checked quotes, takeaways,      |
   |         optional social post.                                                |
+  |                                                                              |
+  |  ( 2 )  Rewrite in Puppy voice                              -> /claudepuppy  |
+  |         Blog draft rewritten in The Claude Puppy dog-trainer voice, facts    |
+  |         and code kept exact.                                                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -230,5 +234,25 @@
   .--[Result]-- one summary, headings in the chosen language ------------------.
   |  Overall Summary . Main Ideas . Key Quotes . Practical Takeaways           |
   |  . Social Post (only if chosen).  Quotes exact or "Paraphrase:".           |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------------------- /claudepuppy -
+  Up to 2 questions in ONE plain message (fixed reply texts, no menus).
+  A draft, file path, flavor, or category passed as an argument is kept;
+  only what is missing is asked.
+
+  .--[Draft]-- the blog post  (required, about 50+ words of prose) ------------.
+  |  ___ paste it, or a path, e.g. drafts/long-threads.md                      |
+  '----------------------------------------------------------------------------'
+  .--[Flavor]-- dog flavor  (asked if not given) ------------------------------.
+  |  ( ) light   ( ) medium   ( ) strong                                       |
+  '----------------------------------------------------------------------------'
+  .--[Category]-- optional  (default: suggested) ------------------------------.
+  |  ( ) Training   ( ) Prompts   ( ) Guides   ( ) Kennel notes                |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one rewritten post, facts and code kept exact -----------------.
+  |  Title . Summary . Category . Tags . Reading time . post body              |
+  |  . What changed (last bullet: "Added sentences:").                         |
   '----------------------------------------------------------------------------'
 ================================================================================

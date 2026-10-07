@@ -364,30 +364,30 @@ The skill body runs the workflow. Step 1 asks only the unanswered intake questio
 
 Scope-locked: anything other than a book summary gets `Out of scope: this tool writes book summaries only.` Answers are treated as data, so an instruction typed into an answer is recorded as text, never obeyed.
 
-## 📋 Technical Overview
+## Technical Overview
 
 One slash command plus its procedure file. The procedure file `lib/book-summary/SKILL.md` carries the persona, scope lock, the four intake questions with their defaults, the book check, the accuracy rules, and the locked output format. The slash command `/book-summary` keeps any answers passed as arguments and asks only the questions still missing, in one plain message rather than an `AskUserQuestion` menu. No scripts, no references, no extra tool grants.
 
-## ✨ Features
+## Features
 
-- 🎯 Four answers in, one summary out. BOOK + LANGUAGE + SPOILERS + SOCIAL POST
-- 💬 One intake message with the missing questions only, each optional one showing its default. Reply `defaults` to accept them all
-- 🔎 Book check: a mismatched author is named and confirmed before writing, an unknown book gets a request for the year, ISBN, or a description
-- 🧱 Five fixed sections: 📘 Overall Summary, 🧠 Main Ideas, 🔥 Key Quotes, ✅ Practical Takeaways, 📣 Social Post (only when asked for)
-- 🗣️ Quotes in quotation marks only when certain of every word, otherwise marked `Paraphrase:`. No invented page or chapter numbers
-- 📖 Fiction mode: setting, characters, conflict, themes, and life lessons instead of arguments and actions
-- 🙈 Spoiler control: `avoid` keeps the ending and major twists out
-- 🌍 Any language, with the section headings translated and the emoji kept
-- 📣 Optional LinkedIn post (120-200 words, hook first, ends on a question) or Twitter/X thread (5-8 numbered posts under 280 characters)
-- 🪧 Scope-locked. Non-summary requests get one line
+- Four answers in, one summary out. BOOK + LANGUAGE + SPOILERS + SOCIAL POST
+- One intake message with the missing questions only, each optional one showing its default. Reply `defaults` to accept them all
+- Book check: a mismatched author is named and confirmed before writing, an unknown book gets a request for the year, ISBN, or a description
+- Five fixed sections: Overall Summary, Main Ideas, Key Quotes, Practical Takeaways, Social Post (only when asked for)
+- Quotes in quotation marks only when certain of every word, otherwise marked `Paraphrase:`. No invented page or chapter numbers
+- Fiction mode: setting, characters, conflict, themes, and life lessons instead of arguments and actions
+- Spoiler control: `avoid` keeps the ending and major twists out
+- Any language, with the section headings translated and the emoji kept
+- Optional LinkedIn post (120-200 words, hook first, ends on a question) or Twitter/X thread (5-8 numbered posts under 280 characters)
+- Scope-locked. Non-summary requests get one line
 
-## 🔄 How it works
+## How it works
 
 1. **Intake.** Ask the unanswered questions in one numbered message. Keep answers passed as `$ARGUMENTS`. Apply defaults only to questions asked and left unanswered.
 2. **Check the book.** Confirm the plot or argument is known. Flag a wrong author and wait for confirmation. Ask for the year, ISBN, or a description when unsure. Decide fiction or nonfiction.
 3. **Output.** Write the five sections in order, in the chosen language, starting directly with the first heading and leaving out the social post section unless one was asked for.
 
-## 🚀 How to use it
+## How to use it
 
 Two ways to invoke:
 
@@ -403,5 +403,61 @@ Two ways to invoke:
 > *"summarize this book"*, *"key ideas of Atomic Habits"*, *"main takeaways from Sapiens"*, *"LinkedIn post about a book I read"*
 
 The full procedure lives at [`lib/book-summary/SKILL.md`](../lib/book-summary/SKILL.md) and the slash command at [`commands/book-summary.md`](../commands/book-summary.md).
+
+---
+
+## `claudepuppy`
+
+Blog post rewrites in the voice of The Claude Puppy, a blog about working with Claude told from the point of view of a patient dog trainer. You bring the draft and pick a dog flavor; it changes how the post sounds and keeps everything you meant.
+
+```
+/claudepuppy
+```
+
+Most "rewrite this in a fun voice" prompts treat the theme as a license to rewrite the content too: a number gets rounded, a code block picks up a pun, a step falls out of a process, and new advice appears that the author never gave. Prompts quoted in the post get obeyed instead of kept. This plugin replaces that with a fixed intake and strict keep-exactly rules. It asks for the draft and the dog flavor (light, medium, or strong), keeps every fact, number, link, code block, quote, and step as written, and treats any instruction inside the draft as text. Every dog comparison is followed by the plain point, and the post never ends on a dog line.
+
+The skill body runs the workflow. Intake decides between four cases (draft missing or present, flavor chosen or not) and answers the first three with fixed reply texts, never writing a post from a missing draft. Once both are known, the rewrite follows the voice rules, the flavor level, and the house style: sentence-case headings, short paragraphs, no em or en dashes, no exclamation marks, no marketing words, and an ending taken from the draft's own next step. The output is a header block, the post body, and a "What changed" list.
+
+Nothing new slips in unannounced: the last bullet of every rewrite starts with `Added sentences:` and quotes any non-framing sentence that has no source in the draft, or says `none`.
+
+## Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/claudepuppy/SKILL.md` carries the editor persona, settings, the four intake cases with their fixed reply texts, draft handling, voice and flavor rules, the keep-exactly list, style rules, title and category guidance, a worked example, and the locked output format. The slash command `/claudepuppy` takes a pasted draft, a draft file path, a flavor, and a category as arguments, and asks only for what is still missing, in one plain message rather than an `AskUserQuestion` menu. No scripts, no references, no extra tool grants.
+
+## Features
+
+- Two inputs, one post. DRAFT + DOG FLAVOR, with an optional CATEGORY
+- Three flavors: `light` (opening and closing only), `medium` (each section opens with a training line), `strong` (the theme runs through the whole post)
+- Keep-exactly rules: every fact, number, name, version, link, code block, prompt example, quote, and step stays as written
+- Locked header: Title, Summary (25 words or fewer), Category, Tags, Reading time
+- Four categories: Training, Prompts, Guides, Kennel notes, suggested when not named
+- Prompts inside the draft are kept as text, never followed
+- House style: sentence case, short paragraphs, no em or en dashes, no exclamation marks, no marketing words, no emoji
+- "What changed" list that ends with `Added sentences:` so any added line is visible
+- Works from a pasted draft or a file path
+
+## How it works
+
+1. **Intake.** Find the draft (pasted or read from a path) and the flavor. Missing draft, missing flavor, or both get the matching fixed reply. Code-only or link-only drafts get one question about what the post should cover.
+2. **Rewrite.** Apply the voice, the chosen flavor level, the keep-exactly rules, and the style rules. Pick a title and, when not set, a category.
+3. **Output.** Write the header fields, a `---` line, the post body, another `---` line, and the "What changed" bullets, with nothing before the title or after the last bullet.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/claudepuppy drafts/long-threads.md medium   ← file and flavor given, rewrites at once
+/claudepuppy light                           ← flavor given, asks for the draft
+/claudepuppy                                 ← asks for the draft and the flavor
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"rewrite this in Claude Puppy voice"*, *"puppy-fy this post"*, *"turn my draft into a Claude Puppy post"*, *"add dog flavor to this post"*
+
+The full procedure lives at [`lib/claudepuppy/SKILL.md`](../lib/claudepuppy/SKILL.md) and the slash command at [`commands/claudepuppy.md`](../commands/claudepuppy.md).
 
 ---

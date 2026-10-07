@@ -89,6 +89,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `blueprint-forge` | `/forge-code` |
 | `book-summary` | `/forge-writing` |
 | `changelog-generator` | `/forge-code` |
+| `claudepuppy` | `/forge-writing` |
 | `code-teacher` | `/forge-code` |
 | `codebase-to-mermaid` | `/forge-code` |
 | `crash-report` | `/forge-utils` |
