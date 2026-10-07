@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 76 tools in this plugin and then run it. This command
+Route the user to one of the 78 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -36,8 +36,8 @@ Each category also has its own command, which skips Step 1 entirely:
 | `/forge-cloud` | 8 cloud and architecture tools |
 | `/forge-security` | 3 security tools |
 | `/forge-cleanup` | 4 code-cleanup tools |
-| `/forge-code` | 14 code tools |
-| `/forge-docs` | 8 docs and diagram tools |
+| `/forge-code` | 15 code tools |
+| `/forge-docs` | 9 docs and diagram tools |
 | `/forge-utils` | 6 utilities |
 
 If the user's input clearly names one category and no specific tool, mention the matching
@@ -73,8 +73,8 @@ such answer as a Step 0 direct hit.
 | Label | Description |
 |---|---|
 | Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 tools. |
-| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints. 14 tools. |
-| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, stencils, bloat remover. 8 tools. |
+| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations. 15 tools. |
+| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, scorers, stencils, bloat remover. 9 tools. |
 | More... | Utilities. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which category?", header: "Category"
@@ -209,42 +209,43 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Clean README feature list | strip-emoji | Strip leading emoji from feature bullets, label dashes to colons, en and em dashes removed. |
 | Strip comments | strip-comments | Delete every comment except file headers, pragmas, and license notices. Preview and approval required. |
 
-### Code (14 - page at 4)
+### Code (15 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | App blueprint | blueprint | 12-section blueprint for a new app, then fact-checked review, walking-skeleton scaffold, and spikes. |
 | Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints. |
+| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations. |
 
 | Label | Command | Description |
 |---|---|---|
 | Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
 | Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints. |
+| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 | Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, and codebase blueprints. |
+| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, codebase blueprints, and the code explainer. |
 
 | Label | Command | Description |
 |---|---|---|
 | Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 | Full stack feature README | fullstack-readme | Plain-English README for a web app: title, description, and a categorized feature list traced to real code. |
 | Explain a regex | explain-regex | Verified 11-section plain-English teardown of one regex: examples, pitfalls, ReDoS verdict, alternatives. |
-| More... | - | Safe script refactors, and codebase blueprints with rebuilds. |
+| More... | - | Safe script refactors, codebase blueprints with rebuilds, and the code explainer. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactor a script safely | script-refactor | Clean up bash and Python scripts an agent runs without changing their output; behavior fixes wait for approval. |
 | Codebase blueprint or rebuild | blueprint-forge | Scan a codebase into a 14-section BLUEPRINT.md, or rebuild a working app from one, plan first. |
+| Explain a piece of code | explain-code | Explain a snippet, file, or function at your level: tutorial, quick summary, interview prep, or line by line. |
 
-### Docs & Diagrams (8 - page at 4)
+### Docs & Diagrams (9 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -258,12 +259,13 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
 | Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
 | Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
-| More... | - | The image prompt stencil cutter and prompt bloat remover. |
+| More... | - | The image prompt stencil cutter, prompt bloat remover, and scored prompt auditor. |
 
 | Label | Command | Description |
 |---|---|---|
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
 | Remove prompt bloat | prompt-bloat | Strip branding, fake authority, self-grading, and dead config from a prompt, keeping every rule. |
+| Score a prompt with fixes | prompt-audit | Score a prompt /100 across 9 dimensions, every deduction cited, with three drop-in fixes. |
 
 ### Utilities (6 - page at 4)
 
@@ -334,6 +336,8 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | safe-refactor, refactor-script, script-cleanup | script-refactor |
 | blueprint-scan, blueprint-rebuild, reverse-blueprint | blueprint-forge |
 | prompt-bloat-fixer, debloat-prompt, debloat | prompt-bloat |
+| prompt-auditor, audit-prompt, score-prompt | prompt-audit |
+| code-explainer, explain-snippet, explain-this | explain-code |
 | github-profile-bio, profile-bio, bio | github-bio |
 
 ## Rules

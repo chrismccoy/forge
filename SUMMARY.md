@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 76 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 78 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 44 guided helpers · 31 full toolkits.
+**At a glance:** 1 quick win · 46 guided helpers · 31 full toolkits.
 
 ## Small Utils
 
@@ -55,12 +55,14 @@ These ask you a few questions (or take a short description), then produce a comp
 | `prompt-rank-table` | `/prompt-rank-table` | The same audit shrunk to three sections - a tier and score, one table row per dimension with the evidence quoted, and a one-line verdict |
 | `prompt-stencil` | `/prompt-stencil` | Turns an image prompt that already works into a reusable template - the look stays locked, up to three things become swappable, with filled examples proving the swap |
 | `prompt-bloat` | `/prompt-bloat` | Cleans up an overengineered prompt or skill file - branding, invented citations, self-scores, and unused settings come out, every rule stays, and you get a list of each cut, a check that nothing was lost, and an offer to save the result |
+| `prompt-audit` | `/prompt-audit` | Scores a prompt out of 100 (115 for agents) across nine dimensions, every deduction quoting the passage behind it, then ranks the fixes, writes three drop-in replacements, and projects the score once they are in |
 | `readme-emoji` | `/strip-emoji` | Cleans a README's feature list - leading emoji off each bullet, a short label dash becomes a colon, long dashes gone, every other byte returned untouched |
 | `crash-report` | `/crash-report` | Explains a macOS crash report in plain English across six sections, every claim pointing at the field, thread, or line that backs it up |
 | `wordpress-grade` | `/wp-grade` | Grades one piece of WordPress code A to F against a fixed rubric, with strengths, real problems, nitpicks kept separate, and a ship-or-not verdict |
 | `wordpress-feature-readme` | `/wp-feature-readme` | Reads a WordPress theme or plugin and writes a plain-English README: the name, a short description, and every feature a site owner would notice, grouped into categories and traced to real code |
 | `fullstack-feature-readme` | `/fullstack-readme` | Reads a web app's screens, server, or both and writes a plain-English README: the name, a short description, and every feature a user would notice, grouped into categories and traced to real code |
 | `code-teacher` | `/code-teacher` | Hands a script back as a teaching version of itself - a header block, comments explaining what and why, and the lessons worth taking away. Only comments are added |
+| `code-explainer` | `/explain-code` | Explains one snippet, file, or function at your level - as a full tutorial, a quick summary, interview prep, or line by line - with risks marked confirmed or possible and an offer to save it as Markdown |
 | `token-auditor` | `/token-audit` | Grades how efficiently you used the model from four token counts - input, cache and output each get a letter, weighted into one overall grade, with the single fix worth making first |
 
 ## Full toolkits
@@ -103,7 +105,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 
 ## A few extra notes
 
-**Thirty-four tools have a command name that's different from the tool name:**
+**Thirty-five tools have a command name that's different from the tool name:**
 
 All seventeen WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
@@ -125,7 +127,7 @@ All seventeen WordPress tools share a short `wp-` command so they group together
 - `wordpress-theme-bug-audit` → type `/wp-bug-audit`
 - `wordpress-theme-mockup` → type `/wp-mockup`
 
-And seventeen others are shortened or renamed:
+And eighteen others are shortened or renamed:
 
 - `excel-formula-troubleshooter` → type `/fix-formula`
 - `naming-strategist` → type `/name-domains`
@@ -144,15 +146,16 @@ And seventeen others are shortened or renamed:
 - `token-auditor` → type `/token-audit`
 - `fullstack-feature-readme` → type `/fullstack-readme`
 - `regex-tutor` → type `/explain-regex`
+- `code-explainer` → type `/explain-code`
 
-The other 42 use their own name as the command. Every tool has exactly one command.
+The other 43 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 87 commands are pickers, not tools:**
+**Eleven of the 89 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 17, 6, 6, 4, 8, 3, 4, 14, 8 and 6 tools
+and go straight to one of the ten categories - 17, 6, 6, 4, 8, 3, 4, 15, 9 and 6 tools
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -161,12 +164,12 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 56 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 57 tools - the easiest way to start
 - **Asks a few questions directly:** 2 - `html-to-wordpress-theme`, `github-bio`
-- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 18 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 19 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`
 
 **Every tool runs only when you type its command:**
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 76 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 78 tools here.

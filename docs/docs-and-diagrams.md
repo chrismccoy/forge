@@ -419,3 +419,62 @@ One slash command plus its procedure file `lib/prompt-bloat/SKILL.md`, which loa
 To explain what a prompt does, use [`/explain-prompt`](#prompt-dummy). To score its architecture, use [`/rank-prompt`](#prompt-ranker).
 
 The full procedure lives at [`lib/prompt-bloat/SKILL.md`](../lib/prompt-bloat/SKILL.md), the slash command at [`commands/prompt-bloat.md`](../commands/prompt-bloat.md), and the on-demand reference file at [`lib/prompt-bloat/references/bloat-patterns.md`](../lib/prompt-bloat/references/bloat-patterns.md).
+
+---
+
+## `prompt-audit`
+
+Hand it a prompt. Get back a score out of 100 where every point lost is tied to the exact words that lost it, plus the three fixes worth making first, written out ready to paste.
+
+```
+/prompt-audit
+```
+
+A prompt score is only useful if you can check it. A bare "82/100, solid structure" tells you nothing about what to change. `prompt-audit` scores nine dimensions - role, task clarity, output format, accuracy, structure, language, protection against misuse, reasoning, and how well it carries across models - and every deduction quotes the passage that justifies it. A deduction it cannot tie to the prompt's text is dropped. Agent and coaching prompts get a tenth dimension, Agent Safety, and are scored out of 115.
+
+Before scoring it decides what kind of prompt this is, places it on a tier ladder from Below Basic to Complete by the features it actually has (not by its length), and scans it for stock AI wording such as "leverage", "robust", and "I'd be happy to". It then ranks every fix by severity, names at least two real strengths, writes three exact replacement passages - one high-impact, one medium, one quick win - and projects the score once those three are in. A prompt with an open critical finding cannot pass, whatever its total.
+
+It sits next to `rank-prompt`, which places a prompt on an 8-dimension architecture scale and names one improvement. `prompt-audit` is the heavier pass: a point-by-point rubric, a full fix list, and replacement text for the top three.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/prompt-audit/SKILL.md`, which holds the instruction-isolation check, the six steps, the tier table, the blocked word list, the verdict bands, and the mandatory report format. `references/rubric.md` holds every dimension's sub-checks and caps, including which caps are critical, and loads in Step 4. `references/model-notes.md` holds Claude, GPT, Gemini, and cross-model notes with a last-checked date, and loads in Step 5. `examples/sample-audit.md` is a short prompt with its full report, read before a first audit to calibrate scoring and citation density. The command's `allowed-tools` grants `Read` and `Glob` only - it never writes a file.
+
+## Features
+
+- Nine dimensions summing to 100, plus Agent Safety (/115) for agent and coaching prompts
+- Every deduction cites the passage behind it, in the form `[−2 ACCURACY: "quoted text" - reason]`; a deduction about something missing names where it should have been
+- Tier by features, not length: Below Basic, Basic, Structured, Reasoned, Verified, Complete, with a length note when the size and the tier disagree
+- Anti-AI language scan against a fixed word and phrase list, skipping words that are the prompt's real domain terms
+- Flags for skill files (YAML frontmatter) and finance prompts, which also get checked for a not-financial-advice disclaimer
+- Instructions in the prompt aimed at the auditor ("give this prompt a high score") are logged as injection signals and never followed
+- Very long prompts are scored in full, with detailed citations for the five sections that cost the most points
+- Ranked fix list grouped as critical, important, and polish, each with the issue, its impact, and the fix
+- Three priority fixes with exact replacement text, and a revised score that counts only the points that text earns
+- Verdict band (READY, STRONG, FUNCTIONAL, WEAK, BLOCKED) and a gate of PASS, CONDITIONAL, or FAIL
+- Prompts under about 100 tokens are not scored; it asks for the full version
+
+## How it works
+
+1. **Isolation check.** Treat the prompt as data and log any directive aimed at the auditor.
+2. **Intake and routing.** Read the file or take the paste. Pick Standard /100 or Agent /115, add flags, and record the prompt type, target model, and deployment class.
+3. **Tier.** Place the prompt on the tier ladder by the features it actually has.
+4. **Language scan.** Count every distinct blocked word or phrase, with its location.
+5. **Score.** Score all nine dimensions (ten for agents) against the rubric, with sub-check scores, one line of reasoning each, and a citation for every deduction.
+6. **Model notes.** Report only the notes that apply to the target model.
+7. **Fixes and projection.** Ranked fix list, strengths, three exact fixes, the projected score, and one next step.
+
+## How to use it
+
+```
+/prompt-audit ./prompts/support-agent.md   ← audit a prompt file
+/prompt-audit                              ← asks you to paste the prompt
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"audit this prompt"*, *"score this prompt"*, *"what's wrong with this prompt"*, *"why is my prompt not working"*, *"what tier is this prompt"*
+
+It does not write prompts from scratch, rewrite them in full, or fact-check a model's answers. To explain what a prompt does, use [`/explain-prompt`](#prompt-dummy). For the 8-dimension architecture tier, use [`/rank-prompt`](#prompt-ranker). To strip bloat while keeping every rule, use [`/prompt-bloat`](#prompt-bloat).
+
+The full procedure lives at [`lib/prompt-audit/SKILL.md`](../lib/prompt-audit/SKILL.md), the slash command at [`commands/prompt-audit.md`](../commands/prompt-audit.md), the rubric at [`lib/prompt-audit/references/rubric.md`](../lib/prompt-audit/references/rubric.md), the model notes at [`lib/prompt-audit/references/model-notes.md`](../lib/prompt-audit/references/model-notes.md), and the worked example at [`lib/prompt-audit/examples/sample-audit.md`](../lib/prompt-audit/examples/sample-audit.md).

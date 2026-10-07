@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 76 tools behind 87 slash commands.
+One Claude Code plugin - `forge` - holding 78 tools behind 89 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -99,6 +99,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/explain-regex`](docs/code.md#regex-tutor). Explains one regular expression in plain English for beginners and experienced developers alike - a token-by-token breakdown, its structure and capture groups, examples that match and examples that fail, a step-by-step walkthrough, pitfalls, a catastrophic-backtracking (ReDoS) verdict, safer alternatives, and a jargon-free rewrite. Every example and alternative is checked against real regex engines, and the teardown prints in chat or saves to `REGEX-EXPLAINED.md`.
 - [`/script-refactor`](docs/code.md#script-refactor). Cleans up bash and Python scripts that another program or AI agent runs, keeping their output, exit codes, and written files exactly the same. It checks what calls each script, runs the old and new versions side by side to prove nothing changed, and lists any bug fix that would change behavior as a numbered proposal you approve before it is applied.
 - [`/blueprint-forge`](docs/code.md#blueprint-forge). Reads an existing codebase and writes one `BLUEPRINT.md` in 14 fixed sections - tech stack with every version's source, architecture, auth, a module map with every export's types, data models, every API route, features, UI, environment variables, tests, open questions, and step-by-step rebuild instructions - detailed enough to rebuild the app without the original code. Secrets are never copied, and a bundled checker confirms the format before you get it. Point it at a blueprint instead and it rebuilds the app: it proposes a plan, waits for your approval, then builds and verifies one step at a time. Afterwards it can scan the new app and compare it with the original blueprint, listing any endpoint, model, or environment variable the rebuild lost.
+- [`/explain-code`](docs/code.md#code-explainer). Explains one snippet, file, line range, or named function the way an experienced engineer who teaches would, pitched at your level - Beginner, Intermediate, or Advanced - and shaped as a detailed tutorial, a quick summary of 300 words or fewer, interview preparation, or a line-by-line walkthrough. Every risk is marked confirmed or possible, every improvement shows before and after code, and the result can be saved as a Markdown document. It never edits the code.
 
 **Docs & Diagrams**
 
@@ -110,6 +111,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/prompt-rank-table`](docs/docs-and-diagrams.md#prompt-rank-table). The same eight-dimension prompt audit as `/rank-prompt`, reduced to three sections - a tier and score, one table row per dimension with the evidence quoted from the prompt itself, and a one-line verdict. Built for a fast read, or for putting several prompts side by side.
 - [`/prompt-stencil`](docs/docs-and-diagrams.md#prompt-stencil). Turns one image prompt that already works into a reusable template - the wording that makes the look is locked, at most three things become swappable, and you get a copy-ready template plus filled examples proving the swap works.
 - [`/prompt-bloat`](docs/docs-and-diagrams.md#prompt-bloat). Cleans up an overengineered prompt or skill file - trademarks, version banners, invented citations, self-scores, unused mode switches, and repeated text come out, while every rule, gate, score threshold, and output requirement stays. You get a list of every cut with its reason, anything it was unsure about kept and flagged, a check that no rule was lost, and the rewrite, with an offer to save it next to the original.
+- [`/prompt-audit`](docs/docs-and-diagrams.md#prompt-audit). Scores a prompt out of 100 - 115 for agent and coaching prompts - across nine dimensions, with every deduction quoting the passage that caused it. You also get a tier, a scan for stock AI wording, notes for the target model, a ranked fix list, three drop-in replacement fixes, a projected score once they are applied, and a pass, conditional, or fail gate. Instructions hidden in the prompt are logged, never followed.
 
 **Utilities**
 
@@ -129,7 +131,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 87 commands, nothing running in the background.
+That is the whole install. One plugin, 89 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -147,8 +149,8 @@ which asks for a category, then a tool, then runs it. Or jump straight to one ca
 /forge-cloud        # 8 cloud and architecture tools
 /forge-security     # 3 security tools
 /forge-cleanup      # 4 code-cleanup tools
-/forge-code         # 14 code tools
-/forge-docs         # 8 docs and diagram tools
+/forge-code         # 15 code tools
+/forge-docs         # 9 docs and diagram tools
 /forge-utils        # 6 utilities
 ```
 
@@ -232,6 +234,7 @@ Or call any tool directly:
 /explain-regex                  # verified plain-English teardown of one regex
 /script-refactor                # clean up agent-run scripts, output kept identical
 /blueprint-forge                # codebase -> BLUEPRINT.md, or BLUEPRINT.md -> app
+/explain-code                   # explain one snippet, file, or function at your level
 
 # Docs & Diagrams
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
@@ -242,6 +245,7 @@ Or call any tool directly:
 /prompt-rank-table              # the same audit as a tier, a table, one verdict
 /prompt-stencil                 # cut a working image prompt into a reusable template
 /prompt-bloat                   # strip bloat from a prompt or skill file, rules kept
+/prompt-audit                   # score a prompt /100 with cited deductions and fixes
 
 # Utilities
 /snippet                        # a complete standalone script in 19 languages
@@ -256,7 +260,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 87 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 89 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -287,8 +291,8 @@ description each.
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
-| `/forge-code` | 14 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-docs` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
+| `/forge-code` | 15 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-docs` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
 
@@ -351,7 +355,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              87 command files - 76 tools, 11 pickers
+commands/              89 command files - 78 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -368,7 +372,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 87 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 89 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -389,8 +393,8 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
-| Code | 14 | [docs/code.md](docs/code.md) |
-| Docs & Diagrams | 8 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
+| Code | 15 | [docs/code.md](docs/code.md) |
+| Docs & Diagrams | 9 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
 
@@ -401,15 +405,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 87 slash commands: 11 pickers + 76 tools
-├── lib/                      ← 76 procedure folders (SKILL.md + bundled
+├── commands/                 ← 89 slash commands: 11 pickers + 78 tools
+├── lib/                      ← 78 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 76 tools compared by how much each does
+├── SUMMARY.md                ← the 78 tools compared by how much each does
 └── README.md                 ← this file
 ```
 

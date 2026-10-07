@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  76 tools . 87 commands . 11 pickers . 0 skills . nothing auto-fires.
+  78 tools . 89 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -34,6 +34,9 @@
   |         bios.  6 tools.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
+  |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
+  |         annotations, feature READMEs, regex teardowns, script refactors,     |
+  |         codebase blueprints, code explanations.                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -52,6 +55,8 @@
   |         STRIDE models, DevSecOps hardening, vuln reports.  3 tools.          |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
+  |         The image prompt stencil cutter, prompt bloat remover, and scored    |
+  |         prompt auditor.                                                      |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -64,12 +69,15 @@
   |                                                                              |
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
-  |         refactors, regex teardowns, script refactors.  14 tools.             |
+  |         refactors, regex teardowns, script refactors, explanations.  15      |
+  |         tools.                                                               |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
-  |         Mermaid diagrams, prompt explainers, auditors, stencils.  8 tools.   |
+  |         Mermaid diagrams, prompt explainers, auditors, stencils.  9 tools.   |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
+  |         The teaching annotator, full stack feature READMEs, the regex tutor, |
+  |         safe script refactors, codebase blueprints, and the code explainer.  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -172,8 +180,8 @@
   |         and a categorized feature list traced to real code.                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
-  |         bug audit, and theme mockups.                                        |
+  |         Safe script refactors, codebase blueprints with rebuilds, and the    |
+  |         code explainer.                                                      |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -426,7 +434,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  14 tools, 5 pages --------------------------------
+--- Code  ( /forge-code )  -  15 tools, 5 pages --------------------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/5) |
@@ -525,11 +533,15 @@
   |         Scan a codebase into a 14-section BLUEPRINT.md, or rebuild           |
   |         a working app from one, plan first.                                  |
   |                                                                              |
+  |  ( 3 )  Explain a piece of code                            -> /explain-code  |
+  |         Explain a snippet, file, or function at your level: tutorial, quick  |
+  |         summary, interview prep, or line by line.                            |
+  |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
 
---- Docs & Diagrams  ( /forge-docs )  -  8 tools, 3 pages ----------------------
+--- Docs & Diagrams  ( /forge-docs )  -  9 tools, 3 pages ----------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/3) |
@@ -582,6 +594,10 @@
   |  ( 2 )  Remove prompt bloat                                -> /prompt-bloat  |
   |         Strip branding, fake authority, self-grading, and dead config from a |
   |         prompt, keeping every rule.                                          |
+  |                                                                              |
+  |  ( 3 )  Score a prompt with fixes                          -> /prompt-audit  |
+  |         Score a prompt /100 across 9 dimensions, every deduction cited, with |
+  |         three drop-in fixes.                                                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -674,11 +690,12 @@
    |    +-- blueprint  e2e-tests  explain-my-code  codebase-to-mermaid
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
    |    +-- docblock-rewrite  code-teacher  fullstack-readme  explain-regex
-   |    +-- script-refactor  blueprint-forge
+   |    +-- script-refactor  blueprint-forge  explain-code
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt
    |    +-- rank-prompt  prompt-rank-table  prompt-stencil  prompt-bloat
+   |    +-- prompt-audit
    |
    +-- Utilities ............. /forge-utils
         +-- snippet  session-stats  token-audit  vgademo  fix-formula
@@ -702,7 +719,9 @@
                     script-refactor,  blueprint-scan / blueprint-rebuild
                     -> blueprint-forge,  github-profile-bio / profile-bio
                     -> github-bio,  prompt-bloat-fixer / debloat-prompt
-                    -> prompt-bloat, plus the long wordpress-* names
+                    -> prompt-bloat,  prompt-auditor / audit-prompt
+                    -> prompt-audit,  code-explainer / explain-snippet
+                    -> explain-code, plus the long wordpress-* names
                     -> their wp-* commands.
 
 ================================================================================

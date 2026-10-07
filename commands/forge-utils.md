@@ -88,6 +88,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
 | `e2e-tests` | `/forge-code` |
+| `explain-code` | `/forge-code` |
 | `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
 | `explain-regex` | `/forge-code` |
@@ -107,6 +108,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
+| `prompt-audit` | `/forge-docs` |
 | `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |

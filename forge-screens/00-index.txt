@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  76 tools . 87 commands . 11 pickers . 0 skills . nothing auto-fires.
+  78 tools . 89 commands . 11 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's tool screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -55,10 +55,10 @@
   |                                                                             |
   |  ( 2 )  Code                                           -> open  08-code.txt |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, refactors,   |
-  |         script refactors, codebase blueprints.  14 tools.                   |
+  |         script refactors, codebase blueprints, explanations.  15 tools.     |
   |                                                                             |
   |  ( 3 )  Docs & Diagrams                                -> open  09-docs.txt |
-  |         Mermaid diagrams, prompt explainers, auditors, stencils.  8 tools.  |
+  |         Mermaid diagrams, prompt explainers, auditors, stencils.  9 tools.  |
   |                                                                             |
   |  ( 4 )  More...                                                   -> page 4 |
   |                                                                             |
@@ -87,8 +87,8 @@
     05-cloud.txt      /forge-cloud      . 8 tools
     06-security.txt   /forge-security   . 3 tools
     07-cleanup.txt    /forge-cleanup    . 4 tools
-    08-code.txt       /forge-code       . 14 tools
-    09-docs.txt       /forge-docs       . 8 tools
+    08-code.txt       /forge-code       . 15 tools
+    09-docs.txt       /forge-docs       . 9 tools
     10-utils.txt      /forge-utils      . 6 tools
 
   Whole map on one screen: ../FORGE_MAP.txt

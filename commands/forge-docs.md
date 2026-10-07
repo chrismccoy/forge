@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-docs - Docs & Diagrams picker
 
-Route the user to one of the 8 Docs & Diagrams tools and run it. Mermaid diagrams, and prompt explainers, auditors, stencils, and a bloat remover. Nothing here reads a repository.
+Route the user to one of the 9 Docs & Diagrams tools and run it. Mermaid diagrams, and prompt explainers, auditors, scorers, stencils, and a bloat remover. Nothing here reads a repository.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -48,7 +48,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
 | Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
 | Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
-| More... | - | The image prompt stencil cutter and prompt bloat remover. |
+| More... | - | The image prompt stencil cutter, prompt bloat remover, and scored prompt auditor. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
 
@@ -56,6 +56,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
 | Remove prompt bloat | prompt-bloat | Strip branding, fake authority, self-grading, and dead config from a prompt, keeping every rule. |
+| Score a prompt with fixes | prompt-audit | Score a prompt /100 across 9 dimensions, every deduction cited, with three drop-in fixes. |
 
 ## Step 2 - run it
 
@@ -96,6 +97,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
 | `e2e-tests` | `/forge-code` |
+| `explain-code` | `/forge-code` |
 | `explain-my-code` | `/forge-code` |
 | `explain-regex` | `/forge-code` |
 | `explain-sql` | `/forge-code` |

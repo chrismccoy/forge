@@ -1,10 +1,11 @@
 ================================================================================
-  FORGE  -  Code          ( /forge-code )          14 tools, 5 pages
+  FORGE  -  Code          ( /forge-code )          15 tools, 5 pages
 ================================================================================
   Everything here takes source you already have and analyses or documents it:
   blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors,
-  SQL queries, regular expressions, the scripts an agent runs, and whole
-  codebases turned into rebuildable blueprints.
+  SQL queries, regular expressions, the scripts an agent runs, whole
+  codebases turned into rebuildable blueprints, and single snippets explained
+  at your level.
 
   STEP 2 - pick a tool
 
@@ -25,7 +26,7 @@
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
-  |         codebase blueprints.                                                 |
+  |         codebase blueprints, code explanations.                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -46,7 +47,7 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
   |         feature READMEs, regex teardowns, script refactors, codebase         |
-  |         blueprints.                                                          |
+  |         blueprints, code explanations.                                       |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -68,7 +69,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
-  |         safe script refactors, and codebase blueprints.                      |
+  |         safe script refactors, codebase blueprints, and the code explainer.  |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -89,7 +90,8 @@
   |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         Safe script refactors, and codebase blueprints with rebuilds.        |
+  |         Safe script refactors, codebase blueprints with rebuilds, and the    |
+  |         code explainer.                                                      |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -104,6 +106,10 @@
   |  ( 2 )  Codebase blueprint or rebuild                   -> /blueprint-forge  |
   |         Scan a codebase into a 14-section BLUEPRINT.md, or rebuild           |
   |         a working app from one, plan first.                                  |
+  |                                                                              |
+  |  ( 3 )  Explain a piece of code                            -> /explain-code  |
+  |         Explain a snippet, file, or function at your level: tutorial, quick  |
+  |         summary, interview prep, or line by line.                            |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -359,5 +365,29 @@
   |  verified, then a handoff listing every guess and substitution.            |
   |  Then, on request only: rescan the rebuild and compare-blueprints.mjs      |
   |  lists every endpoint, model, and env var that went missing.               |
+  '----------------------------------------------------------------------------'
+
+--------------------------------------------------------------- /explain-code --
+  NO menu until code is in hand.  Code comes from the arg (paste, path,
+  path:start-end, or a function name), or one plain ask.  Level and style
+  are taken from what you already said; only the missing ones are asked,
+  together, in one menu.
+
+  .--[Code]-- paste code, or give a path, range, or function name -------------.
+  |  ___ plain ask, STOP for the reply.  A bad path, no match, or several      |
+  |      matches (listed as path:line) replaces this question                  |
+  '----------------------------------------------------------------------------'
+  .--[Level]-- your experience level ------------------------------------------.
+  |  ( ) Beginner   ( ) Intermediate (default)   ( ) Advanced                  |
+  '----------------------------------------------------------------------------'
+  .--[Style]-- explanation style ----------------------------------------------.
+  |  ( ) Detailed Tutorial (default)   ( ) Quick Summary                       |
+  |  ( ) Interview Preparation   ( ) Line-by-Line                              |
+  |      skipped -> Intermediate and Detailed Tutorial                         |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- the chosen style's sections, then a save offer ----------------.
+  |  Language inferred line . sections for the style . risks marked Confirmed  |
+  |  or Possible . Before/After improvements.  Reply "save" for                |
+  |  <subject>-explanation.md; asks before overwriting.  Code never edited.    |
   '----------------------------------------------------------------------------'
 ================================================================================

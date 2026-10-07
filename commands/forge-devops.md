@@ -80,6 +80,7 @@ a Step 0 direct hit.
 | `docblock-rewrite` | `/forge-code` |
 | `draft-contract` | `/forge-writing` |
 | `e2e-tests` | `/forge-code` |
+| `explain-code` | `/forge-code` |
 | `explain-my-code` | `/forge-code` |
 | `explain-prompt` | `/forge-docs` |
 | `explain-regex` | `/forge-code` |
@@ -97,6 +98,7 @@ a Step 0 direct hit.
 | `page-cloner` | `/forge-design` |
 | `page-tailwindify` | `/forge-design` |
 | `pentest-report` | `/forge-security` |
+| `prompt-audit` | `/forge-docs` |
 | `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |

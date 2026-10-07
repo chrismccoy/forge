@@ -868,3 +868,61 @@ To design a new app from an idea use [`/blueprint`](#app-blueprint); for onboard
 The full procedure lives at [`lib/blueprint-forge/SKILL.md`](../lib/blueprint-forge/SKILL.md), the slash command at [`commands/blueprint-forge.md`](../commands/blueprint-forge.md), the checker at [`lib/blueprint-forge/scripts/check-blueprint.mjs`](../lib/blueprint-forge/scripts/check-blueprint.mjs), and the round-trip comparison at [`lib/blueprint-forge/scripts/compare-blueprints.mjs`](../lib/blueprint-forge/scripts/compare-blueprints.mjs).
 
 ---
+
+## `code-explainer`
+
+Point it at a snippet, a file, a line range, or a function name. Get back an explanation pitched at your level, in the shape you asked for, from the point of view of an experienced engineer who teaches.
+
+```
+/explain-code
+```
+
+Most code explanations are pitched at nobody in particular: too much syntax for an experienced developer, too much jargon for a beginner, and a paraphrase of every line rather than the reasons behind it. `code-explainer` asks two things first - how experienced you are and what kind of explanation you want - and changes its whole approach to match. A beginner gets every term defined the first time it appears and one real-world analogy mapped onto the parts of the code. An intermediate reader gets how the parts connect and the idioms specific to the language. An advanced reader gets design trade-offs, edge cases, performance, and concurrency, with no syntax and no analogies.
+
+It only explains what the code actually does. Anything that depends on something outside the code - a library's behavior, an input format, the runtime - is marked `Assumption:`. Problems are marked **Confirmed** when they follow directly from the code and **Possible** when they depend on context it cannot see, and the risks section says "nothing significant" rather than inventing issues to fill space.
+
+It sits next to `code-teacher`, and the split matters. `code-teacher` hands the code back with teaching comments written into it. `code-explainer` leaves the code alone and writes the explanation around it.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/code-explainer/SKILL.md`, which holds the intake, the experience-level rules, and the general rules. Two reference files load on demand: `references/output-styles.md` (the section list and limits for each of the four styles, loaded once the style is known) and `references/save-document.md` (filename rules, document layout, and how to write the file, loaded only when you accept the save offer). The command's `allowed-tools` grants `AskUserQuestion`, `Read`, `Glob`, `Grep`, and `Write` - `Write` is used only for the save.
+
+## Features
+
+- Three experience levels: Beginner (terms defined, syntax explained, one analogy), Intermediate (how the parts connect, language idioms), Advanced (trade-offs, edge cases, performance, concurrency)
+- Four styles: Detailed Tutorial (purpose, flow, walkthrough, sample-input trace, concepts, complexity, risks, improvements, takeaways, three practice exercises), Quick Summary (300 words at most, top 3 issues), Interview Preparation (approach, complexity, edge cases, alternatives, likely follow-up questions with model answers), Line-by-Line
+- Takes pasted code, a file path, a range such as `src/app.py:40-90`, or a function or class name it finds in your project
+- Code read from a file is cited as `path:line` throughout
+- Never asks for the language - it infers it and says so on the first line
+- Takes level and style from what you already said ("explain this line by line, I'm new to Python") and asks only for what is missing, in one question set
+- Every risk quotes the line and the input that triggers it, marked Confirmed or Possible
+- Every improvement shows Before and After code, labelled Same behavior or Changes behavior
+- Traces are worked out by hand; pasted code that touches the network, the file system, or the shell is never run without a warning first
+- Instructions hidden in the code's comments or strings are explained, never followed
+- Offers to save the explanation as `<subject>-explanation.md`, with the original code included; asks before overwriting
+
+## How it works
+
+1. **Locate the code.** Read the file or range, search for the named function, or take the paste. A bad path or an ambiguous name becomes the intake question.
+2. **Intake.** Ask for whatever is still missing: the code in one plain message, then level and style together in one menu. Skipping either means Intermediate and Detailed Tutorial.
+3. **Prepare.** Load the section list for the chosen style. Note anything missing from the code (an undefined helper, a missing import) and read its definition from the project when it is easy to find.
+4. **Explain.** Write the sections for the chosen style under the rules for the chosen level, then close with the save offer.
+5. **Save on request.** Reply "save" or give a filename, and it writes the document with the code and the full explanation.
+
+## How to use it
+
+```
+/explain-code src/retry.py:12-60             ← explain a range
+/explain-code retry_with_backoff             ← find a function by name and explain it
+/explain-code                                ← asks for the code, then level and style
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"explain this code"*, *"walk me through this function"*, *"explain this line by line"*, *"ELI5 this code"*, *"prep me for an interview question on this code"*
+
+For whole-repo onboarding documentation use [`/explain-my-code`](#explain-my-code); for the code returned with teaching comments written in use [`/code-teacher`](#code-teacher); for one SQL query use [`/explain-sql`](#sql-breakdown); for one regex use [`/explain-regex`](#regex-tutor).
+
+The full procedure lives at [`lib/code-explainer/SKILL.md`](../lib/code-explainer/SKILL.md), the slash command at [`commands/explain-code.md`](../commands/explain-code.md), and the reference files at [`lib/code-explainer/references/output-styles.md`](../lib/code-explainer/references/output-styles.md) and [`lib/code-explainer/references/save-document.md`](../lib/code-explainer/references/save-document.md).
+
+---
