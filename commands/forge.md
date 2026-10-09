@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 80 tools in this plugin and then run it. This command
+Route the user to one of the 82 tools in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,7 +29,7 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 17 WordPress tools |
+| `/forge-wordpress` | 19 WordPress tools |
 | `/forge-design` | 6 design and frontend tools |
 | `/forge-writing` | 8 writing and content tools |
 | `/forge-devops` | 4 DevOps and data tools |
@@ -54,7 +54,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 17 tools. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 19 tools. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites. 8 tools. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
@@ -90,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (17 - page at 4)
+### WordPress (19 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -104,7 +104,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, and mockup tools. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, and modernize tools. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -118,19 +118,21 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, and theme mockups. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, and plugin modernization. |
 
 | Label | Command | Description |
 |---|---|---|
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
-| More... | - | The theme bug audit and theme mockups. |
+| More... | - | The theme bug audit, theme mockups, the documentation pass, and plugin modernization. |
 
 | Label | Command | Description |
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
+| Plugin documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, and file in the plugin's own standard; a checker proves no code changed. |
+| Modernize a plugin to PSR-12 | wp-modernize | WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested and tagged per phase, no behaviour change. |
 
 ### Design & Frontend (6 - page at 4)
 
@@ -333,6 +335,8 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | wordpress-theme-bug-audit, theme-bug-audit, bug-audit, theme-audit | wp-bug-audit |
 | wordpress-theme-mockup, theme-mockup, mockup | wp-mockup |
 | wordpress-classic-to-block, classic-to-block, classic-to-block-theme-migrator, fse-migrate, theme-migrate, block-migrate | wp-classic-to-block |
+| wordpress-doc-pass, doc-pass, plugin-docs, document-plugin | wp-doc-pass |
+| wordpress-modernize, psr12, psr12-migration, wp-psr12-migration, wpcs-to-psr12, modernize-plugin | wp-modernize |
 | readme-emoji | strip-emoji |
 | sql-breakdown | explain-sql |
 | regex-tutor, regex, explain-regular-expression | explain-regex |

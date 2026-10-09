@@ -975,3 +975,118 @@ One slash command plus its procedure file `lib/wordpress-theme-mockup/SKILL.md`,
 For turning the mockup into a theme use [`/wp-theme`](#html-to-wordpress-theme); for a block theme in one of these styles use [`/wp-block-theme`](#wordpress-block-theme).
 
 The full procedure lives at [`lib/wordpress-theme-mockup/SKILL.md`](../lib/wordpress-theme-mockup/SKILL.md), the references under [`lib/wordpress-theme-mockup/references/`](../lib/wordpress-theme-mockup/references/), and the slash command at [`commands/wp-mockup.md`](../commands/wp-mockup.md).
+
+---
+
+## `wordpress-doc-pass`
+
+Document every line of a WordPress plugin without touching its code. Point it at a plugin and it writes full PHPDoc and JSDoc on every file, class, constant, property, function, closure, and hook, plus inline comments that explain why the code does what it does, then proves that only comments changed.
+
+```
+/wp-doc-pass
+```
+
+Comment passes go wrong in quiet ways: a reformatted line, a renamed variable, a moved `phpcs:ignore`, or a rewritten WP-CLI docblock that changes the command's help and arguments. This tool backs up every file first and runs a checker that compares the code token by token for PHP and by syntax tree for JavaScript, compares the layout line by line, and holds every comment that is really code - WP-CLI docblocks, PHPUnit annotations, lint directives, `translators:` comments, bundler hints, license headers, and plugin header fields - exactly where it was.
+
+It follows the plugin's own coding standard. A WordPress Coding Standards ruleset gets WordPress-style docblocks with tabs, hash notation for argument arrays, and no `@return void`. PSR-12 / PER code gets precise modern types and `@return void` everywhere. Legacy code with no standard gets the conventions it already uses. `@since` values are never invented: they come from git tags or a changelog entry that names the symbol, or the tool asks.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and seven references, read at the step that needs them: the core rules (hard rule, failure protocol, coverage, hooks, templates, and the list of comments to preserve), one file per coding-standard profile (WPCS, PSR-12 / PER, legacy), the JavaScript and TypeScript rules, the checks each agent runs, and the checker specification. `scripts/checker/` holds the checker: `verify.mjs` proves only comments changed, `coverage.mjs` lists anything still missing a docblock, and `php-tokens.php` bridges to PHP's own tokenizer. It is copied into the session scratchpad and installed there, so nothing is written into the plugin or the plugin folder.
+
+## Features
+
+- Detects the coding standard from phpcs or php-cs-fixer config, or from the code itself
+- Full docblocks on every file, class, interface, trait, enum, constant, property, function, method, and closure
+- Hook docblocks on every `apply_filters` and `do_action`, with one full docblock per hook and pointer lines elsewhere
+- Template docblocks that list every variable a view receives, read from the code that includes it
+- JSDoc, WordPress JS docs, or TSDoc, with shared `@typedef`s for localized config objects and block attributes
+- Comments that are code - WP-CLI help, PHPUnit annotations, lint directives, `translators:`, bundler hints, license headers - kept byte for byte
+- Adds a missing `translators:` comment before a gettext call with placeholders
+- `@since` taken from git tags or the changelog, never invented, and existing values never changed
+- Up to seven parallel agent groups sharing one rules file, so the style cannot drift between groups
+- Checker self-tested on deliberately broken copies before it is trusted
+- Tests, phpcs, and PHPStan / Psalm compared against the baseline before and after
+- A ranked bug list with `file:line`, security issues and races first, fixed only when you ask
+
+## How it works
+
+1. **Intake.** Plugin path, scope (plugin PHP, JS assets, tests), and whether to report bugs, one question at a time.
+2. **Discover.** Git state, files, coding standard, minimum PHP version, `@since` policy, comments that are code, the hook map, shared JS shapes, and the agent groups.
+3. **Safety net.** Back up every file, record tests, phpcs, and static analysis, build the rules file, and set up and self-test the checker.
+4. **Document.** Parallel agents, each checking its own files and restoring any file that fails.
+5. **Verify and report.** Checker, syntax, tests, coverage scan, phpcs, and static analysis on the whole tree, then the report and the bug list.
+
+## How to use it
+
+```
+/wp-doc-pass                                       ← asks for the plugin and scope
+/wp-doc-pass ~/plugins/acme-notes                  ← the whole plugin
+/wp-doc-pass ~/plugins/acme-notes php only         ← skip JS and tests
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"add PHPDoc to every function in this plugin"*, *"the WordPress-Docs sniffs are failing, fix the docblocks"*, *"document this plugin's hooks"*, *"add JSDoc to the admin scripts"*
+
+Comments only. To change or fix code use [`/wp-build`](#wp-builder-pro); for a plain-English feature README use [`/wp-feature-readme`](#wordpress-feature-readme); to format code to the coding standard use [`/wp-format`](#wordpress-formatter).
+
+The full procedure lives at [`lib/wordpress-doc-pass/SKILL.md`](../lib/wordpress-doc-pass/SKILL.md), the references under [`lib/wordpress-doc-pass/references/`](../lib/wordpress-doc-pass/references/), the checker under [`lib/wordpress-doc-pass/scripts/checker/`](../lib/wordpress-doc-pass/scripts/checker/), and the slash command at [`commands/wp-doc-pass.md`](../commands/wp-doc-pass.md).
+
+---
+
+## `wordpress-modernize`
+
+Moves a WordPress plugin from the WordPress Coding Standards to PSR-12, puts its classes in a PSR-4 `src/` tree grouped by role, and adds strict PHP 8.1 types - without changing anything a site, a user, or another plugin can see.
+
+```
+/wp-modernize
+```
+
+Modernizing a plugin by hand breaks things quietly: a renamed method that was also a hook callback, an `uninstall_plugins` entry that still names the old class, a strict type that throws on the string `get_option()` returned, or a reformatted template that adds a visible space. This tool works in eight phases. Every phase runs the full test suite, compares each test's assertion count with the previous phase, commits, and tags, so any tag is a safe rollback point and an interrupted run resumes from the last one.
+
+Nothing outward-facing changes: option, meta, and transient keys, REST routes, hook names, the text domain, error codes, HTML output, and JS config keys stay exactly as they were. Names WordPress has already stored in the database - the uninstall callback, class names in serialized objects - keep working through a `class_alias` or a wrapper, and an upgrade test proves it on a site that ran the old version.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-modernize/SKILL.md` - intake, the eight hard rules, the phase table, and the final report - and eight phase files under `references/`, each read only when its phase starts. `scripts/surface.php` lists a plugin's outward-facing names (option and meta keys, REST routes, hooks, script handles, menu slugs, nonces, `WP_Error` codes, and translatable strings with their context and plural) so the last phase can diff the baseline against the result. Progress lives in `MIGRATION_LOG.md`, kept out of git.
+
+## Features
+
+- Reads the code first and suggests every intake answer: root namespace, released or not, and how the tests run
+- Builds a safety net before any change: hook, REST, and settings wiring tests, plus golden copies of admin HTML and raw post output
+- Proves the PSR-12 layout pass changed no code with a token-stream diff
+- Renames snake_case methods to camelCase only in real positions - definitions, calls, and callbacks - never by find-and-replace
+- Leaves alone methods WordPress calls by name: `WP_List_Table`, `WP_Widget`, `WP_REST_Controller`, `Walker`, and WP-CLI command overrides
+- PSR-4 `src/` tree grouped by role (`Admin/`, `Settings/`, `Rest/`, `Contracts/`, `Support/` …), shown for approval before anything moves
+- A small autoloader and `Plugin::boot()`; Composer stays a dev tool
+- Several plugins in one folder get one sub-namespace and one autoloader each
+- `declare(strict_types=1)` everywhere, full types, and casts where WordPress hands back strings
+- `class_alias` and wrapper methods for every name stored in the database
+- The `msgid` set and every `translators:` comment checked against the baseline
+- Final proof: lint at zero, golden copies, unchanged outward-facing names, a PHP 8.1 run, a smoke test with outbound HTTP blocked, and an upgrade test from the baseline version
+- A tag per phase and a resumable progress log; nothing is ever pushed
+
+## How it works
+
+1. **Intake.** Reads the code, then asks for the root namespace, whether the plugin is released, and how to run the tests, in one question set.
+2. **Baseline and safety net.** Tests green, `v0-baseline` tagged, then a PHPCS ruleset and the safety-net tests.
+3. **Layout and names.** `phpcbf` with a token-level proof, then camelCase methods one class at a time.
+4. **Namespace.** The `src/` tree you approved, the autoloader, and `Plugin::boot()`.
+5. **Lint and types.** Lint to zero, then strict PHP 8.1 types and `Requires PHP: 8.1`.
+6. **Verify and report.** Every check against the baseline, the upgrade test, and a report of every cast, ignore, alias, and decision left for you.
+
+## How to use it
+
+```
+/wp-modernize                              ← uses the current directory or asks
+/wp-modernize ~/plugins/acme-notes         ← that plugin
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"convert this plugin from WPCS to PSR-12"*, *"namespace this plugin and move the classes to src/"*, *"add strict PHP 8.1 types to this plugin without breaking anything"*, *"modernize this WordPress plugin"*
+
+Whole-plugin migrations only. To format to the WordPress Coding Standards use [`/wp-format`](#wordpress-formatter); to add a feature or fix code use [`/wp-build`](#wp-builder-pro); to document code without changing it use [`/wp-doc-pass`](#wordpress-doc-pass).
+
+The full procedure lives at [`lib/wordpress-modernize/SKILL.md`](../lib/wordpress-modernize/SKILL.md), the phase files under [`lib/wordpress-modernize/references/`](../lib/wordpress-modernize/references/), the checker at [`lib/wordpress-modernize/scripts/surface.php`](../lib/wordpress-modernize/scripts/surface.php), and the slash command at [`commands/wp-modernize.md`](../commands/wp-modernize.md).

@@ -132,11 +132,13 @@ answer as a Step 0 direct hit.
 | `wp-cli` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-demo` | `/forge-wordpress` |
+| `wp-doc-pass` | `/forge-wordpress` |
 | `wp-feature-readme` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |
 | `wp-grade` | `/forge-wordpress` |
 | `wp-menu-icons` | `/forge-wordpress` |
 | `wp-mockup` | `/forge-wordpress` |
+| `wp-modernize` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |

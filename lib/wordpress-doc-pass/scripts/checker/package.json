@@ -1,0 +1,9 @@
+{
+  "name": "doc-pass-checker",
+  "private": true,
+  "type": "module",
+  "description": "Reference checker for the wp-doc-pass skill: proves a documentation pass changed only comments.",
+  "dependencies": {
+    "@babel/parser": "^7.26.0"
+  }
+}

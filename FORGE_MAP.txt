@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  80 tools . 91 commands . 11 pickers . 0 skills . nothing auto-fires.
+  82 tools . 93 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  17 tools.    |
+  |         Build, review, format, and fill WP plugins and themes.  19 tools.    |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
@@ -100,7 +100,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  17 tools, 6 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  19 tools, 6 pages ----------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/6) |
@@ -180,8 +180,9 @@
   |         and a categorized feature list traced to real code.                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         Safe script refactors, codebase blueprints with rebuilds, and the    |
-  |         code explainer.                                                      |
+  |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
+  |         bug audit, theme mockups, the documentation pass, and plugin         |
+  |         modernization.                                                       |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -202,7 +203,8 @@
   |         theme.json, templates, and a companion plugin, keys kept.            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
-  |         The theme bug audit and theme mockups.                               |
+  |         The theme bug audit, theme mockups, the documentation pass, and      |
+  |         plugin modernization.                                                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -217,6 +219,14 @@
   |  ( 2 )  Theme mockup in a design style                        -> /wp-mockup  |
   |         Clickable static HTML mockup of a classic theme in one of 53 named   |
   |         styles, ready for /wp-theme.                                         |
+  |                                                                              |
+  |  ( 3 )  Plugin documentation pass                           -> /wp-doc-pass  |
+  |         Full PHPDoc / JSDoc on every function, hook, and file in the         |
+  |         plugin's own standard; a checker proves no code changed.             |
+  |                                                                              |
+  |  ( 4 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
+  |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
+  |         and tagged per phase, no behaviour change.                           |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -679,7 +689,7 @@
    |    +-- wp-plugin  wp-build  wp-theme  wp-review  wp-consult  wp-format
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
    |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-classic-to-block
-   |    +-- wp-bug-audit  wp-mockup
+   |    +-- wp-bug-audit  wp-mockup  wp-doc-pass  wp-modernize
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system

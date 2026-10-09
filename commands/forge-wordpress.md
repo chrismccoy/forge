@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 17 WordPress tools and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, write feature READMEs and WP-CLI fleet scripts, build and review block themes, move classic themes to block themes, mock up themes in a design style, and audit themes for bugs.
+Route the user to one of the 19 WordPress tools and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, write feature READMEs and WP-CLI fleet scripts, build and review block themes, move classic themes to block themes, mock up themes in a design style, audit themes for bugs, document plugin code, and modernize plugins to PSR-12.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -66,7 +66,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, and theme mockups. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, and plugin modernization. |
 
 **Page 5** (only if `More...` was chosen a fourth time) - question: "Which tool?", header: "Tool"
 
@@ -75,7 +75,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
-| More... | - | The theme bug audit and theme mockups. |
+| More... | - | The theme bug audit, theme mockups, the documentation pass, and plugin modernization. |
 
 **Page 6** (only if `More...` was chosen a fifth time) - question: "Which tool?", header: "Tool"
 
@@ -83,6 +83,8 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
+| Plugin documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, and file in the plugin's own standard; a checker proves no code changed. |
+| Modernize a plugin to PSR-12 | wp-modernize | WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested and tagged per phase, no behaviour change. |
 
 ## Step 2 - run it
 

@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          17 tools, 6 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          19 tools, 6 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
@@ -84,7 +84,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
-  |         bug audit, and theme mockups.                                        |
+  |         bug audit, theme mockups, the documentation pass, and plugin         |
+  |         modernization.                                                       |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -105,7 +106,8 @@
   |         theme.json, templates, and a companion plugin, keys kept.            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
-  |         The theme bug audit and theme mockups.                               |
+  |         The theme bug audit, theme mockups, the documentation pass, and      |
+  |         plugin modernization.                                                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -120,6 +122,14 @@
   |  ( 2 )  Theme mockup in a design style                        -> /wp-mockup  |
   |         Clickable static HTML mockup of a classic theme in one of 53 named   |
   |         styles, ready for /wp-theme.                                         |
+  |                                                                              |
+  |  ( 3 )  Plugin documentation pass                           -> /wp-doc-pass  |
+  |         Full PHPDoc / JSDoc on every function, hook, and file in the         |
+  |         plugin's own standard; a checker proves no code changed.             |
+  |                                                                              |
+  |  ( 4 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
+  |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
+  |         and tagged per phase, no behaviour change.                           |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -536,5 +546,58 @@
   |  index, single, page, archive, category, tag, author, search, 404 -        |
   |  shared header, sidebar, footer; Tailwind v3; no inline styles; WCAG       |
   |  AA.  Ends with the handoff line for /wp-theme.                            |
+  '----------------------------------------------------------------------------'
+
+----------------------------------------------------------------- /wp-doc-pass -
+  Plugin first, then scope, then the bug report, one at a time.  A path
+  argument sets the plugin; "php only" or "no tests" sets the scope.
+
+  .--[Plugin]-- the plugin to document ----------------------------------------.
+  |  ( ) the current directory   ( ) a plugin folder found below               |
+  |      no Plugin Name: header found STOPS and asks again                     |
+  '----------------------------------------------------------------------------'
+  .--[Scope]-- what to document -----------------------------------------------.
+  |  [ ] Plugin PHP (src, root, views)   [ ] JS assets (JSDoc)                 |
+  |  [ ] Tests / test harness            all three by default                  |
+  '----------------------------------------------------------------------------'
+  .--[Bug report]-- found along the way ---------------------------------------.
+  |  ( ) report, don't fix (Recommended)   ( ) skip the bug report             |
+  '----------------------------------------------------------------------------'
+  .--[Only if needed]-- asked once each ---------------------------------------.
+  |  uncommitted changes:  ( ) continue   ( ) stop and commit first            |
+  |  no version history:   ( ) current Version for @since   ( ) omit it        |
+  |  conflicting standard: ( ) the one the ruleset enforces (Recommended)      |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- comments only, proven -----------------------------------------.
+  |  Docblocks on every file, class, function, closure, property, constant,    |
+  |  and hook, in the plugin's own standard.  Checker: code, layout, and       |
+  |  comments-that-are-code identical; tests, phpcs, PHPStan as before.        |
+  |  Ranked bug list with file:line; nothing fixed unless you ask.             |
+  '----------------------------------------------------------------------------'
+
+---------------------------------------------------------------- /wp-modernize -
+  Reads the code first, then asks three questions in one call, each with
+  its inferred answer marked (Recommended).  A path argument sets the plugin.
+
+  .--[Namespace]-- root namespace for src/ ------------------------------------.
+  |  ( ) PascalCase from the plugin name (Recommended)                         |
+  |  ( ) a Vendor\Plugin form   ( ) another suggestion                         |
+  '----------------------------------------------------------------------------'
+  .--[Released?]-- already in users' hands? -----------------------------------.
+  |  ( ) No: clean break   ( ) Yes: deprecated shims for old names             |
+  |      names stored in the database keep an alias either way                 |
+  '----------------------------------------------------------------------------'
+  .--[Tests]-- how to run them ------------------------------------------------.
+  |  ( ) the detected sandbox or bin/ script   ( ) wp-env                      |
+  |  ( ) WP test suite + MySQL   ( ) no tests: build the safety net            |
+  '----------------------------------------------------------------------------'
+  .--[Only if needed]-- asked once each ---------------------------------------.
+  |  runtime vendor/autoload.php:  ( ) keep Composer   ( ) small autoloader    |
+  |  Phase 4: approve the proposed src/ tree before anything moves             |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- eight tagged phases, no behaviour change ----------------------.
+  |  PSR-12 at 0 violations, PSR-4 src/ role folders, strict PHP 8.1 types.    |
+  |  Every phase: full suite, per-test assertion counts, commit, tag.          |
+  |  Proof: golden copies, msgid set, outward names, upgrade test from v0.     |
   '----------------------------------------------------------------------------'
 ================================================================================
