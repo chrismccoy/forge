@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          19 tools, 6 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          20 tools, 7 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
   STEP 2 - pick a tool
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/6) |
+  | [Tool]                                                 Which tool?  (pg 1/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -27,7 +27,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/6) |
+  | [Tool]                                                 Which tool?  (pg 2/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -47,7 +47,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/6) |
+  | [Tool]                                                 Which tool?  (pg 3/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -68,7 +68,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/6) |
+  | [Tool]                                                 Which tool?  (pg 4/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -84,14 +84,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
-  |         bug audit, theme mockups, the documentation pass, and plugin         |
-  |         modernization.                                                       |
+  |         bug audit, theme mockups, the documentation pass, plugin             |
+  |         modernization, and the WordPress.org submission gate.                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/6) |
+  | [Tool]                                                 Which tool?  (pg 5/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -106,14 +106,14 @@
   |         theme.json, templates, and a companion plugin, keys kept.            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
-  |         The theme bug audit, theme mockups, the documentation pass, and      |
-  |         plugin modernization.                                                |
+  |         The theme bug audit, theme mockups, the documentation pass, plugin   |
+  |         modernization, and the WordPress.org submission gate.                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 6/6) |
+  | [Tool]                                                 Which tool?  (pg 6/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
@@ -127,9 +127,22 @@
   |         Full PHPDoc / JSDoc on every function, hook, and file in the         |
   |         plugin's own standard; a checker proves no code changed.             |
   |                                                                              |
-  |  ( 4 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
+  |  ( 4 )  More...                                                   -> page 7  |
+  |         Plugin modernization and the WordPress.org submission gate.          |
+  |                                                                              |
+  |  [Other] type a tool name ................................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Tool]                                                 Which tool?  (pg 7/7) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
   |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
   |         and tagged per phase, no behaviour change.                           |
+  |                                                                              |
+  |  ( 2 )  WordPress.org submission gate                     -> /wp-submission  |
+  |         Ready for WordPress.org review? Guideline map, Plugin Check triage,  |
+  |         readme check, one verdict, fixes, reviewer reply.                    |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -599,5 +612,17 @@
   |  PSR-12 at 0 violations, PSR-4 src/ role folders, strict PHP 8.1 types.    |
   |  Every phase: full suite, per-test assertion counts, commit, tag.          |
   |  Proof: golden copies, msgid set, outward names, upgrade test from v0.     |
+  '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /wp-submission -
+  NO questions up front.  Runs from a file path (arg) or the current
+  directory; pasted Plugin Check output, readme.txt, or a review or closure
+  email is read as evidence.  Asks only about a commercially sensitive fix
+  or a block plugin's target directory.
+  .--[Result]-- one verdict, fixes, reviewer reply ----------------------------.
+  |  DO NOT SUBMIT | INSUFFICIENT EVIDENCE | READY AFTER FIXES | READY         |
+  |  Findings with evidence labels, fix list, recheck plan.                    |
+  |  Review email: reply plan, then an email draft once changes are made.      |
   '----------------------------------------------------------------------------'
 ================================================================================

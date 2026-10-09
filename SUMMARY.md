@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 82 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 83 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 48 guided helpers · 33 full toolkits.
+**At a glance:** 1 quick win · 48 guided helpers · 34 full toolkits.
 
 ## Small Utils
 
@@ -101,6 +101,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `wordpress-theme-mockup` | `/wp-mockup` | Builds a clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles - every template as a linked page with a shared header, sidebar, and footer - ready for `/wp-theme` to turn into a real theme |
 | `wordpress-doc-pass` | `/wp-doc-pass` | Documents a whole plugin without changing its code - full PHPDoc and JSDoc on every file, function, and hook in the plugin's own coding standard, written by parallel agents, with a checker that proves only comments changed and a ranked list of the bugs it found along the way |
 | `wordpress-modernize` | `/wp-modernize` | Moves a whole plugin from the WordPress Coding Standards to PSR-12, a PSR-4 `src/` tree, and strict PHP 8.1 types in eight tested and tagged phases - outward-facing names unchanged, stored names kept working through aliases, and an upgrade test from the old version to prove it |
+| `wordpress-plugin-submission` | `/wp-submission` | Decides whether a built plugin is ready for WordPress.org review - maps code, readme, and Plugin Check output to the current official guidelines, catches trialware and undisclosed services, and returns one verdict with the smallest fix list and a factual reply to the review team, never promising approval |
 | `page-tailwindify` | `/page-tailwindify` | Rebuilds a live page's exact look in clean Tailwind, the framework's generated class hashes swapped for real utilities and every class traced to a real computed value (needs Claude in Chrome) |
 | `prompt-snippet` | `/snippet` | Asks three questions, then writes a complete standalone script in any of 19 languages - help text, exit codes, cleanup on interrupt, a dry run before anything destructive, and no secrets in the file |
 | `e2e-playwright` | `/e2e-tests` | Adds a browser test suite to a Node app: a throwaway database rebuilt each run, a stand-in for any paid API so no real one is called, one test per user journey, and a report of every bug and every change it made |
@@ -109,9 +110,9 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 
 ## A few extra notes
 
-**Thirty-seven tools have a command name that's different from the tool name:**
+**Thirty-eight tools have a command name that's different from the tool name:**
 
-All nineteen WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+All twenty WordPress tools share a short `wp-` command so they group together when you type `/wp`:
 
 - `wordpress-plugin` → type `/wp-plugin`
 - `wp-builder-pro` → type `/wp-build`
@@ -132,6 +133,7 @@ All nineteen WordPress tools share a short `wp-` command so they group together 
 - `wordpress-theme-mockup` → type `/wp-mockup`
 - `wordpress-doc-pass` → type `/wp-doc-pass`
 - `wordpress-modernize` → type `/wp-modernize`
+- `wordpress-plugin-submission` → type `/wp-submission`
 
 And eighteen others are shortened or renamed:
 
@@ -156,12 +158,12 @@ And eighteen others are shortened or renamed:
 
 The other 45 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 93 commands are pickers, not tools:**
+**Eleven of the 94 commands are pickers, not tools:**
 
 `/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 19, 6, 8, 4, 8, 3, 4, 15, 9 and 6 tools
+and go straight to one of the ten categories - 20, 6, 8, 4, 8, 3, 4, 15, 9 and 6 tools
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -172,10 +174,10 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 - **Asks multiple-choice questions** (just pick from a menu): 59 tools - the easiest way to start
 - **Asks a few questions directly:** 4 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`
-- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 19 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 20 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`
 
 **Every tool runs only when you type its command:**
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 82 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 83 tools here.

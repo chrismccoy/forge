@@ -497,6 +497,8 @@ For a file-by-file review of a whole plugin or theme use [`/wp-review`](#wordpre
 
 The full procedure lives at [`lib/wordpress-grade/SKILL.md`](../lib/wordpress-grade/SKILL.md), the slash command at [`commands/wp-grade.md`](../commands/wp-grade.md), and the master template at [`lib/wordpress-grade/references/prompt-template.md`](../lib/wordpress-grade/references/prompt-template.md).
 
+---
+
 ## `wordpress-performance`
 
 Cold, full-file performance review for WordPress plugins, themes, mu-plugins, and loose code. Reads every file in the target and reports what breaks under load - unbounded queries, cache bypass, N+1 loops, per-request database writes, polling, and cron that blocks its own queue.
@@ -1090,3 +1092,59 @@ One slash command plus its procedure file `lib/wordpress-modernize/SKILL.md` - i
 Whole-plugin migrations only. To format to the WordPress Coding Standards use [`/wp-format`](#wordpress-formatter); to add a feature or fix code use [`/wp-build`](#wp-builder-pro); to document code without changing it use [`/wp-doc-pass`](#wordpress-doc-pass).
 
 The full procedure lives at [`lib/wordpress-modernize/SKILL.md`](../lib/wordpress-modernize/SKILL.md), the phase files under [`lib/wordpress-modernize/references/`](../lib/wordpress-modernize/references/), the checker at [`lib/wordpress-modernize/scripts/surface.php`](../lib/wordpress-modernize/scripts/surface.php), and the slash command at [`commands/wp-modernize.md`](../commands/wp-modernize.md).
+
+---
+
+## `wordpress-plugin-submission`
+
+Decides whether a built WordPress plugin is ready for WordPress.org review, using the plugin's own evidence and current official guidance, and returns one verdict with the smallest set of fixes.
+
+```
+/wp-submission
+```
+
+Most pre-submission checks stop at a clean Plugin Check run. The review team does not: they read the readme against the code, trace what a license key actually locks, ask what data leaves the site, and reject slugs that begin with someone else's trademark. This tool asks the question a reviewer would: what can be proved from this ZIP, readme, service model, and the current rules - and what must change before submission?
+
+Every rule it cites comes from the official WordPress.org pages it fetches at run time, with the fetch date recorded, never from memory. Every finding carries an evidence label - CONFIRMED, SUPPORTED, or UNKNOWN - and the verdict comes from fixed rules applied in order, so two runs on the same plugin reach the same answer. It reports and drafts only; it never changes the plugin and never promises approval.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/wordpress-plugin-submission/SKILL.md` - request scopes, evidence modes, six sections, the status set, the verdict rules, and the response contract - and three reference files under `references/`: `official-sources.md` (the URLs to fetch, submission-policy facts, the guideline index, and the common review surfaces, each tagged verified with a date, verify, or engineering), `example-rows.md` (a worked run showing every table, the verdict, the fix list, and a reviewer reply), and `situations.md` (updates to approved plugins, closures and reopen requests, block plugins, and multisite).
+
+## Features
+
+- Fetches the Detailed Plugin Guidelines, Common issues, the developer FAQ, the readme guide, and the Plugin Review Team blog, and records the date of each
+- Triages Plugin Check output by category and severity: a Plugin Repo ERROR blocks upload, so it is a blocker; Security-category ERRORs are risks, except on a reopen after a security closure
+- Traces every paid or external feature: local code, gate, remote work, what stops when unpaid, data sent, and disclosure - catching trialware and services that only validate a license
+- Checks readme fields (Stable tag, short description, tags, Contributors, License) and every readme claim the code contradicts
+- Five request scopes: full gate, review email, recovery after new feedback or a revised ZIP, a focused single check, and post-approval updates, closures, and reopen requests
+- One verdict from fixed rules: DO NOT SUBMIT, INSUFFICIENT EVIDENCE, READY AFTER FIXES, or READY TO SUBMIT - every confirmed fixable problem listed whatever the verdict
+- A reply plan and an email draft for the review team, listing every change and where it was made, sent on the original thread
+- Block plugins checked against the Block Specific Plugin Guidelines only when the Block Directory is the target
+- Never changes plugin files, never cites a rule from memory as current, never promises approval
+
+## How it works
+
+1. **Scope and evidence.** Picks the request scope and evidence mode, fetches the official sources, and records what was and was not supplied.
+2. **Plugin Check.** Records the version and categories, classifies every finding, and walks the common review surfaces Plugin Check misses.
+3. **Money and services.** Traces each paid or external feature to its gate, its remote work, and its disclosure.
+4. **Readme.** Checks the fields against the readme rules and the claims against the code.
+5. **Evidence map.** Turns every finding, reviewer point, and missing piece of evidence into one row with one status.
+6. **Verdict and reply.** Applies the verdict rules in order, lists the fixes and the recheck plan, and drafts the reply to the review team.
+
+## How to use it
+
+```
+/wp-submission                              ← gates the plugin in the current directory
+/wp-submission ~/plugins/acme-export        ← gates that plugin
+```
+
+Paste Plugin Check output, a `readme.txt`, or a WordPress.org review or closure email into the same message to include it as evidence.
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"is my plugin ready for WordPress.org"*, *"is this trialware"*, *"triage these Plugin Check errors"*, *"check my readme.txt"*, *"help me reply to the plugin review team"*, *"my plugin was closed, what do I fix before asking to reopen"*
+
+Directory readiness only. To scaffold a new plugin use [`/wp-plugin`](#wordpress-plugin); to add a feature or fix code use [`/wp-build`](#wp-builder-pro); for a security, performance, and architecture review use [`/wp-review`](#wordpress-architect-review); for a letter grade use [`/wp-grade`](#wordpress-grade).
+
+The full procedure lives at [`lib/wordpress-plugin-submission/SKILL.md`](../lib/wordpress-plugin-submission/SKILL.md), the reference files under [`lib/wordpress-plugin-submission/references/`](../lib/wordpress-plugin-submission/references/), and the slash command at [`commands/wp-submission.md`](../commands/wp-submission.md).

@@ -143,4 +143,5 @@ answer as a Step 0 direct hit.
 | `wp-plugin` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |
 | `wp-review` | `/forge-wordpress` |
+| `wp-submission` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |

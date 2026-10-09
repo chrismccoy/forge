@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 82 tools behind 93 slash commands.
+One Claude Code plugin - `forge` - holding 83 tools behind 94 slash commands.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -35,6 +35,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-mockup`](docs/wordpress.md#wordpress-theme-mockup). Builds a clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles - bento, swiss, glassmorphism, retro terminal, y2k, and more. One page per theme template (blog index, single post, page, archives, search, 404), all sharing a header, sidebar, and footer and linking to each other. Built with Tailwind v3 and WordPress class names so `/wp-theme` can turn it into a real theme afterwards.
 - [`/wp-doc-pass`](docs/wordpress.md#wordpress-doc-pass). Documents a WordPress plugin without changing its code: full PHPDoc and JSDoc on every file, class, constant, property, function, closure, and hook, plus inline comments that explain why, written in the plugin's own coding standard (WordPress, PSR-12, or legacy). A bundled checker compares every file token by token and line by line against a backup and keeps every comment that is really code - WP-CLI help, PHPUnit annotations, lint directives, `translators:` comments - exactly where it was. Tests, phpcs, and static analysis are compared before and after, and the bugs it finds are reported, never fixed unless you ask.
 - [`/wp-modernize`](docs/wordpress.md#wordpress-modernize). Moves a WordPress plugin from the WordPress Coding Standards to PSR-12, puts its classes in a PSR-4 `src/` tree grouped by role, and adds strict PHP 8.1 types without changing anything outside the plugin can see. Eight phases, each tested against the previous one, committed, and tagged. Names WordPress stored in the database keep working through aliases, and an upgrade test on a site that ran the old version proves it.
+- [`/wp-submission`](docs/wordpress.md#wordpress-plugin-submission). Decides whether a built plugin is ready for WordPress.org review. Maps the code, readme, and Plugin Check output to the current official guidelines it fetches, catches trialware, license-only services, undisclosed external calls, and readme mismatches, and returns one verdict - do not submit, insufficient evidence, ready after fixes, or ready to submit - with the smallest fix list and a factual reply to the review team. It also handles closures, reopen requests, and updates to approved plugins, and never promises approval.
 
 **Design & Frontend**
 
@@ -135,7 +136,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 93 commands, nothing running in the background.
+That is the whole install. One plugin, 94 commands, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -146,7 +147,7 @@ Then either browse the whole catalog:
 which asks for a category, then a tool, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 19 WordPress tools
+/forge-wordpress    # 20 WordPress tools
 /forge-design       # 6 design and frontend tools
 /forge-writing      # 8 writing and content tools
 /forge-devops       # 4 DevOps and data tools
@@ -181,6 +182,7 @@ Or call any tool directly:
 /wp-mockup                      # static HTML theme mockup in one of 53 styles
 /wp-doc-pass                    # document a plugin's code, proof that no code changed
 /wp-modernize                   # WPCS to PSR-12, PSR-4 src/, strict PHP 8.1 types
+/wp-submission                  # WordPress.org submission gate: verdict, fixes, reviewer reply
 
 # Design & Frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -268,7 +270,7 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 93 commands are pickers. They do no work themselves - they show you what is
+Eleven of the 94 commands are pickers. They do no work themselves - they show you what is
 available, then hand off to the tool you choose.
 
 ### `/forge` - everything
@@ -292,7 +294,7 @@ description each.
 
 | Command | Tools | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 19 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-wordpress` | 20 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
 | `/forge-writing` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-devops` | 4 | one |
@@ -305,7 +307,7 @@ description each.
 
 
 
-A picker screen looks like this - `/forge-wordpress`, page 1 of 6:
+A picker screen looks like this - `/forge-wordpress`, page 1 of 7:
 
 ```
 Which tool?
@@ -363,7 +365,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              93 command files - 82 tools, 11 pickers
+commands/              94 command files - 83 tools, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -380,7 +382,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 93 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These 94 commands fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -394,7 +396,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Tools | Reference |
 |---|---|---|
-| WordPress | 19 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 20 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
 | Writing & Content | 8 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 4 | [docs/devops-and-data.md](docs/devops-and-data.md) |
@@ -413,15 +415,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 93 slash commands: 11 pickers + 82 tools
-├── lib/                      ← 82 procedure folders (SKILL.md + bundled
+├── commands/                 ← 94 slash commands: 11 pickers + 83 tools
+├── lib/                      ← 83 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 82 tools compared by how much each does
+├── SUMMARY.md                ← the 83 tools compared by how much each does
 └── README.md                 ← this file
 ```
 
