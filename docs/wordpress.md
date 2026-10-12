@@ -1148,3 +1148,66 @@ Paste Plugin Check output, a `readme.txt`, or a WordPress.org review or closure 
 Directory readiness only. To scaffold a new plugin use [`/wp-plugin`](#wordpress-plugin); to add a feature or fix code use [`/wp-build`](#wp-builder-pro); for a security, performance, and architecture review use [`/wp-review`](#wordpress-architect-review); for a letter grade use [`/wp-grade`](#wordpress-grade).
 
 The full procedure lives at [`lib/wordpress-plugin-submission/SKILL.md`](../lib/wordpress-plugin-submission/SKILL.md), the reference files under [`lib/wordpress-plugin-submission/references/`](../lib/wordpress-plugin-submission/references/), and the slash command at [`commands/wp-submission.md`](../commands/wp-submission.md).
+
+---
+
+## `wp-plugin-demo-video`
+
+Record an MP4 demo video of a WordPress plugin's admin screens: read the plugin's source to find its pages, settings and controls, check them on the live site, agree a storyboard with the user, and record with Playwright - a full video plus optional clips per scene.
+
+```
+/wp-demo-video
+```
+
+A good plugin demo shows the screens a buyer or reviewer cares about, in a sensible order, with each result left on screen long enough to read. Recording one by hand means rehearsing clicks, re-recording every time a step goes wrong, and redoing the whole thing after each release. This tool writes the recording as code instead: a scene file of short, named scenes that Playwright plays back with a visible cursor, so a new version of the plugin is one command away from a new video.
+
+It works out what to record from the plugin itself. A scanner lists everything the plugin registers - admin pages, settings, post types, meta boxes, REST and AJAX endpoints, enqueued scripts, constants and DOM IDs - and each admin URL is worked out from its registration call. A read-only inspector then opens those screens on the live site, confirms the plugin is active and its version matches the source, and suggests a locator for every visible control. Every action is marked read-only, creates content, or destructive before a storyboard is drafted.
+
+Claude runs every step itself - setup, checks, recording and contact sheets - and stops only for the user's input and approvals. The password goes into a `.env` file the user creates, in two stages, and never enters the chat. Scenes that write data run only after the storyboard is approved, and every change to the site is counted over all runs, failed ones included, and reported at the end. If the machine cannot record, a hand-off mode writes the scene file and gives the user the commands to run in three rounds.
+
+## Technical Overview
+
+One slash command and a procedure bundle. `lib/wp-plugin-demo-video/SKILL.md` carries the names, the nine-step workflow and the safety rules. `references/setup.md` covers quoting, zip checks, the workspace, `.env` in two stages and the check-failure table; `references/plugin-analysis.md` turns the source into a feature map and checks the live site; `references/storyboard.md` holds the questions, scene design rules and template; `references/scene-api.md` documents the scene format, `demo` helpers, locators, script flags and troubleshooting; `references/review.md` covers fast runs, the side-effect tally, contact sheets and the report; `references/hand-off.md` is the three-round hand-off mode; and `references/worked-example.md` with `references/example-yt-bulk-importer.scenes.js` is a complete run on a real plugin. The scripts are copied into a workspace outside the plugin: `check-env.js` (Node.js, `.env` keys, ffmpeg, Chromium, site and login), `scan-plugin.js` (what the plugin registers), `inspect-page.js` (read-only menu and control listing with screenshots), `record.js` (runs and records a scene file), `contact-sheet.js` (frame grid of a video), and `wp.js` (shared login, URL and redaction helpers).
+
+## Features
+
+- Reads the plugin source first - admin pages, settings, endpoints and controls - and maps each admin URL from its registration call
+- Checks the live site read-only: plugin active, version matches the source, real layout, suggested locators for every control
+- Storyboard of 3 to 6 short named scenes, each marked read-only or writing, approved before anything that writes data runs
+- H.264 MP4 with a visible cursor and click ripples, the blank lead-in trimmed and the login kept out of the video
+- Optional clips per scene, numbered `01-<scene>.mp4`, with scene start and end times in `scenes.json`
+- Larger admin text by recording a smaller viewport and upscaling to the output size
+- `--fast` runs with no video and no pauses, so selector problems show up in seconds
+- Contact sheets of the full video and of each scene, checked for the cursor, readable text and visible secrets
+- Every change to the site counted over all runs, fast and failed runs included, and listed in the report
+- The password never enters the chat, secret-looking fields are blanked before screenshots, URLs that change data are refused, and plugin files are treated as data
+- Stops with a plain message on a wrong login, two-factor authentication, the admin email screen, or a page WordPress refuses, such as an inactive plugin's
+
+## How it works
+
+1. **Collect inputs.** The plugin source (folder or zip), the site URL, the features to show and the target length. A staging site and a temporary admin without two-factor authentication are recommended.
+2. **Set up.** A workspace at `~/wp-demo-videos/<plugin-slug>-demo`, never inside the plugin or a web root, then `npm install` and `npx playwright install chromium`.
+3. **Check in two stages.** `check-env.js --site` with only the site URL in `.env`, then the full check, including a real login, after the user adds the login.
+4. **Analyse the source.** `scan-plugin.js`, then the files it points to, into a feature map of screens, URLs, controls, side effects and secrets.
+5. **Check the live site.** `inspect-page.js` on the admin menu, `plugins.php` and the plugin's pages.
+6. **Storyboard.** Questions in one message, scenes drafted and marked read-only or writing, and approval before any writing scene runs.
+7. **Write and iterate.** The scene file, then `--fast` runs - read-only scenes only until the storyboard is approved - with every write added to the tally.
+8. **Record and review.** `record.js --split`, then contact sheets of the full video and each scene. Scenes marked "blur later" are left for the user to review.
+9. **Report.** File paths, length and resolution, what each scene shows, every change made to the site, anything skipped, and the command to record again.
+
+## How to use it
+
+```
+/wp-demo-video                          ← the plugin in the current directory
+/wp-demo-video ~/plugins/my-plugin      ← a specific plugin folder or .zip
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"make a demo video of my WordPress plugin"*, *"record a screencast of the plugin admin"*, *"create a walkthrough video of the settings page and a search"*, *"re-record the plugin demo"*, *"split the demo into one clip per scene"*
+
+**Needs:** Linux or macOS (Windows via WSL), Node.js 20.6 or later, and a WordPress site with the plugin active that you can log in to as an administrator without two-factor authentication or a CAPTCHA. Chromium and ffmpeg are installed by npm. Voice-over, captions, GIFs and editing existing videos are out of scope.
+
+Plugin demo videos only. To build demo content for a theme use [`/wp-demo`](#wp-demo-content); to write a feature README use [`/wp-feature-readme`](#wordpress-feature-readme); to build a plugin use [`/wp-plugin`](#wordpress-plugin).
+
+The full procedure lives at [`lib/wp-plugin-demo-video/SKILL.md`](../lib/wp-plugin-demo-video/SKILL.md), the reference files under [`lib/wp-plugin-demo-video/references/`](../lib/wp-plugin-demo-video/references/), the scripts under [`lib/wp-plugin-demo-video/scripts/`](../lib/wp-plugin-demo-video/scripts/), and the slash command at [`commands/wp-demo-video.md`](../commands/wp-demo-video.md).

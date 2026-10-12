@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          20 tools, 7 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          21 tools, 7 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
@@ -85,7 +85,8 @@
   |  ( 4 )  More...                                                   -> page 5  |
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
   |         bug audit, theme mockups, the documentation pass, plugin             |
-  |         modernization, and the WordPress.org submission gate.                |
+  |         modernization, the WordPress.org submission gate, and plugin demo    |
+  |         videos.                                                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -107,7 +108,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
   |         The theme bug audit, theme mockups, the documentation pass, plugin   |
-  |         modernization, and the WordPress.org submission gate.                |
+  |         modernization, the WordPress.org submission gate, and plugin demo    |
+  |         videos.                                                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -128,7 +130,8 @@
   |         plugin's own standard; a checker proves no code changed.             |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
-  |         Plugin modernization and the WordPress.org submission gate.          |
+  |         Plugin modernization, the WordPress.org submission gate, and plugin  |
+  |         demo videos.                                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -143,6 +146,10 @@
   |  ( 2 )  WordPress.org submission gate                     -> /wp-submission  |
   |         Ready for WordPress.org review? Guideline map, Plugin Check triage,  |
   |         readme check, one verdict, fixes, reviewer reply.                    |
+  |                                                                              |
+  |  ( 3 )  Plugin demo video                                 -> /wp-demo-video  |
+  |         Record an MP4 demo of a plugin's admin screens: source read,         |
+  |         storyboard approved, clips per scene.                                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -625,4 +632,33 @@
   |  Findings with evidence labels, fix list, recheck plan.                    |
   |  Review email: reply plan, then an email draft once changes are made.      |
   '----------------------------------------------------------------------------'
+
+
+--------------------------------------------------------------- /wp-demo-video -
+  4 fields, asked one at a time.  A path argument seeds the plugin and skips
+  it, and the resolved plugin is named back in one line before anything else.
+
+  .--[Plugin]-- which plugin source -------------------------------------------.
+  |  ( ) the current directory   ( ) a folder or .zip I'll give you            |
+  |      a theme or a non-plugin directory STOPS the run                       |
+  '----------------------------------------------------------------------------'
+  .--[Site]-- the WordPress site the plugin is active on ----------------------.
+  |  ( ) a staging site (recommended)   ( ) a local site (LocalWP, DDEV)       |
+  |  [Other] the URL.  The login is never asked for in chat: it goes           |
+  |      into .env, which you create in two stages                             |
+  '----------------------------------------------------------------------------'
+  .--[Features]-- what to show ------------------------------------------------.
+  |  ( ) the main screens - decide after reading the source (default)          |
+  |  ( ) I'll list the features                                                |
+  '----------------------------------------------------------------------------'
+  .--[Length]-- target length -------------------------------------------------.
+  |  ( ) about 1 minute (default)   ( ) 30 seconds   ( ) 2-3 minutes           |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one MP4, clips, contact sheets, a report ----------------------.
+  |  Full MP4 with a visible cursor, plus optional clips per scene.            |
+  |  Contact sheets checked; a report of every change made to the site.        |
+  |  Writing scenes run only after you approve the storyboard.                 |
+  '----------------------------------------------------------------------------'
+  No Node.js, no browser, or no access to the site: hand-off mode writes
+  the scene file and gives you the commands to run in three rounds.
 ================================================================================

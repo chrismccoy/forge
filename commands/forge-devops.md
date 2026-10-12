@@ -130,6 +130,7 @@ a Step 0 direct hit.
 | `wp-cli` | `/forge-wordpress` |
 | `wp-consult` | `/forge-wordpress` |
 | `wp-demo` | `/forge-wordpress` |
+| `wp-demo-video` | `/forge-wordpress` |
 | `wp-doc-pass` | `/forge-wordpress` |
 | `wp-feature-readme` | `/forge-wordpress` |
 | `wp-format` | `/forge-wordpress` |

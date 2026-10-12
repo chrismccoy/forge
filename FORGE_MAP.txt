@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  83 tools . 94 commands . 11 pickers . 0 skills . nothing auto-fires.
+  84 tools . 95 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  20 tools.    |
+  |         Build, review, format, and fill WP plugins and themes.  21 tools.    |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
@@ -100,7 +100,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  20 tools, 7 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  21 tools, 7 pages ----------------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/7) |
@@ -182,7 +182,8 @@
   |  ( 4 )  More...                                                   -> page 5  |
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
   |         bug audit, theme mockups, the documentation pass, plugin             |
-  |         modernization, and the WordPress.org submission gate.                |
+  |         modernization, the WordPress.org submission gate, and plugin demo    |
+  |         videos.                                                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -204,7 +205,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
   |         The theme bug audit, theme mockups, the documentation pass, plugin   |
-  |         modernization, and the WordPress.org submission gate.                |
+  |         modernization, the WordPress.org submission gate, and plugin demo    |
+  |         videos.                                                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -225,7 +227,8 @@
   |         plugin's own standard; a checker proves no code changed.             |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
-  |         Plugin modernization and the WordPress.org submission gate.          |
+  |         Plugin modernization, the WordPress.org submission gate, and plugin  |
+  |         demo videos.                                                         |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -240,6 +243,10 @@
   |  ( 2 )  WordPress.org submission gate                     -> /wp-submission  |
   |         Ready for WordPress.org review? Guideline map, Plugin Check triage,  |
   |         readme check, one verdict, fixes, reviewer reply.                    |
+  |                                                                              |
+  |  ( 3 )  Plugin demo video                                 -> /wp-demo-video  |
+  |         Record an MP4 demo of a plugin's admin screens: source read,         |
+  |         storyboard approved, clips per scene.                                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -557,7 +564,10 @@
   |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         Safe script refactors, and codebase blueprints with rebuilds.        |
+  |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
+  |         bug audit, theme mockups, the documentation pass, plugin             |
+  |         modernization, the WordPress.org submission gate, and plugin demo    |
+  |         videos.                                                              |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -703,6 +713,7 @@
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
    |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-classic-to-block
    |    +-- wp-bug-audit  wp-mockup  wp-doc-pass  wp-modernize  wp-submission
+   |    +-- wp-demo-video
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system

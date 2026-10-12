@@ -1,0 +1,14 @@
+{
+  "name": "wp-plugin-demo-video-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Records demo videos of WordPress plugins with Playwright and ffmpeg.",
+  "engines": {
+    "node": ">=20.6"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "playwright": "^1.64.0"
+  }
+}
