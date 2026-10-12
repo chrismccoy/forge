@@ -1,0 +1,2329 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Forge</title>
+        <meta
+            name="description"
+            content="84 command-invoked toolkits for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: "Inter", system-ui, sans-serif;
+                color: #1e293b;
+                background: #f8fafc;
+            }
+            ::selection {
+                background: #3b82f6;
+                color: #ffffff;
+            }
+
+            .dashboard-layout {
+                display: grid;
+                grid-template-columns: 1fr;
+                min-height: 100vh;
+            }
+            @media (min-width: 1024px) {
+                .dashboard-layout {
+                    grid-template-columns: 240px 1fr;
+                }
+            }
+            .sidebar {
+                background: #0f172a;
+                padding: 20px 0;
+            }
+            @media (min-width: 1024px) {
+                .sidebar {
+                    position: sticky;
+                    top: 0;
+                    height: 100vh;
+                    overflow-y: auto;
+                }
+            }
+            .main-content {
+                background: #f8fafc;
+                padding: 24px;
+                overflow-y: auto;
+                min-width: 0;
+            }
+
+            .metric-card {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 20px;
+            }
+
+            .delta-up {
+                color: #22c55e;
+                background: #f0fdf4;
+                padding: 2px 8px;
+                border-radius: 100px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .delta-down {
+                color: #ef4444;
+                background: #fef2f2;
+                padding: 2px 8px;
+                border-radius: 100px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            thead {
+                background: #f8fafc;
+                border-bottom: 2px solid #e2e8f0;
+            }
+            th {
+                text-align: left;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #64748b;
+                letter-spacing: 0.05em;
+                padding: 10px 16px;
+                white-space: nowrap;
+            }
+            td {
+                padding: 14px 16px;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 14px;
+                vertical-align: top;
+            }
+            tr:hover td {
+                background: #f8fafc;
+            }
+            #cmdBody tr {
+                cursor: pointer;
+            }
+            #cmdBody tr[aria-selected="true"] td {
+                background: #eff6ff;
+            }
+
+            .badge {
+                display: inline-block;
+                border-radius: 100px;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 10px;
+                white-space: nowrap;
+            }
+
+            .chart-container {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 20px;
+            }
+            .bar {
+                background: #3b82f6;
+                border-radius: 4px 4px 0 0;
+                transition: height 0.4s ease;
+            }
+            .bar-col:hover .bar {
+                background: #2563eb;
+            }
+
+            .pill-group {
+                display: inline-flex;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                overflow: hidden;
+                background: #ffffff;
+            }
+            .pill-group button {
+                font-size: 12px;
+                font-weight: 500;
+                padding: 6px 12px;
+                color: #64748b;
+                border-right: 1px solid #e2e8f0;
+                white-space: nowrap;
+            }
+            .pill-group button:last-child {
+                border-right: 0;
+            }
+            .pill-group button:hover {
+                color: #1e293b;
+                background: #f8fafc;
+            }
+            .pill-group button[aria-pressed="true"] {
+                background: #eff6ff;
+                color: #2563eb;
+            }
+
+            a:focus-visible,
+            button:focus-visible,
+            input:focus-visible,
+            select:focus-visible,
+            tr:focus-visible {
+                outline: 2px solid #3b82f6;
+                outline-offset: 2px;
+                border-radius: 4px;
+            }
+            [tabindex="-1"]:focus {
+                outline: none;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+                }
+            }
+        </style>
+    </head>
+    <body class="antialiased">
+        <a
+            href="#main"
+            class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-slate-900 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg"
+            >Skip to main content</a
+        >
+
+        <div class="dashboard-layout">
+            <aside class="sidebar" aria-label="Site navigation">
+                <div class="flex items-center justify-between px-5 pb-4 lg:pb-6">
+                    <a href="#overview" class="flex items-center gap-3 text-white">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600"
+                            ><i class="fa-solid fa-hammer text-base" aria-hidden="true"></i
+                        ></span>
+                        <span>
+                            <span class="block text-sm font-semibold leading-tight">Forge</span>
+                            <span class="block font-mono text-[11px] text-slate-500">v1.19.0</span>
+                        </span>
+                    </a>
+                    <button
+                        id="navToggle"
+                        class="lg:hidden rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+                        aria-label="Toggle navigation"
+                        aria-expanded="false"
+                        aria-controls="sideNav"
+                    >
+                        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <nav id="sideNav" aria-label="Primary" class="hidden lg:block">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 px-4 py-2 mt-2 mx-2">Overview</p>
+                    <a
+                        href="#overview"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium bg-blue-600 text-white"
+                        ><i class="fa-solid fa-gauge w-4" aria-hidden="true"></i>Overview</a
+                    >
+                    <a
+                        href="#commands"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-terminal w-4" aria-hidden="true"></i>Commands</a
+                    >
+                    <a
+                        href="#picker"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-list-check w-4" aria-hidden="true"></i>The pickers</a
+                    >
+                    <a
+                        href="#flow"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-diagram-project w-4" aria-hidden="true"></i>How it runs</a
+                    >
+
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 px-4 py-2 mt-4 mx-2">Get started</p>
+                    <a
+                        href="#install"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-download w-4" aria-hidden="true"></i>Install</a
+                    >
+                    <a
+                        href="https://github.com/chrismccoy/forge"
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-brands fa-github w-4" aria-hidden="true"></i>GitHub</a
+                    >
+
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 px-4 py-2 mt-4 mx-2">Categories</p>
+                    <div id="sideCats" class="pb-4"></div>
+                </nav>
+            </aside>
+
+            <main id="main" class="main-content">
+                <div class="mx-auto max-w-7xl space-y-6">
+                    <header id="overview" class="scroll-mt-6">
+                        <nav aria-label="Breadcrumb" class="text-sm text-slate-400 font-medium">
+                            <span>Claude Code</span> <span aria-hidden="true">/</span> <span>Plugins</span>
+                            <span aria-hidden="true">/</span> <span class="text-slate-900">forge</span>
+                        </nav>
+                        <div class="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                            <div class="max-w-2xl">
+                                <h1 class="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
+                                    84 toolkits across ten categories. Each one waits for its command.
+                                </h1>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    One Claude Code plugin for WordPress, design, writing, DevOps, cloud, security,
+                                    cleanup, code, docs, and small utilities. A tool loads its procedure only when you
+                                    type its slash command.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <a
+                                    href="https://github.com/chrismccoy/forge"
+                                    class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                                    ><i class="fa-brands fa-github" aria-hidden="true"></i>View source</a
+                                >
+                                <a
+                                    href="#install"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                                    ><i class="fa-solid fa-download" aria-hidden="true"></i>Install plugin</a
+                                >
+                            </div>
+                        </div>
+                    </header>
+
+                    <section
+                        aria-label="Plugin at a glance"
+                        class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+                    >
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Tools</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-blue-500"
+                                    ><i class="fa-solid fa-toolbox" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p
+                                class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900"
+                                data-stat="tools"
+                            ></p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="delta-up"
+                                    ><i class="fa-solid fa-arrow-up text-[10px]" aria-hidden="true"></i>
+                                    <span data-stat="toolkits"></span
+                                ></span>
+                                full toolkits, <span data-stat="helpers"></span> helpers,
+                                <span data-stat="quick"></span> quick win
+                            </p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Slash commands</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-green-50 text-green-500"
+                                    ><i class="fa-solid fa-terminal" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">95</p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="delta-up"
+                                    ><i class="fa-solid fa-plus text-[10px]" aria-hidden="true"></i> 11</span
+                                >
+                                pickers: <span class="font-mono">/forge</span> plus one per category
+                            </p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Bundled files</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 text-amber-500"
+                                    ><i class="fa-solid fa-folder-tree" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p
+                                class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900"
+                                data-stat="files"
+                            ></p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="font-mono" data-stat="refs"></span> references,
+                                <span class="font-mono" data-stat="scripts"></span> scripts, loaded on demand
+                            </p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Auto-triggers</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-500"
+                                    ><i class="fa-solid fa-power-off" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">0</p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="delta-down"
+                                    ><i class="fa-solid fa-arrow-down text-[10px]" aria-hidden="true"></i> 0
+                                    tokens</span
+                                >
+                                in context until you call a tool
+                            </p>
+                        </div>
+                    </section>
+
+                    <section aria-label="Catalog breakdown" class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+                        <div class="chart-container xl:col-span-2">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <h2 class="text-base font-medium text-slate-900">Catalog by category</h2>
+                                    <p class="text-sm text-slate-500" id="chartCaption"></p>
+                                </div>
+                                <div
+                                    class="pill-group overflow-x-auto max-w-full"
+                                    role="group"
+                                    aria-label="Chart metric"
+                                >
+                                    <button type="button" data-metric="count" aria-pressed="true">Tools</button>
+                                    <button type="button" data-metric="lines" aria-pressed="false">Doc lines</button>
+                                    <button type="button" data-metric="refs" aria-pressed="false">References</button>
+                                    <button type="button" data-metric="scripts" aria-pressed="false">Scripts</button>
+                                </div>
+                            </div>
+                            <div class="mt-6 overflow-x-auto">
+                                <div
+                                    id="barChart"
+                                    class="flex h-56 min-w-[560px] items-end gap-3 border-b border-slate-200 pt-6"
+                                    role="img"
+                                    aria-label="Bar chart of the catalog by category"
+                                ></div>
+                                <div id="barLabels" class="flex min-w-[560px] gap-3 pt-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <h2 class="text-base font-medium text-slate-900">Tool size</h2>
+                            <p class="text-sm text-slate-500">
+                                How much each tool does, from <span class="font-mono">SUMMARY.md</span>
+                            </p>
+                            <div
+                                class="mt-5 flex h-3 overflow-hidden rounded-full"
+                                aria-hidden="true"
+                                id="tierBar"
+                            ></div>
+                            <ul class="mt-5 space-y-4 text-sm" id="tierList"></ul>
+                            <div class="mt-5 border-t border-slate-100 pt-4">
+                                <p class="text-[10px] uppercase tracking-widest text-slate-500">Deepest procedures</p>
+                                <ol id="topList" class="mt-3 space-y-2 text-sm"></ol>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section
+                        id="commands"
+                        class="scroll-mt-6 rounded-xl border border-slate-200 bg-white"
+                        aria-labelledby="commandsTitle"
+                    >
+                        <div
+                            class="flex flex-col gap-3 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between"
+                        >
+                            <div>
+                                <h2 id="commandsTitle" class="text-base font-medium text-slate-900">All commands</h2>
+                                <p class="text-sm text-slate-500">
+                                    <span id="resultCount"></span>. Select a row to see what the tool does.
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+                                <label>
+                                    <span class="sr-only">Filter by category</span>
+                                    <select
+                                        id="catFilter"
+                                        class="w-full sm:w-48 rounded-lg border border-slate-200 bg-white py-1.5 pl-3 pr-8 text-sm text-slate-700"
+                                    ></select>
+                                </label>
+                                <div class="pill-group" role="group" aria-label="Filter by tool size">
+                                    <button type="button" data-type="all" aria-pressed="true">All</button>
+                                    <button type="button" data-type="Toolkit" aria-pressed="false">Toolkits</button>
+                                    <button type="button" data-type="Helper" aria-pressed="false">Helpers</button>
+                                    <button type="button" data-type="Quick win" aria-pressed="false">Quick win</button>
+                                </div>
+                                <label class="relative">
+                                    <span class="sr-only">Search commands</span>
+                                    <i
+                                        class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400"
+                                        aria-hidden="true"
+                                    ></i>
+                                    <input
+                                        id="search"
+                                        type="search"
+                                        placeholder="Search tools..."
+                                        class="w-full sm:w-48 rounded-lg border border-slate-200 bg-white py-1.5 pl-8 pr-3 text-sm text-slate-800 placeholder:text-slate-400"
+                                    />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 xl:grid-cols-3">
+                            <div class="min-w-0 xl:col-span-2 xl:border-r xl:border-slate-200">
+                                <div class="overflow-x-auto">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Command</th>
+                                                <th scope="col">What it does</th>
+                                                <th scope="col" class="hidden md:table-cell xl:hidden 2xl:table-cell">
+                                                    Category
+                                                </th>
+                                                <th scope="col">Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cmdBody"></tbody>
+                                    </table>
+                                </div>
+                                <p id="emptyState" class="hidden p-8 text-center text-sm text-slate-500">
+                                    No tool matches that filter.
+                                </p>
+                                <div
+                                    class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-3"
+                                >
+                                    <p class="text-xs text-slate-500" id="pageInfo"></p>
+                                    <div class="pill-group" role="group" aria-label="Table pages">
+                                        <button type="button" id="tablePrev" aria-label="Previous page">
+                                            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" id="tableNext" aria-label="Next page">
+                                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <aside
+                                id="detail"
+                                class="p-5 xl:sticky xl:top-0 xl:self-start"
+                                aria-live="polite"
+                                aria-label="Command detail"
+                            ></aside>
+                        </div>
+                    </section>
+
+                    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                        <section id="picker" class="scroll-mt-6 chart-container" aria-labelledby="pickerTitle">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <h2 id="pickerTitle" class="text-base font-medium text-slate-900">
+                                        Not sure which tool? Run the picker.
+                                    </h2>
+                                    <p class="text-sm text-slate-500">
+                                        <span class="font-mono" id="pickerCmd">/forge</span> asks for a category, then a
+                                        tool. Try it here.
+                                    </p>
+                                </div>
+                                <span class="font-mono text-xs text-slate-400 whitespace-nowrap" id="pageLabel"></span>
+                            </div>
+
+                            <div class="mt-5 rounded-xl border border-slate-200">
+                                <div
+                                    class="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2.5 rounded-t-xl"
+                                >
+                                    <span class="badge bg-blue-50 text-blue-600" id="pickerChip">Category</span>
+                                    <span class="text-sm font-medium text-slate-900" id="pickerQuestion"
+                                        >Which category?</span
+                                    >
+                                </div>
+                                <ul id="pickerList" class="divide-y divide-slate-100"></ul>
+                                <div class="border-t border-slate-200 px-4 py-2.5 text-xs text-slate-400 rounded-b-xl">
+                                    [Other] type a tool name to jump straight to it
+                                </div>
+                            </div>
+
+                            <div class="mt-4 flex items-center justify-between gap-3">
+                                <button
+                                    id="pickerReset"
+                                    type="button"
+                                    class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                                >
+                                    Start over
+                                </button>
+                                <p class="text-xs text-slate-500 text-right">
+                                    Skip it: <span class="font-mono text-slate-700">/forge jq</span>
+                                </p>
+                            </div>
+                        </section>
+
+                        <section
+                            class="scroll-mt-6 rounded-xl border border-slate-200 bg-white"
+                            aria-labelledby="catPickTitle"
+                        >
+                            <div class="p-5 border-b border-slate-200">
+                                <h2 id="catPickTitle" class="text-base font-medium text-slate-900">Category pickers</h2>
+                                <p class="text-sm text-slate-500">
+                                    Skip the category step. Each one runs only its own tools.
+                                </p>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Command</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Tools</th>
+                                            <th scope="col">Screens</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="catPickBody"></tbody>
+                                </table>
+                            </div>
+                            <div class="border-t border-slate-200 px-5 py-4 text-sm text-slate-500">
+                                <p>Name a tool from another category and the picker redirects you:</p>
+                                <pre
+                                    class="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 font-mono text-xs text-slate-300"
+                                >/forge-wordpress unslop
+<span class="text-slate-500">→ unslop is a Code Cleanup tool. Run /forge-cleanup, or /unslop directly.</span></pre>
+                            </div>
+                        </section>
+                    </div>
+
+                    <section id="flow" class="scroll-mt-6 chart-container" aria-labelledby="flowTitle">
+                        <h2 id="flowTitle" class="text-base font-medium text-slate-900">How a command runs</h2>
+                        <p class="text-sm text-slate-500">
+                            Procedures live in <span class="font-mono">lib/</span>, not
+                            <span class="font-mono">skills/</span>. Claude Code never discovers them, so no metadata
+                            sits in your context.
+                        </p>
+
+                        <ol class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">01</span
+                                    ><span class="badge bg-green-100 text-green-700">You</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Type the command</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">/unslop ./src</p>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    Anything after the name becomes the tool's argument.
+                                </p>
+                            </li>
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">02</span
+                                    ><span class="badge bg-slate-100 text-slate-600">Command</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Read the "Load first" banner</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">commands/unslop.md</p>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    Frontmatter sets <span class="font-mono">disable-model-invocation: true</span>.
+                                </p>
+                            </li>
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">03</span
+                                    ><span class="badge bg-amber-100 text-amber-700">Procedure</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Load the procedure</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">lib/unslop/SKILL.md</p>
+                                <p class="mt-2 text-sm text-slate-500">Read at that moment, and at no other time.</p>
+                            </li>
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">04</span
+                                    ><span class="badge bg-green-100 text-green-700">On demand</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Pull detail as needed</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">
+                                    references/ scripts/ assets/ examples/
+                                </p>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    Rubrics, templates, and runners load only when a step needs them.
+                                </p>
+                            </li>
+                        </ol>
+
+                        <div class="mt-6 overflow-x-auto rounded-xl bg-slate-900 p-4">
+                            <pre
+                                class="font-mono text-xs leading-relaxed text-slate-300"
+                            ><span class="text-slate-500"># repo layout</span>
+.claude-plugin/
+  marketplace.json     <span class="text-slate-500">one plugin entry</span>
+  plugin.json          <span class="text-slate-500">the forge plugin manifest</span>
+commands/              <span class="text-slate-500">95 command files: 84 tools, 11 pickers</span>
+lib/&lt;tool&gt;/
+  SKILL.md             <span class="text-slate-500">the procedure, read only when its command runs</span>
+  references/          <span class="text-slate-500">deep detail, loaded on demand</span>
+  scripts/             <span class="text-slate-500">deterministic runners</span>
+  assets/              <span class="text-slate-500">output templates</span>
+  examples/            <span class="text-slate-500">worked before-and-after files</span>
+docs/                  <span class="text-slate-500">full write-up for each category</span></pre>
+                        </div>
+                    </section>
+
+                    <section id="install" class="scroll-mt-6 chart-container" aria-labelledby="installTitle">
+                        <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <h2 id="installTitle" class="text-base font-medium text-slate-900">Install</h2>
+                                <p class="text-sm text-slate-500">
+                                    Run these in any Claude Code session. One plugin, 95 commands, nothing running in
+                                    the background.
+                                </p>
+                            </div>
+                            <span class="badge bg-green-100 text-green-700 self-start md:self-auto">2 commands</span>
+                        </div>
+
+                        <div class="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                            <div class="rounded-xl bg-slate-900">
+                                <div class="flex items-center justify-between border-b border-slate-800 px-4 py-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-slate-500">Install</span>
+                                    <button
+                                        type="button"
+                                        data-copy="install"
+                                        class="rounded-md px-2 py-1 text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                                    >
+                                        <i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span>
+                                    </button>
+                                </div>
+                                <pre id="install-code" class="overflow-x-auto p-4 font-mono text-sm text-slate-200">
+/plugin marketplace add chrismccoy/forge
+/plugin install forge@forge</pre
+                                >
+                            </div>
+                            <div class="rounded-xl bg-slate-900">
+                                <div class="flex items-center justify-between border-b border-slate-800 px-4 py-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-slate-500">Then</span>
+                                    <button
+                                        type="button"
+                                        data-copy="then"
+                                        class="rounded-md px-2 py-1 text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                                    >
+                                        <i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span>
+                                    </button>
+                                </div>
+                                <pre
+                                    id="then-code"
+                                    class="overflow-x-auto p-4 font-mono text-sm text-slate-200"
+                                >/forge              <span class="text-slate-500"># pick a category, then a tool</span>
+/forge-code         <span class="text-slate-500"># or one category</span>
+/explain-regex      <span class="text-slate-500"># or any tool directly</span></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer
+                        class="flex flex-col gap-2 border-t border-slate-200 pt-6 pb-2 text-sm text-slate-500 md:flex-row md:items-center md:justify-between"
+                    >
+                        <p>
+                            Forge by
+                            <a
+                                href="https://github.com/chrismccoy"
+                                class="font-medium text-slate-700 hover:text-blue-600"
+                                >Chris McCoy</a
+                            >
+                        </p>
+                        <nav aria-label="Footer" class="flex gap-4">
+                            <a href="https://github.com/chrismccoy/forge" class="hover:text-blue-600">GitHub</a>
+                            <a
+                                href="https://github.com/chrismccoy/forge/blob/master/SUMMARY.md"
+                                class="hover:text-blue-600"
+                                >Summary</a
+                            >
+                            <a
+                                href="https://github.com/chrismccoy/forge/blob/master/FORGE_MAP.txt"
+                                class="hover:text-blue-600"
+                                >Screen map</a
+                            >
+                        </nav>
+                    </footer>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            const TOOLS = [
+                {
+                    cmd: "wp-plugin",
+                    lib: "wordpress-plugin",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "scaffold a whole plugin from scratch",
+                    desc: "Builds a complete WordPress plugin from scratch, ready for the WordPress.org repository, with security, translations, and a clean uninstall all handled.",
+                    lines: 349,
+                    refs: 2,
+                    scripts: 0,
+                    files: 3,
+                },
+                {
+                    cmd: "wp-build",
+                    lib: "wp-builder-pro",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "targeted work on an existing project",
+                    desc: "Builds and implements custom WordPress code - themes, plugins, Gutenberg blocks, WooCommerce, and REST endpoints - with security and performance built in. Best when you're adding to or fixing a site you already have - a new feature, a slow page, a broken block.",
+                    lines: 5707,
+                    refs: 5,
+                    scripts: 0,
+                    files: 6,
+                },
+                {
+                    cmd: "wp-theme",
+                    lib: "html-to-wordpress-theme",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "static HTML -> installable theme",
+                    desc: "Converts static HTML/Tailwind files into installable WordPress themes.",
+                    lines: 1929,
+                    refs: 6,
+                    scripts: 0,
+                    files: 7,
+                },
+                {
+                    cmd: "wp-review",
+                    lib: "wordpress-architect-review",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "security, performance, architecture review",
+                    desc: "Reviews a WordPress plugin or theme file by file, then returns ranked findings, a scorecard, and the top fixes to make.",
+                    lines: 176,
+                    refs: 2,
+                    scripts: 0,
+                    files: 3,
+                },
+                {
+                    cmd: "wp-consult",
+                    lib: "wordpress-consultant",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Helper",
+                    tag: "10-section consulting audit",
+                    desc: "A senior WordPress consulting audit covering architecture, performance, security, and scalability, ending with a 0-100 scorecard and summary.",
+                    lines: 332,
+                    refs: 3,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "wp-format",
+                    lib: "wordpress-formatter",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "apply WordPress Coding Standards formatting",
+                    desc: "Formats a theme's template files to the WordPress coding standard - tabs, spacing, and array style - without changing how any page renders. It installs the tools, runs the fixer, and checks the result.",
+                    lines: 145,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "wp-menu-icons",
+                    lib: "menu-icon-picker",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "searchable icon picker for menu items",
+                    desc: "Ports a searchable Font Awesome icon picker onto every Appearance > Menus item, integrated into a classic theme - click an icon instead of typing a class, with security gates and full rebranding.",
+                    lines: 470,
+                    refs: 2,
+                    scripts: 0,
+                    files: 7,
+                },
+                {
+                    cmd: "wp-report-card",
+                    lib: "wordpress-report-card",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "scorecard-only review, /10 table plus tier",
+                    desc: "Scores a WordPress plugin or theme on ten areas out of 10, with an overall score and tier - just the scorecard table, no findings and no fixes.",
+                    lines: 172,
+                    refs: 2,
+                    scripts: 0,
+                    files: 3,
+                },
+                {
+                    cmd: "wp-grade",
+                    lib: "wordpress-grade",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Helper",
+                    tag: "letter grade A-F on one snippet or file",
+                    desc: "Grades one piece of WordPress code - a snippet or a single file - with a letter grade from A to F against a fixed rubric, what the code does, what it gets right, the real problems with the reason each one matters, the nitpicks kept separate, and a verdict on whether it is safe for a live site.",
+                    lines: 222,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "wp-performance",
+                    lib: "wordpress-performance",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "cold full-file performance review",
+                    desc: "Reads every file in a plugin or theme and reports what will break under traffic - unbounded queries, cache bypass, repeated queries inside loops, and cron that blocks itself. Starts fresh every run, so running it a second time is a real second opinion rather than a replay of the first.",
+                    lines: 2781,
+                    refs: 5,
+                    scripts: 2,
+                    files: 8,
+                },
+                {
+                    cmd: "wp-demo",
+                    lib: "wp-demo-content",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "WP-CLI demo content importer, built and tested",
+                    desc: "Builds a WP-CLI demo content importer for a classic theme: reads the theme's whole data model out of its code, writes `demo/demo-import.php`, fills an empty site with realistic posts, media, fields, menus and settings, tests it end to end on a throwaway SQLite site, and reports the theme's own bugs. The theme's files are never touched unless you agree to fixes.",
+                    lines: 955,
+                    refs: 6,
+                    scripts: 0,
+                    files: 7,
+                },
+                {
+                    cmd: "wp-feature-readme",
+                    lib: "wordpress-feature-readme",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Helper",
+                    tag: "plain-English feature README for a theme or plugin",
+                    desc: "Writes a plain-English README for a WordPress theme or plugin: the name, a short description, and every user facing feature grouped into categories a site owner can read. Each feature is traced to real code, never taken from a readme or changelog, and the output carries no emojis, dashes, or hype words.",
+                    lines: 193,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "wp-cli",
+                    lib: "wordpress-wp-cli",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "write or review WP-CLI fleet scripts, dry run by default",
+                    desc: "Writes bash scripts that run one WP-CLI task across every WordPress site on a server, or on one site: comment and spam cleanup, media audits, user purges, updates and checksums, settings changes, theme git audits, backups, and maintenance. Every script is a dry run until `-f`, asks for a typed `yes` before changing anything, keeps going when one site fails, and ends with a summary table and a real exit code. It also reviews an existing script, lists what is wrong line by line, and fixes it. Scripts are tested against a stub `wp`, never against your live sites.",
+                    lines: 691,
+                    refs: 16,
+                    scripts: 0,
+                    files: 17,
+                },
+                {
+                    cmd: "wp-block-theme",
+                    lib: "wordpress-block-theme",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "build or review a full-site-editing block theme",
+                    desc: "Builds a complete full-site-editing block theme from a short brief - theme.json version 3, templates, template parts, patterns, style variations, and local fonts - then reviews its own output until the verdict is ship. Or reviews an existing block theme and reports every problem by file and line, with a severity, the bad code and the fix, ending with a ship or don't-ship verdict. Review changes nothing; build never overwrites.",
+                    lines: 3635,
+                    refs: 7,
+                    scripts: 0,
+                    files: 8,
+                },
+                {
+                    cmd: "wp-classic-to-block",
+                    lib: "wordpress-classic-to-block",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "assess or migrate a classic theme to a block theme",
+                    desc: "Moves a classic PHP theme to a block theme. ASSESS writes a migration plan: every file and view sorted by how much work it needs, every stored value the theme reads, a risk register, an hour estimate, and a verdict - full migration, hybrid, or rebuild. MIGRATE writes `theme.json`, block templates, parts, and patterns, and moves custom post types, metaboxes, and shortcodes into a companion plugin, keeping every meta key, option, and URL so existing content keeps working.",
+                    lines: 2068,
+                    refs: 18,
+                    scripts: 1,
+                    files: 90,
+                },
+                {
+                    cmd: "wp-bug-audit",
+                    lib: "wordpress-theme-bug-audit",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "full theme bug audit on throwaway test sites",
+                    desc: "Audits a WordPress theme for bugs: reads every file, checks the code against about 160 numbered bug checks, tests everything on throwaway WordPress sites across the PHP versions your customers run, and writes a verified bug list and a coverage report into the theme's `audit/` folder. It asks eight questions and confirms the cost before starting, can resume an interrupted run, and changes nothing in the theme unless you ask for fixes afterwards.",
+                    lines: 742,
+                    refs: 9,
+                    scripts: 18,
+                    files: 28,
+                },
+                {
+                    cmd: "wp-mockup",
+                    lib: "wordpress-theme-mockup",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "static HTML theme mockup in one of 53 styles",
+                    desc: "Builds a clickable static HTML mockup of a classic WordPress theme in one of 53 named design styles - bento, swiss, glassmorphism, retro terminal, y2k, and more. One page per theme template (blog index, single post, page, archives, search, 404), all sharing a header, sidebar, and footer and linking to each other. Built with Tailwind v3 and WordPress class names so `/wp-theme` can turn it into a real theme afterwards.",
+                    lines: 4708,
+                    refs: 54,
+                    scripts: 0,
+                    files: 55,
+                },
+                {
+                    cmd: "wp-doc-pass",
+                    lib: "wordpress-doc-pass",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "document a plugin's code, proof that no code changed",
+                    desc: "Documents a WordPress plugin without changing its code: full PHPDoc and JSDoc on every file, class, constant, property, function, closure, and hook, plus inline comments that explain why, written in the plugin's own coding standard (WordPress, PSR-12, or legacy). A bundled checker compares every file token by token and line by line against a backup and keeps every comment that is really code - WP-CLI help, PHPUnit annotations, lint directives, `translators:` comments - exactly where it was. Tests, phpcs, and static analysis are compared before and after, and the bugs it finds are reported, never fixed unless you ask.",
+                    lines: 272,
+                    refs: 7,
+                    scripts: 6,
+                    files: 14,
+                },
+                {
+                    cmd: "wp-modernize",
+                    lib: "wordpress-modernize",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "WPCS to PSR-12, PSR-4 src/, strict PHP 8.1 types",
+                    desc: "Moves a WordPress plugin from the WordPress Coding Standards to PSR-12, puts its classes in a PSR-4 `src/` tree grouped by role, and adds strict PHP 8.1 types without changing anything outside the plugin can see. Eight phases, each tested against the previous one, committed, and tagged. Names WordPress stored in the database keep working through aliases, and an upgrade test on a site that ran the old version proves it.",
+                    lines: 559,
+                    refs: 8,
+                    scripts: 1,
+                    files: 10,
+                },
+                {
+                    cmd: "wp-submission",
+                    lib: "wordpress-plugin-submission",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "WordPress.org submission gate: verdict, fixes, reviewer reply",
+                    desc: "Decides whether a built plugin is ready for WordPress.org review. Maps the code, readme, and Plugin Check output to the current official guidelines it fetches, catches trialware, license-only services, undisclosed external calls, and readme mismatches, and returns one verdict - do not submit, insufficient evidence, ready after fixes, or ready to submit - with the smallest fix list and a factual reply to the review team. It also handles closures, reopen requests, and updates to approved plugins, and never promises approval.",
+                    lines: 450,
+                    refs: 3,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "wp-demo-video",
+                    lib: "wp-plugin-demo-video",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "MP4 demo video of a plugin's admin screens",
+                    desc: "Records an MP4 demo video of a WordPress plugin's admin screens: reads the plugin's source to find its pages and controls, checks them on your live site, agrees a storyboard with you, and records with Playwright - a full video plus optional clips per scene, checked with contact sheets. Nothing that changes data runs without your approval, and your password never enters the chat.",
+                    lines: 855,
+                    refs: 8,
+                    scripts: 9,
+                    files: 18,
+                },
+                {
+                    cmd: "html-design-styles",
+                    lib: "html-design-styles",
+                    cat: "Design & Frontend",
+                    doc: "design",
+                    type: "Helper",
+                    tag: "53 named design styles with full specs",
+                    desc: "53 named design styles with full color palettes, typography, and component patterns.",
+                    lines: 5479,
+                    refs: 54,
+                    scripts: 0,
+                    files: 55,
+                },
+                {
+                    cmd: "accessibility-audit",
+                    lib: "accessibility-audit",
+                    cat: "Design & Frontend",
+                    doc: "design",
+                    type: "Helper",
+                    tag: "WCAG audit and fixes",
+                    desc: "Checks a page, a folder, or a single component against the accessibility rules, tells you what is broken and why it matters, and can fix it for you. Command only, so it never fires on its own or clashes with another accessibility plugin.",
+                    lines: 1224,
+                    refs: 4,
+                    scripts: 0,
+                    files: 5,
+                },
+                {
+                    cmd: "design-system",
+                    lib: "design-system",
+                    cat: "Design & Frontend",
+                    doc: "design",
+                    type: "Helper",
+                    tag: "reverse-engineer a page into a reusable DESIGN.md",
+                    desc: "Reverse-engineers the HTML and CSS of a page or folder into a reusable `DESIGN.md` - colors, typography, spacing, components, and the signature motifs that define the look - grounded in the real source, never invented.",
+                    lines: 149,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "tailwind-convert",
+                    lib: "tailwind-gut",
+                    cat: "Design & Frontend",
+                    doc: "design",
+                    type: "Helper",
+                    tag: "rip out custom CSS, rewrite in Tailwind utilities",
+                    desc: "Strips a page's custom CSS and rewrites it in Tailwind utilities, pixel-identical, detecting the Tailwind version first and promoting real design tokens into the theme config.",
+                    lines: 187,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "page-cloner",
+                    lib: "page-cloner",
+                    cat: "Design & Frontend",
+                    doc: "design",
+                    type: "Toolkit",
+                    tag: "copy a live URL into one self-contained HTML file",
+                    desc: "Copies a live URL into one self-contained working HTML file that looks and lays out like the original, built from the real rendered page and checked against it in a loop. Faithful copy, no redesign. Needs Claude in Chrome.",
+                    lines: 237,
+                    refs: 2,
+                    scripts: 2,
+                    files: 5,
+                },
+                {
+                    cmd: "page-tailwindify",
+                    lib: "page-tailwindify",
+                    cat: "Design & Frontend",
+                    doc: "design",
+                    type: "Toolkit",
+                    tag: "rebuild a live page's exact look in clean Tailwind",
+                    desc: "Rebuilds a live page's exact look in clean Tailwind, with the framework's generated class hashes replaced by real utility classes and every class traced to a real computed value. Needs Claude in Chrome.",
+                    lines: 465,
+                    refs: 5,
+                    scripts: 2,
+                    files: 8,
+                },
+                {
+                    cmd: "tech-blog-article",
+                    lib: "tech-blog-article",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "technical article from five inputs",
+                    desc: "Writes a technical blog post in the voice of a senior developer - a strong opening, clear code examples, and an honest look at the downsides.",
+                    lines: 180,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "tutorial-builder",
+                    lib: "tutorial-builder",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "hands-on, step-by-step tutorial",
+                    desc: "Turns code or a topic into a step-by-step, hands-on tutorial that teaches instead of describing, where every code block runs and shows its output, with a pre-publish checklist and a yes/no quality gate before you get it.",
+                    lines: 657,
+                    refs: 2,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "draft-contract",
+                    lib: "contract-framework",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "plain-English service agreement",
+                    desc: "Writes a clear, fair freelance or consulting contract from a few plain questions, covering the work, the payment, and who owns the finished result, with anything that depends on where you live flagged for you to check locally.",
+                    lines: 237,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "name-domains",
+                    lib: "naming-strategist",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "10 brandable SaaS domain candidates",
+                    desc: "Brainstorms 10 brandable, easy-to-say domain names for your SaaS, with a shortlist of the best three and a checklist to verify them.",
+                    lines: 333,
+                    refs: 3,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "language-tutor",
+                    lib: "language-tutor",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "translate, or correct and critique writing",
+                    desc: "Translates and explains a phrase, or corrects and critiques your writing, with grammar notes, pronunciation tips, and better alternatives.",
+                    lines: 422,
+                    refs: 3,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "github-bio",
+                    lib: "github-bio",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "five GitHub profile bios, 160 characters each",
+                    desc: "Writes five GitHub profile bios in five styles from six plain questions asked one at a time - your role, stack, databases, cloud, DevOps skills, and specialty. It confirms your answers first, uses only what you told it, and checks every bio with a script so each one fits GitHub's 160-character limit.",
+                    lines: 77,
+                    refs: 0,
+                    scripts: 1,
+                    files: 2,
+                },
+                {
+                    cmd: "book-summary",
+                    lib: "book-summary",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "sectioned book summary, quotes checked",
+                    desc: "Writes a clear, sectioned summary of any book - an overview, the main ideas, key quotes, and practical takeaways, plus an optional LinkedIn post or Twitter/X thread. It asks a few questions in one message, checks it really knows the book (and flags a wrong author), and paraphrases rather than inventing quotes.",
+                    lines: 83,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "claudepuppy",
+                    lib: "claudepuppy",
+                    cat: "Writing & Content",
+                    doc: "writing-and-content",
+                    type: "Helper",
+                    tag: "blog draft in the Claude Puppy voice",
+                    desc: "Rewrites a blog post you wrote in the voice of The Claude Puppy - practical writing about working with Claude, told by a patient dog trainer. You pick a dog flavor (light, medium, or strong), and it keeps every fact, number, link, and code block exactly as you wrote them, then returns the post with a title, summary, category, tags, and reading time, plus a short list of what changed and any sentence it added.",
+                    lines: 164,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "docker-compose-architect",
+                    lib: "docker-compose-architect",
+                    cat: "DevOps & Data",
+                    doc: "devops-and-data",
+                    type: "Helper",
+                    tag: "production docker-compose stack",
+                    desc: "Generates a secure, production docker-compose setup for your app - separate networks, persistent volumes, health checks, and secrets kept out of the file.",
+                    lines: 169,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "kubernetes-architect",
+                    lib: "kubernetes-architect",
+                    cat: "DevOps & Data",
+                    doc: "devops-and-data",
+                    type: "Helper",
+                    tag: "production Kubernetes manifests",
+                    desc: "Turns your app details into production-ready Kubernetes manifests, with health checks, resource limits, and security settings already included.",
+                    lines: 182,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "powershell-script-engine",
+                    lib: "powershell-script-engine",
+                    cat: "DevOps & Data",
+                    doc: "devops-and-data",
+                    type: "Toolkit",
+                    tag: "PSScriptAnalyzer-clean PowerShell script",
+                    desc: "Writes clean, production-ready PowerShell scripts with built-in help, logging, error handling, and safe handling of credentials and destructive actions.",
+                    lines: 182,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "jq",
+                    lib: "jq",
+                    cat: "DevOps & Data",
+                    doc: "devops-and-data",
+                    type: "Helper",
+                    tag: "one explained, copy-paste-ready jq command",
+                    desc: "Builds copy-paste-ready jq one-liners to filter, reshape, and aggregate JSON from APIs and CLI tools, inspecting the JSON structure first and explaining each filter stage.",
+                    lines: 287,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "system-design",
+                    lib: "system-design",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "architecture blueprint, no code",
+                    desc: "Designs a system architecture from four answers - components and data flow, datastore and caching choices, sync versus async communication, and how it survives failure. Infrastructure only, no code.",
+                    lines: 162,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "terraform",
+                    lib: "terraform",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "production HCL: main.tf, variables.tf, outputs.tf",
+                    desc: "Writes production Terraform split into `main.tf`, `variables.tf`, and `outputs.tf`, with least-privilege IAM, a pinned provider, and a state backend recommendation.",
+                    lines: 158,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "cicd-pipeline",
+                    lib: "cicd-pipeline",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "pipeline YAML + secrets checklist",
+                    desc: "Builds a pipeline file for GitHub Actions, GitLab CI, or Jenkins - dependency and Docker layer caching, test gates, and a checklist of every secret you need to set.",
+                    lines: 156,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "data-pipeline",
+                    lib: "data-pipeline",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "idempotent ETL/ELT design with quality tests",
+                    desc: "Designs an idempotent ETL or ELT pipeline - extraction strategy, Bronze/Silver/Gold layers, a conceptual DAG for your orchestrator, quality tests, and a backfill plan.",
+                    lines: 139,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "cloud-migration",
+                    lib: "cloud-migration",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "6 R's plan, landing zone, wave roadmap",
+                    desc: "Plans a data-center exit on the 6 R's, with a landing zone built before any workload moves, a wave-by-wave roadmap, and risk and cost tables.",
+                    lines: 159,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "sre-audit",
+                    lib: "sre-audit",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "SLOs, tracing, burn-rate alerts, log schema",
+                    desc: "Designs the observability you are missing - SLIs and SLOs with error budgets, tracing spans that close your blind spots, burn-rate alerts instead of noisy thresholds, and a logging schema.",
+                    lines: 150,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "finops",
+                    lib: "finops",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "cut the cloud bill without breaking availability",
+                    desc: "Cuts a cloud bill - immediate quick wins, structural architecture shifts, which commitments to actually buy, and the tagging and alarms to keep it from creeping back.",
+                    lines: 156,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "incident-report",
+                    lib: "incident-report",
+                    cat: "Cloud & Architecture",
+                    doc: "cloud-and-architecture",
+                    type: "Helper",
+                    tag: "blameless RCA from incident notes",
+                    desc: "Turns incident notes into a blameless RCA - impact, timeline, a 5 Whys chain that ends at a systemic flaw, and action items that fix systems rather than asking people to be careful.",
+                    lines: 146,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "threat-model",
+                    lib: "threat-model",
+                    cat: "Security",
+                    doc: "security",
+                    type: "Helper",
+                    tag: "STRIDE model with severity-rated threats",
+                    desc: "Runs a STRIDE threat model over your system - trust boundaries, all six categories, every threat severity-rated with a mapped mitigation. Defensive only.",
+                    lines: 159,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "devsecops",
+                    lib: "devsecops",
+                    cat: "Security",
+                    doc: "security",
+                    type: "Helper",
+                    tag: "harden a pipeline, IaC, or cloud IAM config",
+                    desc: "Audits a pipeline, IaC files, or cloud IAM for security flaws - blast radius, the compliance control each one violates, scanning gates to catch it next time, and runtime guardrails.",
+                    lines: 158,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "pentest-report",
+                    lib: "pentest-report",
+                    cat: "Security",
+                    doc: "security",
+                    type: "Helper",
+                    tag: "formal vulnerability report, sanitized PoC",
+                    desc: "Turns notes from an authorized assessment into a formal vulnerability report - CVSS score with vector string, technical cause, sanitized reproduction steps, and both a short-term and long-term fix.",
+                    lines: 170,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "unslop",
+                    lib: "unslop",
+                    cat: "Code Cleanup",
+                    doc: "code-cleanup",
+                    type: "Toolkit",
+                    tag: "strip AI voice without changing behavior",
+                    desc: "Strips the AI-sounding voice out of comments, docstrings, and names in your code without changing how the code runs. Works across 19+ languages.",
+                    lines: 2143,
+                    refs: 2,
+                    scripts: 1,
+                    files: 4,
+                },
+                {
+                    cmd: "strip-unicode",
+                    lib: "strip-unicode",
+                    cat: "Code Cleanup",
+                    doc: "code-cleanup",
+                    type: "Toolkit",
+                    tag: "flatten messy Unicode to 7-bit ASCII",
+                    desc: "Flattens messy Unicode - curly quotes, long dashes, ellipses, bullets, invisible characters - down to plain 7-bit ASCII that works everywhere, either cleaning a file in place or handing back tidied text, with a table of everything it changed. It swaps characters only; it never rewrites your words.",
+                    lines: 84,
+                    refs: 0,
+                    scripts: 1,
+                    files: 2,
+                },
+                {
+                    cmd: "strip-emoji",
+                    lib: "readme-emoji",
+                    cat: "Code Cleanup",
+                    doc: "code-cleanup",
+                    type: "Helper",
+                    tag: "clean the emoji and long dashes out of a feature list",
+                    desc: "Cleans the feature list in a README - strips the leading emoji off each feature bullet, turns a short label dash into a colon, and removes the long dashes from those bullets. Every other byte of the file comes back exactly as it went in.",
+                    lines: 437,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "strip-comments",
+                    lib: "strip-comments",
+                    cat: "Code Cleanup",
+                    doc: "code-cleanup",
+                    type: "Toolkit",
+                    tag: "delete comments, keep headers and pragmas",
+                    desc: "Deletes every comment in a codebase except the header at the top of each file, and except the comment-shaped things that are actually doing work - shebangs, linter and type-checker directives, build pragmas, license notices. It shows you a diff and waits for approval before writing anything, then parse-checks and audits what it changed.",
+                    lines: 407,
+                    refs: 2,
+                    scripts: 4,
+                    files: 7,
+                },
+                {
+                    cmd: "blueprint",
+                    lib: "app-blueprint",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "app blueprint, reviewed, scaffolded, spiked",
+                    desc: "Produces a 12-section production blueprint from your idea, or from a random pick of 2,600 ready-made examples if you don't have one yet - folder layout, data models, API design, dependencies, tests, CI/CD, security, and a risk register - then hardens it: a fresh reviewer checks it against fact sheets for your stack and repairs what the framework doesn't actually do, a throwaway skeleton proves it builds, and short spikes test whatever is still risky. Every stage keeps a numbered version of the plan.",
+                    lines: 30688,
+                    refs: 62,
+                    scripts: 4,
+                    files: 67,
+                },
+                {
+                    cmd: "e2e-tests",
+                    lib: "e2e-playwright",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "Playwright end-to-end suite for a Node/Express app",
+                    desc: "Adds a Playwright end-to-end suite to an existing Node/Express app without touching how the current tests run. Builds a throwaway install rebuilt from the app's own schema each run, a stand-in server for any paid API so the suite never makes a real call, one spec per user journey that needs a real browser, and `TESTING.md`. A real bug keeps its assertion, gets marked `test.fail()`, and is reported rather than fixed.",
+                    lines: 594,
+                    refs: 4,
+                    scripts: 0,
+                    files: 5,
+                },
+                {
+                    cmd: "explain-my-code",
+                    lib: "explain-my-code",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "13-section onboarding doc for a whole repo",
+                    desc: "Reads a whole repo and writes one self-contained onboarding document - architecture, folder map, app flow, design patterns, risks - in 13 fixed sections with Mermaid diagrams, so anyone new to the project can get up to speed just by reading it.",
+                    lines: 101,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "codebase-to-mermaid",
+                    lib: "codebase-to-mermaid",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "validated Mermaid diagrams with file:line cites",
+                    desc: "Reads a codebase you don't know and draws accurate Mermaid flow, sequence, or class diagrams, with every box tied to a real file and line.",
+                    lines: 514,
+                    refs: 3,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "readme-builder",
+                    lib: "readme-builder",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "beginner-friendly README.md",
+                    desc: "Reads a whole project and writes one beginner friendly `README.md` for it, in a fixed order, in plain everyday English, with hype words and long dashes kept out.",
+                    lines: 80,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "changelog-generator",
+                    lib: "changelog-generator",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "changelog built from real diffs, not commit messages",
+                    desc: "Writes a changelog your users can read from a repo's whole git history by reading the real code changes, not the commit messages, then sorts every change and saves `CHANGELOG.md`.",
+                    lines: 144,
+                    refs: 0,
+                    scripts: 1,
+                    files: 2,
+                },
+                {
+                    cmd: "refactor",
+                    lib: "refactoring-analyst",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "prioritized refactoring plan, file:line cited",
+                    desc: "Reviews your codebase and returns a prioritized refactoring plan, with every issue tied to a real file and line and a roadmap to fix them.",
+                    lines: 330,
+                    refs: 3,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "explain-sql",
+                    lib: "sql-breakdown",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "validate and break down one SQL query",
+                    desc: "Reviews one SQL query without running it - a validation check, a clause-by-clause breakdown, the business question it answers, a quality scorecard out of 40, efficiency and risk flags, and a plain-English summary for someone who has never seen SQL.",
+                    lines: 180,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "docblock-rewrite",
+                    lib: "docblock-rewrite",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "PHPDoc/JSDoc -> one-line plain-English comments",
+                    desc: "Rewrites bulky PHPDoc and JSDoc blocks into short, plain-English one-line comments, backing up the originals first.",
+                    lines: 330,
+                    refs: 0,
+                    scripts: 4,
+                    files: 5,
+                },
+                {
+                    cmd: "code-teacher",
+                    lib: "code-teacher",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "annotate a script with teaching comments",
+                    desc: "Turns a script into a teaching version of itself - a header block covering purpose, the tricky parts, the algorithm, usage, and requirements, then line-by-line comments explaining not just what each piece does but why it was written that way, the lessons worth taking away, and a check that the original code came back unchanged. Only comments are added.",
+                    lines: 270,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "fullstack-readme",
+                    lib: "fullstack-feature-readme",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "plain-English feature README for a web app",
+                    desc: "Writes a plain-English README for a web application, frontend, backend, or both: the name, a short description, and every user facing feature grouped into categories a non-technical user can read. Each feature is traced to real code, never taken from a readme, docs, or tests, and the output carries no emojis, dashes, hype words, or setup steps.",
+                    lines: 204,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "explain-regex",
+                    lib: "regex-tutor",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "verified plain-English teardown of one regex",
+                    desc: "Explains one regular expression in plain English for beginners and experienced developers alike - a token-by-token breakdown, its structure and capture groups, examples that match and examples that fail, a step-by-step walkthrough, pitfalls, a catastrophic-backtracking (ReDoS) verdict, safer alternatives, and a jargon-free rewrite. Every example and alternative is checked against real regex engines, and the teardown prints in chat or saves to `REGEX-EXPLAINED.md`.",
+                    lines: 261,
+                    refs: 1,
+                    scripts: 1,
+                    files: 3,
+                },
+                {
+                    cmd: "script-refactor",
+                    lib: "script-refactor",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "clean up agent-run scripts, output kept identical",
+                    desc: "Cleans up bash and Python scripts that another program or AI agent runs, keeping their output, exit codes, and written files exactly the same. It checks what calls each script, runs the old and new versions side by side to prove nothing changed, and lists any bug fix that would change behavior as a numbered proposal you approve before it is applied.",
+                    lines: 270,
+                    refs: 4,
+                    scripts: 1,
+                    files: 6,
+                },
+                {
+                    cmd: "blueprint-forge",
+                    lib: "blueprint-forge",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "codebase -> BLUEPRINT.md, or BLUEPRINT.md -> app",
+                    desc: "Reads an existing codebase and writes one `BLUEPRINT.md` in 14 fixed sections - tech stack with every version's source, architecture, auth, a module map with every export's types, data models, every API route, features, UI, environment variables, tests, open questions, and step-by-step rebuild instructions - detailed enough to rebuild the app without the original code. Secrets are never copied, and a bundled checker confirms the format before you get it. Point it at a blueprint instead and it rebuilds the app: it proposes a plan, waits for your approval, then builds and verifies one step at a time. Afterwards it can scan the new app and compare it with the original blueprint, listing any endpoint, model, or environment variable the rebuild lost.",
+                    lines: 730,
+                    refs: 3,
+                    scripts: 2,
+                    files: 6,
+                },
+                {
+                    cmd: "explain-code",
+                    lib: "code-explainer",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Helper",
+                    tag: "explain one snippet, file, or function at your level",
+                    desc: "Explains one snippet, file, line range, or named function the way an experienced engineer who teaches would, pitched at your level - Beginner, Intermediate, or Advanced - and shaped as a detailed tutorial, a quick summary of 300 words or fewer, interview preparation, or a line-by-line walkthrough. Every risk is marked confirmed or possible, every improvement shows before and after code, and the result can be saved as a Markdown document. It never edits the code.",
+                    lines: 170,
+                    refs: 2,
+                    scripts: 0,
+                    files: 3,
+                },
+                {
+                    cmd: "mermaid-to-ascii",
+                    lib: "mermaid-to-ascii",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Toolkit",
+                    tag: "Mermaid file -> monospace ASCII .txt",
+                    desc: "Turns a Mermaid diagram file into clean text-art you can paste into a comment, a README, or a terminal, saved next to the original as a `.txt`.",
+                    lines: 184,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "mermaid-sequence",
+                    lib: "mermaid-generator",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "bullet-point steps -> one Mermaid sequence diagram",
+                    desc: "Turns a plain bullet-point list of steps into one valid Mermaid sequence diagram, getting the arrow directions right and refusing cleanly when a step is missing its sender.",
+                    lines: 337,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "explain-prompt",
+                    lib: "prompt-dummy",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "any AI prompt in plain, beginner English",
+                    desc: "Explains any AI prompt in plain, everyday English for a total beginner - what it is, what you get back, how it works, and how to use it - in eight fixed sections. It describes the prompt, it never runs it.",
+                    lines: 137,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "analyze-prompt",
+                    lib: "prompt-summary",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "review-ready prompt anatomy breakdown",
+                    desc: "A review-ready breakdown of any AI prompt - anatomy, techniques, output contract, failure modes, and concrete improvements - with the full prompt quoted verbatim in an appendix.",
+                    lines: 129,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "rank-prompt",
+                    lib: "prompt-ranker",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "tier and score a prompt's architecture",
+                    desc: "Audits a prompt's architecture and scores it - a tier and a score on one anchored scale, strengths and risks each tied to real language in the prompt, a row per analysis dimension, and the single change that would move it up the most. It reviews the prompt; it never obeys it.",
+                    lines: 293,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "prompt-rank-table",
+                    lib: "prompt-rank-table",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "the same audit as a tier, a table, one verdict",
+                    desc: "The same eight-dimension prompt audit as `/rank-prompt`, reduced to three sections - a tier and score, one table row per dimension with the evidence quoted from the prompt itself, and a one-line verdict. Built for a fast read, or for putting several prompts side by side.",
+                    lines: 296,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "prompt-stencil",
+                    lib: "prompt-stencil",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "cut a working image prompt into a reusable template",
+                    desc: "Turns one image prompt that already works into a reusable template - the wording that makes the look is locked, at most three things become swappable, and you get a copy-ready template plus filled examples proving the swap works.",
+                    lines: 300,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "prompt-bloat",
+                    lib: "prompt-bloat",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "strip bloat from a prompt or skill file, rules kept",
+                    desc: "Cleans up an overengineered prompt or skill file - trademarks, version banners, invented citations, self-scores, unused mode switches, and repeated text come out, while every rule, gate, score threshold, and output requirement stays. You get a list of every cut with its reason, anything it was unsure about kept and flagged, a check that no rule was lost, and the rewrite, with an offer to save it next to the original.",
+                    lines: 160,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "prompt-audit",
+                    lib: "prompt-audit",
+                    cat: "Docs & Diagrams",
+                    doc: "docs-and-diagrams",
+                    type: "Helper",
+                    tag: "score a prompt /100 with cited deductions and fixes",
+                    desc: "Scores a prompt out of 100 - 115 for agent and coaching prompts - across nine dimensions, with every deduction quoting the passage that caused it. You also get a tier, a scan for stock AI wording, notes for the target model, a ranked fix list, three drop-in replacement fixes, a projected score once they are applied, and a pass, conditional, or fail gate. Instructions hidden in the prompt are logged, never followed.",
+                    lines: 701,
+                    refs: 2,
+                    scripts: 0,
+                    files: 4,
+                },
+                {
+                    cmd: "snippet",
+                    lib: "prompt-snippet",
+                    cat: "Utilities",
+                    doc: "utilities",
+                    type: "Toolkit",
+                    tag: "a complete standalone script in 19 languages",
+                    desc: "Asks three questions - language, task, where to put it - then writes one complete standalone script in any of 19 languages, with help text, exit codes, cleanup on interrupt, a dry run before anything destructive, streamed reads, atomic file replacement, and no secrets in the file.",
+                    lines: 367,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "session-stats",
+                    lib: "session-stats",
+                    cat: "Utilities",
+                    doc: "utilities",
+                    type: "Toolkit",
+                    tag: "this session's stats as standalone HTML",
+                    desc: "Turns a Claude Code session into a single dark-theme HTML report - prompts, tool calls, edits, cost, and files changed. Runs fully offline.",
+                    lines: 103,
+                    refs: 0,
+                    scripts: 2,
+                    files: 4,
+                },
+                {
+                    cmd: "token-audit",
+                    lib: "token-auditor",
+                    cat: "Utilities",
+                    doc: "utilities",
+                    type: "Helper",
+                    tag: "grade token efficiency from four counts",
+                    desc: "Grades how efficiently you used the model from four token counts. Input efficiency, cache strategy, and output discipline each get a letter from a fixed band table, weighted into one overall grade, with the single highest-impact fix named. The same numbers always produce the same letters, so it works as a benchmark tracked over time.",
+                    lines: 288,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "vgademo",
+                    lib: "vgademo",
+                    cat: "Utilities",
+                    doc: "utilities",
+                    type: "Helper",
+                    tag: "sizecoded 1990s assembly demo",
+                    desc: "Generates a retro 1990s-style assembly graphics demo (MS-DOS, boot sector, or BIOS) after a few multiple-choice questions.",
+                    lines: 307,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+                {
+                    cmd: "fix-formula",
+                    lib: "excel-formula-troubleshooter",
+                    cat: "Utilities",
+                    doc: "utilities",
+                    type: "Quick win",
+                    tag: "debug a broken Excel or Sheets formula",
+                    desc: "Fixes broken Excel or Google Sheets formulas - names the real cause, returns a corrected formula, and explains it in plain English.",
+                    lines: 105,
+                    refs: 0,
+                    scripts: 0,
+                    files: 1,
+                },
+                {
+                    cmd: "crash-report",
+                    lib: "crash-report",
+                    cat: "Utilities",
+                    doc: "utilities",
+                    type: "Helper",
+                    tag: "diagnose a macOS .ips or .crash report",
+                    desc: "Explains a macOS crash report in plain English - what happened, the core issue, why it happened, why it crashed that way, and a fix for the developer and one for the user. Every claim has to name the field, thread, or line in the report that backs it up.",
+                    lines: 459,
+                    refs: 1,
+                    scripts: 0,
+                    files: 2,
+                },
+            ];
+
+            const CATS = [
+                {
+                    name: "WordPress",
+                    short: "WordPress",
+                    picker: "forge-wordpress",
+                    icon: "fa-brands fa-wordpress-simple",
+                    screens: "7",
+                },
+                {
+                    name: "Design & Frontend",
+                    short: "Design",
+                    picker: "forge-design",
+                    icon: "fa-solid fa-palette",
+                    screens: "2",
+                },
+                {
+                    name: "Writing & Content",
+                    short: "Writing",
+                    picker: "forge-writing",
+                    icon: "fa-solid fa-pen-nib",
+                    screens: "3",
+                },
+                {
+                    name: "DevOps & Data",
+                    short: "DevOps",
+                    picker: "forge-devops",
+                    icon: "fa-solid fa-server",
+                    screens: "1",
+                },
+                {
+                    name: "Cloud & Architecture",
+                    short: "Cloud",
+                    picker: "forge-cloud",
+                    icon: "fa-solid fa-cloud",
+                    screens: "3",
+                },
+                {
+                    name: "Security",
+                    short: "Security",
+                    picker: "forge-security",
+                    icon: "fa-solid fa-shield-halved",
+                    screens: "1",
+                },
+                {
+                    name: "Code Cleanup",
+                    short: "Cleanup",
+                    picker: "forge-cleanup",
+                    icon: "fa-solid fa-broom",
+                    screens: "1",
+                },
+                { name: "Code", short: "Code", picker: "forge-code", icon: "fa-solid fa-code", screens: "5" },
+                {
+                    name: "Docs & Diagrams",
+                    short: "Docs",
+                    picker: "forge-docs",
+                    icon: "fa-solid fa-diagram-project",
+                    screens: "3",
+                },
+                {
+                    name: "Utilities",
+                    short: "Utilities",
+                    picker: "forge-utils",
+                    icon: "fa-solid fa-wrench",
+                    screens: "2",
+                },
+            ];
+            const GH = "https://github.com/chrismccoy/forge/blob/master/";
+            const esc = (s) =>
+                String(s).replace(
+                    /[&<>"']/g,
+                    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]
+                );
+            const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+            const fmt = (n) => n.toLocaleString("en-US");
+            const byCat = (name) => TOOLS.filter((t) => t.cat === name);
+            const sum = (list, key) => list.reduce((a, t) => a + t[key], 0);
+            const TYPE_LABEL = { Toolkit: "Full toolkit", Helper: "Guided helper", "Quick win": "Quick win" };
+            const typeBadge = (t) =>
+                ({
+                    Toolkit: '<span class="badge bg-green-100 text-green-700">Full toolkit</span>',
+                    Helper: '<span class="badge bg-slate-100 text-slate-600">Guided helper</span>',
+                    "Quick win": '<span class="badge bg-amber-100 text-amber-700">Quick win</span>',
+                })[t] || "";
+
+            const STATS = {
+                tools: TOOLS.length,
+                toolkits: TOOLS.filter((t) => t.type === "Toolkit").length,
+                helpers: TOOLS.filter((t) => t.type === "Helper").length,
+                quick: TOOLS.filter((t) => t.type === "Quick win").length,
+                files: sum(TOOLS, "files"),
+                refs: sum(TOOLS, "refs"),
+                scripts: sum(TOOLS, "scripts"),
+            };
+            document.querySelectorAll("[data-stat]").forEach((el) => {
+                el.textContent = fmt(STATS[el.dataset.stat]);
+            });
+
+            document.getElementById("sideCats").innerHTML = CATS.map(
+                (c) => `
+      <a href="#commands" data-cat-link="${esc(c.name)}" class="flex items-center justify-between px-4 py-1.5 mx-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
+        <span>${esc(c.name)}</span><span class="font-mono text-xs text-slate-500">${byCat(c.name).length}</span>
+      </a>`
+            ).join("");
+
+            const CAPTIONS = {
+                count: "Tools in each category",
+                lines: "Lines of procedure and reference docs bundled per category",
+                refs: "Reference files the tools in each category can load on demand",
+                scripts: "Deterministic runner scripts bundled per category",
+            };
+            function catValue(name, metric) {
+                const list = byCat(name);
+                return metric === "count" ? list.length : sum(list, metric);
+            }
+            function renderChart(metric) {
+                const vals = CATS.map((c) => catValue(c.name, metric));
+                const max = Math.max(...vals, 1);
+                document.getElementById("barChart").innerHTML = CATS.map((c, i) => {
+                    const h = Math.max((vals[i] / max) * 100, vals[i] ? 2 : 0);
+                    return `<div class="bar-col group relative flex h-full flex-1 flex-col justify-end" title="${esc(c.name)}: ${fmt(vals[i])}">
+          <span class="mb-1 text-center font-mono text-[11px] font-semibold tracking-tight text-slate-700">${fmt(vals[i])}</span>
+          <div class="bar w-full" style="height:${h}%"></div>
+        </div>`;
+                }).join("");
+                document.getElementById("barLabels").innerHTML = CATS.map(
+                    (c) =>
+                        `<div class="flex-1 text-center text-[11px] leading-tight text-slate-500" title="${esc(c.name)}"><i class="${c.icon} block mb-1 text-slate-400" aria-hidden="true"></i>${esc(c.short)}</div>`
+                ).join("");
+                document.getElementById("chartCaption").textContent = CAPTIONS[metric];
+            }
+            document.querySelectorAll("[data-metric]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll("[data-metric]").forEach((b) => b.setAttribute("aria-pressed", "false"));
+                    btn.setAttribute("aria-pressed", "true");
+                    renderChart(btn.dataset.metric);
+                });
+            });
+            renderChart("count");
+
+            const TIERS = [
+                {
+                    key: "Toolkit",
+                    label: "Full toolkits",
+                    color: "bg-blue-500",
+                    text: "Multi-step workflows, whole file sets, bundled scripts and checklists",
+                },
+                {
+                    key: "Helper",
+                    label: "Guided helpers",
+                    color: "bg-green-500",
+                    text: "A few questions or a short brief, then one complete result",
+                },
+                {
+                    key: "Quick win",
+                    label: "Quick win",
+                    color: "bg-amber-500",
+                    text: "Hand it one thing, get one clear answer back",
+                },
+            ];
+            document.getElementById("tierBar").innerHTML = TIERS.map(
+                (t) =>
+                    `<div class="${t.color}" style="width:${(TOOLS.filter((x) => x.type === t.key).length / TOOLS.length) * 100}%"></div>`
+            ).join("");
+            document.getElementById("tierList").innerHTML = TIERS.map(
+                (t) => `
+      <li class="flex items-start gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full ${t.color}"></span>
+        <div class="flex-1"><div class="flex justify-between"><span class="font-medium text-slate-900">${t.label}</span><span class="font-mono text-slate-500">${TOOLS.filter((x) => x.type === t.key).length}</span></div>
+        <p class="text-slate-500">${t.text}</p></div></li>`
+            ).join("");
+            document.getElementById("topList").innerHTML = [...TOOLS]
+                .sort((a, b) => b.lines - a.lines)
+                .slice(0, 4)
+                .map(
+                    (t, i) => `
+      <li class="flex items-center justify-between gap-3"><button type="button" data-jump="${t.cmd}" class="truncate font-mono text-blue-600 hover:underline">/${t.cmd}</button><span class="font-mono text-xs text-slate-500 whitespace-nowrap">${fmt(t.lines)} lines</span></li>`
+                )
+                .join("");
+
+            const body = document.getElementById("cmdBody");
+            const detail = document.getElementById("detail");
+            const search = document.getElementById("search");
+            const catFilter = document.getElementById("catFilter");
+            const PAGE_SIZE = 12;
+            let activeCat = "all";
+            let activeType = "all";
+            let page = 0;
+            let selected = TOOLS[0].cmd;
+
+            catFilter.innerHTML =
+                `<option value="all">All categories (${TOOLS.length})</option>` +
+                CATS.map(
+                    (c) => `<option value="${esc(c.name)}">${esc(c.name)} (${byCat(c.name).length})</option>`
+                ).join("");
+
+            function renderDetail(cmd) {
+                const t = TOOLS.find((x) => x.cmd === cmd);
+                if (!t) return;
+                const cat = CATS.find((c) => c.name === t.cat);
+                detail.innerHTML = `
+        <p class="text-[10px] uppercase tracking-widest text-slate-500">Selected command</p>
+        <p class="mt-2 break-all font-mono text-lg font-semibold tracking-tight text-blue-600">/${esc(t.cmd)}</p>
+        <p class="text-sm font-medium text-slate-900">${esc(cap(t.tag))}</p>
+        <div class="mt-3 flex flex-wrap gap-2">${typeBadge(t.type)}<span class="badge bg-slate-100 text-slate-600">${esc(t.cat)}</span></div>
+        <p class="mt-4 text-sm text-slate-600">${esc(t.desc)}</p>
+        <dl class="mt-5 grid grid-cols-3 gap-2 border-t border-slate-100 pt-4 text-center">
+          <div><dt class="text-[11px] text-slate-500">Doc lines</dt><dd class="font-mono text-base font-bold tracking-tight">${fmt(t.lines)}</dd></div>
+          <div><dt class="text-[11px] text-slate-500">References</dt><dd class="font-mono text-base font-bold tracking-tight">${t.refs}</dd></div>
+          <div><dt class="text-[11px] text-slate-500">Scripts</dt><dd class="font-mono text-base font-bold tracking-tight">${t.scripts}</dd></div>
+        </dl>
+        <div class="mt-4 space-y-1 text-xs">
+          <p class="truncate font-mono text-slate-400">lib/${esc(t.lib)}/SKILL.md</p>
+          <p class="text-slate-500">Also via <span class="font-mono text-slate-700">/${cat ? cat.picker : "forge"}</span></p>
+        </div>
+        <a href="${GH}docs/${esc(t.doc)}.md#${esc(t.lib)}" class="mt-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Full write-up <i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i></a>`;
+            }
+
+            function filtered() {
+                const q = search.value.trim().toLowerCase();
+                return TOOLS.filter(
+                    (t) =>
+                        (activeCat === "all" || t.cat === activeCat) &&
+                        (activeType === "all" || t.type === activeType) &&
+                        (!q || [t.cmd, t.lib, t.tag, t.desc, t.cat].join(" ").toLowerCase().includes(q))
+                );
+            }
+
+            function renderTable() {
+                const rows = filtered();
+                const pages = Math.max(Math.ceil(rows.length / PAGE_SIZE), 1);
+                page = Math.min(page, pages - 1);
+                const slice = rows.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+                body.innerHTML = slice
+                    .map(
+                        (t) => `
+        <tr tabindex="0" data-cmd="${t.cmd}" aria-selected="${t.cmd === selected}">
+          <td class="font-mono text-sm font-medium text-blue-600 whitespace-nowrap">/${t.cmd}</td>
+          <td class="min-w-[240px]"><span class="text-slate-900">${esc(cap(t.tag))}</span><span class="block whitespace-nowrap font-mono text-xs text-slate-400">${t.lib}</span></td>
+          <td class="hidden md:table-cell xl:hidden 2xl:table-cell whitespace-nowrap text-slate-600">${esc(t.cat)}</td>
+          <td>${typeBadge(t.type)}</td>
+        </tr>`
+                    )
+                    .join("");
+                document.getElementById("emptyState").classList.toggle("hidden", rows.length > 0);
+                document.getElementById("resultCount").textContent = `${rows.length} of ${TOOLS.length} tools`;
+                document.getElementById("pageInfo").textContent = rows.length
+                    ? `Showing ${page * PAGE_SIZE + 1}-${page * PAGE_SIZE + slice.length} of ${rows.length}`
+                    : "No results";
+                document.getElementById("tablePrev").disabled = page === 0;
+                document.getElementById("tableNext").disabled = page >= pages - 1;
+            }
+
+            function select(cmd) {
+                selected = cmd;
+                body.querySelectorAll("tr").forEach((r) =>
+                    r.setAttribute("aria-selected", String(r.dataset.cmd === cmd))
+                );
+                renderDetail(cmd);
+            }
+
+            function setCat(name) {
+                activeCat = name;
+                catFilter.value = name;
+                page = 0;
+                renderTable();
+            }
+
+            function jumpTo(cmd) {
+                activeType = "all";
+                document
+                    .querySelectorAll("[data-type]")
+                    .forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.type === "all")));
+                search.value = "";
+                const t = TOOLS.find((x) => x.cmd === cmd);
+                activeCat = t.cat;
+                catFilter.value = t.cat;
+                page = Math.floor(filtered().findIndex((x) => x.cmd === cmd) / PAGE_SIZE);
+                renderTable();
+                select(cmd);
+                document.getElementById("commands").scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+
+            body.addEventListener("click", (e) => {
+                const row = e.target.closest("tr[data-cmd]");
+                if (row) select(row.dataset.cmd);
+            });
+            body.addEventListener("keydown", (e) => {
+                const row = e.target.closest("tr[data-cmd]");
+                if (row && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    select(row.dataset.cmd);
+                }
+            });
+            catFilter.addEventListener("change", () => setCat(catFilter.value));
+            document.querySelectorAll("[data-type]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll("[data-type]").forEach((b) => b.setAttribute("aria-pressed", "false"));
+                    btn.setAttribute("aria-pressed", "true");
+                    activeType = btn.dataset.type;
+                    page = 0;
+                    renderTable();
+                });
+            });
+            search.addEventListener("input", () => {
+                page = 0;
+                renderTable();
+            });
+            document.getElementById("tablePrev").addEventListener("click", () => {
+                page--;
+                renderTable();
+            });
+            document.getElementById("tableNext").addEventListener("click", () => {
+                page++;
+                renderTable();
+            });
+            document.addEventListener("click", (e) => {
+                const j = e.target.closest("[data-jump]");
+                if (j) jumpTo(j.dataset.jump);
+                const c = e.target.closest("[data-cat-link]");
+                if (c) setCat(c.dataset.catLink);
+            });
+            renderTable();
+            renderDetail(selected);
+
+            document.getElementById("catPickBody").innerHTML =
+                `
+      <tr><td class="font-mono text-sm text-blue-600 whitespace-nowrap">/forge</td><td>Everything</td><td class="font-mono">${TOOLS.length}</td><td class="font-mono text-slate-500">4 + tool pages</td></tr>` +
+                CATS.map(
+                    (c) => `
+      <tr><td class="font-mono text-sm text-blue-600 whitespace-nowrap">/${c.picker}</td><td class="whitespace-nowrap">${esc(c.name)}</td><td class="font-mono">${byCat(c.name).length}</td><td class="font-mono text-slate-500">${c.screens}</td></tr>`
+                ).join("");
+
+            const pickerList = document.getElementById("pickerList");
+            const picker = { cat: null, page: 0 };
+            const opt = (n, label, sub, attrs, right = "") => `
+      <li><button type="button" ${attrs} class="flex w-full items-start gap-3 px-4 py-3 text-left hover:bg-slate-50">
+        <span class="font-mono text-xs text-slate-400 pt-0.5">( ${n} )</span>
+        <span class="min-w-0 flex-1">
+          <span class="flex items-center justify-between gap-2"><span class="text-sm font-medium text-slate-900">${esc(label)}</span>${right}</span>
+          ${sub ? `<span class="mt-0.5 block text-xs text-slate-500 line-clamp-2">${esc(sub)}</span>` : ""}
+        </span>
+      </button></li>`;
+
+            function renderPicker() {
+                let items,
+                    pages,
+                    html = [];
+                if (!picker.cat) {
+                    pages = Math.ceil(CATS.length / 3);
+                    items = CATS.slice(picker.page * 3, picker.page * 3 + 3);
+                    html = items.map((c, i) =>
+                        opt(i + 1, c.name, `${byCat(c.name).length} tools`, `data-pick-cat="${esc(c.name)}"`)
+                    );
+                    document.getElementById("pickerQuestion").textContent = "Which category?";
+                    document.getElementById("pickerChip").textContent = "Category";
+                    document.getElementById("pickerCmd").textContent = "/forge";
+                } else {
+                    const list = byCat(picker.cat);
+                    pages = Math.ceil(list.length / 3);
+                    items = list.slice(picker.page * 3, picker.page * 3 + 3);
+                    html = items.map((t, i) =>
+                        opt(
+                            i + 1,
+                            cap(t.tag),
+                            t.desc,
+                            `data-jump="${t.cmd}"`,
+                            `<span class="font-mono text-xs text-blue-600 whitespace-nowrap">/${t.cmd}</span>`
+                        )
+                    );
+                    document.getElementById("pickerQuestion").textContent = "Which tool?";
+                    document.getElementById("pickerChip").textContent = picker.cat;
+                    document.getElementById("pickerCmd").textContent =
+                        "/" + CATS.find((c) => c.name === picker.cat).picker;
+                }
+                const n = items.length + 1;
+                if (picker.page < pages - 1)
+                    html.push(
+                        opt(
+                            n,
+                            "More...",
+                            "",
+                            "data-pick-more",
+                            `<span class="font-mono text-xs text-slate-400">page ${picker.page + 2}</span>`
+                        )
+                    );
+                else if (pages > 1) html.push(opt(n, "Back to page 1", "", "data-pick-first"));
+                pickerList.innerHTML = html.join("");
+                document.getElementById("pageLabel").textContent = `pg ${picker.page + 1}/${pages}`;
+            }
+            pickerList.addEventListener("click", (e) => {
+                const b = e.target.closest("button");
+                if (!b) return;
+                if (b.dataset.pickCat) {
+                    picker.cat = b.dataset.pickCat;
+                    picker.page = 0;
+                } else if (b.hasAttribute("data-pick-more")) picker.page++;
+                else if (b.hasAttribute("data-pick-first")) picker.page = 0;
+                else return;
+                renderPicker();
+            });
+            document.getElementById("pickerReset").addEventListener("click", () => {
+                picker.cat = null;
+                picker.page = 0;
+                renderPicker();
+            });
+            renderPicker();
+
+            document.querySelectorAll("[data-copy]").forEach((btn) => {
+                btn.addEventListener("click", async () => {
+                    const text = document.getElementById(`${btn.dataset.copy}-code`).innerText;
+                    const label = btn.querySelector("span");
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        label.textContent = "Copied";
+                    } catch {
+                        label.textContent = "Press Ctrl+C";
+                    }
+                    setTimeout(() => {
+                        label.textContent = "Copy";
+                    }, 1600);
+                });
+            });
+
+            document.addEventListener("click", (e) => {
+                const link = e.target.closest('a[href^="#"]');
+                if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+                    return;
+                const target = document.getElementById(link.getAttribute("href").slice(1));
+                if (!target) return;
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+                target.focus({ preventScroll: true });
+            });
+            if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+
+            const toggle = document.getElementById("navToggle");
+            const sideNav = document.getElementById("sideNav");
+            toggle.addEventListener("click", () => {
+                const open = sideNav.classList.toggle("hidden") === false;
+                toggle.setAttribute("aria-expanded", String(open));
+            });
+
+            const navLinks = [...document.querySelectorAll("[data-nav]")];
+            const ACTIVE = ["bg-blue-600", "text-white"];
+            const INACTIVE = ["text-slate-400", "hover:bg-slate-800", "hover:text-white"];
+            function setActive(id) {
+                navLinks.forEach((a) => {
+                    const on = a.getAttribute("href") === `#${id}`;
+                    a.classList.remove(...(on ? INACTIVE : ACTIVE));
+                    a.classList.add(...(on ? ACTIVE : INACTIVE));
+                    if (on) a.setAttribute("aria-current", "true");
+                    else a.removeAttribute("aria-current");
+                });
+            }
+            document.querySelectorAll("#sideNav a").forEach((a) =>
+                a.addEventListener("click", () => {
+                    if (window.innerWidth < 1024) {
+                        sideNav.classList.add("hidden");
+                        toggle.setAttribute("aria-expanded", "false");
+                    }
+                })
+            );
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) setActive(e.target.id);
+                    });
+                },
+                { rootMargin: "-30% 0px -60% 0px" }
+            );
+            navLinks.forEach((a) => {
+                const el = document.querySelector(a.getAttribute("href"));
+                if (el) observer.observe(el);
+            });
+        </script>
+    </body>
+</html>

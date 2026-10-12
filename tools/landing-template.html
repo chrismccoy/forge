@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Forge</title>
+        <meta
+            name="description"
+            content="84 command-invoked toolkits for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+                    },
+                },
+            };
+        </script>
+
+        <style>
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: "Inter", system-ui, sans-serif;
+                color: #1e293b;
+                background: #f8fafc;
+            }
+            ::selection {
+                background: #3b82f6;
+                color: #ffffff;
+            }
+
+            .dashboard-layout {
+                display: grid;
+                grid-template-columns: 1fr;
+                min-height: 100vh;
+            }
+            @media (min-width: 1024px) {
+                .dashboard-layout {
+                    grid-template-columns: 240px 1fr;
+                }
+            }
+            .sidebar {
+                background: #0f172a;
+                padding: 20px 0;
+            }
+            @media (min-width: 1024px) {
+                .sidebar {
+                    position: sticky;
+                    top: 0;
+                    height: 100vh;
+                    overflow-y: auto;
+                }
+            }
+            .main-content {
+                background: #f8fafc;
+                padding: 24px;
+                overflow-y: auto;
+                min-width: 0;
+            }
+
+            .metric-card {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 20px;
+            }
+
+            .delta-up {
+                color: #22c55e;
+                background: #f0fdf4;
+                padding: 2px 8px;
+                border-radius: 100px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .delta-down {
+                color: #ef4444;
+                background: #fef2f2;
+                padding: 2px 8px;
+                border-radius: 100px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            thead {
+                background: #f8fafc;
+                border-bottom: 2px solid #e2e8f0;
+            }
+            th {
+                text-align: left;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                color: #64748b;
+                letter-spacing: 0.05em;
+                padding: 10px 16px;
+                white-space: nowrap;
+            }
+            td {
+                padding: 14px 16px;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 14px;
+                vertical-align: top;
+            }
+            tr:hover td {
+                background: #f8fafc;
+            }
+            #cmdBody tr {
+                cursor: pointer;
+            }
+            #cmdBody tr[aria-selected="true"] td {
+                background: #eff6ff;
+            }
+
+            .badge {
+                display: inline-block;
+                border-radius: 100px;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 2px 10px;
+                white-space: nowrap;
+            }
+
+            .chart-container {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 20px;
+            }
+            .bar {
+                background: #3b82f6;
+                border-radius: 4px 4px 0 0;
+                transition: height 0.4s ease;
+            }
+            .bar-col:hover .bar {
+                background: #2563eb;
+            }
+
+            .pill-group {
+                display: inline-flex;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                overflow: hidden;
+                background: #ffffff;
+            }
+            .pill-group button {
+                font-size: 12px;
+                font-weight: 500;
+                padding: 6px 12px;
+                color: #64748b;
+                border-right: 1px solid #e2e8f0;
+                white-space: nowrap;
+            }
+            .pill-group button:last-child {
+                border-right: 0;
+            }
+            .pill-group button:hover {
+                color: #1e293b;
+                background: #f8fafc;
+            }
+            .pill-group button[aria-pressed="true"] {
+                background: #eff6ff;
+                color: #2563eb;
+            }
+
+            a:focus-visible,
+            button:focus-visible,
+            input:focus-visible,
+            select:focus-visible,
+            tr:focus-visible {
+                outline: 2px solid #3b82f6;
+                outline-offset: 2px;
+                border-radius: 4px;
+            }
+            [tabindex="-1"]:focus {
+                outline: none;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                    scroll-behavior: auto !important;
+                }
+            }
+        </style>
+    </head>
+    <body class="antialiased">
+        <a
+            href="#main"
+            class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-slate-900 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg"
+            >Skip to main content</a
+        >
+
+        <div class="dashboard-layout">
+            <aside class="sidebar" aria-label="Site navigation">
+                <div class="flex items-center justify-between px-5 pb-4 lg:pb-6">
+                    <a href="#overview" class="flex items-center gap-3 text-white">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600"
+                            ><i class="fa-solid fa-hammer text-base" aria-hidden="true"></i
+                        ></span>
+                        <span>
+                            <span class="block text-sm font-semibold leading-tight">Forge</span>
+                            <span class="block font-mono text-[11px] text-slate-500">v__VERSION__</span>
+                        </span>
+                    </a>
+                    <button
+                        id="navToggle"
+                        class="lg:hidden rounded-lg p-2 text-slate-400 hover:bg-slate-800 hover:text-white"
+                        aria-label="Toggle navigation"
+                        aria-expanded="false"
+                        aria-controls="sideNav"
+                    >
+                        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <nav id="sideNav" aria-label="Primary" class="hidden lg:block">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 px-4 py-2 mt-2 mx-2">Overview</p>
+                    <a
+                        href="#overview"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium bg-blue-600 text-white"
+                        ><i class="fa-solid fa-gauge w-4" aria-hidden="true"></i>Overview</a
+                    >
+                    <a
+                        href="#commands"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-terminal w-4" aria-hidden="true"></i>Commands</a
+                    >
+                    <a
+                        href="#picker"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-list-check w-4" aria-hidden="true"></i>The pickers</a
+                    >
+                    <a
+                        href="#flow"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-diagram-project w-4" aria-hidden="true"></i>How it runs</a
+                    >
+
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 px-4 py-2 mt-4 mx-2">Get started</p>
+                    <a
+                        href="#install"
+                        data-nav
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-solid fa-download w-4" aria-hidden="true"></i>Install</a
+                    >
+                    <a
+                        href="https://github.com/chrismccoy/forge"
+                        class="flex items-center gap-3 px-4 py-2.5 rounded-lg mx-2 text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                        ><i class="fa-brands fa-github w-4" aria-hidden="true"></i>GitHub</a
+                    >
+
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 px-4 py-2 mt-4 mx-2">Categories</p>
+                    <div id="sideCats" class="pb-4"></div>
+                </nav>
+            </aside>
+
+            <main id="main" class="main-content">
+                <div class="mx-auto max-w-7xl space-y-6">
+                    <header id="overview" class="scroll-mt-6">
+                        <nav aria-label="Breadcrumb" class="text-sm text-slate-400 font-medium">
+                            <span>Claude Code</span> <span aria-hidden="true">/</span> <span>Plugins</span>
+                            <span aria-hidden="true">/</span> <span class="text-slate-900">forge</span>
+                        </nav>
+                        <div class="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                            <div class="max-w-2xl">
+                                <h1 class="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
+                                    84 toolkits across ten categories. Each one waits for its command.
+                                </h1>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    One Claude Code plugin for WordPress, design, writing, DevOps, cloud, security,
+                                    cleanup, code, docs, and small utilities. A tool loads its procedure only when you
+                                    type its slash command.
+                                </p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <a
+                                    href="https://github.com/chrismccoy/forge"
+                                    class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                                    ><i class="fa-brands fa-github" aria-hidden="true"></i>View source</a
+                                >
+                                <a
+                                    href="#install"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                                    ><i class="fa-solid fa-download" aria-hidden="true"></i>Install plugin</a
+                                >
+                            </div>
+                        </div>
+                    </header>
+
+                    <section
+                        aria-label="Plugin at a glance"
+                        class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+                    >
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Tools</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-blue-500"
+                                    ><i class="fa-solid fa-toolbox" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p
+                                class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900"
+                                data-stat="tools"
+                            ></p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="delta-up"
+                                    ><i class="fa-solid fa-arrow-up text-[10px]" aria-hidden="true"></i>
+                                    <span data-stat="toolkits"></span
+                                ></span>
+                                full toolkits, <span data-stat="helpers"></span> helpers,
+                                <span data-stat="quick"></span> quick win
+                            </p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Slash commands</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-green-50 text-green-500"
+                                    ><i class="fa-solid fa-terminal" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">95</p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="delta-up"
+                                    ><i class="fa-solid fa-plus text-[10px]" aria-hidden="true"></i> 11</span
+                                >
+                                pickers: <span class="font-mono">/forge</span> plus one per category
+                            </p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Bundled files</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-amber-50 text-amber-500"
+                                    ><i class="fa-solid fa-folder-tree" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p
+                                class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900"
+                                data-stat="files"
+                            ></p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="font-mono" data-stat="refs"></span> references,
+                                <span class="font-mono" data-stat="scripts"></span> scripts, loaded on demand
+                            </p>
+                        </div>
+                        <div class="metric-card">
+                            <div class="flex items-start justify-between">
+                                <p class="text-sm text-slate-500">Auto-triggers</p>
+                                <span
+                                    class="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-red-500"
+                                    ><i class="fa-solid fa-power-off" aria-hidden="true"></i
+                                ></span>
+                            </div>
+                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">0</p>
+                            <p class="mt-3 text-xs text-slate-500">
+                                <span class="delta-down"
+                                    ><i class="fa-solid fa-arrow-down text-[10px]" aria-hidden="true"></i> 0
+                                    tokens</span
+                                >
+                                in context until you call a tool
+                            </p>
+                        </div>
+                    </section>
+
+                    <section aria-label="Catalog breakdown" class="grid grid-cols-1 gap-4 xl:grid-cols-3">
+                        <div class="chart-container xl:col-span-2">
+                            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <h2 class="text-base font-medium text-slate-900">Catalog by category</h2>
+                                    <p class="text-sm text-slate-500" id="chartCaption"></p>
+                                </div>
+                                <div
+                                    class="pill-group overflow-x-auto max-w-full"
+                                    role="group"
+                                    aria-label="Chart metric"
+                                >
+                                    <button type="button" data-metric="count" aria-pressed="true">Tools</button>
+                                    <button type="button" data-metric="lines" aria-pressed="false">Doc lines</button>
+                                    <button type="button" data-metric="refs" aria-pressed="false">References</button>
+                                    <button type="button" data-metric="scripts" aria-pressed="false">Scripts</button>
+                                </div>
+                            </div>
+                            <div class="mt-6 overflow-x-auto">
+                                <div
+                                    id="barChart"
+                                    class="flex h-56 min-w-[560px] items-end gap-3 border-b border-slate-200 pt-6"
+                                    role="img"
+                                    aria-label="Bar chart of the catalog by category"
+                                ></div>
+                                <div id="barLabels" class="flex min-w-[560px] gap-3 pt-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <h2 class="text-base font-medium text-slate-900">Tool size</h2>
+                            <p class="text-sm text-slate-500">
+                                How much each tool does, from <span class="font-mono">SUMMARY.md</span>
+                            </p>
+                            <div
+                                class="mt-5 flex h-3 overflow-hidden rounded-full"
+                                aria-hidden="true"
+                                id="tierBar"
+                            ></div>
+                            <ul class="mt-5 space-y-4 text-sm" id="tierList"></ul>
+                            <div class="mt-5 border-t border-slate-100 pt-4">
+                                <p class="text-[10px] uppercase tracking-widest text-slate-500">Deepest procedures</p>
+                                <ol id="topList" class="mt-3 space-y-2 text-sm"></ol>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section
+                        id="commands"
+                        class="scroll-mt-6 rounded-xl border border-slate-200 bg-white"
+                        aria-labelledby="commandsTitle"
+                    >
+                        <div
+                            class="flex flex-col gap-3 border-b border-slate-200 p-5 lg:flex-row lg:items-center lg:justify-between"
+                        >
+                            <div>
+                                <h2 id="commandsTitle" class="text-base font-medium text-slate-900">All commands</h2>
+                                <p class="text-sm text-slate-500">
+                                    <span id="resultCount"></span>. Select a row to see what the tool does.
+                                </p>
+                            </div>
+                            <div class="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
+                                <label>
+                                    <span class="sr-only">Filter by category</span>
+                                    <select
+                                        id="catFilter"
+                                        class="w-full sm:w-48 rounded-lg border border-slate-200 bg-white py-1.5 pl-3 pr-8 text-sm text-slate-700"
+                                    ></select>
+                                </label>
+                                <div class="pill-group" role="group" aria-label="Filter by tool size">
+                                    <button type="button" data-type="all" aria-pressed="true">All</button>
+                                    <button type="button" data-type="Toolkit" aria-pressed="false">Toolkits</button>
+                                    <button type="button" data-type="Helper" aria-pressed="false">Helpers</button>
+                                    <button type="button" data-type="Quick win" aria-pressed="false">Quick win</button>
+                                </div>
+                                <label class="relative">
+                                    <span class="sr-only">Search commands</span>
+                                    <i
+                                        class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400"
+                                        aria-hidden="true"
+                                    ></i>
+                                    <input
+                                        id="search"
+                                        type="search"
+                                        placeholder="Search tools..."
+                                        class="w-full sm:w-48 rounded-lg border border-slate-200 bg-white py-1.5 pl-8 pr-3 text-sm text-slate-800 placeholder:text-slate-400"
+                                    />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 xl:grid-cols-3">
+                            <div class="min-w-0 xl:col-span-2 xl:border-r xl:border-slate-200">
+                                <div class="overflow-x-auto">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Command</th>
+                                                <th scope="col">What it does</th>
+                                                <th scope="col" class="hidden md:table-cell xl:hidden 2xl:table-cell">
+                                                    Category
+                                                </th>
+                                                <th scope="col">Size</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cmdBody"></tbody>
+                                    </table>
+                                </div>
+                                <p id="emptyState" class="hidden p-8 text-center text-sm text-slate-500">
+                                    No tool matches that filter.
+                                </p>
+                                <div
+                                    class="flex items-center justify-between gap-3 border-t border-slate-200 px-4 py-3"
+                                >
+                                    <p class="text-xs text-slate-500" id="pageInfo"></p>
+                                    <div class="pill-group" role="group" aria-label="Table pages">
+                                        <button type="button" id="tablePrev" aria-label="Previous page">
+                                            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" id="tableNext" aria-label="Next page">
+                                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <aside
+                                id="detail"
+                                class="p-5 xl:sticky xl:top-0 xl:self-start"
+                                aria-live="polite"
+                                aria-label="Command detail"
+                            ></aside>
+                        </div>
+                    </section>
+
+                    <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                        <section id="picker" class="scroll-mt-6 chart-container" aria-labelledby="pickerTitle">
+                            <div class="flex items-center justify-between gap-3">
+                                <div>
+                                    <h2 id="pickerTitle" class="text-base font-medium text-slate-900">
+                                        Not sure which tool? Run the picker.
+                                    </h2>
+                                    <p class="text-sm text-slate-500">
+                                        <span class="font-mono" id="pickerCmd">/forge</span> asks for a category, then a
+                                        tool. Try it here.
+                                    </p>
+                                </div>
+                                <span class="font-mono text-xs text-slate-400 whitespace-nowrap" id="pageLabel"></span>
+                            </div>
+
+                            <div class="mt-5 rounded-xl border border-slate-200">
+                                <div
+                                    class="flex items-center gap-2 border-b border-slate-200 bg-slate-50 px-4 py-2.5 rounded-t-xl"
+                                >
+                                    <span class="badge bg-blue-50 text-blue-600" id="pickerChip">Category</span>
+                                    <span class="text-sm font-medium text-slate-900" id="pickerQuestion"
+                                        >Which category?</span
+                                    >
+                                </div>
+                                <ul id="pickerList" class="divide-y divide-slate-100"></ul>
+                                <div class="border-t border-slate-200 px-4 py-2.5 text-xs text-slate-400 rounded-b-xl">
+                                    [Other] type a tool name to jump straight to it
+                                </div>
+                            </div>
+
+                            <div class="mt-4 flex items-center justify-between gap-3">
+                                <button
+                                    id="pickerReset"
+                                    type="button"
+                                    class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+                                >
+                                    Start over
+                                </button>
+                                <p class="text-xs text-slate-500 text-right">
+                                    Skip it: <span class="font-mono text-slate-700">/forge jq</span>
+                                </p>
+                            </div>
+                        </section>
+
+                        <section
+                            class="scroll-mt-6 rounded-xl border border-slate-200 bg-white"
+                            aria-labelledby="catPickTitle"
+                        >
+                            <div class="p-5 border-b border-slate-200">
+                                <h2 id="catPickTitle" class="text-base font-medium text-slate-900">Category pickers</h2>
+                                <p class="text-sm text-slate-500">
+                                    Skip the category step. Each one runs only its own tools.
+                                </p>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Command</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Tools</th>
+                                            <th scope="col">Screens</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="catPickBody"></tbody>
+                                </table>
+                            </div>
+                            <div class="border-t border-slate-200 px-5 py-4 text-sm text-slate-500">
+                                <p>Name a tool from another category and the picker redirects you:</p>
+                                <pre
+                                    class="mt-2 overflow-x-auto rounded-lg bg-slate-900 p-3 font-mono text-xs text-slate-300"
+                                >/forge-wordpress unslop
+<span class="text-slate-500">→ unslop is a Code Cleanup tool. Run /forge-cleanup, or /unslop directly.</span></pre>
+                            </div>
+                        </section>
+                    </div>
+
+                    <section id="flow" class="scroll-mt-6 chart-container" aria-labelledby="flowTitle">
+                        <h2 id="flowTitle" class="text-base font-medium text-slate-900">How a command runs</h2>
+                        <p class="text-sm text-slate-500">
+                            Procedures live in <span class="font-mono">lib/</span>, not
+                            <span class="font-mono">skills/</span>. Claude Code never discovers them, so no metadata
+                            sits in your context.
+                        </p>
+
+                        <ol class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">01</span
+                                    ><span class="badge bg-green-100 text-green-700">You</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Type the command</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">/unslop ./src</p>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    Anything after the name becomes the tool's argument.
+                                </p>
+                            </li>
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">02</span
+                                    ><span class="badge bg-slate-100 text-slate-600">Command</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Read the "Load first" banner</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">commands/unslop.md</p>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    Frontmatter sets <span class="font-mono">disable-model-invocation: true</span>.
+                                </p>
+                            </li>
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">03</span
+                                    ><span class="badge bg-amber-100 text-amber-700">Procedure</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Load the procedure</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">lib/unslop/SKILL.md</p>
+                                <p class="mt-2 text-sm text-slate-500">Read at that moment, and at no other time.</p>
+                            </li>
+                            <li class="rounded-xl border border-slate-200 p-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-slate-400">04</span
+                                    ><span class="badge bg-green-100 text-green-700">On demand</span>
+                                </div>
+                                <p class="mt-3 text-sm font-medium text-slate-900">Pull detail as needed</p>
+                                <p class="mt-1 font-mono text-xs text-blue-600">
+                                    references/ scripts/ assets/ examples/
+                                </p>
+                                <p class="mt-2 text-sm text-slate-500">
+                                    Rubrics, templates, and runners load only when a step needs them.
+                                </p>
+                            </li>
+                        </ol>
+
+                        <div class="mt-6 overflow-x-auto rounded-xl bg-slate-900 p-4">
+                            <pre
+                                class="font-mono text-xs leading-relaxed text-slate-300"
+                            ><span class="text-slate-500"># repo layout</span>
+.claude-plugin/
+  marketplace.json     <span class="text-slate-500">one plugin entry</span>
+  plugin.json          <span class="text-slate-500">the forge plugin manifest</span>
+commands/              <span class="text-slate-500">95 command files: 84 tools, 11 pickers</span>
+lib/&lt;tool&gt;/
+  SKILL.md             <span class="text-slate-500">the procedure, read only when its command runs</span>
+  references/          <span class="text-slate-500">deep detail, loaded on demand</span>
+  scripts/             <span class="text-slate-500">deterministic runners</span>
+  assets/              <span class="text-slate-500">output templates</span>
+  examples/            <span class="text-slate-500">worked before-and-after files</span>
+docs/                  <span class="text-slate-500">full write-up for each category</span></pre>
+                        </div>
+                    </section>
+
+                    <section id="install" class="scroll-mt-6 chart-container" aria-labelledby="installTitle">
+                        <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                            <div>
+                                <h2 id="installTitle" class="text-base font-medium text-slate-900">Install</h2>
+                                <p class="text-sm text-slate-500">
+                                    Run these in any Claude Code session. One plugin, 95 commands, nothing running in
+                                    the background.
+                                </p>
+                            </div>
+                            <span class="badge bg-green-100 text-green-700 self-start md:self-auto">2 commands</span>
+                        </div>
+
+                        <div class="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+                            <div class="rounded-xl bg-slate-900">
+                                <div class="flex items-center justify-between border-b border-slate-800 px-4 py-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-slate-500">Install</span>
+                                    <button
+                                        type="button"
+                                        data-copy="install"
+                                        class="rounded-md px-2 py-1 text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                                    >
+                                        <i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span>
+                                    </button>
+                                </div>
+                                <pre id="install-code" class="overflow-x-auto p-4 font-mono text-sm text-slate-200">
+/plugin marketplace add chrismccoy/forge
+/plugin install forge@forge</pre
+                                >
+                            </div>
+                            <div class="rounded-xl bg-slate-900">
+                                <div class="flex items-center justify-between border-b border-slate-800 px-4 py-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-slate-500">Then</span>
+                                    <button
+                                        type="button"
+                                        data-copy="then"
+                                        class="rounded-md px-2 py-1 text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white"
+                                    >
+                                        <i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy</span>
+                                    </button>
+                                </div>
+                                <pre
+                                    id="then-code"
+                                    class="overflow-x-auto p-4 font-mono text-sm text-slate-200"
+                                >/forge              <span class="text-slate-500"># pick a category, then a tool</span>
+/forge-code         <span class="text-slate-500"># or one category</span>
+/explain-regex      <span class="text-slate-500"># or any tool directly</span></pre>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer
+                        class="flex flex-col gap-2 border-t border-slate-200 pt-6 pb-2 text-sm text-slate-500 md:flex-row md:items-center md:justify-between"
+                    >
+                        <p>
+                            Forge by
+                            <a
+                                href="https://github.com/chrismccoy"
+                                class="font-medium text-slate-700 hover:text-blue-600"
+                                >Chris McCoy</a
+                            >
+                        </p>
+                        <nav aria-label="Footer" class="flex gap-4">
+                            <a href="https://github.com/chrismccoy/forge" class="hover:text-blue-600">GitHub</a>
+                            <a
+                                href="https://github.com/chrismccoy/forge/blob/master/SUMMARY.md"
+                                class="hover:text-blue-600"
+                                >Summary</a
+                            >
+                            <a
+                                href="https://github.com/chrismccoy/forge/blob/master/FORGE_MAP.txt"
+                                class="hover:text-blue-600"
+                                >Screen map</a
+                            >
+                        </nav>
+                    </footer>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            const TOOLS = __TOOLS__;
+
+            const CATS = [
+                {
+                    name: "WordPress",
+                    short: "WordPress",
+                    picker: "forge-wordpress",
+                    icon: "fa-brands fa-wordpress-simple",
+                    screens: "7",
+                },
+                {
+                    name: "Design & Frontend",
+                    short: "Design",
+                    picker: "forge-design",
+                    icon: "fa-solid fa-palette",
+                    screens: "2",
+                },
+                {
+                    name: "Writing & Content",
+                    short: "Writing",
+                    picker: "forge-writing",
+                    icon: "fa-solid fa-pen-nib",
+                    screens: "3",
+                },
+                {
+                    name: "DevOps & Data",
+                    short: "DevOps",
+                    picker: "forge-devops",
+                    icon: "fa-solid fa-server",
+                    screens: "1",
+                },
+                {
+                    name: "Cloud & Architecture",
+                    short: "Cloud",
+                    picker: "forge-cloud",
+                    icon: "fa-solid fa-cloud",
+                    screens: "3",
+                },
+                {
+                    name: "Security",
+                    short: "Security",
+                    picker: "forge-security",
+                    icon: "fa-solid fa-shield-halved",
+                    screens: "1",
+                },
+                {
+                    name: "Code Cleanup",
+                    short: "Cleanup",
+                    picker: "forge-cleanup",
+                    icon: "fa-solid fa-broom",
+                    screens: "1",
+                },
+                { name: "Code", short: "Code", picker: "forge-code", icon: "fa-solid fa-code", screens: "5" },
+                {
+                    name: "Docs & Diagrams",
+                    short: "Docs",
+                    picker: "forge-docs",
+                    icon: "fa-solid fa-diagram-project",
+                    screens: "3",
+                },
+                {
+                    name: "Utilities",
+                    short: "Utilities",
+                    picker: "forge-utils",
+                    icon: "fa-solid fa-wrench",
+                    screens: "2",
+                },
+            ];
+            const GH = "https://github.com/chrismccoy/forge/blob/master/";
+            const esc = (s) =>
+                String(s).replace(
+                    /[&<>"']/g,
+                    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]
+                );
+            const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+            const fmt = (n) => n.toLocaleString("en-US");
+            const byCat = (name) => TOOLS.filter((t) => t.cat === name);
+            const sum = (list, key) => list.reduce((a, t) => a + t[key], 0);
+            const TYPE_LABEL = { Toolkit: "Full toolkit", Helper: "Guided helper", "Quick win": "Quick win" };
+            const typeBadge = (t) =>
+                ({
+                    Toolkit: '<span class="badge bg-green-100 text-green-700">Full toolkit</span>',
+                    Helper: '<span class="badge bg-slate-100 text-slate-600">Guided helper</span>',
+                    "Quick win": '<span class="badge bg-amber-100 text-amber-700">Quick win</span>',
+                })[t] || "";
+
+            const STATS = {
+                tools: TOOLS.length,
+                toolkits: TOOLS.filter((t) => t.type === "Toolkit").length,
+                helpers: TOOLS.filter((t) => t.type === "Helper").length,
+                quick: TOOLS.filter((t) => t.type === "Quick win").length,
+                files: sum(TOOLS, "files"),
+                refs: sum(TOOLS, "refs"),
+                scripts: sum(TOOLS, "scripts"),
+            };
+            document.querySelectorAll("[data-stat]").forEach((el) => {
+                el.textContent = fmt(STATS[el.dataset.stat]);
+            });
+
+            document.getElementById("sideCats").innerHTML = CATS.map(
+                (c) => `
+      <a href="#commands" data-cat-link="${esc(c.name)}" class="flex items-center justify-between px-4 py-1.5 mx-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
+        <span>${esc(c.name)}</span><span class="font-mono text-xs text-slate-500">${byCat(c.name).length}</span>
+      </a>`
+            ).join("");
+
+            const CAPTIONS = {
+                count: "Tools in each category",
+                lines: "Lines of procedure and reference docs bundled per category",
+                refs: "Reference files the tools in each category can load on demand",
+                scripts: "Deterministic runner scripts bundled per category",
+            };
+            function catValue(name, metric) {
+                const list = byCat(name);
+                return metric === "count" ? list.length : sum(list, metric);
+            }
+            function renderChart(metric) {
+                const vals = CATS.map((c) => catValue(c.name, metric));
+                const max = Math.max(...vals, 1);
+                document.getElementById("barChart").innerHTML = CATS.map((c, i) => {
+                    const h = Math.max((vals[i] / max) * 100, vals[i] ? 2 : 0);
+                    return `<div class="bar-col group relative flex h-full flex-1 flex-col justify-end" title="${esc(c.name)}: ${fmt(vals[i])}">
+          <span class="mb-1 text-center font-mono text-[11px] font-semibold tracking-tight text-slate-700">${fmt(vals[i])}</span>
+          <div class="bar w-full" style="height:${h}%"></div>
+        </div>`;
+                }).join("");
+                document.getElementById("barLabels").innerHTML = CATS.map(
+                    (c) =>
+                        `<div class="flex-1 text-center text-[11px] leading-tight text-slate-500" title="${esc(c.name)}"><i class="${c.icon} block mb-1 text-slate-400" aria-hidden="true"></i>${esc(c.short)}</div>`
+                ).join("");
+                document.getElementById("chartCaption").textContent = CAPTIONS[metric];
+            }
+            document.querySelectorAll("[data-metric]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll("[data-metric]").forEach((b) => b.setAttribute("aria-pressed", "false"));
+                    btn.setAttribute("aria-pressed", "true");
+                    renderChart(btn.dataset.metric);
+                });
+            });
+            renderChart("count");
+
+            const TIERS = [
+                {
+                    key: "Toolkit",
+                    label: "Full toolkits",
+                    color: "bg-blue-500",
+                    text: "Multi-step workflows, whole file sets, bundled scripts and checklists",
+                },
+                {
+                    key: "Helper",
+                    label: "Guided helpers",
+                    color: "bg-green-500",
+                    text: "A few questions or a short brief, then one complete result",
+                },
+                {
+                    key: "Quick win",
+                    label: "Quick win",
+                    color: "bg-amber-500",
+                    text: "Hand it one thing, get one clear answer back",
+                },
+            ];
+            document.getElementById("tierBar").innerHTML = TIERS.map(
+                (t) =>
+                    `<div class="${t.color}" style="width:${(TOOLS.filter((x) => x.type === t.key).length / TOOLS.length) * 100}%"></div>`
+            ).join("");
+            document.getElementById("tierList").innerHTML = TIERS.map(
+                (t) => `
+      <li class="flex items-start gap-3"><span class="mt-1.5 h-2 w-2 shrink-0 rounded-full ${t.color}"></span>
+        <div class="flex-1"><div class="flex justify-between"><span class="font-medium text-slate-900">${t.label}</span><span class="font-mono text-slate-500">${TOOLS.filter((x) => x.type === t.key).length}</span></div>
+        <p class="text-slate-500">${t.text}</p></div></li>`
+            ).join("");
+            document.getElementById("topList").innerHTML = [...TOOLS]
+                .sort((a, b) => b.lines - a.lines)
+                .slice(0, 4)
+                .map(
+                    (t, i) => `
+      <li class="flex items-center justify-between gap-3"><button type="button" data-jump="${t.cmd}" class="truncate font-mono text-blue-600 hover:underline">/${t.cmd}</button><span class="font-mono text-xs text-slate-500 whitespace-nowrap">${fmt(t.lines)} lines</span></li>`
+                )
+                .join("");
+
+            const body = document.getElementById("cmdBody");
+            const detail = document.getElementById("detail");
+            const search = document.getElementById("search");
+            const catFilter = document.getElementById("catFilter");
+            const PAGE_SIZE = 12;
+            let activeCat = "all";
+            let activeType = "all";
+            let page = 0;
+            let selected = TOOLS[0].cmd;
+
+            catFilter.innerHTML =
+                `<option value="all">All categories (${TOOLS.length})</option>` +
+                CATS.map(
+                    (c) => `<option value="${esc(c.name)}">${esc(c.name)} (${byCat(c.name).length})</option>`
+                ).join("");
+
+            function renderDetail(cmd) {
+                const t = TOOLS.find((x) => x.cmd === cmd);
+                if (!t) return;
+                const cat = CATS.find((c) => c.name === t.cat);
+                detail.innerHTML = `
+        <p class="text-[10px] uppercase tracking-widest text-slate-500">Selected command</p>
+        <p class="mt-2 break-all font-mono text-lg font-semibold tracking-tight text-blue-600">/${esc(t.cmd)}</p>
+        <p class="text-sm font-medium text-slate-900">${esc(cap(t.tag))}</p>
+        <div class="mt-3 flex flex-wrap gap-2">${typeBadge(t.type)}<span class="badge bg-slate-100 text-slate-600">${esc(t.cat)}</span></div>
+        <p class="mt-4 text-sm text-slate-600">${esc(t.desc)}</p>
+        <dl class="mt-5 grid grid-cols-3 gap-2 border-t border-slate-100 pt-4 text-center">
+          <div><dt class="text-[11px] text-slate-500">Doc lines</dt><dd class="font-mono text-base font-bold tracking-tight">${fmt(t.lines)}</dd></div>
+          <div><dt class="text-[11px] text-slate-500">References</dt><dd class="font-mono text-base font-bold tracking-tight">${t.refs}</dd></div>
+          <div><dt class="text-[11px] text-slate-500">Scripts</dt><dd class="font-mono text-base font-bold tracking-tight">${t.scripts}</dd></div>
+        </dl>
+        <div class="mt-4 space-y-1 text-xs">
+          <p class="truncate font-mono text-slate-400">lib/${esc(t.lib)}/SKILL.md</p>
+          <p class="text-slate-500">Also via <span class="font-mono text-slate-700">/${cat ? cat.picker : "forge"}</span></p>
+        </div>
+        <a href="${GH}docs/${esc(t.doc)}.md#${esc(t.lib)}" class="mt-4 inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">Full write-up <i class="fa-solid fa-arrow-up-right-from-square text-xs" aria-hidden="true"></i></a>`;
+            }
+
+            function filtered() {
+                const q = search.value.trim().toLowerCase();
+                return TOOLS.filter(
+                    (t) =>
+                        (activeCat === "all" || t.cat === activeCat) &&
+                        (activeType === "all" || t.type === activeType) &&
+                        (!q || [t.cmd, t.lib, t.tag, t.desc, t.cat].join(" ").toLowerCase().includes(q))
+                );
+            }
+
+            function renderTable() {
+                const rows = filtered();
+                const pages = Math.max(Math.ceil(rows.length / PAGE_SIZE), 1);
+                page = Math.min(page, pages - 1);
+                const slice = rows.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+                body.innerHTML = slice
+                    .map(
+                        (t) => `
+        <tr tabindex="0" data-cmd="${t.cmd}" aria-selected="${t.cmd === selected}">
+          <td class="font-mono text-sm font-medium text-blue-600 whitespace-nowrap">/${t.cmd}</td>
+          <td class="min-w-[240px]"><span class="text-slate-900">${esc(cap(t.tag))}</span><span class="block whitespace-nowrap font-mono text-xs text-slate-400">${t.lib}</span></td>
+          <td class="hidden md:table-cell xl:hidden 2xl:table-cell whitespace-nowrap text-slate-600">${esc(t.cat)}</td>
+          <td>${typeBadge(t.type)}</td>
+        </tr>`
+                    )
+                    .join("");
+                document.getElementById("emptyState").classList.toggle("hidden", rows.length > 0);
+                document.getElementById("resultCount").textContent = `${rows.length} of ${TOOLS.length} tools`;
+                document.getElementById("pageInfo").textContent = rows.length
+                    ? `Showing ${page * PAGE_SIZE + 1}-${page * PAGE_SIZE + slice.length} of ${rows.length}`
+                    : "No results";
+                document.getElementById("tablePrev").disabled = page === 0;
+                document.getElementById("tableNext").disabled = page >= pages - 1;
+            }
+
+            function select(cmd) {
+                selected = cmd;
+                body.querySelectorAll("tr").forEach((r) =>
+                    r.setAttribute("aria-selected", String(r.dataset.cmd === cmd))
+                );
+                renderDetail(cmd);
+            }
+
+            function setCat(name) {
+                activeCat = name;
+                catFilter.value = name;
+                page = 0;
+                renderTable();
+            }
+
+            function jumpTo(cmd) {
+                activeType = "all";
+                document
+                    .querySelectorAll("[data-type]")
+                    .forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.type === "all")));
+                search.value = "";
+                const t = TOOLS.find((x) => x.cmd === cmd);
+                activeCat = t.cat;
+                catFilter.value = t.cat;
+                page = Math.floor(filtered().findIndex((x) => x.cmd === cmd) / PAGE_SIZE);
+                renderTable();
+                select(cmd);
+                document.getElementById("commands").scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+
+            body.addEventListener("click", (e) => {
+                const row = e.target.closest("tr[data-cmd]");
+                if (row) select(row.dataset.cmd);
+            });
+            body.addEventListener("keydown", (e) => {
+                const row = e.target.closest("tr[data-cmd]");
+                if (row && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    select(row.dataset.cmd);
+                }
+            });
+            catFilter.addEventListener("change", () => setCat(catFilter.value));
+            document.querySelectorAll("[data-type]").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    document.querySelectorAll("[data-type]").forEach((b) => b.setAttribute("aria-pressed", "false"));
+                    btn.setAttribute("aria-pressed", "true");
+                    activeType = btn.dataset.type;
+                    page = 0;
+                    renderTable();
+                });
+            });
+            search.addEventListener("input", () => {
+                page = 0;
+                renderTable();
+            });
+            document.getElementById("tablePrev").addEventListener("click", () => {
+                page--;
+                renderTable();
+            });
+            document.getElementById("tableNext").addEventListener("click", () => {
+                page++;
+                renderTable();
+            });
+            document.addEventListener("click", (e) => {
+                const j = e.target.closest("[data-jump]");
+                if (j) jumpTo(j.dataset.jump);
+                const c = e.target.closest("[data-cat-link]");
+                if (c) setCat(c.dataset.catLink);
+            });
+            renderTable();
+            renderDetail(selected);
+
+            document.getElementById("catPickBody").innerHTML =
+                `
+      <tr><td class="font-mono text-sm text-blue-600 whitespace-nowrap">/forge</td><td>Everything</td><td class="font-mono">${TOOLS.length}</td><td class="font-mono text-slate-500">4 + tool pages</td></tr>` +
+                CATS.map(
+                    (c) => `
+      <tr><td class="font-mono text-sm text-blue-600 whitespace-nowrap">/${c.picker}</td><td class="whitespace-nowrap">${esc(c.name)}</td><td class="font-mono">${byCat(c.name).length}</td><td class="font-mono text-slate-500">${c.screens}</td></tr>`
+                ).join("");
+
+            const pickerList = document.getElementById("pickerList");
+            const picker = { cat: null, page: 0 };
+            const opt = (n, label, sub, attrs, right = "") => `
+      <li><button type="button" ${attrs} class="flex w-full items-start gap-3 px-4 py-3 text-left hover:bg-slate-50">
+        <span class="font-mono text-xs text-slate-400 pt-0.5">( ${n} )</span>
+        <span class="min-w-0 flex-1">
+          <span class="flex items-center justify-between gap-2"><span class="text-sm font-medium text-slate-900">${esc(label)}</span>${right}</span>
+          ${sub ? `<span class="mt-0.5 block text-xs text-slate-500 line-clamp-2">${esc(sub)}</span>` : ""}
+        </span>
+      </button></li>`;
+
+            function renderPicker() {
+                let items,
+                    pages,
+                    html = [];
+                if (!picker.cat) {
+                    pages = Math.ceil(CATS.length / 3);
+                    items = CATS.slice(picker.page * 3, picker.page * 3 + 3);
+                    html = items.map((c, i) =>
+                        opt(i + 1, c.name, `${byCat(c.name).length} tools`, `data-pick-cat="${esc(c.name)}"`)
+                    );
+                    document.getElementById("pickerQuestion").textContent = "Which category?";
+                    document.getElementById("pickerChip").textContent = "Category";
+                    document.getElementById("pickerCmd").textContent = "/forge";
+                } else {
+                    const list = byCat(picker.cat);
+                    pages = Math.ceil(list.length / 3);
+                    items = list.slice(picker.page * 3, picker.page * 3 + 3);
+                    html = items.map((t, i) =>
+                        opt(
+                            i + 1,
+                            cap(t.tag),
+                            t.desc,
+                            `data-jump="${t.cmd}"`,
+                            `<span class="font-mono text-xs text-blue-600 whitespace-nowrap">/${t.cmd}</span>`
+                        )
+                    );
+                    document.getElementById("pickerQuestion").textContent = "Which tool?";
+                    document.getElementById("pickerChip").textContent = picker.cat;
+                    document.getElementById("pickerCmd").textContent =
+                        "/" + CATS.find((c) => c.name === picker.cat).picker;
+                }
+                const n = items.length + 1;
+                if (picker.page < pages - 1)
+                    html.push(
+                        opt(
+                            n,
+                            "More...",
+                            "",
+                            "data-pick-more",
+                            `<span class="font-mono text-xs text-slate-400">page ${picker.page + 2}</span>`
+                        )
+                    );
+                else if (pages > 1) html.push(opt(n, "Back to page 1", "", "data-pick-first"));
+                pickerList.innerHTML = html.join("");
+                document.getElementById("pageLabel").textContent = `pg ${picker.page + 1}/${pages}`;
+            }
+            pickerList.addEventListener("click", (e) => {
+                const b = e.target.closest("button");
+                if (!b) return;
+                if (b.dataset.pickCat) {
+                    picker.cat = b.dataset.pickCat;
+                    picker.page = 0;
+                } else if (b.hasAttribute("data-pick-more")) picker.page++;
+                else if (b.hasAttribute("data-pick-first")) picker.page = 0;
+                else return;
+                renderPicker();
+            });
+            document.getElementById("pickerReset").addEventListener("click", () => {
+                picker.cat = null;
+                picker.page = 0;
+                renderPicker();
+            });
+            renderPicker();
+
+            document.querySelectorAll("[data-copy]").forEach((btn) => {
+                btn.addEventListener("click", async () => {
+                    const text = document.getElementById(`${btn.dataset.copy}-code`).innerText;
+                    const label = btn.querySelector("span");
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        label.textContent = "Copied";
+                    } catch {
+                        label.textContent = "Press Ctrl+C";
+                    }
+                    setTimeout(() => {
+                        label.textContent = "Copy";
+                    }, 1600);
+                });
+            });
+
+            document.addEventListener("click", (e) => {
+                const link = e.target.closest('a[href^="#"]');
+                if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+                    return;
+                const target = document.getElementById(link.getAttribute("href").slice(1));
+                if (!target) return;
+                e.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+                target.focus({ preventScroll: true });
+            });
+            if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+
+            const toggle = document.getElementById("navToggle");
+            const sideNav = document.getElementById("sideNav");
+            toggle.addEventListener("click", () => {
+                const open = sideNav.classList.toggle("hidden") === false;
+                toggle.setAttribute("aria-expanded", String(open));
+            });
+
+            const navLinks = [...document.querySelectorAll("[data-nav]")];
+            const ACTIVE = ["bg-blue-600", "text-white"];
+            const INACTIVE = ["text-slate-400", "hover:bg-slate-800", "hover:text-white"];
+            function setActive(id) {
+                navLinks.forEach((a) => {
+                    const on = a.getAttribute("href") === `#${id}`;
+                    a.classList.remove(...(on ? INACTIVE : ACTIVE));
+                    a.classList.add(...(on ? ACTIVE : INACTIVE));
+                    if (on) a.setAttribute("aria-current", "true");
+                    else a.removeAttribute("aria-current");
+                });
+            }
+            document.querySelectorAll("#sideNav a").forEach((a) =>
+                a.addEventListener("click", () => {
+                    if (window.innerWidth < 1024) {
+                        sideNav.classList.add("hidden");
+                        toggle.setAttribute("aria-expanded", "false");
+                    }
+                })
+            );
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) setActive(e.target.id);
+                    });
+                },
+                { rootMargin: "-30% 0px -60% 0px" }
+            );
+            navLinks.forEach((a) => {
+                const el = document.querySelector(a.getAttribute("href"));
+                if (el) observer.observe(el);
+            });
+        </script>
+    </body>
+</html>
