@@ -461,3 +461,61 @@ Two ways to invoke:
 The full procedure lives at [`lib/claudepuppy/SKILL.md`](../lib/claudepuppy/SKILL.md) and the slash command at [`commands/claudepuppy.md`](../commands/claudepuppy.md).
 
 ---
+
+## `seo-duel`
+
+Head-to-head SEO judging for two rewrites of the same blog post. You bring both drafts and, if you have it, the keyword, audience, and goal; it tells you which draft is stronger for search, or how to merge them.
+
+```
+/seo-duel
+```
+
+Most "which version is better for SEO" prompts ask a model to read two drafts once and pick one. LLM judges lean toward one position, so the verdict can flip when the drafts are swapped; scores without fixed bands bunch at 7 or 8, so totals land close for no reason; and a draft that ships its own meta lines in the body gets rewarded for leftover editor notes. This tool replaces that with a fixed rubric and two judging runs. Both drafts are scored on 10 SEO criteria with banded 1-10 scores and evidence quoted from each draft, once with each draft read first, and the scores are averaged so the reading order does not tip the result.
+
+The skill body runs the workflow. The intake check runs before any judging, so a missing draft or two drafts on different topics never cost a run. A bundled script fills the judge prompt for both orders, two subagents judge in parallel without knowing about each other, and the main thread maps the labels back to post 1 and post 2, averages the scores, reports the order swing, and applies an ordered decision rule: merge, winner, or narrow win, never a tie.
+
+Facts are flagged, not judged: commands, versions, prices, and product claims go on a "claims to verify" list for a person to check, and leftover draft text such as visible meta lines or publishing checklists goes on a "draft artifacts" list.
+
+## Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/seo-duel/SKILL.md` carries the scope lock, the intake check with its fixed reply texts, the six-step workflow, and the subagent brief. `references/judge-prompt.md` is the judge prompt each subagent runs: the 10 criteria, the score bands, the flag rules, and the per-run decision rule. `references/aggregation.md` covers failure handling, label mapping, averaging, the stability check, the decision rule for averaged scores, and the locked report format. `scripts/fill_prompt.py` fills the judge prompt for both orders, replacing placeholders only in the prompt's Input section in one pass, and `scripts/count_chars.py` checks the suggested title tag and meta description against their limits. The slash command `/seo-duel` takes draft paths or pasted drafts plus context as arguments and asks only for a missing draft, in one plain message rather than an `AskUserQuestion` menu.
+
+## Features
+
+- Two drafts in, one report out. POST 1 + POST 2, with optional KEYWORD, SECONDARY KEYWORDS, AUDIENCE, and GOAL
+- 10 criteria: search intent, title and meta, headings, keyword placement, topical depth, E-E-A-T, readability, featured snippet potential, on-page mechanics, and CTA fit
+- Banded 1-10 scores, evidence gathered for both drafts before any score is given
+- Two parallel judging runs with the drafts swapped; scores averaged and the order swing reported
+- Ordered decision rule: merge, winner, or narrow win, with a merge plan naming the base draft and the sections to move
+- Flags for leftover draft text and for claims to verify; nothing is marked true or false from memory
+- Top 5 fixes ranked by expected SEO impact
+- Title tag and meta description with their lengths checked by a script
+- Drafts are treated as data; an instruction inside a draft is evaluated, never followed
+
+## How it works
+
+1. **Intake.** Find both drafts (pasted or read from paths) and any context. A missing draft gets the matching fixed reply; drafts on different topics get a confirmation question.
+2. **Fill.** Run `fill_prompt.py` to write one judge prompt with post 1 first and one with post 2 first.
+3. **Judge.** Run both prompts in parallel subagents. Each returns the full judgment plus a `SCORES:` line.
+4. **Combine.** Map the labels back to post 1 and post 2, recompute totals, average the scores, report the order swing and stability, and apply the decision rule.
+5. **Output.** Write the report: search intent, averaged score table, stability, verdict, what to keep, flags, top 5 fixes, and the title tag and meta description with checked lengths.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/seo-duel drafts/post-1.md drafts/post-2.md keyword: how to install Claude Code CLI   ← both drafts and a keyword, judges at once
+/seo-duel drafts/post-1.md                                                            ← one draft given, asks for the second
+/seo-duel                                                                             ← asks for both drafts
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"which of these two rewrites is better for SEO"*, *"compare these drafts for SEO"*, *"which version will rank better"*, *"should I merge these two drafts"*
+
+The full procedure lives at [`lib/seo-duel/SKILL.md`](../lib/seo-duel/SKILL.md) and the slash command at [`commands/seo-duel.md`](../commands/seo-duel.md).
+
+---

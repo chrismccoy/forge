@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          8 tools, 3 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          9 tools, 3 pages
 ================================================================================
   Articles, tutorials, contracts, naming, language help, GitHub profile bios,
   book summaries, Claude Puppy rewrites.
@@ -40,7 +40,7 @@
   |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Book summaries and Claude Puppy rewrites.                            |
+  |         Book summaries, Claude Puppy rewrites, and SEO duels.                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -55,6 +55,10 @@
   |  ( 2 )  Rewrite in Puppy voice                              -> /claudepuppy  |
   |         Blog draft rewritten in The Claude Puppy dog-trainer voice, facts    |
   |         and code kept exact.                                                 |
+  |                                                                              |
+  |  ( 3 )  Compare two SEO drafts                                 -> /seo-duel  |
+  |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
+  |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -254,5 +258,29 @@
   .--[Result]-- one rewritten post, facts and code kept exact -----------------.
   |  Title . Summary . Category . Tags . Reading time . post body              |
   |  . What changed (last bullet: "Added sentences:").                         |
+  '----------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------------- /seo-duel -
+  No menus. Two drafts are required; anything passed as an argument is
+  kept and only a missing draft is asked for. Context is optional and
+  inferred when left out.
+
+  .--[Post 1]-- first draft  (required) ---------------------------------------.
+  |  ___ paste it, or a path, e.g. drafts/post-1.md                            |
+  '----------------------------------------------------------------------------'
+  .--[Post 2]-- second draft  (required, same topic) --------------------------.
+  |  ___ paste it, or a path, e.g. drafts/post-2.md                            |
+  '----------------------------------------------------------------------------'
+  .--[Context]-- optional  (default: inferred and flagged) --------------------.
+  |  ___ primary keyword . secondary keywords . audience . goal                |
+  '----------------------------------------------------------------------------'
+  .--[Judging]-- automatic, no input ------------------------------------------.
+  |  two parallel judges, drafts swapped . scores averaged                     |
+  |  . order swing and stability reported.                                     |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one report, drafts named post 1 / post 2 ----------------------.
+  |  Intent . averaged scores . verdict (winner, narrow win, merge)            |
+  |  . keep list . flags . top 5 fixes . title tag + meta checked.             |
   '----------------------------------------------------------------------------'
 ================================================================================

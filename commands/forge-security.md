@@ -111,6 +111,7 @@ answer as a Step 0 direct hit.
 | `readme-builder` | `/forge-code` |
 | `refactor` | `/forge-code` |
 | `script-refactor` | `/forge-code` |
+| `seo-duel` | `/forge-writing` |
 | `session-stats` | `/forge-utils` |
 | `snippet` | `/forge-utils` |
 | `sre-audit` | `/forge-cloud` |

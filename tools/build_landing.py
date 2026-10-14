@@ -91,7 +91,7 @@ def main():
     tools, errors = collect()
     with open(TEMPLATE, encoding="utf-8") as f:
         template = f.read()
-    known = set(re.findall(r"\{ name: '([^']+)'", template))
+    known = set(re.findall(r"""name:\s*["']([^"']+)["']""", template))
     for c in sorted({t["cat"] for t in tools} - known):
         errors.append(f"category '{c}' is missing from CATS in tools/landing-template.html")
     if errors:

@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  84 tools . 95 commands . 11 pickers . 0 skills . nothing auto-fires.
+  85 tools . 96 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a tool name directly, which jumps straight to that tool.
@@ -31,7 +31,7 @@
   |                                                                              |
   |  ( 3 )  Writing & Content                                                    |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios,  |
-  |         book summaries, Claude Puppy rewrites.  8 tools.                     |
+  |         book summaries, Claude Puppy rewrites, SEO duels.  9 tools.          |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
@@ -294,7 +294,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Writing & Content  ( /forge-writing )  -  8 tools, 3 pages -----------------
+--- Writing & Content  ( /forge-writing )  -  9 tools, 3 pages -----------------
 
   .------------------------------------------------------------------------------.
   | [Tool]                                                 Which tool?  (pg 1/3) |
@@ -330,7 +330,7 @@
   |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Book summaries and Claude Puppy rewrites.                            |
+  |         Book summaries, Claude Puppy rewrites, and SEO duels.                |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -345,6 +345,10 @@
   |  ( 2 )  Rewrite in Puppy voice                              -> /claudepuppy  |
   |         Blog draft rewritten in The Claude Puppy dog-trainer voice, facts    |
   |         and code kept exact.                                                 |
+  |                                                                              |
+  |  ( 3 )  Compare two SEO drafts                                 -> /seo-duel  |
+  |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
+  |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
   |  [Other] type a tool name ................................................   |
   '------------------------------------------------------------------------------'
@@ -721,7 +725,7 @@
    |
    +-- Writing & Content ..... /forge-writing
    |    +-- tech-blog-article  tutorial-builder  draft-contract  name-domains
-   |    +-- language-tutor  github-bio  book-summary  claudepuppy
+   |    +-- language-tutor  github-bio  book-summary  claudepuppy  seo-duel
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect
@@ -774,7 +778,8 @@
                     -> prompt-audit,  code-explainer / explain-snippet
                     -> explain-code,  summarize-book / book-notes
                     -> book-summary,  claude-puppy / puppy-voice
-                    -> claudepuppy, plus the long wordpress-* names
+                    -> claudepuppy,  seo-compare / draft-duel
+                    -> seo-duel, plus the long wordpress-* names
                     -> their wp-* commands.
 
 ================================================================================

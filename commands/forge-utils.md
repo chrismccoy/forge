@@ -118,6 +118,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `readme-builder` | `/forge-code` |
 | `refactor` | `/forge-code` |
 | `script-refactor` | `/forge-code` |
+| `seo-duel` | `/forge-writing` |
 | `sre-audit` | `/forge-cloud` |
 | `strip-comments` | `/forge-cleanup` |
 | `strip-emoji` | `/forge-cleanup` |
