@@ -24,7 +24,7 @@ Run in order. Do not skip.
 
 ### Step 1 - Load Authoritative Template
 
-Read `${CLAUDE_PLUGIN_ROOT}/lib/readme-emoji/references/prompt-template.md`. It carries the locked role, the intake rule, the scope rules, the bullet-text prefix definition, both transformations with the label test, the output contract, and three worked examples. Substitute the resolved file content into `{{README_CONTENT}}` inside the template's `<readme>` block.
+Read `${CLAUDE_PLUGIN_ROOT}/lib/readme-emoji/references/prompt-template.md`. It carries the locked role, the intake rule, the scope rules, the bullet-text prefix definition, both transformations with the label test, the output contract, and four worked examples. Substitute the resolved file content into `{{README_CONTENT}}` inside the template's `<readme>` block.
 
 ### Step 2 - Intake
 
@@ -38,7 +38,7 @@ Never guess a path, never scan the working directory, never invent a sample READ
 
 ### Step 3 - Find the Feature Sections
 
-Normalize each heading's text for comparison only - strip a leading emoji run, surrounding emphasis markers, whitespace, and trailing punctuation, then ignore case. The normalized text must **equal** one of: `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`, where `<name>` is the project name taken from the first H1, else the first H2. A heading that merely *contains* one of those words is out of scope.
+Normalize each heading's text for comparison only - strip a leading emoji run, surrounding emphasis markers, whitespace, and trailing punctuation, then ignore case. The normalized text must **equal** one of: `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`, where `<name>` is the project name taken from the first H1, else the first H2 - or it must **start with** the whole word `Features` followed by a space and more text (`Features in Depth`, `Features at a Glance`). A heading that merely *contains* one of those words anywhere else is out of scope: `Deprecated Features`, `Feature Requests`, and `Featured Projects` do not match.
 
 A feature section runs from that heading to the next heading of the same or higher level, or to end of file. Process every feature section in the file. With none present, return the file completely unchanged.
 
@@ -49,13 +49,13 @@ In scope inside a section: unordered bullet list items only (`-`, `*`, `+`), inc
 Apply Transformation 1 to every in-scope bullet first, then Transformation 2 to the result, so word counts are measured after emoji removal.
 
 - **Transformation 1 - leading emoji.** Remove the whole leading emoji run from the bullet text, entire grapheme clusters including variation selectors, skin-tone modifiers, ZWJ sequences, keycaps, and regional indicator pairs, together with the whitespace that follows. Emoji elsewhere in the bullet stay. If removal would leave no text, leave the line unchanged.
-- **Transformation 2 - dashes.** Pass A classifies every dash as a range or a candidate; ranges become plain ASCII hyphens and are never deleted and never become colons. Pass B gives a colon to the first candidate whose preceding text passes the label test - 4 words or fewer, last word not `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes every remaining candidate.
+- **Transformation 2 - dashes.** Pass A classifies every dash as a range or a candidate. A range is a dash between two numeric tokens (`2019–2024`, `10 – 20ms`) or an unspaced dash between two single-letter tokens (`A–Z`, `a–z`); ranges become plain ASCII hyphens and are never deleted and never become colons. Pass B first finds any leading emphasis label - a bold or italic span that opens the bullet text after emoji removal, such as `**Step 1 — Services**` - and makes the candidates inside it ineligible for the colon (they are deleted). It then gives a colon to the first eligible candidate whose preceding text passes the label test - 4 words or fewer, last word not `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes every remaining candidate. The space cleanup after a deletion applies only at the deletion point, never to spaces elsewhere in the line.
 
 At most one candidate per bullet becomes a colon, so no bullet can gain two colons.
 
 ### Step 5 - Silent Verification (before emitting)
 
-Confirm ALL of: line count matches the input; no heading or code-block line changed; every changed line differs only by a removed leading emoji and the dash handling; no bullet gained more than one colon; every numeric range from the input is present as a plain ASCII hyphen range; no en dash or em dash remains in a feature bullet except inside an inline code span, a URL, or link text. Do not narrate this check.
+Confirm ALL of: line count matches the input; no heading or code-block line changed; every changed line differs only by a removed leading emoji and the dash handling; no bullet gained more than one colon; every numeric range and letter range from the input is present as a plain ASCII hyphen range; no space away from a deleted candidate was removed; no en dash or em dash remains in a feature bullet except inside an inline code span, a URL, or link text. Do not narrate this check.
 
 ## Output Format
 
@@ -80,7 +80,7 @@ Confirm ALL of: line count matches the input; no heading or code-block line chan
 
 ### Reference Files
 
-- **`${CLAUDE_PLUGIN_ROOT}/lib/readme-emoji/references/prompt-template.md`** - authoritative master prompt with the `{{README_CONTENT}}` slot, scope rules, both transformations, the label test, the output contract, and three worked examples covering mixed content, a file with no feature section, and candidate selection with range preservation. Load on every invocation.
+- **`${CLAUDE_PLUGIN_ROOT}/lib/readme-emoji/references/prompt-template.md`** - authoritative master prompt with the `{{README_CONTENT}}` slot, scope rules, both transformations, the label test, the output contract, and four worked examples covering mixed content, a file with no feature section, candidate selection with range preservation, and a prefix-matched heading with a letter range and a leading emphasis label. Load on every invocation.
 
 ### Related Tools
 

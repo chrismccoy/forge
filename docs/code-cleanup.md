@@ -162,9 +162,9 @@ Clean the feature list in a Markdown README: strip the leading emoji off each fe
 
 Feature lists collect decoration. A rocket in front of every bullet, an em dash doing the work a colon should do, an en dash range that a find-and-replace would flatten into nonsense. The `readme-emoji` skill does one pass over the feature section and nothing else - headings, paragraphs, tables, badges, HTML, link definitions, ordered lists, and every fenced or indented code block are out of scope and returned byte for byte, including the ones sitting inside the feature section.
 
-What counts as a feature section is a string comparison, not a judgment call. The heading text is normalized - leading emoji, emphasis markers, whitespace, trailing punctuation, case - and must then **equal** `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`. So a `Features` heading with a leading emoji, `## **Features**`, and `## features:` all match, while `Deprecated Features` and `Feature Requests` do not.
+What counts as a feature section is a string comparison, not a judgment call. The heading text is normalized - leading emoji, emphasis markers, whitespace, trailing punctuation, case - and must then **equal** `Features`, `Key Features`, `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`, or **start with** the whole word `Features` followed by more text. So a `Features` heading with a leading emoji, `## **Features**`, `## features:`, and `## Features in Depth` all match, while `Deprecated Features`, `Feature Requests`, and `Featured Projects` do not.
 
-The dash handling is two passes so ranges survive. Pass A classifies every dash: a year range or a number range written with an en dash (U+2013), such as 2019 to 2024 or 10 to 20ms, is a range and become plain ASCII hyphens, never colons and never deleted. Pass B gives a colon to the first remaining candidate whose preceding text is four words or fewer and does not end in `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes the rest. At most one candidate per bullet becomes a colon, so no bullet can end up with two.
+The dash handling is two passes so ranges survive. Pass A classifies every dash: a year range or a number range written with an en dash (U+2013), such as 2019 to 2024 or 10 to 20ms, is a range, and so is an unspaced dash between two single letters, such as A to Z. Ranges become plain ASCII hyphens, never colons and never deleted. Pass B skips any candidate inside a leading bold or italic label, so `**Step 1 — Services** — pick a card` becomes `**Step 1 Services**: pick a card`, then gives a colon to the first remaining candidate whose preceding text is four words or fewer and does not end in `is`, `are`, `was`, `were`, `has`, `have`, or `will` - and deletes the rest. At most one candidate per bullet becomes a colon, so no bullet can end up with two.
 
 ## Technical Overview
 
@@ -172,9 +172,9 @@ One slash command plus its procedure file `lib/readme-emoji/SKILL.md`, which loa
 
 ## Features
 
-- Mechanical scope test. Normalized heading equality against six exact names - a heading that merely contains "Features" is out of scope
+- Mechanical scope test. Normalized heading equality against six exact names, or a heading that starts with the word "Features" - a heading that merely contains "Features" elsewhere is out of scope
 - Whole emoji grapheme clusters removed, variation selectors, skin tones, ZWJ sequences, keycaps, and regional indicator pairs included
-- Ranges preserved. A year range written with an en dash (U+2013) becomes `2019-2024`; a range never becomes a colon and is never deleted
+- Ranges preserved. A year range written with an en dash (U+2013) becomes `2019-2024`, and a letter range becomes `A-Z`; a range never becomes a colon and is never deleted
 - One colon per bullet, awarded by a word count and a seven-word verb list, never by taste
 - Everything else untouchable. Headings, ordered lists, continuation lines, code blocks, tables, badges, HTML, and link definitions come back byte for byte
 - Line count verified against the input before anything is emitted

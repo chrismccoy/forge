@@ -40,10 +40,15 @@ only what the output contract allows.
    text: remove a leading emoji run, remove surrounding emphasis markers (`**`, `__`,
    `*`, `_`), remove leading and trailing whitespace and trailing punctuation, and
    ignore case. The normalized text must EQUAL one of: `Features`, `Key Features`,
-   `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>`.
-   So `## 🚀 Features`, `## **Features**`, and `## features:` all match.
-   A heading that merely contains one of those words does not count: `Deprecated
-   Features`, `Feature Requests`, and `Included Dependencies` are all out of scope.
+   `Feature Highlights`, `Highlights`, `What's Included`, or `Why <name>` — or it
+   must START with the word `Features` followed by a space and more text.
+   So `## 🚀 Features`, `## **Features**`, `## features:`, `## Features in Depth`,
+   and `## Features at a Glance` all match.
+   A heading that merely contains one of those words anywhere else does not count:
+   `Deprecated Features`, `Feature Requests` (singular), `Featured Projects`, and
+   `Included Dependencies` are all out of scope. The prefix test is a string
+   comparison on the whole word `Features`, never a judgment about what the rest of
+   the heading means.
    `<name>` is the project name. Take it from the first level-1 heading in the file;
    if the file has none, from the first level-2 heading; if it has neither, no
    `Why ...` heading matches.
@@ -114,29 +119,48 @@ Handle each bullet's dashes in two passes.
 A **numeric token** is bare digits, digits with a unit, a four-digit year, or an ISO
 date: `10`, `20ms`, `2024`, `2024-01-01`. That is the complete list.
 
-A dash is a **range** in either of these cases:
+A **letter token** is a single ASCII letter that is not joined to another letter or
+digit on its far side: the `A` and `Z` in `A–Z`, `(A–Z)`, or `a–z lists`. A letter
+inside a longer word is not a letter token, so `Front–end` and `Q4–Q1` hold none.
+
+A dash is a **range** in any of these cases:
   - it sits between two numeric tokens with no spaces around it, whichever dash
-    character is used (`2019–2024`, `10–20ms`); or
+    character is used (`2019–2024`, `10–20ms`);
   - it is an **en dash** (`–`) with spaces around it, sitting between two numeric
-    tokens (`10 – 20ms`, `2 – 5 users`, `2019 – 2024`, `2024-01-01 – 2024-06-30`).
+    tokens (`10 – 20ms`, `2 – 5 users`, `2019 – 2024`, `2024-01-01 – 2024-06-30`); or
+  - it sits between two letter tokens with no spaces around it, whichever dash
+    character is used (`A–Z`, `a–z`). A spaced dash between letters (`A — Z`) is
+    never a range.
 An **em dash** (`—`) with spaces around it is never a range, even between two numbers:
 `Version 2 — 3 new tools` is a candidate. This follows ordinary typography, where the
 en dash is the range dash and the em dash is the separator.
 Every other dash is a **candidate**.
 
 Rewrite every range as a plain ASCII hyphen. Only the dash character and the spaces
-immediately around it change; the numbers themselves are never touched. A range is
-never deleted and never becomes a colon.
+immediately around it change; the numbers and letters themselves are never touched.
+A range is never deleted and never becomes a colon.
 
-Close the spaces up by default, so `2019–2024`, `10 – 20ms`, and `2 – 5 users` become
-`2019-2024`, `10-20ms`, and `2-5 users`.
+Close the spaces up by default, so `2019–2024`, `10 – 20ms`, `2 – 5 users`, and `A–Z`
+become `2019-2024`, `10-20ms`, `2-5 users`, and `A-Z`.
 The one exception: if either side of the range already contains a hyphen, keep one
 space on each side of the new hyphen, so `2024-01-01 – 2024-06-30` becomes
 `2024-01-01 - 2024-06-30` rather than an unreadable run of digits and hyphens. If such
 a range was written with no spaces, leave it with no spaces.
 
 **Pass B — resolve the candidates, in order of appearance.**
-Take the first candidate whose preceding text passes the label test below. A
+First, check for a **leading emphasis label**. After Transformation 1, look at what
+follows the bullet marker and any task-list checkbox. If it begins with an opening
+emphasis run (`**`, `__`, `*`, or `_`) — whether that run was part of the prefix or
+came right after a removed leading emoji — the label is everything from that run up to
+the next occurrence of the same run, which closes it. If no closing run
+exists, there is no leading emphasis label. Candidates that sit inside a leading
+emphasis label are never colon-eligible: they are deleted like any other unchosen
+candidate, and the colon search starts with the first candidate after the closing run.
+So `**Step 1 — Services** — pick a card` becomes `**Step 1 Services**: pick a card`,
+never `**Step 1: Services** pick a card`. This is a mechanical test on marker
+positions, not a judgment about what the label means.
+
+Then take the first eligible candidate whose preceding text passes the label test below. A
 candidate's **preceding text** is everything from the start of the bullet text up to
 that dash — always measured from the start, never from the previous dash. So in
 `Runs on every supported platform — Fast — very`, the second candidate's preceding
@@ -146,9 +170,11 @@ around it with a colon and one space, so `Fast — optimized for speed` becomes
 `Fast: optimized for speed`. If no candidate passes the label test, none becomes a
 colon.
 Delete every remaining candidate: remove the dash and the whitespace around it, putting
-a single space in its place. Then apply exactly two cleanups to the line: collapse any
-run of two or more spaces to one space, and delete a space that now falls immediately
-before `,`, `.`, `;`, `:`, `!`, or `?`. Make no other change.
+a single space in its place. Then apply exactly two cleanups, only at the point where
+a candidate was deleted: collapse a run of two or more spaces there to one space, and
+delete the inserted space if it now falls immediately before `,`, `.`, `;`, `:`, `!`,
+or `?`. Spaces elsewhere in the line are never touched, so `every .po into .mo` keeps
+its spaces. Make no other change.
 
 At most one candidate per bullet ever becomes a colon, so no bullet can gain two
 colons. Ranges are untouched regardless of where they sit relative to the colon.
@@ -198,8 +224,9 @@ are the emoji removal and dash handling described above.
 
 Before emitting, silently verify: line count matches, no heading or code-block line
 changed, every changed line differs only by a removed leading emoji and/or the dash
-handling above, no bullet gained more than one colon, every numeric range present in
-the input is still present as a plain ASCII hyphen range, and no en dash or em dash
+handling above, no bullet gained more than one colon, every numeric range and letter
+range present in the input is still present as a plain ASCII hyphen range, no space
+away from a deleted candidate was removed, and no en dash or em dash
 remains anywhere in a feature bullet except inside an inline code span, a URL, or link
 text. Do not narrate this check.
 
@@ -328,6 +355,47 @@ candidate; `Supported 2019–2024` is two words, so it takes the colon. The rang
 is rewritten as `2019-2024`.
 In the third bullet the only candidate fails the label test at more than four words,
 so no candidate qualifies and the dash is deleted.
+
+### Example 4 — prefix heading, letter range, leading label, and local cleanup
+
+<example_input>
+## Features in Depth
+
+- 🔤 **A–Z directory** — every term grouped by letter
+- 🧰 Recompiles every .po into .mo — no extra tools needed
+- 🎴 **Step 1 — Services** — visitors tap a card
+
+## Featured Projects
+
+- 🚀 Not a feature section — untouched
+</example_input>
+
+<example_output>
+````markdown
+## Features in Depth
+
+- **A-Z directory**: every term grouped by letter
+- Recompiles every .po into .mo no extra tools needed
+- **Step 1 Services**: visitors tap a card
+
+## Featured Projects
+
+- 🚀 Not a feature section — untouched
+````
+</example_output>
+
+`Features in Depth` starts with the word `Features`, so it is a feature section.
+`Featured Projects` starts with `Featured`, not the whole word `Features`, so it is out
+of scope. In the first bullet the dash in `A–Z` sits between two letter tokens with no
+spaces, so pass A classifies it as a range and rewrites it as `A-Z`; the em dash after
+the bold label is then the first candidate, and `**A–Z directory**` is two words, so it
+takes the colon. In the second bullet the candidate fails the label test at more than
+four words and is deleted. The spaces before `.po` and `.mo` are not at the deletion
+point, so the cleanup leaves them alone. In the third bullet the emoji is removed, so
+the text now begins with `**`, which makes `**Step 1 — Services**` a leading emphasis
+label. The dash inside it is not colon-eligible and is deleted. The dash after the
+closing `**` is the first eligible candidate; its preceding text `Step 1 — Services`
+counts three words (the lone dash is not a word), so it takes the colon.
 
 ## Input
 
