@@ -83,7 +83,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
-| Plugin documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, and file in the plugin's own standard; a checker proves no code changed. |
+| Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
 | More... | - | Plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
 
 **Page 7** (only if `More...` was chosen a sixth time) - question: "Which tool?", header: "Tool"

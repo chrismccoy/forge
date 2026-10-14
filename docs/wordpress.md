@@ -982,26 +982,30 @@ The full procedure lives at [`lib/wordpress-theme-mockup/SKILL.md`](../lib/wordp
 
 ## `wordpress-doc-pass`
 
-Document every line of a WordPress plugin without touching its code. Point it at a plugin and it writes full PHPDoc and JSDoc on every file, class, constant, property, function, closure, and hook, plus inline comments that explain why the code does what it does, then proves that only comments changed.
+Document every line of a WordPress plugin or theme without touching its code. Point it at a plugin or a theme (classic, block, hybrid, or child) and it writes full PHPDoc and JSDoc on every file, class, constant, property, function, closure, and hook, plus inline comments that explain why the code does what it does, then proves that only comments changed.
 
 ```
 /wp-doc-pass
 ```
 
-Comment passes go wrong in quiet ways: a reformatted line, a renamed variable, a moved `phpcs:ignore`, or a rewritten WP-CLI docblock that changes the command's help and arguments. This tool backs up every file first and runs a checker that compares the code token by token for PHP and by syntax tree for JavaScript, compares the layout line by line, and holds every comment that is really code - WP-CLI docblocks, PHPUnit annotations, lint directives, `translators:` comments, bundler hints, license headers, and plugin header fields - exactly where it was.
+Comment passes go wrong in quiet ways: a reformatted line, a renamed variable, a moved `phpcs:ignore`, or a rewritten WP-CLI docblock that changes the command's help and arguments. This tool backs up every file first and runs a checker that compares the code token by token for PHP and by syntax tree for JavaScript, compares the layout line by line, and holds every comment that is really code - WP-CLI docblocks, PHPUnit annotations, lint directives, `translators:` comments, bundler hints, license headers, and plugin, page-template, and block pattern header fields - exactly where it was.
 
-It follows the plugin's own coding standard. A WordPress Coding Standards ruleset gets WordPress-style docblocks with tabs, hash notation for argument arrays, and no `@return void`. PSR-12 / PER code gets precise modern types and `@return void` everywhere. Legacy code with no standard gets the conventions it already uses. `@since` values are never invented: they come from git tags or a changelog entry that names the symbol, or the tool asks.
+It follows the project's own coding standard. A WordPress Coding Standards ruleset gets WordPress-style docblocks with tabs, hash notation for argument arrays, and no `@return void`. PSR-12 / PER code gets precise modern types and `@return void` everywhere. Legacy code with no standard gets the conventions it already uses. `@since` values are never invented: they come from git tags or a changelog entry that names the symbol, or the tool asks.
+
+Themes get their own rules on top of the standard. Template files say which requests they render, template parts document the `$args` their callers pass, page templates and block patterns keep their headers exactly, pluggable functions get their docblock inside the `function_exists()` guard, and a child theme is documented on its own with the parent read only to describe overrides. `style.css`, `theme.json`, and the block markup in `templates/*.html` and `parts/*.html` are never edited.
 
 ## Technical Overview
 
-One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and seven references, read at the step that needs them: the core rules (hard rule, failure protocol, coverage, hooks, templates, and the list of comments to preserve), one file per coding-standard profile (WPCS, PSR-12 / PER, legacy), the JavaScript and TypeScript rules, the checks each agent runs, and the checker specification. `scripts/checker/` holds the checker: `verify.mjs` proves only comments changed, `coverage.mjs` lists anything still missing a docblock, and `php-tokens.php` bridges to PHP's own tokenizer. It is copied into the session scratchpad and installed there, so nothing is written into the plugin or the plugin folder.
+One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and eight references, read at the step that needs them: the core rules (hard rule, failure protocol, coverage, hooks, templates, and the list of comments to preserve), one file per coding-standard profile (WPCS, PSR-12 / PER, legacy), the theme rules, the JavaScript and TypeScript rules, the checks each agent runs, and the checker specification. `scripts/checker/` holds the checker: `verify.mjs` proves only comments changed, `coverage.mjs` lists anything still missing a docblock, and `php-tokens.php` bridges to PHP's own tokenizer. It is copied into the session scratchpad and installed there, so nothing is written into the target project or this plugin's folder.
 
 ## Features
 
+- Works on plugins and on classic, block, hybrid, and child themes
 - Detects the coding standard from phpcs or php-cs-fixer config, or from the code itself
 - Full docblocks on every file, class, interface, trait, enum, constant, property, function, method, and closure
 - Hook docblocks on every `apply_filters` and `do_action`, with one full docblock per hook and pointer lines elsewhere
-- Template docblocks that list every variable a view receives, read from the code that includes it
+- Template docblocks that list every variable a view or template part receives, read from the code that includes it
+- Theme template, page template, and block pattern docblocks in the default themes' style, with header fields kept exactly
 - JSDoc, WordPress JS docs, or TSDoc, with shared `@typedef`s for localized config objects and block attributes
 - Comments that are code - WP-CLI help, PHPUnit annotations, lint directives, `translators:`, bundler hints, license headers - kept byte for byte
 - Adds a missing `translators:` comment before a gettext call with placeholders
@@ -1013,8 +1017,8 @@ One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and 
 
 ## How it works
 
-1. **Intake.** Plugin path, scope (plugin PHP, JS assets, tests), and whether to report bugs, one question at a time.
-2. **Discover.** Git state, files, coding standard, minimum PHP version, `@since` policy, comments that are code, the hook map, shared JS shapes, and the agent groups.
+1. **Intake.** Plugin or theme path, scope (plugin or theme PHP, JS assets, tests), and whether to report bugs, one question at a time.
+2. **Discover.** Plugin or theme (and which kind of theme), git state, files, coding standard, minimum PHP version, `@since` policy, comments that are code, the hook map, template variables, shared JS shapes, and the agent groups.
 3. **Safety net.** Back up every file, record tests, phpcs, and static analysis, build the rules file, and set up and self-test the checker.
 4. **Document.** Parallel agents, each checking its own files and restoring any file that fails.
 5. **Verify and report.** Checker, syntax, tests, coverage scan, phpcs, and static analysis on the whole tree, then the report and the bug list.
@@ -1022,14 +1026,15 @@ One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and 
 ## How to use it
 
 ```
-/wp-doc-pass                                       ← asks for the plugin and scope
+/wp-doc-pass                                       ← asks for the plugin or theme and scope
 /wp-doc-pass ~/plugins/acme-notes                  ← the whole plugin
 /wp-doc-pass ~/plugins/acme-notes php only         ← skip JS and tests
+/wp-doc-pass ~/themes/acme-blog                    ← the whole theme
 ```
 
 **Requests it handles** (type the command to run it - it never auto-triggers):
 
-> *"add PHPDoc to every function in this plugin"*, *"the WordPress-Docs sniffs are failing, fix the docblocks"*, *"document this plugin's hooks"*, *"add JSDoc to the admin scripts"*
+> *"add PHPDoc to every function in this plugin"*, *"the WordPress-Docs sniffs are failing, fix the docblocks"*, *"document this plugin's hooks"*, *"add JSDoc to the admin scripts"*, *"document my theme's templates and functions.php"*
 
 Comments only. To change or fix code use [`/wp-build`](#wp-builder-pro); for a plain-English feature README use [`/wp-feature-readme`](#wordpress-feature-readme); to format code to the coding standard use [`/wp-format`](#wordpress-formatter).
 

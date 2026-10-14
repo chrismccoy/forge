@@ -222,9 +222,9 @@
   |         Clickable static HTML mockup of a classic theme in one of 53 named   |
   |         styles, ready for /wp-theme.                                         |
   |                                                                              |
-  |  ( 3 )  Plugin documentation pass                           -> /wp-doc-pass  |
-  |         Full PHPDoc / JSDoc on every function, hook, and file in the         |
-  |         plugin's own standard; a checker proves no code changed.             |
+  |  ( 3 )  Plugin and theme documentation pass                 -> /wp-doc-pass  |
+  |         Full PHPDoc / JSDoc on every function, hook, template, and file      |
+  |         of a plugin or theme; a checker proves no code changed.              |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
   |         Plugin modernization, the WordPress.org submission gate, and plugin  |

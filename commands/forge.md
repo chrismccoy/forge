@@ -131,7 +131,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
-| Plugin documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, and file in the plugin's own standard; a checker proves no code changed. |
+| Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
 | More... | - | Plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
 
 | Label | Command | Description |
@@ -341,7 +341,7 @@ Accept these as Step 0 direct hits alongside the Command names above:
 | wordpress-theme-bug-audit, theme-bug-audit, bug-audit, theme-audit | wp-bug-audit |
 | wordpress-theme-mockup, theme-mockup, mockup | wp-mockup |
 | wordpress-classic-to-block, classic-to-block, classic-to-block-theme-migrator, fse-migrate, theme-migrate, block-migrate | wp-classic-to-block |
-| wordpress-doc-pass, doc-pass, plugin-docs, document-plugin | wp-doc-pass |
+| wordpress-doc-pass, doc-pass, plugin-docs, document-plugin, theme-docs, document-theme | wp-doc-pass |
 | wordpress-modernize, psr12, psr12-migration, wp-psr12-migration, wpcs-to-psr12, modernize-plugin | wp-modernize |
 | wordpress-plugin-submission, plugin-submission, submission-gate, wporg-review, plugin-review-reply | wp-submission |
 | wp-plugin-demo-video, demo-video, plugin-demo-video, screencast | wp-demo-video |

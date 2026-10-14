@@ -125,9 +125,9 @@
   |         Clickable static HTML mockup of a classic theme in one of 53 named   |
   |         styles, ready for /wp-theme.                                         |
   |                                                                              |
-  |  ( 3 )  Plugin documentation pass                           -> /wp-doc-pass  |
-  |         Full PHPDoc / JSDoc on every function, hook, and file in the         |
-  |         plugin's own standard; a checker proves no code changed.             |
+  |  ( 3 )  Plugin and theme documentation pass                 -> /wp-doc-pass  |
+  |         Full PHPDoc / JSDoc on every function, hook, template, and file      |
+  |         of a plugin or theme; a checker proves no code changed.              |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
   |         Plugin modernization, the WordPress.org submission gate, and plugin  |
@@ -569,29 +569,32 @@
   '----------------------------------------------------------------------------'
 
 ----------------------------------------------------------------- /wp-doc-pass -
-  Plugin first, then scope, then the bug report, one at a time.  A path
-  argument sets the plugin; "php only" or "no tests" sets the scope.
+  Project first, then scope, then the bug report, one at a time.  A path
+  argument sets the plugin or theme; "php only" or "no tests" sets the scope.
 
-  .--[Plugin]-- the plugin to document ----------------------------------------.
-  |  ( ) the current directory   ( ) a plugin folder found below               |
-  |      no Plugin Name: header found STOPS and asks again                     |
+  .--[Project]-- the plugin or theme to document ------------------------------.
+  |  ( ) the current directory   ( ) a plugin or theme folder found below      |
+  |      no Plugin Name: or Theme Name: header found STOPS and asks again      |
   '----------------------------------------------------------------------------'
   .--[Scope]-- what to document -----------------------------------------------.
   |  [ ] Plugin PHP (src, root, views)   [ ] JS assets (JSDoc)                 |
+  |      or Theme PHP (functions.php, inc, templates, patterns)                |
   |  [ ] Tests / test harness            all three by default                  |
   '----------------------------------------------------------------------------'
   .--[Bug report]-- found along the way ---------------------------------------.
   |  ( ) report, don't fix (Recommended)   ( ) skip the bug report             |
   '----------------------------------------------------------------------------'
   .--[Only if needed]-- asked once each ---------------------------------------.
+  |  both headers found:   ( ) document the plugin   ( ) the theme             |
   |  uncommitted changes:  ( ) continue   ( ) stop and commit first            |
   |  no version history:   ( ) current Version for @since   ( ) omit it        |
   |  conflicting standard: ( ) the one the ruleset enforces (Recommended)      |
   '----------------------------------------------------------------------------'
   .--[Result]-- comments only, proven -----------------------------------------.
   |  Docblocks on every file, class, function, closure, property, constant,    |
-  |  and hook, in the plugin's own standard.  Checker: code, layout, and       |
-  |  comments-that-are-code identical; tests, phpcs, PHPStan as before.        |
+  |  hook, template, and pattern, in the project's own standard.  Checker:     |
+  |  code, layout, and comments-that-are-code identical; tests, phpcs,         |
+  |  PHPStan as before.  CSS, theme.json, and block HTML never touched.        |
   |  Ranked bug list with file:line; nothing fixed unless you ask.             |
   '----------------------------------------------------------------------------'
 
