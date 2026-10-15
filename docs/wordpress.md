@@ -1216,3 +1216,63 @@ One slash command and a procedure bundle. `lib/wp-plugin-demo-video/SKILL.md` ca
 Plugin demo videos only. To build demo content for a theme use [`/wp-demo`](#wp-demo-content); to write a feature README use [`/wp-feature-readme`](#wordpress-feature-readme); to build a plugin use [`/wp-plugin`](#wordpress-plugin).
 
 The full procedure lives at [`lib/wp-plugin-demo-video/SKILL.md`](../lib/wp-plugin-demo-video/SKILL.md), the reference files under [`lib/wp-plugin-demo-video/references/`](../lib/wp-plugin-demo-video/references/), the scripts under [`lib/wp-plugin-demo-video/scripts/`](../lib/wp-plugin-demo-video/scripts/), and the slash command at [`commands/wp-demo-video.md`](../commands/wp-demo-video.md).
+
+---
+
+## `wp-security`
+
+Review a WordPress plugin, theme, or single file for security holes: run a candidate scanner, trace every request value from input to sink, and report each confirmed finding with its severity, file and line, CWE, and a BAD/GOOD fix pair.
+
+```
+/wp-security
+```
+
+Most WordPress vulnerabilities come down to three missed habits: sanitize input early, check a nonce and a capability before every state change, and escape output late. A grep for `$_POST` finds where the request is read, but not whether the value reaches a SQL query, an `echo`, or `update_option()` safely three calls later. A review that stops at grep reports a wall of noise; one that skips grep misses the obvious.
+
+This tool does both. A bundled scanner runs 65 line-based checks - 34 CRITICAL, 28 WARNING, 3 INFO - and, when PHP_CodeSniffer with the WordPress Coding Standards is installed, the WordPress security and database sniffs as well. Its hits are treated as candidates only. Claude then reads what grep cannot see - every `register_rest_route` args array and every hook callback that reads the request - and traces each superglobal and `$request` value to where it is used before anything is reported.
+
+Each finding is rated with a fixed severity model: CRITICAL when it is exploitable without authentication or leads to a data breach, remote code execution, or privilege escalation; WARNING when it needs authentication or specific conditions; INFO for hardening. Admin-only code drops one level, except CSRF and privilege escalation, which stay CRITICAL. A false-positives table keeps correct code - `current_user_can()` inside a `permission_callback`, `wp_kses_post()` on post content, missing nonces in WP-CLI or cron - out of the report.
+
+## Technical Overview
+
+One slash command and a procedure bundle. `lib/wp-security/SKILL.md` carries the workflow, the checks by file type, the severity model and context adjustments, the output format, and the false-positives table. Five reference files hold the depth and are read section by section, never whole: `references/vulnerability-patterns.md` (SQL edge cases, uploads and Zip Slip, deserialization, XXE, path traversal, function execution, redirects, SSRF, IP spoofing, CORS, information disclosure, `wp-config.php`), `references/escaping-guide.md` (escaping by context, `wp_kses`, data passed to JavaScript, non-echo sinks), `references/sanitization-guide.md` (sanitizers by type, `wp_unslash`, arrays and JSON, REST argument callbacks), `references/auth-patterns.md` (capabilities, REST permissions, data exposure, role, option, and meta escalation, authentication bypass), and `references/nonce-csrf-guide.md` (nonce lifecycle, `nopriv` behaviour, bypass patterns). `scripts/wp-sec-scan.sh` is the scanner: Bash and GNU grep with PCRE, results grouped by check and sorted by file and line, and an exit code of 0 (no CRITICAL candidates), 1 (CRITICAL candidates found), or 2 (environment error or unreadable files).
+
+## Features
+
+- 65-check scanner over `.php`, `.inc`, `.phtml`, and JS/TS files, skipping `vendor/`, `node_modules/`, `build/`, `dist/`, and minified files
+- WordPress phpcs security and database sniffs run automatically when installed
+- Every superglobal and `$request` value traced from input to sink, including REST route args arrays and hook callbacks grep cannot see
+- SQL injection: unprepared `$wpdb` queries, `%i` identifiers, `IN` and `ORDER BY`, and request arrays passed as `$wpdb->insert` / `update` data
+- XSS: escaping by context, non-echo sinks such as `printf` and `wp_die`, `add_query_arg()` without escaping, shortcode and block attributes, data passed to JavaScript
+- CSRF and nonces: missing checks, `check_admin_referer()` with no action, `nopriv` handlers, and nonce lifetime
+- Authorization: `is_admin()` and `is_user_logged_in()` as permission checks, REST `permission_callback`, meta capabilities, and privilege escalation through options, roles, user creation, and meta keys
+- Files and requests: uploads and SVG, Zip Slip, path traversal and arbitrary file delete, object injection, SSRF, open redirects, permissive CORS
+- Every finding with file and line, severity, CWE, the vulnerable code, and a BAD/GOOD fix pair, CRITICAL first
+- A false-positives table keeps correct WordPress code out of the report
+
+## How it works
+
+1. **Find the target.** The path passed to the command, or the current directory.
+2. **Run the scanner.** `wp-sec-scan.sh` lists candidates by check, CRITICAL first. Exit 2 is reported as an incomplete scan.
+3. **Read what grep cannot see.** Every `register_rest_route` args array, and every callback on `admin_post_*`, `wp_ajax_*`, `admin_init`, `init`, `wp_loaded`, and `template_redirect` that reads the request.
+4. **Apply the checks.** Each value is traced from input to sink, and each scanner candidate is confirmed or dropped by reading the code.
+5. **Rate.** The severity model, with the admin-only adjustment and the false-positives table.
+6. **Report.** Findings CRITICAL first, each with file and line, severity, CWE, the vulnerable code, and the fix, then a summary of totals and what to fix first.
+
+## How to use it
+
+```
+/wp-security                            ← the plugin or theme in the current directory
+/wp-security ~/plugins/my-plugin        ← a specific plugin or theme folder
+/wp-security includes/class-ajax.php    ← one file
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"is this plugin safe?"*, *"check this AJAX handler for CSRF and capability checks"*, *"review this REST route's permission_callback"*, *"check the $wpdb->prepare usage"*, *"audit the theme before launch"*
+
+**Needs:** Bash 4 or later and GNU grep with PCRE support (`grep -P`; on macOS, `brew install grep`). PHP_CodeSniffer with the WordPress Coding Standards is optional and adds the AST-aware sniffs. The scanner is line-based, so the manual trace is what catches data that moves across functions and files.
+
+Security review only. For a scored security, performance, and architecture review use [`/wp-review`](#wordpress-architect-review); for performance alone use [`/wp-performance`](#wordpress-performance); for WordPress.org readiness use [`/wp-submission`](#wordpress-plugin-submission); to fix the code use [`/wp-build`](#wp-builder-pro). Server hardening (web server, WAF, TLS) is out of scope.
+
+The full procedure lives at [`lib/wp-security/SKILL.md`](../lib/wp-security/SKILL.md), the reference files under [`lib/wp-security/references/`](../lib/wp-security/references/), the scanner at [`lib/wp-security/scripts/wp-sec-scan.sh`](../lib/wp-security/scripts/wp-sec-scan.sh), and the slash command at [`commands/wp-security.md`](../commands/wp-security.md).

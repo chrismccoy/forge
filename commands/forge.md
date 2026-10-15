@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 86 commands in this plugin and then run it. This command
+Route the user to one of the 88 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,9 +29,9 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 21 WordPress commands |
+| `/forge-wordpress` | 22 WordPress commands |
 | `/forge-design` | 6 design and frontend commands |
-| `/forge-writing` | 9 writing and content commands |
+| `/forge-writing` | 10 writing and content commands |
 | `/forge-devops` | 5 DevOps and data commands |
 | `/forge-cloud` | 8 cloud and architecture commands |
 | `/forge-security` | 3 security commands |
@@ -54,9 +54,9 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 21 commands. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 22 commands. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 commands. |
-| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels. 9 commands. |
+| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts. 10 commands. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which category?", header: "Category"
@@ -90,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (21 - page at 4)
+### WordPress (22 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -118,27 +118,28 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, and the security review. |
 
 | Label | Command | Description |
 |---|---|---|
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
-| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
+| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, and the security review. |
 
 | Label | Command | Description |
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
 | Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
-| More... | - | Plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
+| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, and the security review. |
 
 | Label | Command | Description |
 |---|---|---|
 | Modernize a plugin to PSR-12 | wp-modernize | WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested and tagged per phase, no behaviour change. |
 | WordPress.org submission gate | wp-submission | Ready for WordPress.org review? Guideline map, Plugin Check triage, readme check, one verdict, fixes, reviewer reply. |
 | Plugin demo video | wp-demo-video | Record an MP4 demo of a plugin's admin screens: source read, storyboard approved, clips per scene. |
+| Security review | wp-security | 65-check scanner, then every input traced to its sink; CRITICAL / WARNING / INFO with file:line, CWE, and fixes. |
 
 ### Design & Frontend (6 - page at 4)
 
@@ -155,27 +156,28 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Clone a web page | page-cloner | Copy a live URL into one self-contained working HTML file, faithful, no redesign. |
 | Rebuild a page in Tailwind | page-tailwindify | Reproduce a live page's exact look in clean Tailwind, generated class hashes replaced. |
 
-### Writing & Content (9 - page at 4)
+### Writing & Content (10 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Technical article | tech-blog-article | Front-page-quality technical article from topic, audience, angle, and length. |
 | Hands-on tutorial | tutorial-builder | Step-by-step tutorial built from code or a topic. |
 | Service contract | draft-contract | Plain-English eight-section service-agreement framework. |
-| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, and SEO duel commands. |
+| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, SEO duel, and human-voice commands. |
 
 | Label | Command | Description |
 |---|---|---|
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 | Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
-| More... | - | The book summary writer, the Claude Puppy rewriter, and the SEO draft duel. |
+| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, and the human-voice rewriter. |
 
 | Label | Command | Description |
 |---|---|---|
 | Summarize a book | book-summary | Structured book summary: main ideas, checked quotes, takeaways, optional social post. |
 | Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 | Compare two SEO drafts | seo-duel | Two rewrites of one blog post scored on 10 SEO criteria in both orders: winner or merge plan, fixes, title and meta. |
+| Rewrite as a human blog post | human | Any text rewritten as a first-person blog post in an invented persona's voice, every fact kept. |
 
 ### DevOps & Data (5 - page at 4)
 

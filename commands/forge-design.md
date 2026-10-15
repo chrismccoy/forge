@@ -99,6 +99,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `fullstack-readme` | `/forge-code` |
 | `git-forge` | `/forge-devops` |
 | `github-bio` | `/forge-writing` |
+| `human` | `/forge-writing` |
 | `incident-report` | `/forge-cloud` |
 | `jq` | `/forge-devops` |
 | `kubernetes-architect` | `/forge-devops` |
@@ -150,5 +151,6 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `wp-plugin` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |
 | `wp-review` | `/forge-wordpress` |
+| `wp-security` | `/forge-wordpress` |
 | `wp-submission` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |

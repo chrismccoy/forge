@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  86 commands . 11 pickers . 0 skills . nothing auto-fires.
+  88 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  21 commands. |
+  |         Build, review, format, and fill WP plugins and themes.  22 commands. |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
@@ -31,7 +31,8 @@
   |                                                                              |
   |  ( 3 )  Writing & Content                                                    |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios,  |
-  |         book summaries, Claude Puppy rewrites, SEO duels.  9 commands.       |
+  |         book summaries, Claude Puppy rewrites, SEO duels, human-voice posts. |
+  |         10 commands.                                                         |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
@@ -103,7 +104,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  21 commands, 7 pages -------------------
+--- WordPress  ( /forge-wordpress )  -  22 commands, 7 pages -------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/7) |
@@ -185,8 +186,8 @@
   |  ( 4 )  More...                                                   -> page 5  |
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
   |         bug audit, theme mockups, the documentation pass, plugin             |
-  |         modernization, the WordPress.org submission gate, and plugin demo    |
-  |         videos.                                                              |
+  |         modernization, the WordPress.org submission gate, plugin demo        |
+  |         videos, and the security review.                                     |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -208,8 +209,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
   |         The theme bug audit, theme mockups, the documentation pass, plugin   |
-  |         modernization, the WordPress.org submission gate, and plugin demo    |
-  |         videos.                                                              |
+  |         modernization, the WordPress.org submission gate, plugin demo        |
+  |         videos, and the security review.                                     |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -230,8 +231,8 @@
   |         of a plugin or theme; a checker proves no code changed.              |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
-  |         Plugin modernization, the WordPress.org submission gate, and plugin  |
-  |         demo videos.                                                         |
+  |         Plugin modernization, the WordPress.org submission gate, plugin demo |
+  |         videos, and the security review.                                     |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -250,6 +251,10 @@
   |  ( 3 )  Plugin demo video                                 -> /wp-demo-video  |
   |         Record an MP4 demo of a plugin's admin screens: source read,         |
   |         storyboard approved, clips per scene.                                |
+  |                                                                              |
+  |  ( 4 )  Security review                                     -> /wp-security  |
+  |         65-check scanner, then every input traced to its sink; CRITICAL /    |
+  |         WARNING / INFO with file:line, CWE, and fixes.                       |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -297,7 +302,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Writing & Content  ( /forge-writing )  -  9 commands, 3 pages --------------
+--- Writing & Content  ( /forge-writing )  -  10 commands, 3 pages -------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/3) |
@@ -333,7 +338,8 @@
   |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Book summaries, Claude Puppy rewrites, and SEO duels.                |
+  |         Book summaries, Claude Puppy rewrites, SEO duels, and human-voice    |
+  |         blog posts.                                                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -352,6 +358,10 @@
   |  ( 3 )  Compare two SEO drafts                                 -> /seo-duel  |
   |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
   |         orders: winner or merge plan, fixes, title and meta.                 |
+  |                                                                              |
+  |  ( 4 )  Rewrite as a human blog post                              -> /human  |
+  |         Any text rewritten as a first-person blog post in an invented        |
+  |         persona's voice, every fact kept.                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -584,10 +594,8 @@
   |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
-  |         bug audit, theme mockups, the documentation pass, plugin             |
-  |         modernization, the WordPress.org submission gate, and plugin demo    |
-  |         videos.                                                              |
+  |         Safe script refactors, codebase blueprints with rebuilds, and the    |
+  |         code explainer.                                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -733,7 +741,7 @@
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
    |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-classic-to-block
    |    +-- wp-bug-audit  wp-mockup  wp-doc-pass  wp-modernize  wp-submission
-   |    +-- wp-demo-video
+   |    +-- wp-demo-video  wp-security
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system
@@ -742,6 +750,7 @@
    +-- Writing & Content ..... /forge-writing
    |    +-- tech-blog-article  tutorial-builder  draft-contract  name-domains
    |    +-- language-tutor  github-bio  book-summary  claudepuppy  seo-duel
+   |    +-- human
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect

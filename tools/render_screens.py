@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render forge-screens/*.txt to PNGs matching the existing images.
 
-by-file: whole .txt; by-screen: one PNG per ASCII box; menu-only: [Tool]/[Category] boxes.
+by-file: whole .txt; by-screen: one PNG per ASCII box; menu-only: [Command]/[Tool]/[Category] boxes.
 Only writes images whose content changed, so untouched PNGs stay byte-identical.
 
 Usage: tools/render_screens.py forge-screens 00-index,08-code HEAD
@@ -41,7 +41,7 @@ def boxes(lines):
                 out.append(cur); cur = None
     return out
 
-def is_menu(b): return "[Tool]" in b[1] or "[Category]" in b[1]
+def is_menu(b): return any(t in b[1] for t in ("[Command]", "[Tool]", "[Category]"))
 
 def write(im, path, old_lines, new_lines):
     if old_lines == new_lines and os.path.exists(path):

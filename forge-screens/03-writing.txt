@@ -1,8 +1,8 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          9 commands, 3 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          10 commands, 3 pages
 ================================================================================
   Articles, tutorials, contracts, naming, language help, GitHub profile bios,
-  book summaries, Claude Puppy rewrites.
+  book summaries, Claude Puppy rewrites, SEO duels, human-voice blog posts.
 
   STEP 2 - pick a command
 
@@ -40,7 +40,8 @@
   |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Book summaries, Claude Puppy rewrites, and SEO duels.                |
+  |         Book summaries, Claude Puppy rewrites, SEO duels, and human-voice    |
+  |         blog posts.                                                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -59,6 +60,10 @@
   |  ( 3 )  Compare two SEO drafts                                 -> /seo-duel  |
   |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
   |         orders: winner or merge plan, fixes, title and meta.                 |
+  |                                                                              |
+  |  ( 4 )  Rewrite as a human blog post                              -> /human  |
+  |         Any text rewritten as a first-person blog post in an invented        |
+  |         persona's voice, every fact kept.                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -282,5 +287,28 @@
   .--[Result]-- one report, drafts named post 1 / post 2 ----------------------.
   |  Intent . averaged scores . verdict (winner, narrow win, merge)            |
   |  . keep list . flags . top 5 fixes . title tag + meta checked.             |
+  '----------------------------------------------------------------------------'
+
+
+----------------------------------------------------------------------- /human -
+  No menus. A source text is required; anything passed as an argument is
+  kept and only a missing source is asked for, in one plain message.
+  Persona, audience, and length are optional.
+
+  .--[Source]-- text to rewrite  (required) -----------------------------------.
+  |  ___ paste it, a path, or a URL, e.g. notes/launch.md                      |
+  '----------------------------------------------------------------------------'
+  .--[Persona]-- optional  (default: chosen to fit the topic) -----------------.
+  |  ___ e.g. retired chef, first-year teacher                                 |
+  '----------------------------------------------------------------------------'
+  .--[Audience]-- optional  (default: chosen) ---------------------------------.
+  |  ___ e.g. new parents, coworkers                                           |
+  '----------------------------------------------------------------------------'
+  .--[Length]-- optional  (default: about the source length) ------------------.
+  |  ( ) shorter   ( ) same   ( ) longer                                       |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one blog post, every fact kept --------------------------------.
+  |  Plain title . short paragraphs . cliffhanger breaks . 2-4 emphasis        |
+  |  . sincere voice on grave topics . checked by check_post.py.               |
   '----------------------------------------------------------------------------'
 ================================================================================

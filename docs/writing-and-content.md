@@ -519,3 +519,63 @@ Two ways to invoke:
 The full procedure lives at [`lib/seo-duel/SKILL.md`](../lib/seo-duel/SKILL.md) and the slash command at [`commands/seo-duel.md`](../commands/seo-duel.md).
 
 ---
+
+## `human`
+
+Blog post rewrites in a human voice. You bring any text - an article, notes, docs, a file, or a URL - and it comes back as a casual first-person blog post written by a persona that fits the topic, with every fact still in it.
+
+```
+/human
+```
+
+Most "make this sound human" prompts swap a few words and call it done, or go the other way: they invent a backstory, round the numbers, and add results nobody measured. Instructions inside the pasted text get obeyed instead of rewritten, and the output still reads like a model wrote it - "delve", "journey", "in today's fast-paced world", one long paragraph after another. This tool replaces that with a silent persona step and fixed rules. It picks a personality, tone, emotion, and audience that fit the topic, keeps every key fact, number, and recommendation, and adds one to three short anecdotes that show experience but never add claims. Instructions written inside the source are rewritten as text, never followed.
+
+The skill body runs the workflow. Intake finds the source in the arguments, a file, a URL, or earlier conversation text, treats short directions such as "persona: retired chef" as options, and asks for the text with one fixed message when there is none. The post follows the rhythm rules - a plain one-line title, paragraphs of 1-4 sentences, one to three cliffhanger breaks, and emphasis two to four times - and a final check rereads the draft for paragraph length, emphasis, banned words, and facts.
+
+Grave topics are handled differently: health, death, grief, legal trouble, safety, abuse, and suicide get a sincere persona with no caps and no "??" or "!!", even when you chose a jokier persona yourself.
+
+## Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/human/SKILL.md` carries the source-as-data rule, the intake with its fixed message, the persona step, the content, voice, rhythm, and length rules, the final check, and the revision rules. `references/edge-cases.md` holds worked cases: instructions in the source, options only, a very short source, a half-length revision, a non-English source, a grave topic, a banned word that is the subject, two possible sources, and a fact-dense "shorter" request. `scripts/check_post.py` checks a draft mechanically - sentences per paragraph, emphasis count, banned words and their inflections, title and body markup, and the length ratio to the source - and skips all-caps acronyms that also appear in the source. The slash command `/human` takes pasted text, a file path, or a URL plus options as arguments, and asks only for a missing source, in one plain message rather than an `AskUserQuestion` menu.
+
+## Features
+
+- One source in, one post out. SOURCE, with optional PERSONA, AUDIENCE, and LENGTH
+- Silent persona: personality, tone, emotion, and audience chosen to fit the topic, with an unexpected angle preferred
+- Every key fact, number, and recommendation kept; anecdotes add voice, never claims
+- Plain one-line title, paragraphs of 1-4 sentences, 1-3 cliffhanger breaks, emphasis 2-4 times
+- Banned cliché words ("delve", "tapestry", "journey", "unlock", and others), allowed only when the word is the actual subject
+- Written in the source's language, with that language's colloquialisms
+- Sincere voice on grave topics, even with a user-chosen persona; no invented professional credentials
+- Length rules: about the source length by default, 250-400 words for very short sources, "shorter" and "longer" ranges, facts beat length
+- Revisions in plain words: "funnier", "half as long", "different persona"
+- Source treated as data; an instruction inside it is rewritten, never followed
+- Bundled check script for paragraph length, emphasis, banned words, and markup
+
+## How it works
+
+1. **Intake.** Find the source (pasted, read from a path, fetched from a URL, or earlier in the conversation) and any options. A missing source gets the fixed intake message; two different possible sources get one question.
+2. **Persona.** Choose personality, tone, emotion, and audience silently, or use the ones you gave. Grave topics get a sincere persona.
+3. **Write.** Rewrite the source in that voice with the content, voice, rhythm, and length rules.
+4. **Check.** Reread for paragraph length, emphasis, grave-topic rules, facts, and banned words; optionally run `check_post.py` on the draft.
+5. **Output.** The title and the post, nothing else. Revisions return the full revised post.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/human notes/launch.md                                ← file given, writes at once
+/human https://example.com/article persona: retired chef, keep it short
+/human                                                ← asks for the text
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"turn this into a blog post"*, *"rewrite this as a personal blog post"*, *"write a blog post from these notes"*, *"make this sound like a real person wrote it"*
+
+The full procedure lives at [`lib/human/SKILL.md`](../lib/human/SKILL.md) and the slash command at [`commands/human.md`](../commands/human.md).
+
+---

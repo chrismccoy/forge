@@ -84,6 +84,10 @@ Checks whether a plugin is ready to submit to the WordPress.org Plugin Directory
 
 Records an MP4 demo video of a plugin's admin screens. It reads the plugin source to find its admin pages, settings, and controls, then checks those screens on the live site. You approve a storyboard before anything is recorded. The recording is done with Playwright, with a visible cursor and an option to save one clip per scene.
 
+## wp-security
+
+Reviews a plugin or theme for security holes. A bundled scanner runs 65 checks to find likely problems, and each one is confirmed by reading the code before it is reported. It traces every value that comes from a request, such as form fields, URL parameters, and REST arguments, to the place where it is used. The report lists each finding as CRITICAL, WARNING, or INFO, with the file and line, a CWE number, and the vulnerable code next to the fixed version.
+
 ## html-design-styles
 
 Applies one of 53 named design styles to a page or component, such as bento, brutalist, vaporwave, kawaii, or glassmorphism. If you do not name a style, it shows a picker, and if your style name matches several entries, it asks you to choose one. Each style has a full spec covering colors, fonts, component patterns, and visual effects. The output is a single self-contained HTML file that uses the exact values from the spec.
@@ -143,6 +147,10 @@ Rewrites a blog draft in the voice of The Claude Puppy, a patient dog trainer wh
 ## seo-duel
 
 Compares two rewrites of the same blog post for SEO. It scores both drafts on 10 criteria with evidence, and judges them twice in opposite order to remove any bias toward the first one read. The report names a winner or a plan to merge the two. It also gives the top five fixes, a title tag, and a meta description.
+
+## human
+
+Rewrites any text as a personal, first-person blog post. It invents a persona that fits the topic and writes in a casual voice with short paragraphs, keeping every fact and number from the source. Grave topics such as grief or health get a sincere voice with no jokes. Instructions written inside the source are rewritten as text, never followed.
 
 ## docker-compose-architect
 

@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  86 commands . 11 pickers . 0 skills . nothing auto-fires.
+  88 commands . 11 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's command screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -14,7 +14,7 @@
   | [Category]                                        Which category?  (pg 1/4) |
   |-----------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                 -> open  01-wordpress.txt |
-  |         Build, review, format, and fill WP plugins and themes.  21          |
+  |         Build, review, format, and fill WP plugins and themes.  22          |
   |         commands.                                                           |
   |                                                                             |
   |  ( 2 )  Design & Frontend                            -> open  02-design.txt |
@@ -23,7 +23,8 @@
   |                                                                             |
   |  ( 3 )  Writing & Content                           -> open  03-writing.txt |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios, |
-  |         book summaries, Claude Puppy rewrites, SEO duels.  9 commands.      |
+  |         book summaries, Claude Puppy rewrites, SEO duels, human-voice       |
+  |         posts.  10 commands.                                                |
   |                                                                             |
   |  ( 4 )  More...                                                   -> page 2 |
   |                                                                             |
@@ -82,9 +83,9 @@
 
   FILES IN THIS FOLDER
     00-index.txtyou are here
-    01-wordpress.txt  /forge-wordpress  . 21 commands
+    01-wordpress.txt  /forge-wordpress  . 22 commands
     02-design.txt     /forge-design     . 6 commands
-    03-writing.txt    /forge-writing    . 9 commands
+    03-writing.txt    /forge-writing    . 10 commands
     04-devops.txt     /forge-devops     . 5 commands
     05-cloud.txt      /forge-cloud      . 8 commands
     06-security.txt   /forge-security   . 3 commands

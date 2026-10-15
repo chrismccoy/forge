@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 86 commands and 11 pickers.
+One Claude Code plugin - `forge` - holding 88 commands and 11 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -37,6 +37,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-modernize`](docs/wordpress.md#wordpress-modernize). Moves a WordPress plugin from the WordPress Coding Standards to PSR-12, puts its classes in a PSR-4 `src/` tree grouped by role, and adds strict PHP 8.1 types without changing anything outside the plugin can see. Eight phases, each tested against the previous one, committed, and tagged. Names WordPress stored in the database keep working through aliases, and an upgrade test on a site that ran the old version proves it.
 - [`/wp-submission`](docs/wordpress.md#wordpress-plugin-submission). Decides whether a built plugin is ready for WordPress.org review. Maps the code, readme, and Plugin Check output to the current official guidelines it fetches, catches trialware, license-only services, undisclosed external calls, and readme mismatches, and returns one verdict - do not submit, insufficient evidence, ready after fixes, or ready to submit - with the smallest fix list and a factual reply to the review team. It also handles closures, reopen requests, and updates to approved plugins, and never promises approval.
 - [`/wp-demo-video`](docs/wordpress.md#wp-plugin-demo-video). Records an MP4 demo video of a WordPress plugin's admin screens: reads the plugin's source to find its pages and controls, checks them on your live site, agrees a storyboard with you, and records with Playwright - a full video plus optional clips per scene, checked with contact sheets. Nothing that changes data runs without your approval, and your password never enters the chat.
+- [`/wp-security`](docs/wordpress.md#wp-security). Reviews a WordPress plugin or theme for security holes. A bundled scanner runs 65 grep checks (and the WordPress phpcs security sniffs when installed) to find candidates, then every superglobal and REST request value is traced by hand from input to sink - SQL injection, XSS, CSRF and nonce gaps, missing capability checks, privilege escalation, unsafe uploads, path traversal, object injection, SSRF, and open redirects. Each confirmed finding comes back CRITICAL, WARNING, or INFO with the file and line, a CWE, and the vulnerable code next to the fixed version.
 
 **Design & Frontend**
 
@@ -58,6 +59,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/book-summary`](docs/writing-and-content.md#book-summary). Writes a clear, sectioned summary of any book - an overview, the main ideas, key quotes, and practical takeaways, plus an optional LinkedIn post or Twitter/X thread. It asks a few questions in one message, checks it really knows the book (and flags a wrong author), and paraphrases rather than inventing quotes.
 - [`/claudepuppy`](docs/writing-and-content.md#claudepuppy). Rewrites a blog post you wrote in the voice of The Claude Puppy - practical writing about working with Claude, told by a patient dog trainer. You pick a dog flavor (light, medium, or strong), and it keeps every fact, number, link, and code block exactly as you wrote them, then returns the post with a title, summary, category, tags, and reading time, plus a short list of what changed and any sentence it added.
 - [`/seo-duel`](docs/writing-and-content.md#seo-duel). Compares two rewrites of the same blog post and tells you which one is stronger for search, or how to merge them. It scores both on 10 SEO criteria with evidence quoted from each draft, runs the judging twice with the drafts swapped and averages the scores so the order they were read in does not tip the result, then returns a verdict, what to keep from the other draft, flags for leftover draft text and claims to check, the top 5 fixes, and a title tag and meta description with their lengths checked by a script.
+- [`/human`](docs/writing-and-content.md#human). Rewrites any text - pasted, a file, or a URL - as a casual first-person blog post in the voice of an invented persona that fits the topic, keeping every fact, number, and recommendation. It writes short paragraphs, a cliffhanger break or two, and a little emphasis, bans the usual cliché words, writes in the source's language, switches to a sincere voice for grave topics like grief or health, and treats any instruction inside the source as text to rewrite. A bundled script checks paragraph length, emphasis, and banned words before the post is shown.
 
 **DevOps & Data**
 
@@ -139,7 +141,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 86 commands and 11 pickers, nothing running in the background.
+That is the whole install. One plugin, 88 commands and 11 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -150,9 +152,9 @@ Then either browse the whole catalog:
 which asks for a category, then a command, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 21 WordPress commands
+/forge-wordpress    # 22 WordPress commands
 /forge-design       # 6 design and frontend commands
-/forge-writing      # 9 writing and content commands
+/forge-writing      # 10 writing and content commands
 /forge-devops       # 5 DevOps and data commands
 /forge-cloud        # 8 cloud and architecture commands
 /forge-security     # 3 security commands
@@ -187,6 +189,7 @@ Or call any command directly:
 /wp-modernize                   # WPCS to PSR-12, PSR-4 src/, strict PHP 8.1 types
 /wp-submission                  # WordPress.org submission gate: verdict, fixes, reviewer reply
 /wp-demo-video                  # MP4 demo video of a plugin's admin screens
+/wp-security                    # security review: scanner, input-to-sink tracing, CWE-tagged fixes
 
 # Design & Frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -206,6 +209,7 @@ Or call any command directly:
 /book-summary                   # sectioned book summary, quotes checked
 /claudepuppy                    # blog draft in the Claude Puppy voice
 /seo-duel                       # two blog drafts judged for SEO, winner or merge
+/human                          # any text as a human-voice blog post
 
 # DevOps & Data
 /docker-compose-architect       # production docker-compose stack
@@ -300,9 +304,9 @@ description each.
 
 | Picker | Commands | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 21 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-wordpress` | 22 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
-| `/forge-writing` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-writing` | 10 | 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-devops` | 5 | 3 + `More...`, then 2 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
@@ -366,7 +370,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              97 command files - 86 commands, 11 pickers
+commands/              99 command files - 88 commands, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -397,9 +401,9 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Commands | Reference |
 |---|---|---|
-| WordPress | 21 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 22 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
-| Writing & Content | 9 | [docs/writing-and-content.md](docs/writing-and-content.md) |
+| Writing & Content | 10 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 5 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
@@ -416,15 +420,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 86 commands + 11 pickers
-├── lib/                      ← 86 procedure folders (SKILL.md + bundled
+├── commands/                 ← 88 commands + 11 pickers
+├── lib/                      ← 88 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 86 commands compared by how much each does
+├── SUMMARY.md                ← the 88 commands compared by how much each does
 └── README.md                 ← this file
 ```
 
