@@ -148,3 +148,4 @@ a Step 0 direct hit.
 | `wp-security` | `/forge-wordpress` |
 | `wp-submission` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |
+| `wp-theme-review` | `/forge-wordpress` |

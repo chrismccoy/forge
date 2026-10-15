@@ -1276,3 +1276,95 @@ One slash command and a procedure bundle. `lib/wp-security/SKILL.md` carries the
 Security review only. For a scored security, performance, and architecture review use [`/wp-review`](#wordpress-architect-review); for performance alone use [`/wp-performance`](#wordpress-performance); for WordPress.org readiness use [`/wp-submission`](#wordpress-plugin-submission); to fix the code use [`/wp-build`](#wp-builder-pro). Server hardening (web server, WAF, TLS) is out of scope.
 
 The full procedure lives at [`lib/wp-security/SKILL.md`](../lib/wp-security/SKILL.md), the reference files under [`lib/wp-security/references/`](../lib/wp-security/references/), the scanner at [`lib/wp-security/scripts/wp-sec-scan.sh`](../lib/wp-security/scripts/wp-sec-scan.sh), and the slash command at [`commands/wp-security.md`](../commands/wp-security.md).
+
+---
+
+## `wp-theme-review`
+
+Review a WordPress theme of any type - block, classic, hybrid, or child - against current theme standards: run a candidate scanner, confirm every hit in the source, and report each finding with its severity, file and line, and a BAD/GOOD fix pair.
+
+```
+/wp-theme-review
+```
+
+Theme mistakes often fail quietly. A theme.json v3 font size named `large` is silently replaced by WordPress's own `large` unless `defaultFontSizes` is `false`. A theme.json with no `version` is thrown away whole. PHP left in a block template's `.html` file is printed as text instead of running. An old classic theme can work for years while echoing `$_SERVER['PHP_SELF']` into its search form and calling functions deprecated since WordPress 2.8. None of these show up as an error on the front end.
+
+This tool finds them in two passes. A bundled scanner detects the theme type and lists candidates by severity with `file:line`. It reads theme.json with `jq` where available, falling back to grep. It skips `node_modules/`, `vendor/`, and every folder in the theme's `.distignore`. Claude then confirms each candidate in the source and applies a checklist for what grep cannot see, such as whether a block's comment attributes match its saved HTML. A "Not Problems" list keeps valid code out of the report: block-serialized preset styles, hex values inside a `palette`, cover overlay colors the editor sampled from an image, and static patterns without PHP.
+
+Each finding is rated with one severity table:
+- **CRITICAL:** the theme breaks, or WordPress.org rejects it.
+- **WARNING:** the theme works but has quality or compatibility issues.
+- **INFO:** an improvement opportunity.
+
+`--wporg` adds the theme directory rules. Missing license headers, `readme.txt`, `screenshot.png`, font CDNs, hardcoded `<title>` and asset tags, and translation calls without a text domain then become CRITICAL.
+
+## 📋 Technical Overview
+
+One slash command and a procedure bundle. `lib/wp-theme-review/SKILL.md` carries the workflow, the traps worth knowing, the severity table, and the "Not Problems" list. Seven reference files hold the depth, and each one says when to load it:
+- `references/review-checklist.md`: per-file checks, block markup validity, classic PHP, the WordPress.org list, and a version table.
+- `references/code-examples.md`: BAD/GOOD pairs for every finding type.
+- `references/report-format.md`: a full example report.
+- `references/theme-json-guide.md`: the theme.json v3 schema and property catalog.
+- `references/template-patterns.md`: the template hierarchy, custom templates, and template parts.
+- `references/fse-guide.md`: Global Styles, variations, patterns, fonts, and layout.
+- `references/classic-to-block-guide.md`: classic-to-block mapping for hybrid and classic reviews.
+
+`scripts/scan-theme.sh` is the scanner. It needs Bash and GNU grep, with `jq` optional. It prints findings grouped CRITICAL, WARNING, and INFO, and always exits 0.
+
+## ✨ Features
+
+- 🔎 Detects block, classic, hybrid, and child themes, including legacy `block-templates/` folders and 6.6 style-variation partials
+- 🧮 theme.json v3 checks:
+  - preset slugs that collide with core defaults
+  - a missing or invalid `version`
+  - shorthand root padding with `useRootPaddingAwareAlignments`
+  - `contentSize`/`wideSize`
+  - template part and custom template registration
+- 🧱 Block markup:
+  - unbalanced block delimiters in templates, parts, and patterns (works with PHP inside attributes)
+  - PHP left in `.html` files
+  - raw hex colors and px font sizes
+  - pattern `Title`/`Slug` headers read the way core reads them
+- 🐘 Classic and hybrid PHP:
+  - `wp_head()`, `wp_footer()`, and `wp_body_open()`
+  - request data echoed unescaped
+  - POST data saved without a nonce
+  - deprecated functions named with their replacements
+  - hardcoded `<title>`, stylesheet, and script tags
+  - translation calls without a text domain
+- 👪 Child themes: files the parent provides are never reported as missing
+- 🏪 `--wporg` mode: required headers and files, GPL-compatible assets, no font CDNs, and Theme Check rejection rules
+- 🚫 A "Not Problems" list keeps valid WordPress code out of the report
+- 🏷️ Every finding comes with its file and line, severity, one-sentence impact, and a BAD/GOOD fix pair, grouped by file
+
+## 🔄 How it works
+
+1. **Find the target.** The path passed to the command, or the current directory. If it is unclear whether the theme targets WordPress.org, one question settles it.
+2. **Run the scanner.** `scan-theme.sh` prints the theme type and `file:line` candidates by severity, adding the directory rules with `--wporg`.
+3. **Confirm in the source.** Each candidate is read in place. The checklist covers block markup validity, escaping, and child-theme overrides.
+4. **Rate.** One severity table, with the "Not Problems" list applied.
+5. **Report.** Findings grouped by file, each with file and line, severity, impact, and the fix, then a summary with counts, the top fix, and hand-offs.
+
+## 🚀 How to use it
+
+```
+/wp-theme-review                            ← the theme in the current directory
+/wp-theme-review ~/themes/my-theme          ← a specific theme folder
+/wp-theme-review ~/themes/my-theme --wporg  ← with WordPress.org directory rules
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"run a theme review"*, *"audit my theme.json"*, *"find deprecated functions in this old theme"*, *"check my child theme"*, *"is my theme ready for the WordPress.org theme directory?"*
+
+**Needs:** Bash 4 or later and GNU grep. `jq` is optional. With it, the scanner checks theme.json exactly: JSON validity, preset collisions, root padding, layout, and template part registration. Without it, those checks fall back to grep and are confirmed by hand. The scanner is line-based, so the source read is what confirms each finding.
+
+Theme standards review only:
+- To build a block theme, use [`/wp-block-theme`](#wordpress-block-theme).
+- To migrate a classic theme, use [`/wp-classic-to-block`](#wordpress-classic-to-block).
+- For a full security audit, use [`/wp-security`](#wp-security).
+- For performance, use [`/wp-performance`](#wordpress-performance).
+- For a bug hunt on throwaway sites, use [`/wp-bug-audit`](#wordpress-theme-bug-audit).
+- To fix the code, use [`/wp-build`](#wp-builder-pro).
+
+The full procedure lives at [`lib/wp-theme-review/SKILL.md`](../lib/wp-theme-review/SKILL.md), the reference files under [`lib/wp-theme-review/references/`](../lib/wp-theme-review/references/), the scanner at [`lib/wp-theme-review/scripts/scan-theme.sh`](../lib/wp-theme-review/scripts/scan-theme.sh), and the slash command at [`commands/wp-theme-review.md`](../commands/wp-theme-review.md).

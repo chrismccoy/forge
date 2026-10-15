@@ -88,6 +88,10 @@ Records an MP4 demo video of a plugin's admin screens. It reads the plugin sourc
 
 Reviews a plugin or theme for security holes. A bundled scanner runs 65 checks to find likely problems, and each one is confirmed by reading the code before it is reported. It traces every value that comes from a request, such as form fields, URL parameters, and REST arguments, to the place where it is used. The report lists each finding as CRITICAL, WARNING, or INFO, with the file and line, a CWE number, and the vulnerable code next to the fixed version.
 
+## wp-theme-review
+
+Reviews a WordPress theme against current theme standards. It works on block, classic, hybrid, and child themes. A bundled scanner finds likely problems in theme.json, templates, patterns, and theme PHP, and each one is confirmed by reading the code before it is reported. It catches things like theme.json presets that WordPress silently ignores, PHP left in block template files, deprecated functions, and unescaped request data. The report lists each finding as CRITICAL, WARNING, or INFO, with the file and line and the broken code next to the fixed version. An optional WordPress.org mode applies the theme directory rules.
+
 ## html-design-styles
 
 Applies one of 53 named design styles to a page or component, such as bento, brutalist, vaporwave, kawaii, or glassmorphism. If you do not name a style, it shows a picker, and if your style name matches several entries, it asks you to choose one. Each style has a full spec covering colors, fonts, component patterns, and visual effects. The output is a single self-contained HTML file that uses the exact values from the spec.
