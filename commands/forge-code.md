@@ -1,12 +1,12 @@
 ---
-description: Browse and run the Code tools - pick one and it runs.
-argument-hint: [optional tool name, or leave blank to browse]
+description: Browse and run the Code commands - pick one and it runs.
+argument-hint: [optional command name, or leave blank to browse]
 disable-model-invocation: true
 ---
 
 # /forge-code - Code picker
 
-Route the user to one of the 15 Code tools and run it. Production app blueprints, end-to-end test suites, onboarding documentation, codebase diagrams, READMEs, changelogs, refactoring plans, SQL query review, docblock rewriting, teaching annotations, feature READMEs, regex teardowns, behavior-safe script refactors, codebase-to-blueprint scans with rebuilds, and level-tuned code explanations.
+Route the user to one of the 15 Code commands and run it. Production app blueprints, end-to-end test suites, onboarding documentation, codebase diagrams, READMEs, changelogs, refactoring plans, SQL query review, docblock rewriting, teaching annotations, feature READMEs, regex teardowns, behavior-safe script refactors, codebase-to-blueprint scans with rebuilds, and level-tuned code explanations.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -25,14 +25,14 @@ The out-of-category table at the bottom of this file is the lookup.
 If it matches nothing at all, show the closest 2-3 names from **this** category, ask
 which was meant, then continue. If empty, go to Step 1.
 
-## Step 1 - pick a tool
+## Step 1 - pick a command
 
 `AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
 `More...`, which opens the next page. Use the **Label** column verbatim as each option
 label and the **Description** column as its description. The built-in "Other" field lets
 the user type a name directly - treat any such answer as a Step 0 direct hit.
 
-**Page 1** - question: "Which tool?", header: "Tool"
+**Page 1** - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -41,7 +41,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
 | More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations. |
 
-**Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
+**Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -50,7 +50,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
 | More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations. |
 
-**Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
+**Page 3** (only if `More...` was chosen again) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -59,7 +59,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
 | More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, codebase blueprints, and the code explainer. |
 
-**Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
+**Page 4** (only if `More...` was chosen a third time) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -68,7 +68,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Explain a regex | explain-regex | Verified 11-section plain-English teardown of one regex: examples, pitfalls, ReDoS verdict, alternatives. |
 | More... | - | Safe script refactors, codebase blueprints with rebuilds, and the code explainer. |
 
-**Page 5** (only if `More...` was chosen a fourth time) - question: "Which tool?", header: "Tool"
+**Page 5** (only if `More...` was chosen a fourth time) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -82,7 +82,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 2. Follow that file exactly, including its **Load first** banner - which means reading
    its procedure file under `${CLAUDE_PLUGIN_ROOT}/lib/` before any intake or output.
    Nothing in this plugin auto-loads.
-3. Substitute that file's `$ARGUMENTS` with whatever followed the tool name in Step 0,
+3. Substitute that file's `$ARGUMENTS` with whatever followed the command name in Step 0,
    or an empty string if the user browsed to it. Empty is expected - every command
    handles it by running its own intake.
 4. Announce the handoff in one line (`Running /<command>.`) before starting.
@@ -114,6 +114,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-prompt` | `/forge-docs` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
+| `git-forge` | `/forge-devops` |
 | `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |

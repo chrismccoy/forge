@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  Code          ( /forge-code )          15 tools, 5 pages
+  FORGE  -  Code          ( /forge-code )          15 commands, 5 pages
 ================================================================================
   Everything here takes source you already have and analyses or documents it:
   blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors,
@@ -7,10 +7,10 @@
   codebases turned into rebuildable blueprints, and single snippets explained
   at your level.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/5) |
+  | [Command]                                           Which command?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
   |         12-section app blueprint, fact-checked review, scaffold, spikes.     |
@@ -28,11 +28,11 @@
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
   |         codebase blueprints, code explanations.                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/5) |
+  | [Command]                                           Which command?  (pg 2/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
   |         Validated Mermaid diagrams of a codebase with file:line citations.   |
@@ -49,11 +49,11 @@
   |         feature READMEs, regex teardowns, script refactors, codebase         |
   |         blueprints, code explanations.                                       |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/5) |
+  | [Command]                                           Which command?  (pg 3/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactoring plan                                       -> /refactor  |
   |         Evidence-first refactoring analysis with file:line citations. Read-  |
@@ -71,11 +71,11 @@
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
   |         safe script refactors, codebase blueprints, and the code explainer.  |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/5) |
+  | [Command]                                           Which command?  (pg 4/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
@@ -93,11 +93,11 @@
   |         Safe script refactors, codebase blueprints with rebuilds, and the    |
   |         code explainer.                                                      |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/5) |
+  | [Command]                                           Which command?  (pg 5/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactor a script safely                        -> /script-refactor  |
   |         Clean up bash and Python scripts an agent runs without changing      |
@@ -111,7 +111,7 @@
   |         Explain a snippet, file, or function at your level: tutorial, quick  |
   |         summary, interview prep, or line by line.                            |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -119,7 +119,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

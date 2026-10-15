@@ -1,13 +1,13 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 85 tools behind 96 slash commands.
+One Claude Code plugin - `forge` - holding 86 commands and 11 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
 on its own, compete with another installed skill, or sit in your context when you are
 not using it.
 
-Not sure which tool you want? Run `/forge` and pick a category, then a tool - or go straight
+Not sure which command you want? Run `/forge` and pick a category, then a command - or go straight
 to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forge-devops`,
 `/forge-cloud`, `/forge-security`, `/forge-cleanup`, `/forge-code`, `/forge-docs`, or
 `/forge-utils`.
@@ -65,6 +65,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/kubernetes-architect`](docs/devops-and-data.md#kubernetes-architect). Turns your app details into production-ready Kubernetes manifests, with health checks, resource limits, and security settings already included.
 - [`/powershell-script-engine`](docs/devops-and-data.md#powershell-script-engine). Writes clean, production-ready PowerShell scripts with built-in help, logging, error handling, and safe handling of credentials and destructive actions.
 - [`/jq`](docs/devops-and-data.md#jq). Builds copy-paste-ready jq one-liners to filter, reshape, and aggregate JSON from APIs and CLI tools, inspecting the JSON structure first and explaining each filter stage.
+- [`/git-forge`](docs/devops-and-data.md#git-forge). Handles any Git or Git-hosting task safely - commits, branches, merges and conflicts, rebases, lost work, rejected pushes, history rewrites, pull requests on GitHub, GitLab, Azure DevOps, or Bitbucket, GitHub Actions, and secret scanning. Before anything that could delete work, it checks the repository, tells you exactly what is at risk, makes a backup, gives you the undo command, and waits for your yes. It asks once whether to commit for you, only stage, or only explain, and hands you any step that needs you to type a password or edit in an editor.
 
 **Cloud & Architecture**
 
@@ -138,7 +139,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 96 commands, nothing running in the background.
+That is the whole install. One plugin, 86 commands and 11 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -146,22 +147,22 @@ Then either browse the whole catalog:
 /forge
 ```
 
-which asks for a category, then a tool, then runs it. Or jump straight to one category:
+which asks for a category, then a command, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 21 WordPress tools
-/forge-design       # 6 design and frontend tools
-/forge-writing      # 9 writing and content tools
-/forge-devops       # 4 DevOps and data tools
-/forge-cloud        # 8 cloud and architecture tools
-/forge-security     # 3 security tools
-/forge-cleanup      # 4 code-cleanup tools
-/forge-code         # 15 code tools
-/forge-docs         # 9 docs and diagram tools
+/forge-wordpress    # 21 WordPress commands
+/forge-design       # 6 design and frontend commands
+/forge-writing      # 9 writing and content commands
+/forge-devops       # 5 DevOps and data commands
+/forge-cloud        # 8 cloud and architecture commands
+/forge-security     # 3 security commands
+/forge-cleanup      # 4 code-cleanup commands
+/forge-code         # 15 code commands
+/forge-docs         # 9 docs and diagram commands
 /forge-utils        # 6 utilities
 ```
 
-Or call any tool directly:
+Or call any command directly:
 
 ```
 # WordPress
@@ -211,6 +212,7 @@ Or call any tool directly:
 /kubernetes-architect           # production Kubernetes manifests
 /powershell-script-engine       # PSScriptAnalyzer-clean PowerShell script
 /jq                             # one explained, copy-paste-ready jq command
+/git-forge                      # any Git task, backup and a yes before destructive steps
 
 # Cloud & Architecture
 /system-design                  # architecture blueprint, no code
@@ -274,12 +276,12 @@ Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-Eleven of the 96 commands are pickers. They do no work themselves - they show you what is
-available, then hand off to the tool you choose.
+The 11 pickers do no work themselves - they show you what is available, then hand off
+to the command you choose.
 
 ### `/forge` - everything
 
-Asks for a category, then a tool, then runs it. `AskUserQuestion` allows at most four
+Asks for a category, then a command, then runs it. `AskUserQuestion` allows at most four
 options per question, so the ten categories arrive over four screens, the first three
 ending in `More...`:
 
@@ -291,17 +293,17 @@ Which category?      Which category?          Which category?     Which category
   More...              More...                  More...
 ```
 
-Pick a category and the second question lists that category's tools with a one-line
+Pick a category and the second question lists that category's commands with a one-line
 description each.
 
 ### `/forge-<category>` - one category, no category step
 
-| Command | Tools | Screens |
+| Picker | Commands | Screens |
 |---------|-------|---------|
 | `/forge-wordpress` | 21 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-design` | 6 | 3 + `More...`, then 3 |
 | `/forge-writing` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
-| `/forge-devops` | 4 | one |
+| `/forge-devops` | 5 | 3 + `More...`, then 2 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
@@ -314,22 +316,22 @@ description each.
 A picker screen looks like this - `/forge-wordpress`, page 1 of 7:
 
 ```
-Which tool?
+Which command?
   Build a plugin from scratch    Full WordPress.org-ready scaffold: OOP classes,
                                  blocks, REST, i18n, uninstall.php.
   Targeted WordPress code        Add a feature, settings page, block, or endpoint
                                  to an existing project.
   HTML to WordPress theme        Convert static HTML into an installable theme
                                  with Tailwind and WCAG AA.
-  More...                        The remaining WordPress tools.
+  More...                        The remaining WordPress commands.
 ```
 
-Every screen also carries the built-in "Other" free-text field. Typing a tool name there
+Every screen also carries the built-in "Other" free-text field. Typing a command name there
 is treated the same as passing it as an argument.
 
 ### Skipping the picker
 
-Pass a tool name and the picker never appears. Anything after the name becomes that
+Pass a command name and the picker never appears. Anything after the name becomes that
 tool's own argument:
 
 ```
@@ -337,11 +339,6 @@ tool's own argument:
 /forge-wordpress wp-format ~/themes/mytheme
                                   → runs /wp-format against that path
 ```
-
-Both pickers accept a tool's `lib/` folder name as well as its command name, so
-`/forge naming-strategist` finds `/name-domains` and `/forge wordpress-plugin` finds
-`/wp-plugin`. Old names keep working inside the pickers even though the slash commands
-themselves were renamed.
 
 ### Category commands only run their own tools
 
@@ -360,7 +357,7 @@ it owns the whole catalog.
 
 Choosing a tool makes the picker read that tool's command file and follow it, which in
 turn reads the tool's procedure from `lib/`. The picker announces the switch in one line
-(`Running /wp-format.`) so you know which tool took over. Nothing is loaded until that
+(`Running /wp-format.`) so you know which command took over. Nothing is loaded until that
 moment - see below.
 
 ## How it is put together
@@ -369,7 +366,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              96 command files - 85 tools, 11 pickers
+commands/              97 command files - 86 commands, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -386,7 +383,7 @@ triggers, no surprise activations.
 
 Every command also carries `disable-model-invocation: true` in its frontmatter, which
 removes it from the SlashCommand tool. So Claude cannot decide on its own to run
-`/unslop` on your code or `/refactor` on your repo. These 96 commands fire when you
+`/unslop` on your code or `/refactor` on your repo. These commands and pickers fire when you
 type them, and at no other time.
 
 `/forge` starts a tool by reading the target command's file directly rather than calling
@@ -398,12 +395,12 @@ it as a slash command, so browsing still works with model invocation switched of
 
 Every tool's full write-up - what it does, how it works, how to use it - lives in `docs/`, one file per group. The [Available commands](#available-commands) list above links straight to each tool.
 
-| Group | Tools | Reference |
+| Group | Commands | Reference |
 |---|---|---|
 | WordPress | 21 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 6 | [docs/design.md](docs/design.md) |
 | Writing & Content | 9 | [docs/writing-and-content.md](docs/writing-and-content.md) |
-| DevOps & Data | 4 | [docs/devops-and-data.md](docs/devops-and-data.md) |
+| DevOps & Data | 5 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
@@ -419,15 +416,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 96 slash commands: 11 pickers + 85 tools
-├── lib/                      ← 85 procedure folders (SKILL.md + bundled
+├── commands/                 ← 86 commands + 11 pickers
+├── lib/                      ← 86 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 85 tools compared by how much each does
+├── SUMMARY.md                ← the 86 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

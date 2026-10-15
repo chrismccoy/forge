@@ -231,3 +231,59 @@ Two ways to invoke:
 > *"parse this JSON"*, *"extract X from this output"*, *"pull the field with jq"*, *"filter this API response"*, *"reshape this JSON"*, *"aggregate these records"*, *"turn this JSON into CSV"*, or paste raw JSON or CLI output and ask to filter, transform, or summarize it
 
 The full procedure lives at [`lib/jq/SKILL.md`](../lib/jq/SKILL.md) and the slash command at [`commands/jq.md`](../commands/jq.md).
+
+---
+
+## `git-forge`
+
+Safe, hands-on Git for every task from `git init` to a history rewrite, plus Git hosting, GitHub Actions, and GitHub security. Tell it the task in your own words; it loads the matching reference, does the work (or explains it), and never loses work along the way.
+
+```
+/git-forge
+```
+
+Most "help me with Git" answers paste a command and move on. They suggest `reset --hard` or `push --force` without saying what disappears, open an editor or a password prompt that hangs a non-interactive shell, and rewrite history before the leaked key has been rotated. This tool works like a careful senior engineer. Before any destructive operation it runs read-only checks, states exactly what will be lost, backs it up (a backup branch for commits, a `git clone --mirror` before `filter-repo`, a file copy before `git clean`, `git stash export` before dropping stashes), gives the recovery command, and waits for an explicit "yes" in the conversation. Every command it runs is in a non-interactive form (`commit -m`, `--no-edit`, `GIT_EDITOR=true git rebase --continue`, `GIT_SEQUENCE_EDITOR=:` for autosquash, `GIT_TERMINAL_PROMPT=0` for network commands); truly interactive work such as `git rebase -i` with manual edits, `git add -p`, `ssh-keygen`, and passphrase prompts is handed to you as an exact command.
+
+The procedure covers everyday work (commit, branch, merge, conflicts, stash, tag, remotes), history editing (rebase with `--onto` and autosquash, squash, cherry-pick, revert, reset, amend), recovery (reflog, detached HEAD, rejected pushes, wrong-branch commits, corrupted repositories, undoing a force push), history rewriting and leaked-secret response, signing and credentials, hooks and conventional commits, submodules, worktrees, LFS, sparse-checkout, partial clone, reftable, Scalar, Git 2.48-2.53 and Git 3.0, CRLF and Git Bash path issues, PRs and MRs on GitHub, GitLab, Azure DevOps, and Bitbucket, and GitHub Actions, CodeQL, Dependabot, and secret scanning push protection (GH013). It is scope-locked to Git and Git hosting. Designing a full CI/CD pipeline is out of scope and gets one refusal line pointing at `/cicd-pipeline`.
+
+## Technical Overview
+
+One slash command plus its procedure folder. The procedure file `lib/git-forge/SKILL.md` carries the safety-first checklist, the commit preference check, the non-interactive execution rules, platform notes, a reference map, a quick command index, and the success criteria. Thirteen reference files under `lib/git-forge/references/` hold the command catalogs and procedures: basic operations, merging and rebasing, advanced commands, dangerous operations, troubleshooting and recovery, platform workflows, performance and large files, hooks and conventions, security, modern Git features, GitHub Actions, GitHub security, and cross-platform handling. Only the reference that matches the task is read. The slash command `/git-forge` takes the task as its argument and asks one plain question only when nothing is passed.
+
+## Features
+
+- One input. Describe the Git task in your own words, or pass it as the argument
+- Commit preference asked once, as a menu, before the first change: commit for me, stage only, or guidance only. Never asked for read-only questions
+- Five-step safety protocol for destructive operations: check, state the loss, back up, give the undo command, wait for "yes"
+- Safer defaults: `--force-with-lease --force-if-includes` for force pushes, `git branch recovered <sha>` instead of `reset --hard` for recovery, credential rotation before any secret-removal rewrite
+- Non-interactive commands only; interactive steps handed to you as exact commands
+- 13 reference files, loaded only when the task needs them
+- Hosting CLIs: `gh`, `glab`, `az repos`, and Bitbucket
+- Current facts: Git 2.48-2.53, Git 3.0 changes, current GitHub Actions runners and action majors, push protection
+
+## How it works
+
+1. **Intake.** Take the task from `$ARGUMENTS`, or ask one plain question if empty.
+2. **Load.** Read the reference that matches the task from the procedure's reference map.
+3. **Check.** For a repository task, run read-only checks first: status, recent log, branch, and remote.
+4. **Ask once.** Before the first repository change, ask the commit preference menu and keep that choice for the session.
+5. **Act safely.** Run non-interactive commands. For a destructive step, follow the five-step safety protocol.
+6. **Report.** Say what changed and how to undo it.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/git-forge squash my last 3 commits      ← task passed, starts at once
+/git-forge my push was rejected          ← diagnoses fetch first vs. non-fast-forward
+/git-forge                               ← asks what Git task to help with
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"I committed to the wrong branch"*, *"undo my last commit"*, *"I lost some work"*, *"resolve this merge conflict"*, *"I pushed a password"*, *"push blocked with GH013"*, *"set up commit signing"*, *"open a pull request"*, *"pin our Actions to SHAs"*
+
+The full procedure lives at [`lib/git-forge/SKILL.md`](../lib/git-forge/SKILL.md) and the slash command at [`commands/git-forge.md`](../commands/git-forge.md).

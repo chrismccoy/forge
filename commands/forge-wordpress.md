@@ -1,12 +1,12 @@
 ---
-description: Browse and run the WordPress tools - pick one and it runs.
-argument-hint: [optional tool name, or leave blank to browse]
+description: Browse and run the WordPress commands - pick one and it runs.
+argument-hint: [optional command name, or leave blank to browse]
 disable-model-invocation: true
 ---
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 21 WordPress tools and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, write feature READMEs and WP-CLI fleet scripts, build and review block themes, move classic themes to block themes, mock up themes in a design style, audit themes for bugs, document plugin code, modernize plugins to PSR-12, gate plugins for WordPress.org submission, and record plugin demo videos.
+Route the user to one of the 21 WordPress commands and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, write feature READMEs and WP-CLI fleet scripts, build and review block themes, move classic themes to block themes, mock up themes in a design style, audit themes for bugs, document plugin code, modernize plugins to PSR-12, gate plugins for WordPress.org submission, and record plugin demo videos.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -25,32 +25,32 @@ The out-of-category table at the bottom of this file is the lookup.
 If it matches nothing at all, show the closest 2-3 names from **this** category, ask
 which was meant, then continue. If empty, go to Step 1.
 
-## Step 1 - pick a tool
+## Step 1 - pick a command
 
 `AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
 `More...`, which opens the next page. Use the **Label** column verbatim as each option
 label and the **Description** column as its description. The built-in "Other" field lets
 the user type a name directly - treat any such answer as a Step 0 direct hit.
 
-**Page 1** - question: "Which tool?", header: "Tool"
+**Page 1** - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
 | Build a plugin from scratch | wp-plugin | Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, i18n, uninstall.php. |
 | Targeted WordPress code | wp-build | Add a feature, settings page, block, or endpoint to an existing project. |
 | HTML to WordPress theme | wp-theme | Convert static HTML into an installable theme with Tailwind and WCAG AA. |
-| More... | - | The remaining WordPress tools. |
+| More... | - | The remaining WordPress commands. |
 
-**Page 2** (only if `More...` was chosen) - question: "Which tool?", header: "Tool"
+**Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | The remaining WordPress tools. |
+| More... | - | The remaining WordPress commands. |
 
-**Page 3** (only if `More...` was chosen again) - question: "Which tool?", header: "Tool"
+**Page 3** (only if `More...` was chosen again) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -59,7 +59,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Grade one piece of code | wp-grade | Letter grade A-F on a snippet or single file, with purpose, strengths, weaknesses, nitpicks, and a verdict. |
 | More... | - | Performance review, demo content, feature READMEs, and more. |
 
-**Page 4** (only if `More...` was chosen a third time) - question: "Which tool?", header: "Tool"
+**Page 4** (only if `More...` was chosen a third time) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -68,7 +68,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
 | More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
 
-**Page 5** (only if `More...` was chosen a fourth time) - question: "Which tool?", header: "Tool"
+**Page 5** (only if `More...` was chosen a fourth time) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -77,7 +77,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
 | More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
 
-**Page 6** (only if `More...` was chosen a fifth time) - question: "Which tool?", header: "Tool"
+**Page 6** (only if `More...` was chosen a fifth time) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -86,7 +86,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
 | More... | - | Plugin modernization, the WordPress.org submission gate, and plugin demo videos. |
 
-**Page 7** (only if `More...` was chosen a sixth time) - question: "Which tool?", header: "Tool"
+**Page 7** (only if `More...` was chosen a sixth time) - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
@@ -100,7 +100,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 2. Follow that file exactly, including its **Load first** banner - which means reading
    its procedure file under `${CLAUDE_PLUGIN_ROOT}/lib/` before any intake or output.
    Nothing in this plugin auto-loads.
-3. Substitute that file's `$ARGUMENTS` with whatever followed the tool name in Step 0,
+3. Substitute that file's `$ARGUMENTS` with whatever followed the command name in Step 0,
    or an empty string if the user browsed to it. Empty is expected - every command
    handles it by running its own intake.
 4. Announce the handoff in one line (`Running /<command>.`) before starting.
@@ -144,6 +144,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |
+| `git-forge` | `/forge-devops` |
 | `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `incident-report` | `/forge-cloud` |

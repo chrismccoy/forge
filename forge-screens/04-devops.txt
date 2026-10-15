@@ -1,12 +1,13 @@
 ================================================================================
-  FORGE  -  DevOps & Data          ( /forge-devops )          4 tools
+  FORGE  -  DevOps & Data          ( /forge-devops )          5 commands, 2 pages
 ================================================================================
-  Compose stacks, Kubernetes manifests, PowerShell scripts, jq filters.
+  Compose stacks, Kubernetes manifests, PowerShell scripts, jq filters, safe
+  Git work.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Command]                                           Which command?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  docker-compose stack                   -> /docker-compose-architect  |
   |         Production compose stack: networks, healthchecks, secrets as env     |
@@ -20,10 +21,23 @@
   |         PSScriptAnalyzer-clean script with help, logging, validation, and    |
   |         security notes.                                                      |
   |                                                                              |
-  |  ( 4 )  jq filter                                                    -> /jq  |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         The jq filter builder and the safe Git expert.                       |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  jq filter                                                    -> /jq  |
   |         One copy-paste-ready jq command, explained stage by stage.           |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  ( 2 )  Git task                                              -> /git-forge  |
+  |         Commit, branch, rebase, recover, rewrite history, PRs, Actions -     |
+  |         backup and a yes before destructive steps.                           |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -31,7 +45,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 
@@ -102,4 +116,24 @@
   |  ( ) raw -r (feed shell var/command)   ( ) compact -c (NDJSON)              |
   |  ( ) pretty (default)   ( ) formatted @csv/@tsv   [Other]                   |
   '-----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------------- /git-forge -
+  No menus up front. The task comes from the argument, or from one plain
+  question when nothing is passed. The commit choice below is asked once,
+  only before the first change to the repository.
+
+  .--[Task]-- the Git job, in your own words  (required) ----------------------.
+  |  ___ e.g. "squash my last 3 commits" / "push rejected"                     |
+  '----------------------------------------------------------------------------'
+  .--[Commits]-- asked once, before the first repository change ---------------.
+  |  ( ) Commit for me   ( ) Stage only   ( ) Guidance only                    |
+  '----------------------------------------------------------------------------'
+  .--[Safety]-- automatic before any destructive step -------------------------.
+  |  check . say what is at risk . back up . undo command                      |
+  |  . wait for your "yes".                                                    |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- the work done, or the exact commands to run -------------------.
+  |  what changed . how to undo it . interactive steps handed to you.          |
+  '----------------------------------------------------------------------------'
 ================================================================================

@@ -1,13 +1,13 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          9 tools, 3 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          9 commands, 3 pages
 ================================================================================
   Articles, tutorials, contracts, naming, language help, GitHub profile bios,
   book summaries, Claude Puppy rewrites.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Technical article                             -> /tech-blog-article  |
   |         Front-page-quality technical article from topic, audience, angle,    |
@@ -20,13 +20,13 @@
   |         Plain-English eight-section service-agreement framework.             |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The remaining Writing & Content tools.                               |
+  |         The remaining Writing & Content commands.                            |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Name a product                                     -> /name-domains  |
   |         10 brandable SaaS domain candidates, scored, in a locked A-D format. |
@@ -42,11 +42,11 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         Book summaries, Claude Puppy rewrites, and SEO duels.                |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Summarize a book                                   -> /book-summary  |
   |         Structured book summary: main ideas, checked quotes, takeaways,      |
@@ -60,7 +60,7 @@
   |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
   |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -68,7 +68,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

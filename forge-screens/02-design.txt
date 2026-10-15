@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  Design & Frontend          ( /forge-design )          6 tools, 2 pages
+  FORGE  -  Design & Frontend          ( /forge-design )          6 commands, 2 pages
 ================================================================================
   Design styles, accessibility, DESIGN.md, Tailwind, page cloning.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Command]                                           Which command?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Apply a design style                         -> /html-design-styles  |
   |         53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism |
@@ -21,13 +21,13 @@
   |         components, motifs.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Tailwind conversion and page cloning tools.                          |
+  |         Tailwind conversion and page cloning commands.                       |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
+  | [Command]                                           Which command?  (pg 2/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Convert CSS to Tailwind                        -> /tailwind-convert  |
   |         Rip out custom CSS and rewrite a page in Tailwind utilities, pixel-  |
@@ -41,7 +41,7 @@
   |         Reproduce a live page's exact look in clean Tailwind, generated      |
   |         class hashes replaced.                                               |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -49,7 +49,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

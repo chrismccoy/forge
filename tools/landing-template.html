@@ -6,7 +6,7 @@
         <title>Forge</title>
         <meta
             name="description"
-            content="85 command-invoked toolkits for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
+            content="86 commands for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
         />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -290,7 +290,7 @@
                         <div class="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                             <div class="max-w-2xl">
                                 <h1 class="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
-                                    85 toolkits across ten categories. Each one waits for its command.
+                                    86 commands across ten categories. Each one waits to be typed.
                                 </h1>
                                 <p class="mt-2 text-sm text-slate-500">
                                     One Claude Code plugin for WordPress, design, writing, DevOps, cloud, security,
@@ -319,7 +319,7 @@
                     >
                         <div class="metric-card">
                             <div class="flex items-start justify-between">
-                                <p class="text-sm text-slate-500">Tools</p>
+                                <p class="text-sm text-slate-500">Commands</p>
                                 <span
                                     class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-blue-500"
                                     ><i class="fa-solid fa-toolbox" aria-hidden="true"></i
@@ -340,18 +340,15 @@
                         </div>
                         <div class="metric-card">
                             <div class="flex items-start justify-between">
-                                <p class="text-sm text-slate-500">Slash commands</p>
+                                <p class="text-sm text-slate-500">Pickers</p>
                                 <span
                                     class="flex h-9 w-9 items-center justify-center rounded-full bg-green-50 text-green-500"
                                     ><i class="fa-solid fa-terminal" aria-hidden="true"></i
                                 ></span>
                             </div>
-                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">96</p>
+                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">11</p>
                             <p class="mt-3 text-xs text-slate-500">
-                                <span class="delta-up"
-                                    ><i class="fa-solid fa-plus text-[10px]" aria-hidden="true"></i> 11</span
-                                >
-                                pickers: <span class="font-mono">/forge</span> plus one per category
+                                <span class="font-mono">/forge</span> plus one per category
                             </p>
                         </div>
                         <div class="metric-card">
@@ -402,7 +399,7 @@
                                     role="group"
                                     aria-label="Chart metric"
                                 >
-                                    <button type="button" data-metric="count" aria-pressed="true">Tools</button>
+                                    <button type="button" data-metric="count" aria-pressed="true">Commands</button>
                                     <button type="button" data-metric="lines" aria-pressed="false">Doc lines</button>
                                     <button type="button" data-metric="refs" aria-pressed="false">References</button>
                                     <button type="button" data-metric="scripts" aria-pressed="false">Scripts</button>
@@ -530,11 +527,11 @@
                             <div class="flex items-center justify-between gap-3">
                                 <div>
                                     <h2 id="pickerTitle" class="text-base font-medium text-slate-900">
-                                        Not sure which tool? Run the picker.
+                                        Not sure which command? Run the picker.
                                     </h2>
                                     <p class="text-sm text-slate-500">
                                         <span class="font-mono" id="pickerCmd">/forge</span> asks for a category, then a
-                                        tool. Try it here.
+                                        command. Try it here.
                                     </p>
                                 </div>
                                 <span class="font-mono text-xs text-slate-400 whitespace-nowrap" id="pageLabel"></span>
@@ -551,7 +548,7 @@
                                 </div>
                                 <ul id="pickerList" class="divide-y divide-slate-100"></ul>
                                 <div class="border-t border-slate-200 px-4 py-2.5 text-xs text-slate-400 rounded-b-xl">
-                                    [Other] type a tool name to jump straight to it
+                                    [Other] type a command name to jump straight to it
                                 </div>
                             </div>
 
@@ -576,7 +573,7 @@
                             <div class="p-5 border-b border-slate-200">
                                 <h2 id="catPickTitle" class="text-base font-medium text-slate-900">Category pickers</h2>
                                 <p class="text-sm text-slate-500">
-                                    Skip the category step. Each one runs only its own tools.
+                                    Skip the category step. Each one runs only its own commands.
                                 </p>
                             </div>
                             <div class="overflow-x-auto">
@@ -585,7 +582,7 @@
                                         <tr>
                                             <th scope="col">Command</th>
                                             <th scope="col">Category</th>
-                                            <th scope="col">Tools</th>
+                                            <th scope="col">Commands</th>
                                             <th scope="col">Screens</th>
                                         </tr>
                                     </thead>
@@ -664,7 +661,7 @@
 .claude-plugin/
   marketplace.json     <span class="text-slate-500">one plugin entry</span>
   plugin.json          <span class="text-slate-500">the forge plugin manifest</span>
-commands/              <span class="text-slate-500">96 command files: 85 tools, 11 pickers</span>
+commands/              <span class="text-slate-500">97 command files: 86 commands, 11 pickers</span>
 lib/&lt;tool&gt;/
   SKILL.md             <span class="text-slate-500">the procedure, read only when its command runs</span>
   references/          <span class="text-slate-500">deep detail, loaded on demand</span>
@@ -680,7 +677,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                             <div>
                                 <h2 id="installTitle" class="text-base font-medium text-slate-900">Install</h2>
                                 <p class="text-sm text-slate-500">
-                                    Run these in any Claude Code session. One plugin, 96 commands, nothing running in
+                                    Run these in any Claude Code session. One plugin, 86 commands and 11 pickers, nothing running in
                                     the background.
                                 </p>
                             </div>
@@ -718,9 +715,9 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                                 <pre
                                     id="then-code"
                                     class="overflow-x-auto p-4 font-mono text-sm text-slate-200"
-                                >/forge              <span class="text-slate-500"># pick a category, then a tool</span>
+                                >/forge              <span class="text-slate-500"># pick a category, then a command</span>
 /forge-code         <span class="text-slate-500"># or one category</span>
-/explain-regex      <span class="text-slate-500"># or any tool directly</span></pre>
+/explain-regex      <span class="text-slate-500"># or any command directly</span></pre>
                             </div>
                         </div>
                     </section>
@@ -784,7 +781,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     short: "DevOps",
                     picker: "forge-devops",
                     icon: "fa-solid fa-server",
-                    screens: "1",
+                    screens: "2",
                 },
                 {
                     name: "Cloud & Architecture",
@@ -862,9 +859,9 @@ docs/                  <span class="text-slate-500">full write-up for each categ
             ).join("");
 
             const CAPTIONS = {
-                count: "Tools in each category",
+                count: "Commands in each category",
                 lines: "Lines of procedure and reference docs bundled per category",
-                refs: "Reference files the tools in each category can load on demand",
+                refs: "Reference files the commands in each category can load on demand",
                 scripts: "Deterministic runner scripts bundled per category",
             };
             function catValue(name, metric) {
@@ -1107,7 +1104,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     pages = Math.ceil(CATS.length / 3);
                     items = CATS.slice(picker.page * 3, picker.page * 3 + 3);
                     html = items.map((c, i) =>
-                        opt(i + 1, c.name, `${byCat(c.name).length} tools`, `data-pick-cat="${esc(c.name)}"`)
+                        opt(i + 1, c.name, `${byCat(c.name).length} commands`, `data-pick-cat="${esc(c.name)}"`)
                     );
                     document.getElementById("pickerQuestion").textContent = "Which category?";
                     document.getElementById("pickerChip").textContent = "Category";
@@ -1125,7 +1122,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                             `<span class="font-mono text-xs text-blue-600 whitespace-nowrap">/${t.cmd}</span>`
                         )
                     );
-                    document.getElementById("pickerQuestion").textContent = "Which tool?";
+                    document.getElementById("pickerQuestion").textContent = "Which command?";
                     document.getElementById("pickerChip").textContent = picker.cat;
                     document.getElementById("pickerCmd").textContent =
                         "/" + CATS.find((c) => c.name === picker.cat).picker;

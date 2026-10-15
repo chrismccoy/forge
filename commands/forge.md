@@ -1,19 +1,19 @@
 ---
-description: Browse and run any tool in this plugin - pick a category, pick a tool, it runs.
-argument-hint: [optional tool name, or leave blank to browse]
+description: Browse and run any command in this plugin - pick a category, pick a command, it runs.
+argument-hint: [optional command name, or leave blank to browse]
 disable-model-invocation: true
 ---
 
 # /forge - catalog picker
 
-Route the user to one of the 85 tools in this plugin and then run it. This command
+Route the user to one of the 86 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
 
 ## Step 0 - direct hit
 
-If `$ARGUMENTS` starts with a token that matches a **Command** or an **Alias** in the
+If `$ARGUMENTS` starts with a token that matches a **Command** in the
 catalog below (case-insensitive, with or without a leading `/`), skip the picker
 entirely. Treat that token as the chosen command and everything after it as the
 chosen command's own arguments. Go straight to Step 3.
@@ -29,15 +29,15 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 21 WordPress tools |
-| `/forge-design` | 6 design and frontend tools |
-| `/forge-writing` | 9 writing and content tools |
-| `/forge-devops` | 4 DevOps and data tools |
-| `/forge-cloud` | 8 cloud and architecture tools |
-| `/forge-security` | 3 security tools |
-| `/forge-cleanup` | 4 code-cleanup tools |
-| `/forge-code` | 15 code tools |
-| `/forge-docs` | 9 docs and diagram tools |
+| `/forge-wordpress` | 21 WordPress commands |
+| `/forge-design` | 6 design and frontend commands |
+| `/forge-writing` | 9 writing and content commands |
+| `/forge-devops` | 5 DevOps and data commands |
+| `/forge-cloud` | 8 cloud and architecture commands |
+| `/forge-security` | 3 security commands |
+| `/forge-cleanup` | 4 code-cleanup commands |
+| `/forge-code` | 15 code commands |
+| `/forge-docs` | 9 docs and diagram commands |
 | `/forge-utils` | 6 utilities |
 
 If the user's input clearly names one category and no specific tool, mention the matching
@@ -47,44 +47,44 @@ command in one line, then continue with Step 1 rather than making them retype an
 
 `AskUserQuestion` accepts at most 4 options, so lists longer than that are paged.
 Every page's last option is `More...`, which opens the next page. The tool's
-built-in "Other" field always lets the user type a tool name directly - treat any
+built-in "Other" field always lets the user type a command name directly - treat any
 such answer as a Step 0 direct hit.
 
 **Page 1** - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 21 tools. |
-| Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 tools. |
-| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels. 9 tools. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 21 commands. |
+| Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning. 6 commands. |
+| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels. 9 commands. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
-| DevOps & Data | Compose stacks, Kubernetes manifests, PowerShell, jq. 4 tools. |
-| Cloud & Architecture | System design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents. 8 tools. |
-| Security | STRIDE threat models, DevSecOps hardening, vulnerability reports. 3 tools. |
+| DevOps & Data | Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git. 5 commands. |
+| Cloud & Architecture | System design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents. 8 commands. |
+| Security | STRIDE threat models, DevSecOps hardening, vulnerability reports. 3 commands. |
 | More... | Code cleanup, code, docs and diagrams, utilities. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
-| Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 tools. |
-| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations. 15 tools. |
-| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, scorers, stencils, bloat remover. 9 tools. |
+| Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 commands. |
+| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations. 15 commands. |
+| Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, scorers, stencils, bloat remover. 9 commands. |
 | More... | Utilities. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
-| Utilities | Standalone scripts, session stats, token grades, VGA demos, formulas, macOS crashes. 6 tools. |
+| Utilities | Standalone scripts, session stats, token grades, VGA demos, formulas, macOS crashes. 6 commands. |
 | Back to page 1 | Return to the first category page. |
 
-## Step 2 - pick a tool
+## Step 2 - pick a command
 
 Ask a second `AskUserQuestion` using only the rows for the chosen category. Use the
 **Label** column verbatim as the option label and the **Description** column as the
@@ -97,14 +97,14 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Build a plugin from scratch | wp-plugin | Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, i18n, uninstall.php. |
 | Targeted WordPress code | wp-build | Add a feature, settings page, block, or endpoint to an existing project. |
 | HTML to WordPress theme | wp-theme | Convert static HTML into an installable theme with Tailwind and WCAG AA. |
-| More... | - | The remaining WordPress tools. |
+| More... | - | The remaining WordPress commands. |
 
 | Label | Command | Description |
 |---|---|---|
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, modernize, and submission-gate tools. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, modernize, and submission-gate commands. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -147,7 +147,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Apply a design style | html-design-styles | 53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism - with full specs. |
 | Accessibility audit | accessibility-audit | Find, report, and fix WCAG issues in files, live pages, or a pasted component. |
 | Extract a design system | design-system | Reverse-engineer HTML/CSS into a reusable DESIGN.md: colors, type, components, motifs. |
-| More... | - | Tailwind conversion and page cloning tools. |
+| More... | - | Tailwind conversion and page cloning commands. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -162,7 +162,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Technical article | tech-blog-article | Front-page-quality technical article from topic, audience, angle, and length. |
 | Hands-on tutorial | tutorial-builder | Step-by-step tutorial built from code or a topic. |
 | Service contract | draft-contract | Plain-English eight-section service-agreement framework. |
-| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, and SEO duel tools. |
+| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, and SEO duel commands. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -177,14 +177,19 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 | Compare two SEO drafts | seo-duel | Two rewrites of one blog post scored on 10 SEO criteria in both orders: winner or merge plan, fixes, title and meta. |
 
-### DevOps & Data (4)
+### DevOps & Data (5 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
+| More... | - | The jq filter builder and the safe Git expert. |
+
+| Label | Command | Description |
+|---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
+| Git task | git-forge | Commit, branch, rebase, recover, rewrite history, PRs, Actions - backup and a yes before destructive steps. |
 
 ### Cloud & Architecture (8 - page at 4)
 
@@ -193,14 +198,14 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | System architecture | system-design | Scalable architecture blueprint: components, data flow, datastore choice, fault tolerance. No code. |
 | Terraform (IaC) | terraform | Production HCL split into main.tf, variables.tf, outputs.tf with least-privilege IAM and a state backend. |
 | CI/CD pipeline | cicd-pipeline | Platform-native pipeline YAML with dependency and layer caching, plus a secrets checklist. |
-| More... | - | Data, migration, reliability, cost, and incident tools. |
+| More... | - | Data, migration, reliability, cost, and incident commands. |
 
 | Label | Command | Description |
 |---|---|---|
 | Data pipeline (ETL) | data-pipeline | Idempotent ETL/ELT design: extraction strategy, medallion layers, DAG, quality tests, backfill. |
 | Cloud migration | cloud-migration | On-prem to cloud plan on the 6 R's, with a landing zone, wave roadmap, and risk/TCO tables. |
 | SRE and observability | sre-audit | SLIs, SLOs, error budgets, tracing spans, burn-rate alerts, and a logging schema. |
-| More... | - | Cost and incident tools. |
+| More... | - | Cost and incident commands. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -304,63 +309,11 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 2. Follow that file exactly, start to finish, including its **Load first** banner -
    which means reading its procedure file under `${CLAUDE_PLUGIN_ROOT}/lib/` before
    any intake or output. Nothing in this plugin auto-loads.
-3. Substitute that file's `$ARGUMENTS` with whatever the user passed after the tool
+3. Substitute that file's `$ARGUMENTS` with whatever the user passed after the command
    name in Step 0, or with an empty string if the user browsed to it. An empty
    `$ARGUMENTS` is expected - every command handles it by running its own intake.
 4. Announce the handoff in one line (`Running /<command>.`) before starting, so the
-   user knows which tool took over.
-
-## Aliases
-
-Accept these as Step 0 direct hits alongside the Command names above:
-
-| Alias | Command |
-|---|---|
-| naming-strategist | name-domains |
-| app-blueprint | blueprint |
-| contract-framework | draft-contract |
-| refactoring-analyst | refactor |
-| excel-formula-troubleshooter, excel | fix-formula |
-| wordpress-plugin | wp-plugin |
-| wp-builder-pro | wp-build |
-| html-to-wordpress-theme | wp-theme |
-| wordpress-architect-review | wp-review |
-| wordpress-consultant | wp-consult |
-| wordpress-formatter | wp-format |
-| design-system-extractor | design-system |
-| tailwind-gut, tailwind | tailwind-convert |
-| mermaid-generator, mermaid-sequence-diagram | mermaid-sequence |
-| prompt-dummy | explain-prompt |
-| prompt-summary | analyze-prompt |
-| prompt-ranker | rank-prompt |
-| wordpress-grade | wp-grade |
-| wordpress-feature-readme, wp-readme, feature-readme | wp-feature-readme |
-| fullstack-feature-readme, app-readme, app-feature-readme | fullstack-readme |
-| wp-demo-content, demo-content, demo-importer | wp-demo |
-| wordpress-wp-cli, wpcli, wp-cli-scripts, wp-fleet | wp-cli |
-| wordpress-block-theme, block-theme, fse-theme | wp-block-theme |
-| wordpress-theme-bug-audit, theme-bug-audit, bug-audit, theme-audit | wp-bug-audit |
-| wordpress-theme-mockup, theme-mockup, mockup | wp-mockup |
-| wordpress-classic-to-block, classic-to-block, classic-to-block-theme-migrator, fse-migrate, theme-migrate, block-migrate | wp-classic-to-block |
-| wordpress-doc-pass, doc-pass, plugin-docs, document-plugin, theme-docs, document-theme | wp-doc-pass |
-| wordpress-modernize, psr12, psr12-migration, wp-psr12-migration, wpcs-to-psr12, modernize-plugin | wp-modernize |
-| wordpress-plugin-submission, plugin-submission, submission-gate, wporg-review, plugin-review-reply | wp-submission |
-| wp-plugin-demo-video, demo-video, plugin-demo-video, screencast | wp-demo-video |
-| readme-emoji | strip-emoji |
-| sql-breakdown | explain-sql |
-| regex-tutor, regex, explain-regular-expression | explain-regex |
-| e2e-playwright, playwright, playwright-e2e | e2e-tests |
-| prompt-snippet, script-engine, write-script | snippet |
-| token-auditor, prompt-audit-usage | token-audit |
-| safe-refactor, refactor-script, script-cleanup | script-refactor |
-| blueprint-scan, blueprint-rebuild, reverse-blueprint | blueprint-forge |
-| prompt-bloat-fixer, debloat-prompt, debloat | prompt-bloat |
-| prompt-auditor, audit-prompt, score-prompt | prompt-audit |
-| code-explainer, explain-snippet, explain-this | explain-code |
-| github-profile-bio, profile-bio, bio | github-bio |
-| summarize-book, book-notes, book | book-summary |
-| claude-puppy, puppy, puppy-voice | claudepuppy |
-| seo-compare, compare-drafts, draft-duel | seo-duel |
+   user knows which command took over.
 
 ## Rules
 

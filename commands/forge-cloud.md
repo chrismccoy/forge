@@ -1,12 +1,12 @@
 ---
-description: Browse and run the Cloud & Architecture tools - pick one and it runs.
-argument-hint: [optional tool name, or leave blank to browse]
+description: Browse and run the Cloud & Architecture commands - pick one and it runs.
+argument-hint: [optional command name, or leave blank to browse]
 disable-model-invocation: true
 ---
 
 # /forge-cloud - Cloud & Architecture picker
 
-Route the user to one of the 8 Cloud & Architecture tools and run it. System design, Terraform,
+Route the user to one of the 8 Cloud & Architecture commands and run it. System design, Terraform,
 CI/CD, data pipelines, migration, SRE, FinOps, and incident reports.
 This command is a launcher only: it never performs the work itself.
 
@@ -26,11 +26,11 @@ The out-of-category table at the bottom of this file is the lookup.
 If it matches nothing at all, show the closest 2-3 names from **this** category, ask
 which was meant, then continue. If empty, go to Step 1.
 
-## Step 1 - pick a tool
+## Step 1 - pick a command
 
 `AskUserQuestion` accepts at most 4 options, so this category is paged. Every page's
-last option is `More...`, which opens the next page. Ask with question "Which tool?",
-header "Tool". Use the **Label** column verbatim as each option label and the
+last option is `More...`, which opens the next page. Ask with question "Which command?",
+header "Command". Use the **Label** column verbatim as each option label and the
 **Description** column as its description. The tool's built-in "Other" field lets the
 user type a name directly - treat any such answer as a Step 0 direct hit.
 
@@ -41,7 +41,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | System architecture | system-design | Scalable architecture blueprint: components, data flow, datastore choice, fault tolerance. No code. |
 | Terraform (IaC) | terraform | Production HCL split into main.tf, variables.tf, outputs.tf with least-privilege IAM and a state backend. |
 | CI/CD pipeline | cicd-pipeline | Platform-native pipeline YAML with dependency and layer caching, plus a secrets checklist. |
-| More... | - | Data, migration, reliability, cost, and incident tools. |
+| More... | - | Data, migration, reliability, cost, and incident commands. |
 
 **Page 2** (only if `More...` was chosen)
 
@@ -50,7 +50,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | Data pipeline (ETL) | data-pipeline | Idempotent ETL/ELT design: extraction strategy, medallion layers, DAG, quality tests, backfill. |
 | Cloud migration | cloud-migration | On-prem to cloud plan on the 6 R's, with a landing zone, wave roadmap, and risk/TCO tables. |
 | SRE and observability | sre-audit | SLIs, SLOs, error budgets, tracing spans, burn-rate alerts, and a logging schema. |
-| More... | - | Cost and incident tools. |
+| More... | - | Cost and incident commands. |
 
 **Page 3** (only if `More...` was chosen again)
 
@@ -58,7 +58,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Cloud FinOps | finops | Cost blueprint: quick wins, architectural shifts, commitment strategy, tagging and billing alarms. |
 | Incident report | incident-report | Blameless RCA from incident notes: impact, timeline, 5 Whys, and systemic action items. |
-| Back to page 1 | - | Return to the first tool page. |
+| Back to page 1 | - | Return to the first command page. |
 
 ## Step 2 - run it
 
@@ -66,7 +66,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 2. Follow that file exactly, including its **Load first** banner - which means reading
    its procedure file under `${CLAUDE_PLUGIN_ROOT}/lib/` before any intake or output.
    Nothing in this plugin auto-loads.
-3. Substitute that file's `$ARGUMENTS` with whatever followed the tool name in Step 0,
+3. Substitute that file's `$ARGUMENTS` with whatever followed the command name in Step 0,
    or an empty string if the user browsed to it. Empty is expected - every command
    handles it by running its own intake.
 4. Announce the handoff in one line (`Running /<command>.`) before starting.
@@ -106,6 +106,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-sql` | `/forge-code` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |
+| `git-forge` | `/forge-devops` |
 | `github-bio` | `/forge-writing` |
 | `html-design-styles` | `/forge-design` |
 | `jq` | `/forge-devops` |

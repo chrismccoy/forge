@@ -1,16 +1,16 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  85 tools . 96 commands . 11 pickers . 0 skills . nothing auto-fires.
+  86 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
-  type a tool name directly, which jumps straight to that tool.
+  type a command name directly, which jumps straight to that command.
 
   LEGEND
     +------+   a menu "screen"
     ( n )      an option you can pick
     -> cmd     what picking it runs / opens
-    [Other]    free-text box, type any tool name to skip the menus
+    [Other]    free-text box, type any command name to skip the menus
 
 
 ================================================================================
@@ -23,63 +23,66 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  21 tools.    |
+  |         Build, review, format, and fill WP plugins and themes.  21 commands. |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
-  |         tools.                                                               |
+  |         commands.                                                            |
   |                                                                              |
   |  ( 3 )  Writing & Content                                                    |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios,  |
-  |         book summaries, Claude Puppy rewrites, SEO duels.  9 tools.          |
+  |         book summaries, Claude Puppy rewrites, SEO duels.  9 commands.       |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
   |         codebase blueprints, code explanations.                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
   | [Category]                                        Which category?  (pg 2/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  DevOps & Data                                                        |
-  |         Compose stacks, Kubernetes manifests, PowerShell, jq.  4 tools.      |
+  |         Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git.  5   |
+  |         commands.                                                            |
   |                                                                              |
   |  ( 2 )  Cloud & Architecture                                                 |
   |         Design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents.  8 |
-  |         tools.                                                               |
+  |         commands.                                                            |
   |                                                                              |
   |  ( 3 )  Security                                                             |
-  |         STRIDE models, DevSecOps hardening, vuln reports.  3 tools.          |
+  |         STRIDE models, DevSecOps hardening, vuln reports.  3 commands.       |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         The image prompt stencil cutter, prompt bloat remover, and scored    |
   |         prompt auditor.                                                      |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
   | [Category]                                        Which category?  (pg 3/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Code Cleanup                                                         |
-  |         Strip AI voice, Unicode, comments, README feature bullets.  4 tools. |
+  |         Strip AI voice, Unicode, comments, README feature bullets.  4        |
+  |         commands.                                                            |
   |                                                                              |
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
   |         refactors, regex teardowns, script refactors, explanations.  15      |
-  |         tools.                                                               |
+  |         commands.                                                            |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
-  |         Mermaid diagrams, prompt explainers, auditors, stencils.  9 tools.   |
+  |         Mermaid diagrams, prompt explainers, auditors, stencils.  9          |
+  |         commands.                                                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
   |         safe script refactors, codebase blueprints, and the code explainer.  |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
@@ -87,23 +90,23 @@
   |------------------------------------------------------------------------------|
   |  ( 1 )  Utilities                                                            |
   |         Scripts, session stats, token grades, VGA demos, formulas, crashes.  |
-  |         6 tools.                                                             |
+  |         6 commands.                                                          |
   |                                                                              |
   |  ( 2 )  Back to page 1                                            -> page 1  |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
 ================================================================================
-  STEP 2 - pick a tool   (also the whole screen of each shortcut command)
+  STEP 2 - pick a command   (also the whole screen of each shortcut command)
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  21 tools, 7 pages ----------------------
+--- WordPress  ( /forge-wordpress )  -  21 commands, 7 pages -------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/7) |
+  | [Command]                                           Which command?  (pg 1/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -118,13 +121,13 @@
   |         AA.                                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The remaining WordPress tools.                                       |
+  |         The remaining WordPress commands.                                    |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/7) |
+  | [Command]                                           Which command?  (pg 2/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -138,13 +141,13 @@
   |         rendering.                                                           |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The remaining WordPress tools.                                       |
+  |         The remaining WordPress commands.                                    |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/7) |
+  | [Command]                                           Which command?  (pg 3/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -161,11 +164,11 @@
   |  ( 4 )  More...                                                   -> page 4  |
   |         Performance review, demo content, feature READMEs, and more.         |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/7) |
+  | [Command]                                           Which command?  (pg 4/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -185,11 +188,11 @@
   |         modernization, the WordPress.org submission gate, and plugin demo    |
   |         videos.                                                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/7) |
+  | [Command]                                           Which command?  (pg 5/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -208,11 +211,11 @@
   |         modernization, the WordPress.org submission gate, and plugin demo    |
   |         videos.                                                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 6/7) |
+  | [Command]                                           Which command?  (pg 6/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
@@ -230,11 +233,11 @@
   |         Plugin modernization, the WordPress.org submission gate, and plugin  |
   |         demo videos.                                                         |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 7/7) |
+  | [Command]                                           Which command?  (pg 7/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
   |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
@@ -248,14 +251,14 @@
   |         Record an MP4 demo of a plugin's admin screens: source read,         |
   |         storyboard approved, clips per scene.                                |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Design & Frontend  ( /forge-design )  -  6 tools, 2 pages ------------------
+--- Design & Frontend  ( /forge-design )  -  6 commands, 2 pages ---------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Command]                                           Which command?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Apply a design style                         -> /html-design-styles  |
   |         53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism |
@@ -270,13 +273,13 @@
   |         components, motifs.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Tailwind conversion and page cloning tools.                          |
+  |         Tailwind conversion and page cloning commands.                       |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
+  | [Command]                                           Which command?  (pg 2/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Convert CSS to Tailwind                        -> /tailwind-convert  |
   |         Rip out custom CSS and rewrite a page in Tailwind utilities, pixel-  |
@@ -290,14 +293,14 @@
   |         Reproduce a live page's exact look in clean Tailwind, generated      |
   |         class hashes replaced.                                               |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Writing & Content  ( /forge-writing )  -  9 tools, 3 pages -----------------
+--- Writing & Content  ( /forge-writing )  -  9 commands, 3 pages --------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Technical article                             -> /tech-blog-article  |
   |         Front-page-quality technical article from topic, audience, angle,    |
@@ -310,13 +313,13 @@
   |         Plain-English eight-section service-agreement framework.             |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The remaining Writing & Content tools.                               |
+  |         The remaining Writing & Content commands.                            |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Name a product                                     -> /name-domains  |
   |         10 brandable SaaS domain candidates, scored, in a locked A-D format. |
@@ -332,11 +335,11 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         Book summaries, Claude Puppy rewrites, and SEO duels.                |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Summarize a book                                   -> /book-summary  |
   |         Structured book summary: main ideas, checked quotes, takeaways,      |
@@ -350,14 +353,14 @@
   |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
   |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- DevOps & Data  ( /forge-devops )  -  4 tools -------------------------------
+--- DevOps & Data  ( /forge-devops )  -  5 commands, 2 pages -------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Command]                                           Which command?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  docker-compose stack                   -> /docker-compose-architect  |
   |         Production compose stack: networks, healthchecks, secrets as env     |
@@ -371,17 +374,30 @@
   |         PSScriptAnalyzer-clean script with help, logging, validation, and    |
   |         security notes.                                                      |
   |                                                                              |
-  |  ( 4 )  jq filter                                                    -> /jq  |
+  |  ( 4 )  More...                                                   -> page 2  |
+  |         The jq filter builder and the safe Git expert.                       |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 2/2) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  jq filter                                                    -> /jq  |
   |         One copy-paste-ready jq command, explained stage by stage.           |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  ( 2 )  Git task                                              -> /git-forge  |
+  |         Commit, branch, rebase, recover, rewrite history, PRs, Actions -     |
+  |         backup and a yes before destructive steps.                           |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Cloud & Architecture  ( /forge-cloud )  -  8 tools, 3 pages ----------------
+--- Cloud & Architecture  ( /forge-cloud )  -  8 commands, 3 pages -------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  System architecture                               -> /system-design  |
   |         Scalable architecture blueprint: components, data flow, datastore    |
@@ -396,13 +412,13 @@
   |         plus a secrets checklist.                                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Data, migration, reliability, cost, and incident tools.              |
+  |         Data, migration, reliability, cost, and incident commands.           |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Data pipeline (ETL)                               -> /data-pipeline  |
   |         Idempotent ETL/ELT design: extraction strategy, medallion layers,    |
@@ -417,13 +433,13 @@
   |         logging schema.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Cost and incident tools.                                             |
+  |         Cost and incident commands.                                          |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Cloud FinOps                                             -> /finops  |
   |         Cost blueprint: quick wins, architectural shifts, commitment         |
@@ -434,16 +450,16 @@
   |         systemic action items.                                               |
   |                                                                              |
   |  ( 3 )  Back to page 1                                            -> page 1  |
-  |         Return to the first tool page.                                       |
+  |         Return to the first command page.                                    |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Security  ( /forge-security )  -  3 tools ----------------------------------
+--- Security  ( /forge-security )  -  3 commands -------------------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Command]                                               Which command?       |
   |------------------------------------------------------------------------------|
   |  ( 1 )  STRIDE threat model                                -> /threat-model  |
   |         Trust boundaries, all six STRIDE categories, severity-rated threats, |
@@ -457,14 +473,14 @@
   |         Formal write-up of an authorized finding: CVSS vector, technical     |
   |         context, sanitized PoC, remediation.                                 |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Code Cleanup  ( /forge-cleanup )  -  4 tools -------------------------------
+--- Code Cleanup  ( /forge-cleanup )  -  4 commands ----------------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Command]                                               Which command?       |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Strip AI voice                                           -> /unslop  |
   |         Remove AI-generated tone from comments, strings, and names without   |
@@ -481,14 +497,14 @@
   |         Delete every comment except file headers, pragmas, and license       |
   |         notices. Preview and approval required.                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  15 tools, 5 pages --------------------------------
+--- Code  ( /forge-code )  -  15 commands, 5 pages -----------------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/5) |
+  | [Command]                                           Which command?  (pg 1/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
   |         12-section app blueprint, fact-checked review, scaffold, spikes.     |
@@ -506,11 +522,11 @@
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
   |         codebase blueprints.                                                 |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/5) |
+  | [Command]                                           Which command?  (pg 2/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
   |         Validated Mermaid diagrams of a codebase with file:line citations.   |
@@ -527,11 +543,11 @@
   |         feature READMEs, regex teardowns, script refactors, codebase         |
   |         blueprints.                                                          |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/5) |
+  | [Command]                                           Which command?  (pg 3/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactoring plan                                       -> /refactor  |
   |         Evidence-first refactoring analysis with file:line citations. Read-  |
@@ -549,11 +565,11 @@
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
   |         safe script refactors, and codebase blueprints.                      |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/5) |
+  | [Command]                                           Which command?  (pg 4/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
@@ -573,11 +589,11 @@
   |         modernization, the WordPress.org submission gate, and plugin demo    |
   |         videos.                                                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/5) |
+  | [Command]                                           Which command?  (pg 5/5) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactor a script safely                        -> /script-refactor  |
   |         Clean up bash and Python scripts an agent runs without changing      |
@@ -591,14 +607,14 @@
   |         Explain a snippet, file, or function at your level: tutorial, quick  |
   |         summary, interview prep, or line by line.                            |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Docs & Diagrams  ( /forge-docs )  -  9 tools, 3 pages ----------------------
+--- Docs & Diagrams  ( /forge-docs )  -  9 commands, 3 pages -------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Mermaid to ASCII                               -> /mermaid-to-ascii  |
   |         Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
@@ -614,11 +630,11 @@
   |  ( 4 )  More...                                                   -> page 2  |
   |         The prompt analyzer, auditors, and stencil cutter.                   |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Analyze a prompt (deep dive)                     -> /analyze-prompt  |
   |         Rigorous review-ready prompt breakdown: anatomy, techniques, failure |
@@ -635,11 +651,11 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         The image prompt stencil cutter and prompt bloat remover.            |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Cut an image prompt stencil                      -> /prompt-stencil  |
   |         Turn a working image prompt into a reusable template: locks,         |
@@ -653,14 +669,14 @@
   |         Score a prompt /100 across 9 dimensions, every deduction cited, with |
   |         three drop-in fixes.                                                 |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
---- Utilities  ( /forge-utils )  -  6 tools, 2 pages ---------------------------
+--- Utilities  ( /forge-utils )  -  6 commands, 2 pages ------------------------
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Command]                                           Which command?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Write a standalone script                               -> /snippet  |
   |         Production script in any of 19 languages: help, exit codes, cleanup, |
@@ -677,11 +693,11 @@
   |  ( 4 )  More...                                                   -> page 2  |
   |         Demoscene intros, spreadsheet formulas, macOS crash reports.         |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
+  | [Command]                                           Which command?  (pg 2/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  VGA demo                                                -> /vgademo  |
   |         Sizecoded 1990s-style assembly demoscene production.                 |
@@ -693,7 +709,7 @@
   |         Diagnose a .ips or .crash report in six plain-English sections,      |
   |         every claim cited.                                                   |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
 
@@ -703,7 +719,7 @@
 
   On pick:  read commands/<command>.md  ->  follow its "Load first" banner
             (reads lib/<tool>/SKILL.md)  ->  announce "Running /<command>."
-            ->  the tool runs its own intake.  Nothing auto-loads.
+            ->  the command runs its own intake.  Nothing auto-loads.
 
 
 ================================================================================
@@ -729,7 +745,7 @@
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect
-   |    +-- powershell-script-engine  jq
+   |    +-- powershell-script-engine  jq  git-forge
    |
    +-- Cloud & Architecture .. /forge-cloud
    |    +-- system-design  terraform  cicd-pipeline  data-pipeline
@@ -759,27 +775,5 @@
   SHORTCUTS
     Direct hit ...  /forge wp-format ~/themes/mytheme   (skips every menu)
     Category jump . /forge-cloud                        (skips category step)
-    Alias  .......  naming-strategist -> name-domains,  excel -> fix-formula,
-                    app-blueprint -> blueprint,  contract-framework ->
-                    draft-contract,  refactoring-analyst -> refactor,
-                    tailwind-gut -> tailwind-convert,  mermaid-generator ->
-                    mermaid-sequence,  prompt-dummy -> explain-prompt,
-                    prompt-summary -> analyze-prompt,  prompt-ranker ->
-                    rank-prompt,  readme-emoji -> strip-emoji,
-                    sql-breakdown -> explain-sql,  regex-tutor ->
-                    explain-regex,  e2e-playwright / playwright ->
-                    e2e-tests,  prompt-snippet / script-engine ->
-                    snippet,  token-auditor / prompt-audit-usage ->
-                    token-audit,  safe-refactor / refactor-script ->
-                    script-refactor,  blueprint-scan / blueprint-rebuild
-                    -> blueprint-forge,  github-profile-bio / profile-bio
-                    -> github-bio,  prompt-bloat-fixer / debloat-prompt
-                    -> prompt-bloat,  prompt-auditor / audit-prompt
-                    -> prompt-audit,  code-explainer / explain-snippet
-                    -> explain-code,  summarize-book / book-notes
-                    -> book-summary,  claude-puppy / puppy-voice
-                    -> claudepuppy,  seo-compare / draft-duel
-                    -> seo-duel, plus the long wordpress-* names
-                    -> their wp-* commands.
 
 ================================================================================

@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  Code Cleanup          ( /forge-cleanup )          4 tools
+  FORGE  -  Code Cleanup          ( /forge-cleanup )          4 commands
 ================================================================================
   Strip AI voice, strip Unicode, strip comments, clean README feature lists.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Command]                                               Which command?       |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Strip AI voice                                           -> /unslop  |
   |         Remove AI-generated tone from comments, strings, and names without   |
@@ -23,7 +23,7 @@
   |         Delete every comment except file headers, pragmas, and license       |
   |         notices. Preview and approval required.                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -31,7 +31,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

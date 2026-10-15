@@ -1,12 +1,12 @@
 ---
-description: Browse and run the DevOps & Data tools - pick one and it runs.
-argument-hint: [optional tool name, or leave blank to browse]
+description: Browse and run the DevOps & Data commands - pick one and it runs.
+argument-hint: [optional command name, or leave blank to browse]
 disable-model-invocation: true
 ---
 
 # /forge-devops - DevOps & Data picker
 
-Route the user to one of the 4 DevOps & Data tools and run it. Compose stacks, Kubernetes manifests, PowerShell scripts, and jq filters - each generated from a description.
+Route the user to one of the 5 DevOps & Data commands and run it. Compose stacks, Kubernetes manifests, PowerShell scripts, jq filters, and safe Git work.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -25,21 +25,28 @@ The out-of-category table at the bottom of this file is the lookup.
 If it matches nothing at all, show the closest 2-3 names from **this** category, ask
 which was meant, then continue. If empty, go to Step 1.
 
-## Step 1 - pick a tool
+## Step 1 - pick a command
 
-`AskUserQuestion` caps at 4 options. This category fits on one page. Use the **Label**
-column verbatim as each option label and the **Description** column as its description.
-The built-in "Other" field lets the user type a name directly - treat any such answer as
-a Step 0 direct hit.
+`AskUserQuestion` caps at 4 options, so the list is paged. Every page's last option is
+`More...`, which opens the next page. Use the **Label** column verbatim as each option
+label and the **Description** column as its description. The built-in "Other" field lets
+the user type a name directly - treat any such answer as a Step 0 direct hit.
 
-**Page 1** - question: "Which tool?", header: "Tool"
+**Page 1** - question: "Which command?", header: "Command"
 
 | Label | Command | Description |
 |---|---|---|
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
+| More... | - | The jq filter builder and the safe Git expert. |
+
+**Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
+
+| Label | Command | Description |
+|---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
+| Git task | git-forge | Commit, branch, rebase, recover, rewrite history, PRs, Actions - backup and a yes before destructive steps. |
 
 ## Step 2 - run it
 
@@ -47,7 +54,7 @@ a Step 0 direct hit.
 2. Follow that file exactly, including its **Load first** banner - which means reading
    its procedure file under `${CLAUDE_PLUGIN_ROOT}/lib/` before any intake or output.
    Nothing in this plugin auto-loads.
-3. Substitute that file's `$ARGUMENTS` with whatever followed the tool name in Step 0,
+3. Substitute that file's `$ARGUMENTS` with whatever followed the command name in Step 0,
    or an empty string if the user browsed to it. Empty is expected - every command
    handles it by running its own intake.
 4. Announce the handoff in one line (`Running /<command>.`) before starting.

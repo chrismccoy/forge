@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 85 tools compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 86 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 48 guided helpers · 36 full toolkits.
+**At a glance:** 1 quick win · 48 guided helpers · 37 full toolkits.
 
 ## Small Utils
 
@@ -109,12 +109,13 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `script-refactor` | `/script-refactor` | Cleans up the bash and Python scripts another program or AI agent runs without changing their output, exit codes, or files, runs old and new side by side to prove it, and holds every behavior-changing bug fix for your approval |
 | `blueprint-forge` | `/blueprint-forge` | Reads a whole codebase and writes a 14-section blueprint detailed enough to rebuild the app without the original code - every route, model, export, and environment variable, secrets never copied, checked by a bundled script - or rebuilds a working app from one, plan first and each step verified, with an optional check that lists anything the rebuild lost |
 | `seo-duel` | `/seo-duel` | Takes two rewrites of the same blog post, judges them twice with the order swapped and averages the scores, then says which one wins for SEO or how to merge them - with the top 5 fixes, flags for leftover draft text and claims to check, and a title tag and meta description checked by a script |
+| `git-forge` | `/git-forge` | Handles any Git or Git-hosting task - commits, merges, rebases, lost work, rejected pushes, history rewrites, pull requests, GitHub Actions, and secret scanning - with 13 reference guides, a backup and your yes before anything that could delete work, and the undo command every time |
 
 ## A few extra notes
 
-**Thirty-nine tools have a command name that's different from the tool name:**
+**Thirty-nine commands have a name that's different from their `lib/` folder:**
 
-All twenty-one WordPress tools share a short `wp-` command so they group together when you type `/wp`:
+All twenty-one WordPress commands share a short `wp-` name so they group together when you type `/wp`:
 
 - `wordpress-plugin` → type `/wp-plugin`
 - `wp-builder-pro` → type `/wp-build`
@@ -159,28 +160,28 @@ And eighteen others are shortened or renamed:
 - `regex-tutor` → type `/explain-regex`
 - `code-explainer` → type `/explain-code`
 
-The other 46 use their own name as the command. Every tool has exactly one command.
+The other 47 use their own name as the command. Every tool has exactly one command.
 
-**Eleven of the 96 commands are pickers, not tools:**
+**Eleven pickers sit on top of the 86 commands:**
 
-`/forge` walks you through every category, then the tools in it. `/forge-wordpress`,
+`/forge` walks you through every category, then the commands in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 21, 6, 9, 4, 8, 3, 4, 15, 9 and 6 tools
+and go straight to one of the ten categories - 21, 6, 9, 5, 8, 3, 4, 15, 9 and 6 commands
 respectively. Lists longer than four
-are paged behind a `More...` option, since that is the picker's limit. Passing a tool name
+are paged behind a `More...` option, since that is the picker's limit. Passing a command name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
 against that path. A category command will not run a tool from another category; it names
 the right command and stops. Every tool's write-up lives in the `docs/` file for its category, one file per category. Full walkthrough in the README under "Browsing the catalog".
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 60 tools - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 60 commands - the easiest way to start
 - **Asks a few questions directly:** 4 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`
-- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 21 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`, `seo-duel`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 22 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`, `seo-duel`, `git-forge`
 
 **Every tool runs only when you type its command:**
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 85 tools here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 86 commands here.

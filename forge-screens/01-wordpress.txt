@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          21 tools, 7 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          21 commands, 7 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/7) |
+  | [Command]                                           Which command?  (pg 1/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -21,13 +21,13 @@
   |         AA.                                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The remaining WordPress tools.                                       |
+  |         The remaining WordPress commands.                                    |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/7) |
+  | [Command]                                           Which command?  (pg 2/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -41,13 +41,13 @@
   |         rendering.                                                           |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The remaining WordPress tools.                                       |
+  |         The remaining WordPress commands.                                    |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 3/7) |
+  | [Command]                                           Which command?  (pg 3/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -64,11 +64,11 @@
   |  ( 4 )  More...                                                   -> page 4  |
   |         Performance review, demo content, feature READMEs, and more.         |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 4/7) |
+  | [Command]                                           Which command?  (pg 4/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -88,11 +88,11 @@
   |         modernization, the WordPress.org submission gate, and plugin demo    |
   |         videos.                                                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 5/7) |
+  | [Command]                                           Which command?  (pg 5/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -111,11 +111,11 @@
   |         modernization, the WordPress.org submission gate, and plugin demo    |
   |         videos.                                                              |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 6/7) |
+  | [Command]                                           Which command?  (pg 6/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
@@ -133,11 +133,11 @@
   |         Plugin modernization, the WordPress.org submission gate, and plugin  |
   |         demo videos.                                                         |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 7/7) |
+  | [Command]                                           Which command?  (pg 7/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
   |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
@@ -151,7 +151,7 @@
   |         Record an MP4 demo of a plugin's admin screens: source read,         |
   |         storyboard approved, clips per scene.                                |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -159,7 +159,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

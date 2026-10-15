@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  Utilities          ( /forge-utils )          6 tools, 2 pages
+  FORGE  -  Utilities          ( /forge-utils )          6 commands, 2 pages
 ================================================================================
   Standalone scripts, session stats, token grades, VGA demos, formulas, crashes.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 1/2) |
+  | [Command]                                           Which command?  (pg 1/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Write a standalone script                               -> /snippet  |
   |         Production script in any of 19 languages: help, exit codes, cleanup, |
@@ -23,11 +23,11 @@
   |  ( 4 )  More...                                                   -> page 2  |
   |         Demoscene intros, spreadsheet formulas, macOS crash reports.         |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                 Which tool?  (pg 2/2) |
+  | [Command]                                           Which command?  (pg 2/2) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  VGA demo                                                -> /vgademo  |
   |         Sizecoded 1990s-style assembly demoscene production.                 |
@@ -39,7 +39,7 @@
   |         Diagnose a .ips or .crash report in six plain-English sections,      |
   |         every claim cited.                                                   |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -47,7 +47,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

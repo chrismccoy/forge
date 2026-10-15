@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  Security          ( /forge-security )          3 tools
+  FORGE  -  Security          ( /forge-security )          3 commands
 ================================================================================
   STRIDE threat models, DevSecOps hardening, vulnerability reports.
 
-  STEP 2 - pick a tool
+  STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Tool]                                                     Which tool?       |
+  | [Command]                                               Which command?       |
   |------------------------------------------------------------------------------|
   |  ( 1 )  STRIDE threat model                                -> /threat-model  |
   |         Trust boundaries, all six STRIDE categories, severity-rated threats, |
@@ -20,7 +20,7 @@
   |         Formal write-up of an authorized finding: CVSS vector, technical     |
   |         context, sanitized PoC, remediation.                                 |
   |                                                                              |
-  |  [Other] type a tool name ................................................   |
+  |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   STEP 3 - run it
@@ -28,7 +28,7 @@
 
 
 ================================================================================
-  STEP 4 - AFTER YOU PICK: the tool's own intake questions
+  STEP 4 - AFTER YOU PICK: the command's own intake questions
 ================================================================================
   KEY   ( ) single-pick    [ ] multi-pick    ___ free-text    [Other] escape
 

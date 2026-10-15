@@ -108,7 +108,7 @@ def main():
     by_cat = {}
     for t in tools:
         by_cat[t["cat"]] = by_cat.get(t["cat"], 0) + 1
-    print(f"wrote {os.path.relpath(OUT, ROOT)}: {len(tools)} tools, v{version}")
+    print(f"wrote {os.path.relpath(OUT, ROOT)}: {len(tools)} commands, v{version}")
     for c, n in by_cat.items():
         print(f"  {n:>3}  {c}")
 
