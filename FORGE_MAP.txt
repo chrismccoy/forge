@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  89 commands . 11 pickers . 0 skills . nothing auto-fires.
+  90 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -26,7 +26,7 @@
   |         Build, review, format, and fill WP plugins and themes.  23 commands. |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
-  |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  6       |
+  |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  7       |
   |         commands.                                                            |
   |                                                                              |
   |  ( 3 )  Writing & Content                                                    |
@@ -273,7 +273,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Design & Frontend  ( /forge-design )  -  6 commands, 2 pages ---------------
+--- Design & Frontend  ( /forge-design )  -  7 commands, 2 pages ---------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/2) |
@@ -291,7 +291,7 @@
   |         components, motifs.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Tailwind conversion and page cloning commands.                       |
+  |         Tailwind conversion, page cloning, and Tailwind project commands.    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -310,6 +310,10 @@
   |  ( 3 )  Rebuild a page in Tailwind                     -> /page-tailwindify  |
   |         Reproduce a live page's exact look in clean Tailwind, generated      |
   |         class hashes replaced.                                               |
+  |                                                                              |
+  |  ( 4 )  Tailwind project work                            -> /tailwind-forge  |
+  |         Setup, migration, tokens, components, responsive, dark mode, and     |
+  |         debugging in a Tailwind project.                                     |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -758,7 +762,7 @@
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system
-   |    +-- tailwind-convert  page-cloner  page-tailwindify
+   |    +-- tailwind-convert  page-cloner  page-tailwindify  tailwind-forge
    |
    +-- Writing & Content ..... /forge-writing
    |    +-- tech-blog-article  tutorial-builder  draft-contract  name-domains

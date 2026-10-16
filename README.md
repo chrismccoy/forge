@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 89 commands and 11 pickers.
+One Claude Code plugin - `forge` - holding 90 commands and 11 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -48,6 +48,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/tailwind-convert`](docs/design.md#tailwind-gut). Strips a page's custom CSS and rewrites it in Tailwind utilities, pixel-identical, detecting the Tailwind version first and promoting real design tokens into the theme config.
 - [`/page-cloner`](docs/design.md#page-cloner). Copies a live URL into one self-contained working HTML file that looks and lays out like the original, built from the real rendered page and checked against it in a loop. Faithful copy, no redesign. Needs Claude in Chrome.
 - [`/page-tailwindify`](docs/design.md#page-tailwindify). Rebuilds a live page's exact look in clean Tailwind, with the framework's generated class hashes replaced by real utility classes and every class traced to a real computed value. Needs Claude in Chrome.
+- [`/tailwind-forge`](docs/design.md#tailwind-forge). Works on Tailwind CSS in your own project - setup, v3 to v4 migration, `@theme` tokens and custom utilities, components, responsive layout, dark mode, shadcn/ui theming, animation, accessibility, and debugging - for v4, and in v3 syntax when a project has not migrated. It reads your CSS entry, tokens, and existing components first and matches them, skips unrequested `dark:` variants, gradients, and variant systems, and checks newer features against your installed minor version. With no task named it detects the project and asks two multiple-choice questions, and four bundled scripts audit class usage, dark mode, accessibility, and built CSS size.
 
 **Writing & Content**
 
@@ -142,7 +143,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 89 commands and 11 pickers, nothing running in the background.
+That is the whole install. One plugin, 90 commands and 11 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -154,7 +155,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 
 ```
 /forge-wordpress    # 23 WordPress commands
-/forge-design       # 6 design and frontend commands
+/forge-design       # 7 design and frontend commands
 /forge-writing      # 10 writing and content commands
 /forge-devops       # 5 DevOps and data commands
 /forge-cloud        # 8 cloud and architecture commands
@@ -200,6 +201,7 @@ Or call any command directly:
 /tailwind-convert               # rip out custom CSS, rewrite in Tailwind utilities
 /page-cloner                    # copy a live URL into one self-contained HTML file
 /page-tailwindify               # rebuild a live page's exact look in clean Tailwind
+/tailwind-forge                 # Tailwind project work: tokens, components, dark mode, debugging
 
 # Writing & Content
 /tech-blog-article              # technical article from five inputs
@@ -307,7 +309,7 @@ description each.
 | Picker | Commands | Screens |
 |---------|-------|---------|
 | `/forge-wordpress` | 23 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-design` | 6 | 3 + `More...`, then 3 |
+| `/forge-design` | 7 | 3 + `More...`, then 4 |
 | `/forge-writing` | 10 | 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-devops` | 5 | 3 + `More...`, then 2 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
@@ -372,7 +374,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              100 command files - 89 commands, 11 pickers
+commands/              101 command files - 90 commands, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -404,7 +406,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Group | Commands | Reference |
 |---|---|---|
 | WordPress | 23 | [docs/wordpress.md](docs/wordpress.md) |
-| Design & Frontend | 6 | [docs/design.md](docs/design.md) |
+| Design & Frontend | 7 | [docs/design.md](docs/design.md) |
 | Writing & Content | 10 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 5 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
@@ -422,15 +424,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 89 commands + 11 pickers
-├── lib/                      ← 89 procedure folders (SKILL.md + bundled
+├── commands/                 ← 90 commands + 11 pickers
+├── lib/                      ← 90 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 89 commands compared by how much each does
+├── SUMMARY.md                ← the 90 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

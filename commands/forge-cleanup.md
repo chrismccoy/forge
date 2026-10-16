@@ -120,6 +120,7 @@ a Step 0 direct hit.
 | `sre-audit` | `/forge-cloud` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |
+| `tailwind-forge` | `/forge-design` |
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |

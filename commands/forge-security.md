@@ -122,6 +122,7 @@ answer as a Step 0 direct hit.
 | `strip-unicode` | `/forge-cleanup` |
 | `system-design` | `/forge-cloud` |
 | `tailwind-convert` | `/forge-design` |
+| `tailwind-forge` | `/forge-design` |
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `token-audit` | `/forge-utils` |

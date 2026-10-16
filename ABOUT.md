@@ -116,6 +116,10 @@ Copies a live web page into one self-contained HTML file that works on its own. 
 
 Rebuilds a live web page in clean Tailwind CSS while keeping the exact same look. Generated class names like css-1a2b3c or sc-bdfBwQ are replaced with readable utility classes. The design stays the same and only the styling system changes. Every class is based on a real computed value from the page.
 
+## tailwind-forge
+
+Works on Tailwind CSS inside an existing project: setup, moving from v3 to v4, design tokens, components, responsive layout, dark mode, shadcn/ui themes, and fixing styles that do not apply. It reads the project's own colors, spacing, and components first and matches them. It does not add dark mode, gradients, or extra variants nobody asked for. Run with no task, it looks at the project and asks two multiple-choice questions. Four bundled scripts check class usage, dark mode, accessibility, and CSS size.
+
 ## tech-blog-article
 
 Writes a full technical blog article. It asks five questions: the topic, the reader's experience level, the angle, the main programming language, and the word count. The article follows a fixed structure. Use it when you need a finished draft rather than an outline.

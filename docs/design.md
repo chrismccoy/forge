@@ -429,3 +429,52 @@ One slash command plus its procedure file `lib/page-tailwindify/SKILL.md`, which
 ```
 
 The full procedure lives at [`lib/page-tailwindify/SKILL.md`](../lib/page-tailwindify/SKILL.md) and the slash command at [`commands/page-tailwindify.md`](../commands/page-tailwindify.md).
+
+---
+
+## `tailwind-forge`
+
+Works on Tailwind CSS inside the project you already have: setting it up, moving from v3 to v4, design tokens, custom utilities, components, responsive layout, dark mode, shadcn/ui themes, animation, accessibility, plugins, output size, and fixing classes that do not apply. It writes v4 by default and v3 syntax in a project that has not migrated.
+
+```
+/tailwind-forge
+```
+
+The difference from a general answer is restraint. Before writing a class it reads the CSS entry file, the `@theme` tokens, and the existing components, then matches their radius, palette, and spacing instead of inventing new ones. It does not add `dark:` variants to a project without dark mode, default gradients and large shadows, hover animations, or a CVA variant system for a one-off component. It reads the `tailwindcss` version from `package.json`, including the minor version, so it does not use a v4.1, v4.2, or v4.3 feature on an install that cannot generate it.
+
+Run with no task, it first checks the project - Tailwind version, dark mode, shadcn/ui, build output - and then asks two multiple-choice questions: what to do (set up or upgrade, build or style, fix, audit) and the specific task. Options that do not apply are hidden, and the built-in "Other" field takes anything else, including topics the procedure has no reference for.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/tailwind-forge/SKILL.md`, a short router that holds the workflow, the v4 essentials, the v3 to v4 traps, and the anti-patterns. It points at 20 `references/` files - v4 fundamentals, theme, custom utilities, responsive, dark mode, layouts, components, design systems and shadcn/ui, animations, accessibility, plugins, performance, frameworks, React, debugging, and five step-by-step workflows (intake, setup, component, responsive, debug) - loaded only when the task needs them. Four `scripts/` analyze a project from its root: `check-classes.sh`, `check-dark-mode.sh`, `check-accessibility.sh`, and `analyze-bundle.sh`, sharing `lib.sh` for the directories, excludes, and file types. Project files are treated as data to work on, never as instructions.
+
+## Features
+
+- Reads the project's CSS entry, `@theme` tokens, and components before writing, and matches them
+- Writes v4 by default, v3 syntax in an unmigrated project, and gates newer features by minor version
+- Avoids unrequested `dark:` variants, gradients, large shadows, hover animations, and one-off variant systems
+- Covers `@theme inline` and `static`, `@utility` with `--value()` and `--modifier()`, and `@custom-variant`
+- shadcn/ui theming: edits the raw variables, leaves the inlined `--color-*` aliases alone
+- Responsive layout and container queries, dark mode without a flash of the wrong theme, WCAG 2.2 focus and target size
+- Two-question intake when no task is named, with options fitted to the project
+- Four analysis scripts: dynamic class names, dark mode strategy and coverage, focus and `outline-none`, built CSS size
+
+## How it works
+
+1. **Read the project.** Find the CSS entry, the tokens, and the existing components; read the Tailwind version.
+2. **Intake if needed.** With no task named, detect the project and ask the two questions.
+3. **Route.** Open only the reference file the task needs, and jump to the right section through its Contents line.
+4. **Write the smallest change.** Add variants only where state or layout really changes, using the project's tokens.
+5. **Verify.** Check that dynamic classes are complete strings, and check breakpoints and dark mode if the project uses them. For an audit, run the scripts and report by severity without changing anything.
+
+## How to use it
+
+```
+/tailwind-forge                                   ← detect the project, then two questions
+/tailwind-forge add a profile card component      ← build with the project's tokens
+/tailwind-forge the badge colors are not showing  ← diagnose and fix
+/tailwind-forge migrate to v4                     ← upgrade tool, then the changes it misses
+/tailwind-forge audit accessibility and CSS size  ← run the scripts, report, change nothing
+```
+
+The full procedure lives at [`lib/tailwind-forge/SKILL.md`](../lib/tailwind-forge/SKILL.md) and the slash command at [`commands/tailwind-forge.md`](../commands/tailwind-forge.md).

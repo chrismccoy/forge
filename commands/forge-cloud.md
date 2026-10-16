@@ -135,6 +135,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `strip-emoji` | `/forge-cleanup` |
 | `strip-unicode` | `/forge-cleanup` |
 | `tailwind-convert` | `/forge-design` |
+| `tailwind-forge` | `/forge-design` |
 | `tech-blog-article` | `/forge-writing` |
 | `threat-model` | `/forge-security` |
 | `token-audit` | `/forge-utils` |

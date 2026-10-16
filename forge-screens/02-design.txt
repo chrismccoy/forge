@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  Design & Frontend          ( /forge-design )          6 commands, 2 pages
+  FORGE  -  Design & Frontend          ( /forge-design )          7 commands, 2 pages
 ================================================================================
   Design styles, accessibility, DESIGN.md, Tailwind, page cloning.
 
@@ -21,7 +21,7 @@
   |         components, motifs.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Tailwind conversion and page cloning commands.                       |
+  |         Tailwind conversion, page cloning, and Tailwind project commands.    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -40,6 +40,10 @@
   |  ( 3 )  Rebuild a page in Tailwind                     -> /page-tailwindify  |
   |         Reproduce a live page's exact look in clean Tailwind, generated      |
   |         class hashes replaced.                                               |
+  |                                                                              |
+  |  ( 4 )  Tailwind project work                            -> /tailwind-forge  |
+  |         Setup, migration, tokens, components, responsive, dark mode, and     |
+  |         debugging in a Tailwind project.                                     |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -129,4 +133,27 @@
   .--[URL]-- Which live page should I rebuild in Tailwind? (paste the URL) ------.
   |  ___ e.g. https://example.com  - same look, generated class hashes replaced  |
   '------------------------------------------------------------------------------'
+
+
+-------------------------------------------------------------- /tailwind-forge -
+  No menus when a task is passed - it goes straight to the routing table.
+  With no task: detects the project, then two multiple-choice questions.
+  Options the project rules out are hidden. [Other] = something else.
+
+  .--[Task]-- What do you want to do?  (e.g. "Tailwind v4.3 detected") --------.
+  |  ( ) Set up or upgrade        ( ) Build or style something                 |
+  |  ( ) Fix something            ( ) Audit the project                        |
+  '----------------------------------------------------------------------------'
+  .--[Detail]-- second question, options by first answer ----------------------.
+  |  upgrade: fresh install . migrate v3 to v4 . add a plugin                  |
+  |  build:   component . responsive layout . dark mode . shadcn theming       |
+  |  fix:     classes not applying . build error . wrong after upgrade         |
+  |  audit:   [ ] accessibility [ ] dark mode [ ] class usage [ ] CSS size     |
+  '----------------------------------------------------------------------------'
+  .--[Target]-- only if still unknown -----------------------------------------.
+  |  ___ which component, page, or error message                               |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- routed workflow or reference; audits change nothing -----------.
+  |  edits use the project's tokens . audit report ordered by severity         |
+  '----------------------------------------------------------------------------'
 ================================================================================
