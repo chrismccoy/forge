@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  90 commands . 11 pickers . 0 skills . nothing auto-fires.
+  91 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  23 commands. |
+  |         Build, review, format, and fill WP plugins and themes.  24 commands. |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  7       |
@@ -104,7 +104,7 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  23 commands, 8 pages -------------------
+--- WordPress  ( /forge-wordpress )  -  24 commands, 8 pages -------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/8) |
@@ -186,8 +186,9 @@
   |  ( 4 )  More...                                                   -> page 5  |
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
   |         bug audit, theme mockups, the documentation pass, plugin             |
-  |         modernization, the WordPress.org submission gate, plugin demo videos,|
-  |         the security review, and the theme standards review.                 |
+  |         modernization, the WordPress.org submission gate, plugin demo        |
+  |         videos, the security review, the theme standards review, and the     |
+  |         block code review.                                                   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -209,8 +210,9 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
   |         The theme bug audit, theme mockups, the documentation pass, plugin   |
-  |         modernization, the WordPress.org submission gate, plugin demo videos,|
-  |         the security review, and the theme standards review.                 |
+  |         modernization, the WordPress.org submission gate, plugin demo        |
+  |         videos, the security review, the theme standards review, and the     |
+  |         block code review.                                                   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -232,7 +234,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
   |         Plugin modernization, the WordPress.org submission gate, plugin demo |
-  |         videos, the security review, and the theme standards review.         |
+  |         videos, the security review, the theme standards review, and the     |
+  |         block code review.                                                   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -253,7 +256,8 @@
   |         storyboard approved, clips per scene.                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 8  |
-  |         The security review and the theme standards review.                  |
+  |         The security review, the theme standards review, and the block code  |
+  |         review.                                                              |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -268,6 +272,11 @@
   |  ( 2 )  Theme standards review                          -> /wp-theme-review  |
   |         Scanner plus confirmed findings for block, classic, hybrid, or child |
   |         themes; CRITICAL / WARNING / INFO with file:line and fixes.          |
+  |                                                                              |
+  |  ( 3 )  Block code review                               -> /wp-block-review  |
+  |         Scanner plus confirmed findings for block.json, edit/save,           |
+  |         deprecations, render, and Interactivity code; CRITICAL / WARNING /   |
+  |         INFO with file:line and fixes.                                       |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -758,7 +767,7 @@
    |    +-- wp-menu-icons  wp-report-card  wp-grade  wp-performance  wp-demo
    |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-classic-to-block
    |    +-- wp-bug-audit  wp-mockup  wp-doc-pass  wp-modernize  wp-submission
-   |    +-- wp-demo-video  wp-security  wp-theme-review
+   |    +-- wp-demo-video  wp-security  wp-theme-review  wp-block-review
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system

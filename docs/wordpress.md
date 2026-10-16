@@ -1368,3 +1368,94 @@ Theme standards review only:
 - To fix the code, use [`/wp-build`](#wp-builder-pro).
 
 The full procedure lives at [`lib/wp-theme-review/SKILL.md`](../lib/wp-theme-review/SKILL.md), the reference files under [`lib/wp-theme-review/references/`](../lib/wp-theme-review/references/), the scanner at [`lib/wp-theme-review/scripts/scan-theme.sh`](../lib/wp-theme-review/scripts/scan-theme.sh), and the slash command at [`commands/wp-theme-review.md`](../commands/wp-theme-review.md).
+---
+
+## `wp-block-review`
+
+Review the code of WordPress blocks in any block plugin: run a scanner that works out what kind of block project it is, confirm every hit in the source, and report each finding with its severity, file and line, and a BAD/GOOD fix pair.
+
+```
+/wp-block-review
+```
+
+Block bugs often fail quietly, or fail for someone else. A static block whose save output contains `__( 'Copy' )` or a date formatted with `navigator.language` saves fine for its author, then shows "This block contains unexpected or invalid content" to an editor in another language. A deprecation that imports a live component throws when that component later needs a new prop, so every old post fails to load. A render callback that echoes `fill="' . $color . '"` passes core's kses filter, because kses strips tags, not quotes, and a Contributor can inject script. An Interactivity block built without `--experimental-modules` registers fine but never ships its `view.js`. None of these show up as an error until someone opens the post.
+
+This tool finds them in two passes. A bundled scanner reports the project mode - modern build, multi-block library, `blocks-manifest.php` collection, compiled-only distribution, no-build plugin, apiVersion 1, PHP-registered, or no blocks at all - then lists candidates by severity with `file:line`. It compares `build/` with `src/`, checks every `file:` path in the built block.json, checks the `*.asset.php` dependencies against the imports, and cross-checks Interactivity API namespaces and directive references. It skips `node_modules/`, `vendor/`, build output, tests, minified files, and vendored third-party libraries. Claude then confirms each candidate in the source and applies a checklist for what grep cannot see, such as deprecated saves rendered with only the props they pass. A "Not a Problem" list keeps valid code out of the report: dynamic blocks that save `null`, placeholder blocks that replace themselves, `wp.*` globals in a no-build plugin, and legacy block names kept for old content.
+
+Each finding is rated with one severity table, by effect:
+- **CRITICAL:** the block fails to register or load, loses content, fails validation for existing posts, or is exploitable.
+- **WARNING:** the block works but breaks compatibility, translation, styling, robustness, or maintainability.
+- **INFO:** an improvement opportunity, a style note, or a risk note.
+
+For plugins with ten or more blocks, a per-block matrix decides which blocks are read in depth, and the summary lists which were sampled.
+
+## 📋 Technical Overview
+
+One slash command and a procedure bundle. `lib/wp-block-review/SKILL.md` carries the workflow, the project types, the file checklist, the severity table, the "Not a Problem" list, and the report format. Nine reference files hold the depth, and each one says when to load it:
+- `references/block-json-guide.md`: block.json field by field, apiVersion, attributes, supports, and assets.
+- `references/editor-patterns.md`: edit components, InnerBlocks, the data API, i18n, imports, and the build.
+- `references/save-and-deprecations.md`: how validation works, deterministic save, and deprecation entries.
+- `references/dynamic-blocks-guide.md`: render files and callbacks, wrapper attributes, `WP_Block`, and queries.
+- `references/render-security.md`: the escaping matrix, severity by who controls a value, render side effects, endpoints, and PHP registration.
+- `references/interactivity-api-guide.md`: the Interactivity API review checklist, the current store API, directives, and the router.
+- `references/block-extensions.md`: transforms, variations, block hooks, context, styles, patterns, and bindings.
+- `references/legacy-js-blocks.md`: no-build and apiVersion 1 blocks.
+- `references/report-example.md`: a full example report.
+
+`scripts/scan-blocks.sh` is the scanner. It needs Bash, with ripgrep optional. It prints the project mode, then findings grouped CRITICAL, WARNING, and INFO, an Interactivity API section when directives exist, and build checks, and always exits 0.
+
+## ✨ Features
+
+- 🧭 Detects the project type: modern build, multi-block, metadata collection, compiled-only, no-build, apiVersion 1, PHP-registered, or no blocks
+- 📄 block.json checks:
+  - apiVersion, name, title, attribute types and sources
+  - `file:` asset paths against the built output, so a missing script, render file, or `view.js` is caught
+  - schemas redeclared in JS or PHP that drift from block.json
+  - `Requires at least` in the plugin header and readme against the features used
+- ✏️ Edit and save:
+  - `useBlockProps()` / `useBlockProps.save()` and InnerBlocks persistence
+  - save output that changes with locale, timezone, runtime filters, or library upgrades
+  - deprecated component props and `wp.editor` APIs
+  - text domains missing or different from block.json
+- 🗂️ Deprecations: order, `apiVersion` on entries, frozen copies, and deprecated saves that throw because a shared component changed
+- 🐘 Render code:
+  - escaping by context, including quote breakout that kses does not stop
+  - `wp_kses_post( $content )` on inner blocks and decoding after kses
+  - `extract()`, render side effects, and `$post` without a null check
+  - the AJAX and REST endpoints a block calls
+- ⚡ Interactivity API: `viewScriptModule`, `supports.interactivity`, one namespace everywhere, defined directive references, the current store API, `withSyncEvent()`, server-initialized state, and router regions
+- 🏗️ Registration and build: `register_block_type()`, `register_block_type_from_metadata()` paths, `blocks-manifest.php` collections, `build/` against `src/`, and `*.asset.php` dependencies against imports
+- 🚫 A "Not a Problem" list keeps valid block code out of the report
+- 🏷️ Every finding comes with its file and line, severity, one-sentence impact, and a BAD/GOOD fix pair, grouped by file
+
+## 🔄 How it works
+
+1. **Find the target.** The path passed to the command, or the current directory.
+2. **Run the scanner.** `scan-blocks.sh` prints the project mode and `file:line` candidates by severity, plus Interactivity and build checks.
+3. **Classify and load.** The mode decides which references load: legacy JS, render security, Interactivity, or deprecations.
+4. **Confirm in the source.** Each candidate is read in place. Large plugins get a per-block matrix and a representative sample.
+5. **Rate.** One severity table by effect, with the "Not a Problem" list applied.
+6. **Report.** Findings grouped by file, each with file and line, severity, impact, and the fix, then a summary with counts, the validation risk, what could not be verified, and hand-offs.
+
+## 🚀 How to use it
+
+```
+/wp-block-review                       ← the block plugin in the current directory
+/wp-block-review ~/plugins/my-blocks   ← a specific plugin folder
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"review my block plugin"*, *"audit block.json"*, *"why does my block say it contains unexpected or invalid content?"*, *"check my Interactivity API block"*, *"is my block safe to render?"*
+
+**Needs:** Bash 3.2 or later (macOS system bash works) and standard tools: `grep`, `find`, `sed`, `awk`, `sort`, `comm`, `stat`. ripgrep is optional; without it the scanner falls back to `grep` with the same results. The scanner is line-based, so the source read is what confirms each finding.
+
+Block code review only:
+- To build or change blocks, use [`/wp-build`](#wp-builder-pro).
+- To start a new block plugin, use [`/wp-plugin`](#wordpress-plugin).
+- For theme.json and block themes, use [`/wp-theme-review`](#wp-theme-review) or [`/wp-block-theme`](#wordpress-block-theme).
+- For a full security audit, use [`/wp-security`](#wp-security).
+- For performance, use [`/wp-performance`](#wordpress-performance).
+- For a scored architecture review, use [`/wp-review`](#wordpress-architect-review).
+
+The full procedure lives at [`lib/wp-block-review/SKILL.md`](../lib/wp-block-review/SKILL.md), the reference files under [`lib/wp-block-review/references/`](../lib/wp-block-review/references/), the scanner at [`lib/wp-block-review/scripts/scan-blocks.sh`](../lib/wp-block-review/scripts/scan-blocks.sh), and the slash command at [`commands/wp-block-review.md`](../commands/wp-block-review.md).

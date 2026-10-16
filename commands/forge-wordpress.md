@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-wordpress - WordPress picker
 
-Route the user to one of the 23 WordPress commands and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, write feature READMEs and WP-CLI fleet scripts, build and review block themes, move classic themes to block themes, mock up themes in a design style, audit themes for bugs, document plugin code, modernize plugins to PSR-12, gate plugins for WordPress.org submission, record plugin demo videos, review plugins and themes for security holes, and review themes against WordPress theme standards.
+Route the user to one of the 24 WordPress commands and run it. Build plugins and themes, review and grade them, format to the coding standard, add menu icons, audit performance, build demo content, write feature READMEs and WP-CLI fleet scripts, build and review block themes, move classic themes to block themes, mock up themes in a design style, audit themes for bugs, document plugin code, modernize plugins to PSR-12, gate plugins for WordPress.org submission, record plugin demo videos, review plugins and themes for security holes, review themes against WordPress theme standards, and review block plugin code.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -66,7 +66,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, and the theme standards review. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, and the block code review. |
 
 **Page 5** (only if `More...` was chosen a fourth time) - question: "Which command?", header: "Command"
 
@@ -75,7 +75,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
-| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, and the theme standards review. |
+| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, and the block code review. |
 
 **Page 6** (only if `More...` was chosen a fifth time) - question: "Which command?", header: "Command"
 
@@ -84,7 +84,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
 | Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
-| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, and the theme standards review. |
+| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, and the block code review. |
 
 **Page 7** (only if `More...` was chosen a sixth time) - question: "Which command?", header: "Command"
 
@@ -93,7 +93,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Modernize a plugin to PSR-12 | wp-modernize | WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested and tagged per phase, no behaviour change. |
 | WordPress.org submission gate | wp-submission | Ready for WordPress.org review? Guideline map, Plugin Check triage, readme check, one verdict, fixes, reviewer reply. |
 | Plugin demo video | wp-demo-video | Record an MP4 demo of a plugin's admin screens: source read, storyboard approved, clips per scene. |
-| More... | - | The security review and the theme standards review. |
+| More... | - | The security review, the theme standards review, and the block code review. |
 
 **Page 8** (only if `More...` was chosen a seventh time) - question: "Which command?", header: "Command"
 
@@ -101,6 +101,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Security review | wp-security | 65-check scanner, then every input traced to its sink; CRITICAL / WARNING / INFO with file:line, CWE, and fixes. |
 | Theme standards review | wp-theme-review | Scanner plus confirmed findings for block, classic, hybrid, or child themes; CRITICAL / WARNING / INFO with file:line and fixes. |
+| Block code review | wp-block-review | Scanner plus confirmed findings for block.json, edit/save, deprecations, render, and Interactivity code; CRITICAL / WARNING / INFO with file:line and fixes. |
 
 ## Step 2 - run it
 

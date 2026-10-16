@@ -133,6 +133,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `threat-model` | `/forge-security` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
+| `wp-block-review` | `/forge-wordpress` |
 | `wp-block-theme` | `/forge-wordpress` |
 | `wp-bug-audit` | `/forge-wordpress` |
 | `wp-build` | `/forge-wordpress` |

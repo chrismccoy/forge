@@ -129,6 +129,7 @@ answer as a Step 0 direct hit.
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |
+| `wp-block-review` | `/forge-wordpress` |
 | `wp-block-theme` | `/forge-wordpress` |
 | `wp-bug-audit` | `/forge-wordpress` |
 | `wp-build` | `/forge-wordpress` |

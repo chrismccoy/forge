@@ -92,6 +92,10 @@ Reviews a plugin or theme for security holes. A bundled scanner runs 65 checks t
 
 Reviews a WordPress theme against current theme standards. It works on block, classic, hybrid, and child themes. A bundled scanner finds likely problems in theme.json, templates, patterns, and theme PHP, and each one is confirmed by reading the code before it is reported. It catches things like theme.json presets that WordPress silently ignores, PHP left in block template files, deprecated functions, and unescaped request data. The report lists each finding as CRITICAL, WARNING, or INFO, with the file and line and the broken code next to the fixed version. An optional WordPress.org mode applies the theme directory rules.
 
+
+## wp-block-review
+
+Reviews the code of WordPress blocks. It works on any block plugin: a single block, a library of dozens, a plugin that ships only compiled files, or older blocks registered in PHP. A bundled scanner first works out what kind of project it is, then finds likely problems in block.json, the editor and save code, deprecations, the PHP that renders blocks, the Interactivity API, registration, and the build output. Each one is confirmed by reading the code before it is reported. It catches things like saved block markup that changes with the editor's language and breaks the block for other users, deprecations that no longer match old content, render code that lets a Contributor inject script, and built files the block points at but that were never built. The report lists each finding as CRITICAL, WARNING, or INFO, with the file and line and a BAD/GOOD fix.
 ## html-design-styles
 
 Applies one of 53 named design styles to a page or component, such as bento, brutalist, vaporwave, kawaii, or glassmorphism. If you do not name a style, it shows a picker, and if your style name matches several entries, it asks you to choose one. Each style has a full spec covering colors, fonts, component patterns, and visual effects. The output is a single self-contained HTML file that uses the exact values from the spec.

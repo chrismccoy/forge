@@ -127,6 +127,7 @@ a Step 0 direct hit.
 | `token-audit` | `/forge-utils` |
 | `tutorial-builder` | `/forge-writing` |
 | `vgademo` | `/forge-utils` |
+| `wp-block-review` | `/forge-wordpress` |
 | `wp-block-theme` | `/forge-wordpress` |
 | `wp-bug-audit` | `/forge-wordpress` |
 | `wp-build` | `/forge-wordpress` |
