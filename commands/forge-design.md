@@ -74,6 +74,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Tool | Owned by |
 |---|---|
 | `analyze-prompt` | `/forge-docs` |
+| `bash-forge` | `/forge-devops` |
 | `blueprint` | `/forge-code` |
 | `blueprint-forge` | `/forge-code` |
 | `book-summary` | `/forge-writing` |
@@ -114,6 +115,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
+| `python-forge` | `/forge-code` |
 | `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-code` |
 | `refactor` | `/forge-code` |
@@ -151,9 +153,11 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `wp-modernize` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
+| `wp-plugin-review` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |
 | `wp-review` | `/forge-wordpress` |
 | `wp-security` | `/forge-wordpress` |
+| `wp-security-review` | `/forge-wordpress` |
 | `wp-submission` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |
 | `wp-theme-review` | `/forge-wordpress` |

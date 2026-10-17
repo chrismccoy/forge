@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-devops - DevOps & Data picker
 
-Route the user to one of the 5 DevOps & Data commands and run it. Compose stacks, Kubernetes manifests, PowerShell scripts, jq filters, and safe Git work.
+Route the user to one of the 6 DevOps & Data commands and run it. Compose stacks, Kubernetes manifests, PowerShell scripts, jq filters, safe Git work, and Bash scripting.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -39,7 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
-| More... | - | The jq filter builder and the safe Git expert. |
+| More... | - | The jq filter builder, the safe Git expert, and the Bash scripting expert. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
 
@@ -47,6 +47,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
 | Git task | git-forge | Commit, branch, rebase, recover, rewrite history, PRs, Actions - backup and a yes before destructive steps. |
+| Bash script | bash-forge | Write, review, debug, optimize, or scaffold Bash scripts: Bash 5.3, ShellCheck, security, parallel jobs, CI/CD. |
 
 ## Step 2 - run it
 
@@ -112,6 +113,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-bloat` | `/forge-docs` |
 | `prompt-rank-table` | `/forge-docs` |
 | `prompt-stencil` | `/forge-docs` |
+| `python-forge` | `/forge-code` |
 | `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-code` |
 | `refactor` | `/forge-code` |
@@ -151,9 +153,11 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `wp-modernize` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
+| `wp-plugin-review` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |
 | `wp-review` | `/forge-wordpress` |
 | `wp-security` | `/forge-wordpress` |
+| `wp-security-review` | `/forge-wordpress` |
 | `wp-submission` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |
 | `wp-theme-review` | `/forge-wordpress` |

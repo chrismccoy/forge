@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  91 commands . 11 pickers . 0 skills . nothing auto-fires.
+  95 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -23,7 +23,7 @@
   | [Category]                                        Which category?  (pg 1/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                                            |
-  |         Build, review, format, and fill WP plugins and themes.  24 commands. |
+  |         Build, review, format, and fill WP plugins and themes.  26 commands. |
   |                                                                              |
   |  ( 2 )  Design & Frontend                                                    |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning.  7       |
@@ -46,8 +46,8 @@
   | [Category]                                        Which category?  (pg 2/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  DevOps & Data                                                        |
-  |         Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git.  5   |
-  |         commands.                                                            |
+  |         Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git, Bash |
+  |         scripting.  6 commands.                                              |
   |                                                                              |
   |  ( 2 )  Cloud & Architecture                                                 |
   |         Design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents.  8 |
@@ -72,8 +72,8 @@
   |                                                                              |
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
-  |         refactors, regex teardowns, script refactors, explanations.  15      |
-  |         commands.                                                            |
+  |         refactors, regex teardowns, script refactors, explanations, Python   |
+  |         project work.  16 commands.                                          |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils.  9          |
@@ -104,10 +104,10 @@
 ================================================================================
 
 
---- WordPress  ( /forge-wordpress )  -  24 commands, 8 pages -------------------
+--- WordPress  ( /forge-wordpress )  -  26 commands, 9 pages -------------------
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/8) |
+  | [Command]                                           Which command?  (pg 1/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -128,7 +128,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/8) |
+  | [Command]                                           Which command?  (pg 2/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -148,7 +148,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/8) |
+  | [Command]                                           Which command?  (pg 3/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -169,7 +169,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 4/8) |
+  | [Command]                                           Which command?  (pg 4/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -187,14 +187,15 @@
   |         WP-CLI scripts, block themes, classic-to-block migration, the theme  |
   |         bug audit, theme mockups, the documentation pass, plugin             |
   |         modernization, the WordPress.org submission gate, plugin demo        |
-  |         videos, the security review, the theme standards review, and the     |
-  |         block code review.                                                   |
+  |         videos, the security review, the theme standards review, the block   |
+  |         code review, the exploit-path security review, and the plugin        |
+  |         architecture review.                                                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 5/8) |
+  | [Command]                                           Which command?  (pg 5/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -211,14 +212,15 @@
   |  ( 4 )  More...                                                   -> page 6  |
   |         The theme bug audit, theme mockups, the documentation pass, plugin   |
   |         modernization, the WordPress.org submission gate, plugin demo        |
-  |         videos, the security review, the theme standards review, and the     |
-  |         block code review.                                                   |
+  |         videos, the security review, the theme standards review, the block   |
+  |         code review, the exploit-path security review, and the plugin        |
+  |         architecture review.                                                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 6/8) |
+  | [Command]                                           Which command?  (pg 6/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
@@ -234,14 +236,15 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 7  |
   |         Plugin modernization, the WordPress.org submission gate, plugin demo |
-  |         videos, the security review, the theme standards review, and the     |
-  |         block code review.                                                   |
+  |         videos, the security review, the theme standards review, the block   |
+  |         code review, the exploit-path security review, and the plugin        |
+  |         architecture review.                                                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 7/8) |
+  | [Command]                                           Which command?  (pg 7/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
   |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
@@ -256,14 +259,15 @@
   |         storyboard approved, clips per scene.                                |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 8  |
-  |         The security review, the theme standards review, and the block code  |
-  |         review.                                                              |
+  |         The security review, the theme standards review, the block code      |
+  |         review, the exploit-path security review, and the plugin             |
+  |         architecture review.                                                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 8/8) |
+  | [Command]                                           Which command?  (pg 8/9) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Security review                                     -> /wp-security  |
   |         65-check scanner, then every input traced to its sink; CRITICAL /    |
@@ -277,6 +281,24 @@
   |         Scanner plus confirmed findings for block.json, edit/save,           |
   |         deprecations, render, and Interactivity code; CRITICAL / WARNING /   |
   |         INFO with file:line and fixes.                                       |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 9  |
+  |         The exploit-path security review and the plugin architecture review. |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 9/9) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Exploit-path security review                 -> /wp-security-review  |
+  |         Scoped intake, grep scan, each candidate traced to its sink;         |
+  |         CRITICAL only with a written exploit path, plus CWE and fixes.       |
+  |                                                                              |
+  |  ( 2 )  Plugin architecture review                     -> /wp-plugin-review  |
+  |         Context-aware read of every PHP file for lifecycle, hooks, APIs, and |
+  |         prefixing; CRITICAL / WARNING / INFO with fixes and a WordPress.org  |
+  |         verdict.                                                             |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -393,7 +415,7 @@
   '------------------------------------------------------------------------------'
 
 
---- DevOps & Data  ( /forge-devops )  -  5 commands, 2 pages -------------------
+--- DevOps & Data  ( /forge-devops )  -  6 commands, 2 pages -------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/2) |
@@ -411,7 +433,8 @@
   |         security notes.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The jq filter builder and the safe Git expert.                       |
+  |         The jq filter builder, the safe Git expert, and the Bash scripting   |
+  |         expert.                                                              |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -425,6 +448,10 @@
   |  ( 2 )  Git task                                              -> /git-forge  |
   |         Commit, branch, rebase, recover, rewrite history, PRs, Actions -     |
   |         backup and a yes before destructive steps.                           |
+  |                                                                              |
+  |  ( 3 )  Bash script                                          -> /bash-forge  |
+  |         Write, review, debug, optimize, or scaffold Bash scripts: Bash 5.3,  |
+  |         ShellCheck, security, parallel jobs, CI/CD.                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -537,7 +564,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  15 commands, 5 pages -----------------------------
+--- Code  ( /forge-code )  -  16 commands, 5 pages -----------------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/5) |
@@ -556,7 +583,7 @@
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
-  |         codebase blueprints.                                                 |
+  |         codebase blueprints, code explanations, Python project work.         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -577,7 +604,7 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
   |         feature READMEs, regex teardowns, script refactors, codebase         |
-  |         blueprints.                                                          |
+  |         blueprints, code explanations, Python project work.                  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -599,7 +626,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
-  |         safe script refactors, and codebase blueprints.                      |
+  |         safe script refactors, codebase blueprints, the code explainer, and  |
+  |         Python project work.                                                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -620,8 +648,8 @@
   |         pitfalls, ReDoS verdict, alternatives.                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
-  |         Safe script refactors, codebase blueprints with rebuilds, and the    |
-  |         code explainer.                                                      |
+  |         Safe script refactors, codebase blueprints with rebuilds, the code   |
+  |         explainer, and Python project work.                                  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -640,6 +668,10 @@
   |  ( 3 )  Explain a piece of code                            -> /explain-code  |
   |         Explain a snippet, file, or function at your level: tutorial, quick  |
   |         summary, interview prep, or line by line.                            |
+  |                                                                              |
+  |  ( 4 )  Python project work                                -> /python-forge  |
+  |         uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV,    |
+  |         FFmpeg; init and test workflows, four analysis scripts.              |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -768,6 +800,7 @@
    |    +-- wp-feature-readme  wp-cli  wp-block-theme  wp-classic-to-block
    |    +-- wp-bug-audit  wp-mockup  wp-doc-pass  wp-modernize  wp-submission
    |    +-- wp-demo-video  wp-security  wp-theme-review  wp-block-review
+   |    +-- wp-security-review  wp-plugin-review
    |
    +-- Design & Frontend ..... /forge-design
    |    +-- html-design-styles  accessibility-audit  design-system
@@ -780,7 +813,7 @@
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect
-   |    +-- powershell-script-engine  jq  git-forge
+   |    +-- powershell-script-engine  jq  git-forge  bash-forge
    |
    +-- Cloud & Architecture .. /forge-cloud
    |    +-- system-design  terraform  cicd-pipeline  data-pipeline
@@ -796,7 +829,7 @@
    |    +-- blueprint  e2e-tests  explain-my-code  codebase-to-mermaid
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
    |    +-- docblock-rewrite  code-teacher  fullstack-readme  explain-regex
-   |    +-- script-refactor  blueprint-forge  explain-code
+   |    +-- script-refactor  blueprint-forge  explain-code  python-forge
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt

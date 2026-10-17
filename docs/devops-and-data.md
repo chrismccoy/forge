@@ -287,3 +287,69 @@ Two ways to invoke:
 > *"I committed to the wrong branch"*, *"undo my last commit"*, *"I lost some work"*, *"resolve this merge conflict"*, *"I pushed a password"*, *"push blocked with GH013"*, *"set up commit signing"*, *"open a pull request"*, *"pin our Actions to SHAs"*
 
 The full procedure lives at [`lib/git-forge/SKILL.md`](../lib/git-forge/SKILL.md) and the slash command at [`commands/git-forge.md`](../commands/git-forge.md).
+
+---
+
+## `bash-forge`
+
+Bash scripting for Linux, macOS, WSL, Git Bash, and containers: write a new script, review or lint an existing one, find why it fails, make it faster, or scaffold a CLI, daemon, library, installer, or CI script. Tell it the task; it reads the matching guide first, then does the work.
+
+```
+/bash-forge
+```
+
+Most shell scripts that come back from a quick request work once, on the author's machine. They leave expansions unquoted, so a filename with a space splits in two. They call `exit` inside `$(...)` and expect the script to stop. They use `mapfile` or `${var,,}` and then fail on the Bash 3.2 that stock macOS still ships, or turn `C:\` paths into nonsense under Git Bash. This tool starts every script from a safety frame - shebang, `set -euo pipefail`, `readonly` constants, a `trap` cleanup, small single-purpose functions, and a `main` at the bottom - validates input by rejecting it instead of silently rewriting it, and gives cross-platform notes for the platforms you target.
+
+Before it answers, it reads the guide that matches the request: Bash 5.3 features and version detection, arrays and `mapfile`, parameter expansion and `BASH_REMATCH`, pure-Bash text processing in place of `sed`/`awk`/`cut`, process substitution, FIFOs and coprocesses, `xargs -P`, GNU parallel and job pools, input validation and secrets, strict mode and trace debugging, ShellCheck in CI, CI/CD and cloud CLIs, platform differences, and Git Bash path conversion. Four requests have their own workflow: **analyze** (security, performance, portability, and style), **optimize** (speed, memory, or both, measured before and after), **template** (CLI, daemon, library, installer, or CI script), and **create** (a new script for a task). For large multi-file jobs - a full CI/CD script suite, a hang that only happens in CI, a performance project - it can hand parts to the bash-expert agent defined in the procedure.
+
+## Technical Overview
+
+One slash command plus its procedure folder. `lib/bash-forge/SKILL.md` carries the scope, the reference routing tables, the workflow table, the bash-expert agent instructions and quality checklist, the helper script index, and the core principles. Twenty-three reference files under `lib/bash-forge/references/` hold the depth: 13 topic guides, 6 core guides (patterns, the style guide, pitfalls, platforms, Git Bash paths, and resources), and the four workflow files. Only the file that matches the task is read. Three helper scripts sit under `lib/bash-forge/scripts/`. `/bash-forge` takes the task as its argument and asks one multiple-choice question only when nothing is passed.
+
+## Features
+
+- One input: the script, the folder, or the task in your own words, or a four-option menu when nothing is passed
+- Reads the matching guide before answering, from 19 topic and core references
+- Four workflows: analyze, optimize, template, and create
+- Safety frame on every script: shebang, `set -euo pipefail`, quoted expansions, input validation, `trap` cleanup, `--help`
+- Bash 5.3 (`${ cmd; }`, `${| cmd; }`, `GLOBSORT`, `BASH_TRAPSIG`) with version checks and shims for older Bash
+- Parallel work with `xargs -P`, GNU parallel, `wait -n` job pools, and exit-code aggregation
+- Security: injection prevention, `mktemp`, `PATH` hardening, and secrets handling
+- Debugging with strict mode, `set -x`, `PS4`, and `trap DEBUG/ERR/EXIT`
+- ShellCheck and BATS for linting and tests, with CI integration
+- Portability notes for Linux, macOS, BSD, WSL, Git Bash, and containers
+- bash-expert agent mode for large multi-file jobs
+- `shellcheck-batch.sh`: ShellCheck over many files with a summary, JSON, gcc, or checkstyle output, and a CI mode
+- `script-profiler.sh`: per-line timing of a script, as text, CSV, or JSON
+- `parallel-runner.sh`: run commands in parallel with a job limit, timeouts, and retries
+
+## How it works
+
+1. **Intake.** Take the task from `$ARGUMENTS`, or ask what to do: write, review, fix or speed up, or scaffold.
+2. **Route.** Read the reference that matches the task, and the workflow file if the request is one of the four.
+3. **Work.** Write or change the script inside the safety frame, or analyze it with `shellcheck-batch.sh` and profile it with `script-profiler.sh`.
+4. **Check.** Run the quality checklist: shebang, strict mode, quoting, error handling, validation, ShellCheck clean, cross-platform notes, and usage help.
+5. **Report.** The complete script or the findings, the assumptions, test commands, and any warnings.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/bash-forge                                          ← asks what to do with Bash
+/bash-forge lint ./deploy.sh                         ← analyze workflow on one script
+/bash-forge back up /data to S3 with logging         ← create workflow
+/bash-forge process.sh takes 5 minutes, speed it up  ← optimize workflow, timed before and after
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"write a backup script"*, *"analyze deploy.sh for security problems"*, *"generate a daemon template with logging"*, *"why does this script hang in CI?"*, *"run these jobs in parallel"*, *"make this work in Git Bash"*
+
+**Needs:** Bash. ShellCheck for the linting script; without it, the review is done by hand and says so.
+
+For PowerShell use [`/powershell-script-engine`](#powershell-script-engine); for one jq filter use [`/jq`](#jq); for Git use [`/git-forge`](#git-forge); to refactor a script another program runs, with side-by-side proof that its output is unchanged, use [`/script-refactor`](code.md#script-refactor).
+
+The full procedure lives at [`lib/bash-forge/SKILL.md`](../lib/bash-forge/SKILL.md), the reference files under [`lib/bash-forge/references/`](../lib/bash-forge/references/), the helper scripts under [`lib/bash-forge/scripts/`](../lib/bash-forge/scripts/), and the slash command at [`commands/bash-forge.md`](../commands/bash-forge.md).

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 91 commands in this plugin and then run it. This command
+Route the user to one of the 95 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,14 +29,14 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 24 WordPress commands |
+| `/forge-wordpress` | 26 WordPress commands |
 | `/forge-design` | 7 design and frontend commands |
 | `/forge-writing` | 10 writing and content commands |
-| `/forge-devops` | 5 DevOps and data commands |
+| `/forge-devops` | 6 DevOps and data commands |
 | `/forge-cloud` | 8 cloud and architecture commands |
 | `/forge-security` | 3 security commands |
 | `/forge-cleanup` | 4 code-cleanup commands |
-| `/forge-code` | 15 code commands |
+| `/forge-code` | 16 code commands |
 | `/forge-docs` | 9 docs and diagram commands |
 | `/forge-utils` | 6 utilities |
 
@@ -54,7 +54,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 24 commands. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 26 commands. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning, Tailwind project work. 7 commands. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts. 10 commands. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
@@ -63,7 +63,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| DevOps & Data | Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git. 5 commands. |
+| DevOps & Data | Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git, Bash scripting. 6 commands. |
 | Cloud & Architecture | System design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents. 8 commands. |
 | Security | STRIDE threat models, DevSecOps hardening, vulnerability reports. 3 commands. |
 | More... | Code cleanup, code, docs and diagrams, utilities. |
@@ -73,7 +73,7 @@ such answer as a Step 0 direct hit.
 | Label | Description |
 |---|---|
 | Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 commands. |
-| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations. 15 commands. |
+| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work. 16 commands. |
 | Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, scorers, stencils, bloat remover. 9 commands. |
 | More... | Utilities. |
 
@@ -90,7 +90,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (24 - page at 4)
+### WordPress (26 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -104,7 +104,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, modernize, submission-gate, demo-video, security, and theme-review commands. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, modernize, submission-gate, demo-video, security, theme-review, block-review, security-review, and plugin-review commands. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -118,34 +118,40 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, and the block code review. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
 
 | Label | Command | Description |
 |---|---|---|
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
-| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, and the block code review. |
+| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
 
 | Label | Command | Description |
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
 | Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
-| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, and the block code review. |
+| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
 
 | Label | Command | Description |
 |---|---|---|
 | Modernize a plugin to PSR-12 | wp-modernize | WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested and tagged per phase, no behaviour change. |
 | WordPress.org submission gate | wp-submission | Ready for WordPress.org review? Guideline map, Plugin Check triage, readme check, one verdict, fixes, reviewer reply. |
 | Plugin demo video | wp-demo-video | Record an MP4 demo of a plugin's admin screens: source read, storyboard approved, clips per scene. |
-| More... | - | The security review, the theme standards review, and the block code review. |
+| More... | - | The security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
 
 | Label | Command | Description |
 |---|---|---|
 | Security review | wp-security | 65-check scanner, then every input traced to its sink; CRITICAL / WARNING / INFO with file:line, CWE, and fixes. |
 | Theme standards review | wp-theme-review | Scanner plus confirmed findings for block, classic, hybrid, or child themes; CRITICAL / WARNING / INFO with file:line and fixes. |
 | Block code review | wp-block-review | Scanner plus confirmed findings for block.json, edit/save, deprecations, render, and Interactivity code; CRITICAL / WARNING / INFO with file:line and fixes. |
+| More... | - | The exploit-path security review and the plugin architecture review. |
+
+| Label | Command | Description |
+|---|---|---|
+| Exploit-path security review | wp-security-review | Scoped intake, grep scan, each candidate traced to its sink; CRITICAL only with a written exploit path, plus CWE and fixes. |
+| Plugin architecture review | wp-plugin-review | Context-aware read of every PHP file for lifecycle, hooks, APIs, and prefixing; CRITICAL / WARNING / INFO with fixes and a WordPress.org verdict. |
 
 ### Design & Frontend (7 - page at 4)
 
@@ -186,19 +192,20 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Compare two SEO drafts | seo-duel | Two rewrites of one blog post scored on 10 SEO criteria in both orders: winner or merge plan, fixes, title and meta. |
 | Rewrite as a human blog post | human | Any text rewritten as a first-person blog post in an invented persona's voice, every fact kept. |
 
-### DevOps & Data (5 - page at 4)
+### DevOps & Data (6 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | docker-compose stack | docker-compose-architect | Production compose stack: networks, healthchecks, secrets as env refs, .env template. |
 | Kubernetes manifests | kubernetes-architect | Deployment, HPA, Service/Ingress, probes, resource limits, security contexts. |
 | PowerShell script | powershell-script-engine | PSScriptAnalyzer-clean script with help, logging, validation, and security notes. |
-| More... | - | The jq filter builder and the safe Git expert. |
+| More... | - | The jq filter builder, the safe Git expert, and the Bash scripting expert. |
 
 | Label | Command | Description |
 |---|---|---|
 | jq filter | jq | One copy-paste-ready jq command, explained stage by stage. |
 | Git task | git-forge | Commit, branch, rebase, recover, rewrite history, PRs, Actions - backup and a yes before destructive steps. |
+| Bash script | bash-forge | Write, review, debug, optimize, or scaffold Bash scripts: Bash 5.3, ShellCheck, security, parallel jobs, CI/CD. |
 
 ### Cloud & Architecture (8 - page at 4)
 
@@ -238,41 +245,42 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Clean README feature list | strip-emoji | Strip leading emoji from feature bullets, label dashes to colons, en and em dashes removed. |
 | Strip comments | strip-comments | Delete every comment except file headers, pragmas, and license notices. Preview and approval required. |
 
-### Code (15 - page at 4)
+### Code (16 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | App blueprint | blueprint | 12-section blueprint for a new app, then fact-checked review, walking-skeleton scaffold, and spikes. |
 | Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations. |
+| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work. |
 
 | Label | Command | Description |
 |---|---|---|
 | Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
 | Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations. |
+| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 | Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, codebase blueprints, and the code explainer. |
+| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, codebase blueprints, the code explainer, and Python project work. |
 
 | Label | Command | Description |
 |---|---|---|
 | Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 | Full stack feature README | fullstack-readme | Plain-English README for a web app: title, description, and a categorized feature list traced to real code. |
 | Explain a regex | explain-regex | Verified 11-section plain-English teardown of one regex: examples, pitfalls, ReDoS verdict, alternatives. |
-| More... | - | Safe script refactors, codebase blueprints with rebuilds, and the code explainer. |
+| More... | - | Safe script refactors, codebase blueprints with rebuilds, the code explainer, and Python project work. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactor a script safely | script-refactor | Clean up bash and Python scripts an agent runs without changing their output; behavior fixes wait for approval. |
 | Codebase blueprint or rebuild | blueprint-forge | Scan a codebase into a 14-section BLUEPRINT.md, or rebuild a working app from one, plan first. |
 | Explain a piece of code | explain-code | Explain a snippet, file, or function at your level: tutorial, quick summary, interview prep, or line by line. |
+| Python project work | python-forge | uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV, FFmpeg; init and test workflows, four analysis scripts. |
 
 ### Docs & Diagrams (9 - page at 4)
 

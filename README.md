@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 91 commands and 11 pickers.
+One Claude Code plugin - `forge` - holding 95 commands and 11 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -40,6 +40,8 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-security`](docs/wordpress.md#wp-security). Reviews a WordPress plugin or theme for security holes. A bundled scanner runs 65 grep checks (and the WordPress phpcs security sniffs when installed) to find candidates, then every superglobal and REST request value is traced by hand from input to sink - SQL injection, XSS, CSRF and nonce gaps, missing capability checks, privilege escalation, unsafe uploads, path traversal, object injection, SSRF, and open redirects. Each confirmed finding comes back CRITICAL, WARNING, or INFO with the file and line, a CWE, and the vulnerable code next to the fixed version.
 - [`/wp-theme-review`](docs/wordpress.md#wp-theme-review). Reviews a WordPress theme of any type - block, classic, hybrid, or child - against current theme standards. A bundled scanner finds candidates in theme.json, templates, patterns, and theme PHP: theme.json v3 preset collisions that silently drop theme values, a missing schema version, broken root padding, unbalanced block markup and PHP left in `.html` files, unescaped request data, deprecated functions, hardcoded `<title>` and asset tags, and missing headers. Each candidate is confirmed in the source and reported CRITICAL, WARNING, or INFO with the file and line and a BAD/GOOD fix pair. `--wporg` applies the WordPress.org theme directory rules.
 - [`/wp-block-review`](docs/wordpress.md#wp-block-review). Reviews WordPress block (Gutenberg) code in any block plugin. A bundled scanner detects the project type - modern build, multi-block library, metadata collection, compiled-only, no-build, apiVersion 1, or PHP-registered - and finds candidates in block.json, edit and save, deprecations, render files and callbacks, the Interactivity API, registration, and build output. Each one is confirmed in the source before it is reported as CRITICAL, WARNING, or INFO with the file and line and a BAD/GOOD fix.
+- [`/wp-security-review`](docs/wordpress.md#wp-security-review). Security review of a WordPress plugin, theme, specific files, a diff, or a pasted snippet. One round of questions settles the target, the depth (quick triage or full audit), who can reach the site (public, members, or admin-only, plus multisite and VIP), and whether you want patches, and it is skipped when your request already answers them. A grep scan finds candidate sinks, and each one is traced back through nonces, capability checks, sanitizing, allowlists, and stored data written by lower-privileged users. A finding is rated CRITICAL only after its exploit path is written out - entry point, who can reach it, the missing guard, and the impact - and every finding comes with the line, a CWE, and a BAD/GOOD fix.
+- [`/wp-plugin-review`](docs/wordpress.md#wp-plugin-review). Reviews a WordPress plugin for architecture, lifecycle, API usage, and WordPress.org compliance. It sets the context first - WordPress.org, private, mu-plugin, or drop-in - because that changes what counts as a problem, runs a bundled scanner, then reads every PHP file, not just the ones with hits. Severity comes only from a fixed catalog, a "Not a Problem" list drops known false positives, and each finding has the line, CRITICAL, WARNING, or INFO, and a BAD/GOOD fix using the plugin's own prefix and text domain. The report ends with a WordPress.org readiness verdict, and security observations are listed in one line each for `/wp-security-review`.
 
 **Design & Frontend**
 
@@ -71,6 +73,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/powershell-script-engine`](docs/devops-and-data.md#powershell-script-engine). Writes clean, production-ready PowerShell scripts with built-in help, logging, error handling, and safe handling of credentials and destructive actions.
 - [`/jq`](docs/devops-and-data.md#jq). Builds copy-paste-ready jq one-liners to filter, reshape, and aggregate JSON from APIs and CLI tools, inspecting the JSON structure first and explaining each filter stage.
 - [`/git-forge`](docs/devops-and-data.md#git-forge). Handles any Git or Git-hosting task safely - commits, branches, merges and conflicts, rebases, lost work, rejected pushes, history rewrites, pull requests on GitHub, GitLab, Azure DevOps, or Bitbucket, GitHub Actions, and secret scanning. Before anything that could delete work, it checks the repository, tells you exactly what is at risk, makes a backup, gives you the undo command, and waits for your yes. It asks once whether to commit for you, only stage, or only explain, and hands you any step that needs you to type a password or edit in an editor.
+- [`/bash-forge`](docs/devops-and-data.md#bash-forge). Writes, reviews, debugs, speeds up, or scaffolds Bash scripts for Linux, macOS, WSL, Git Bash, and containers. It reads the matching guide before answering - Bash 5.3 features, arrays, string handling, process substitution, parallel jobs, security hardening, ShellCheck, debugging, CI/CD and cloud CLIs, or Git Bash path conversion - and follows a fixed workflow for analyze, optimize, template, and create requests. Every script it writes starts with strict mode, quotes every expansion, validates input, and cleans up with `trap`. Bundled scripts run ShellCheck over many files with a summary, time a script line by line, and run jobs in parallel with limits, timeouts, and retries.
 
 **Cloud & Architecture**
 
@@ -113,6 +116,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/script-refactor`](docs/code.md#script-refactor). Cleans up bash and Python scripts that another program or AI agent runs, keeping their output, exit codes, and written files exactly the same. It checks what calls each script, runs the old and new versions side by side to prove nothing changed, and lists any bug fix that would change behavior as a numbered proposal you approve before it is applied.
 - [`/blueprint-forge`](docs/code.md#blueprint-forge). Reads an existing codebase and writes one `BLUEPRINT.md` in 14 fixed sections - tech stack with every version's source, architecture, auth, a module map with every export's types, data models, every API route, features, UI, environment variables, tests, open questions, and step-by-step rebuild instructions - detailed enough to rebuild the app without the original code. Secrets are never copied, and a bundled checker confirms the format before you get it. Point it at a blueprint instead and it rebuilds the app: it proposes a plan, waits for your approval, then builds and verifies one step at a time. Afterwards it can scan the new app and compare it with the original blueprint, listing any endpoint, model, or environment variable the rebuild lost.
 - [`/explain-code`](docs/code.md#code-explainer). Explains one snippet, file, line range, or named function the way an experienced engineer who teaches would, pitched at your level - Beginner, Intermediate, or Advanced - and shaped as a detailed tutorial, a quick summary of 300 words or fewer, interview preparation, or a line-by-line walkthrough. Every risk is marked confirmed or possible, every improvement shows before and after code, and the result can be saved as a Markdown document. It never edits the code.
+- [`/python-forge`](docs/code.md#python-forge). Modern Python (3.11 to 3.13+) work in your own project: uv and `pyproject.toml`, asyncio, type hints and mypy, FastAPI and Pydantic, pytest and coverage, Ruff and pre-commit, GitHub Actions and PyPI, Cloudflare Python Workers, Modal, OpenCV, FFmpeg, and GPU video pipelines. It loads the matching guide before answering, writes typed code with tests, and keeps your existing framework and tools. A project-init workflow scaffolds a FastAPI app, CLI tool, library, or minimal project with uv and verifies it, a run-tests workflow reports coverage and finds the cause of failures, and four scripts check types, async code, coverage, and dependencies.
 
 **Docs & Diagrams**
 
@@ -144,7 +148,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 91 commands and 11 pickers, nothing running in the background.
+That is the whole install. One plugin, 95 commands and 11 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -155,14 +159,14 @@ Then either browse the whole catalog:
 which asks for a category, then a command, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 24 WordPress commands
+/forge-wordpress    # 26 WordPress commands
 /forge-design       # 7 design and frontend commands
 /forge-writing      # 10 writing and content commands
-/forge-devops       # 5 DevOps and data commands
+/forge-devops       # 6 DevOps and data commands
 /forge-cloud        # 8 cloud and architecture commands
 /forge-security     # 3 security commands
 /forge-cleanup      # 4 code-cleanup commands
-/forge-code         # 15 code commands
+/forge-code         # 16 code commands
 /forge-docs         # 9 docs and diagram commands
 /forge-utils        # 6 utilities
 ```
@@ -195,6 +199,8 @@ Or call any command directly:
 /wp-security                    # security review: scanner, input-to-sink tracing, CWE-tagged fixes
 /wp-theme-review                # theme standards review: block, classic, hybrid, child; --wporg mode
 /wp-block-review                # block code review: block.json, edit/save, render, Interactivity API
+/wp-security-review             # security review, CRITICAL only with a written exploit path
+/wp-plugin-review               # plugin architecture, lifecycle, and WordPress.org review
 
 # Design & Frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -223,6 +229,7 @@ Or call any command directly:
 /powershell-script-engine       # PSScriptAnalyzer-clean PowerShell script
 /jq                             # one explained, copy-paste-ready jq command
 /git-forge                      # any Git task, backup and a yes before destructive steps
+/bash-forge                     # write, review, debug, or speed up Bash scripts
 
 # Cloud & Architecture
 /system-design                  # architecture blueprint, no code
@@ -261,6 +268,7 @@ Or call any command directly:
 /script-refactor                # clean up agent-run scripts, output kept identical
 /blueprint-forge                # codebase -> BLUEPRINT.md, or BLUEPRINT.md -> app
 /explain-code                   # explain one snippet, file, or function at your level
+/python-forge                   # modern Python: uv, asyncio, typing, FastAPI, pytest
 
 # Docs & Diagrams
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
@@ -310,20 +318,20 @@ description each.
 
 | Picker | Commands | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 24 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-wordpress` | 26 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 7 | 3 + `More...`, then 4 |
 | `/forge-writing` | 10 | 3 + `More...`, then 3 + `More...`, then 4 |
-| `/forge-devops` | 5 | 3 + `More...`, then 2 |
+| `/forge-devops` | 6 | 3 + `More...`, then 3 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
-| `/forge-code` | 15 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-code` | 16 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-docs` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
 
 
-A picker screen looks like this - `/forge-wordpress`, page 1 of 8:
+A picker screen looks like this - `/forge-wordpress`, page 1 of 9:
 
 ```
 Which command?
@@ -376,7 +384,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              102 command files - 91 commands, 11 pickers
+commands/              106 command files - 95 commands, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -407,14 +415,14 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Commands | Reference |
 |---|---|---|
-| WordPress | 24 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 26 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 7 | [docs/design.md](docs/design.md) |
 | Writing & Content | 10 | [docs/writing-and-content.md](docs/writing-and-content.md) |
-| DevOps & Data | 5 | [docs/devops-and-data.md](docs/devops-and-data.md) |
+| DevOps & Data | 6 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
-| Code | 15 | [docs/code.md](docs/code.md) |
+| Code | 16 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 9 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
@@ -426,15 +434,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 91 commands + 11 pickers
-├── lib/                      ← 91 procedure folders (SKILL.md + bundled
+├── commands/                 ← 95 commands + 11 pickers
+├── lib/                      ← 95 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 91 commands compared by how much each does
+├── SUMMARY.md                ← the 95 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

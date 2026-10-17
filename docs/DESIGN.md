@@ -156,7 +156,7 @@ Totals in the stat cards, the chart, the tool size card, the sidebar counts, the
 
 All of these are edits to `tools/landing-template.html`, followed by a rebuild.
 
-- **A new tool:** add it to the README (an "Available commands" entry and a quick-start tagline) and to a `SUMMARY.md` table, then rebuild. No template change is needed unless it adds a picker screen (update `screens` for its category in `CATS`) or changes the command total (update the 91 / 11 counts in the header, install text, and repo layout block).
+- **A new tool:** add it to the README (an "Available commands" entry and a quick-start tagline) and to a `SUMMARY.md` table, then rebuild. No template change is needed unless it adds a picker screen (update `screens` for its category in `CATS`) or changes the command total (update the 95 / 11 counts in the header, install text, and repo layout block).
 - **A new category:** add an entry to `CATS` in README order with a `short` label of one word and a Font Awesome icon. The build stops until you do.
 - **A new section:** wrap it in `.chart-container` (or a bordered table panel), give it an `id` and `scroll-mt-6`, add a sidebar link with `data-nav`, and use the section title and subtitle recipe above.
 - **A new stat:** copy a `.metric-card`, add the value to `STATS`, and use an icon circle color from the token table.

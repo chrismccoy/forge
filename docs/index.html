@@ -6,7 +6,7 @@
         <title>Forge</title>
         <meta
             name="description"
-            content="91 commands for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
+            content="95 commands for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
         />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -221,7 +221,7 @@
                         ></span>
                         <span>
                             <span class="block text-sm font-semibold leading-tight">Forge</span>
-                            <span class="block font-mono text-[11px] text-slate-500">v1.26.0</span>
+                            <span class="block font-mono text-[11px] text-slate-500">v1.27.0</span>
                         </span>
                     </a>
                     <button
@@ -290,7 +290,7 @@
                         <div class="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                             <div class="max-w-2xl">
                                 <h1 class="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
-                                    91 commands across ten categories. Each one waits to be typed.
+                                    95 commands across ten categories. Each one waits to be typed.
                                 </h1>
                                 <p class="mt-2 text-sm text-slate-500">
                                     One Claude Code plugin for WordPress, design, writing, DevOps, cloud, security,
@@ -661,7 +661,7 @@
 .claude-plugin/
   marketplace.json     <span class="text-slate-500">one plugin entry</span>
   plugin.json          <span class="text-slate-500">the forge plugin manifest</span>
-commands/              <span class="text-slate-500">102 command files: 91 commands, 11 pickers</span>
+commands/              <span class="text-slate-500">106 command files: 95 commands, 11 pickers</span>
 lib/&lt;tool&gt;/
   SKILL.md             <span class="text-slate-500">the procedure, read only when its command runs</span>
   references/          <span class="text-slate-500">deep detail, loaded on demand</span>
@@ -677,7 +677,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                             <div>
                                 <h2 id="installTitle" class="text-base font-medium text-slate-900">Install</h2>
                                 <p class="text-sm text-slate-500">
-                                    Run these in any Claude Code session. One plugin, 91 commands and 11 pickers,
+                                    Run these in any Claude Code session. One plugin, 95 commands and 11 pickers,
                                     nothing running in the background.
                                 </p>
                             </div>
@@ -1066,6 +1066,32 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     files: 11,
                 },
                 {
+                    cmd: "wp-security-review",
+                    lib: "wp-security-review",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "security review, CRITICAL only with a written exploit path",
+                    desc: "Security review of a WordPress plugin, theme, specific files, a diff, or a pasted snippet. One round of questions settles the target, the depth (quick triage or full audit), who can reach the site (public, members, or admin-only, plus multisite and VIP), and whether you want patches, and it is skipped when your request already answers them. A grep scan finds candidate sinks, and each one is traced back through nonces, capability checks, sanitizing, allowlists, and stored data written by lower-privileged users. A finding is rated CRITICAL only after its exploit path is written out - entry point, who can reach it, the missing guard, and the impact - and every finding comes with the line, a CWE, and a BAD/GOOD fix.",
+                    lines: 5057,
+                    refs: 6,
+                    scripts: 1,
+                    files: 8,
+                },
+                {
+                    cmd: "wp-plugin-review",
+                    lib: "wp-plugin-review",
+                    cat: "WordPress",
+                    doc: "wordpress",
+                    type: "Toolkit",
+                    tag: "plugin architecture, lifecycle, and WordPress.org review",
+                    desc: 'Reviews a WordPress plugin for architecture, lifecycle, API usage, and WordPress.org compliance. It sets the context first - WordPress.org, private, mu-plugin, or drop-in - because that changes what counts as a problem, runs a bundled scanner, then reads every PHP file, not just the ones with hits. Severity comes only from a fixed catalog, a "Not a Problem" list drops known false positives, and each finding has the line, CRITICAL, WARNING, or INFO, and a BAD/GOOD fix using the plugin\'s own prefix and text domain. The report ends with a WordPress.org readiness verdict, and security observations are listed in one line each for `/wp-security-review`.',
+                    lines: 2782,
+                    refs: 7,
+                    scripts: 3,
+                    files: 11,
+                },
+                {
                     cmd: "html-design-styles",
                     lib: "html-design-styles",
                     cat: "Design & Frontend",
@@ -1350,6 +1376,19 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     refs: 13,
                     scripts: 0,
                     files: 14,
+                },
+                {
+                    cmd: "bash-forge",
+                    lib: "bash-forge",
+                    cat: "DevOps & Data",
+                    doc: "devops-and-data",
+                    type: "Toolkit",
+                    tag: "write, review, debug, or speed up Bash scripts",
+                    desc: "Writes, reviews, debugs, speeds up, or scaffolds Bash scripts for Linux, macOS, WSL, Git Bash, and containers. It reads the matching guide before answering - Bash 5.3 features, arrays, string handling, process substitution, parallel jobs, security hardening, ShellCheck, debugging, CI/CD and cloud CLIs, or Git Bash path conversion - and follows a fixed workflow for analyze, optimize, template, and create requests. Every script it writes starts with strict mode, quotes every expansion, validates input, and cleans up with `trap`. Bundled scripts run ShellCheck over many files with a summary, time a script line by line, and run jobs in parallel with limits, timeouts, and retries.",
+                    lines: 12800,
+                    refs: 23,
+                    scripts: 3,
+                    files: 27,
                 },
                 {
                     cmd: "system-design",
@@ -1742,6 +1781,19 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     files: 3,
                 },
                 {
+                    cmd: "python-forge",
+                    lib: "python-forge",
+                    cat: "Code",
+                    doc: "code",
+                    type: "Toolkit",
+                    tag: "modern Python: uv, asyncio, typing, FastAPI, pytest",
+                    desc: "Modern Python (3.11 to 3.13+) work in your own project: uv and `pyproject.toml`, asyncio, type hints and mypy, FastAPI and Pydantic, pytest and coverage, Ruff and pre-commit, GitHub Actions and PyPI, Cloudflare Python Workers, Modal, OpenCV, FFmpeg, and GPU video pipelines. It loads the matching guide before answering, writes typed code with tests, and keeps your existing framework and tools. A project-init workflow scaffolds a FastAPI app, CLI tool, library, or minimal project with uv and verifies it, a run-tests workflow reports coverage and finds the cause of failures, and four scripts check types, async code, coverage, and dependencies.",
+                    lines: 16056,
+                    refs: 28,
+                    scripts: 4,
+                    files: 33,
+                },
+                {
                     cmd: "mermaid-to-ascii",
                     lib: "mermaid-to-ascii",
                     cat: "Docs & Diagrams",
@@ -1944,7 +1996,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     short: "WordPress",
                     picker: "forge-wordpress",
                     icon: "fa-brands fa-wordpress-simple",
-                    screens: "8",
+                    screens: "9",
                 },
                 {
                     name: "Design & Frontend",

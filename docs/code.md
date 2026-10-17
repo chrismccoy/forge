@@ -926,3 +926,64 @@ For whole-repo onboarding documentation use [`/explain-my-code`](#explain-my-cod
 The full procedure lives at [`lib/code-explainer/SKILL.md`](../lib/code-explainer/SKILL.md), the slash command at [`commands/explain-code.md`](../commands/explain-code.md), and the reference files at [`lib/code-explainer/references/output-styles.md`](../lib/code-explainer/references/output-styles.md) and [`lib/code-explainer/references/save-document.md`](../lib/code-explainer/references/save-document.md).
 
 ---
+
+## `python-forge`
+
+Modern Python (3.11 to 3.13+) work in your own project: start a project with uv, write async code, add type hints, build a FastAPI service, write and run tests, set up CI, deploy to Cloudflare or Modal, and process images and video with OpenCV and FFmpeg. It reads the matching guide first, then writes typed, tested code.
+
+```
+/python-forge
+```
+
+Python advice goes stale fast. Answers still reach for `pip install` and a hand-written `setup.py` instead of `uv` and `pyproject.toml`, use `asyncio.gather` where a `TaskGroup` would stop sibling failures from hiding, import `List` and `Optional` from `typing`, and block the event loop with a synchronous call inside `async def`. Video and image code has its own traps: OpenCV loads BGR, `cv2.imread` returns `None` instead of raising, NumPy indexes `img[y, x]` while OpenCV draws at `(x, y)`, and an FFmpeg video filter silently drops the audio. This tool keeps those rules in front of every answer and loads the topic guide before writing code.
+
+It targets Python 3.11+ with built-in generics and `X | None`, type-annotates all code, uses async for I/O-bound work, uses dataclasses and Pydantic v2, includes tests for new functions and classes, and keeps your existing framework and tooling unless there is a clear reason to change. Two requests have their own workflow: **initialize a project** (a FastAPI app, CLI tool, library, or minimal project with uv, Ruff, mypy in strict mode, and pytest, verified by running all three) and **run the tests** (pytest with coverage, files under 80% flagged, and the root cause of any failure).
+
+## Technical Overview
+
+One slash command plus its procedure folder. `lib/python-forge/SKILL.md` carries the operating rules, the response format, the topic routing table, the critical gotchas, the two workflows, and the script index. Twenty-eight reference files under `lib/python-forge/references/` hold the depth: 13 topic guides, 12 deep-dive files of patterns and recipes, an expert briefing with worked examples for subagents, and the two workflow files. The OpenCV, FFmpeg, and video-pipeline guides are indexes; any code task in those areas also loads the first matching deep-dive. Four analysis scripts sit under `lib/python-forge/scripts/`. `/python-forge` takes the task as its argument and asks one multiple-choice question only when nothing is passed.
+
+## Features
+
+- One input: the task, file, or topic in your own words, or a four-option menu when nothing is passed
+- Topic routing for Python 3.13+ features, asyncio, type hints, packaging, FastAPI, testing, GitHub Actions, Cloudflare, Modal, common gotchas, OpenCV, FFmpeg, and video pipelines
+- Typed code with tests, Python 3.11+, built-in generics, `X | None`, Pydantic v2
+- Project-init workflow: `uv init`, project-type dependencies, dev tools, Ruff, strict mypy, pytest config, a smoke test, and a verified `uv sync`
+- Run-tests workflow: pytest with `--cov`, per-file coverage, files under 80% flagged, failures traced to a cause and rerun with `--lf`
+- Critical gotchas always applied: mutable defaults, hidden `gather` failures, BGR vs RGB, `imread` returning `None`, FFmpeg dropping audio, pipe deadlocks
+- `check-types.sh`: mypy (or pyright), annotation coverage, and old-style `typing` imports
+- `check-async.sh`: blocking calls inside `async def`, possibly un-awaited coroutines, and fire-and-forget tasks
+- `analyze-coverage.sh`: coverage by file and source files with no matching test
+- `check-deps.sh`: package manager detection, pip-audit, and outdated packages
+- Large or independent work handed to a subagent with the expert briefing
+
+## How it works
+
+1. **Intake.** Take the task from `$ARGUMENTS`, or ask what to do: start a project, write or fix code, run the tests, or analyze the project.
+2. **Route.** Load the matching topic guide, plus a deep-dive when the task needs more code.
+3. **Work.** Write typed code with tests, or follow the init or test workflow.
+4. **Analyze.** On request, run the analysis scripts from the project root and read their output before suggesting fixes.
+5. **Report.** Complete code, a short note on decisions and trade-offs, and the commands to verify it.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/python-forge                                    ← asks what to do in Python
+/python-forge init a FastAPI project called api  ← project-init workflow
+/python-forge run the tests                      ← run-tests workflow with coverage
+/python-forge make fetch_all concurrent          ← asyncio guide loaded first
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"set up a uv project"*, *"write pytest tests for this"*, *"make this async"*, *"fix these mypy errors"*, *"build a FastAPI endpoint"*, *"deploy this on Modal"*, *"extract frames from this video with FFmpeg"*
+
+**Needs:** Python 3.11+. `uv` for the init workflow. The scripts use the project's own tools (mypy or pyright, pytest-cov, pip-audit) and say so when one is missing. `check-async.sh` only parses source; `check-types.sh` and `check-deps.sh` change no project files but may create or sync `.venv`; `analyze-coverage.sh` runs the test suite and writes `.coverage` and `htmlcov/`.
+
+For one standalone script in any language use [`/snippet`](utilities.md#prompt-snippet); to refactor a script another program runs, with side-by-side proof of unchanged output, use [`/script-refactor`](#script-refactor); for a Playwright suite on a Node app use [`/e2e-tests`](#e2e-playwright).
+
+The full procedure lives at [`lib/python-forge/SKILL.md`](../lib/python-forge/SKILL.md), the reference files under [`lib/python-forge/references/`](../lib/python-forge/references/), the analysis scripts under [`lib/python-forge/scripts/`](../lib/python-forge/scripts/), and the slash command at [`commands/python-forge.md`](../commands/python-forge.md).

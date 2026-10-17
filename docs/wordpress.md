@@ -1459,3 +1459,163 @@ Block code review only:
 - For a scored architecture review, use [`/wp-review`](#wordpress-architect-review).
 
 The full procedure lives at [`lib/wp-block-review/SKILL.md`](../lib/wp-block-review/SKILL.md), the reference files under [`lib/wp-block-review/references/`](../lib/wp-block-review/references/), the scanner at [`lib/wp-block-review/scripts/scan-blocks.sh`](../lib/wp-block-review/scripts/scan-blocks.sh), and the slash command at [`commands/wp-block-review.md`](../commands/wp-block-review.md).
+---
+
+## `wp-security-review`
+
+Security review of a WordPress plugin, theme, specific files, a diff, or a pasted snippet: confirm the scope in one round of questions, scan for candidate sinks, trace each one back through its guards, and rate every finding from its exploit path, with the line, a CWE, and a BAD/GOOD fix.
+
+```
+/wp-security-review
+```
+
+Most security reviews rate a finding by the sink it touches. An unprepared `$wpdb->query()` becomes CRITICAL whether a visitor can reach it or only an administrator can, and a value read back from an option is waved through as trusted even when a `nopriv` AJAX handler wrote it. The result is a report full of alarms that do not hold up, and the one that does gets lost among them. This tool rates from the other end. Before anything is called CRITICAL, it writes out the exploit path: the entry point, who can reach it, the guard that is missing, and the concrete impact. If any link is unconfirmed or already blocked by an allowlist, a `wp_kses*` filter, a signature check, or `realpath` containment, the finding is rated lower or marked "needs confirmation".
+
+It starts with one round of questions, asked only for what your request leaves open: the target, the depth (quick triage or full audit), the exposure (public site, logged-in members, or admin-only tool, plus multisite and WordPress VIP), and whether you want patches as well as the report. Exposure drives severity. The round is skipped when the target and depth are already clear, when it runs headless, or when you say to proceed, and the defaults used are stated on the report's first line.
+
+Severity follows fixed rules:
+- **CRITICAL:** exploitable without authentication, or leads to code execution, a data breach, or privilege escalation - with a written exploit path.
+- **WARNING:** needs authentication or specific conditions, such as XSS where only Authors supply the data or SQL injection reachable only by admins.
+- **INFO:** defense in depth and hardening: a missing ABSPATH guard, unset hardening constants, debug output left in code.
+
+XSS is rated by who supplies the data, not where it renders, so stored XSS from a subscriber that runs in an admin's session is CRITICAL. Admin-only code with admin-supplied input drops one level, except CSRF against an admin, which stays CRITICAL. A hosting WAF never lowers the severity of a code-level finding.
+
+## 📋 Technical Overview
+
+One slash command and a procedure bundle. `lib/wp-security-review/SKILL.md` carries the intake, the review workflow, the checks by file type, a safe-function cheat sheet, the severity rules, the output format, and the common false positives. Six reference files hold the depth, each loaded one section at a time:
+- `references/vulnerability-patterns.md`: SQL injection (including `esc_sql()` outside quotes, `%1s` placeholders, and second-order injection), XSS, object injection, path traversal, privilege escalation, open redirect, SSRF, and dangerous functions.
+- `references/escaping-guide.md`: escaping by output context, `wp_kses`, and translated strings.
+- `references/sanitization-guide.md`: sanitizing by data type, `wp_unslash()`, arrays, and JSON.
+- `references/auth-patterns.md`: capabilities, meta capabilities, and REST and AJAX authorization.
+- `references/nonce-csrf-guide.md`: the nonce lifecycle, form, AJAX, URL, and REST nonces, and logged-out nonces.
+- `references/hardening.md`: ABSPATH guards, `wp-config.php` constants, debug settings, upload MIME limits, and hosting platforms.
+
+`scripts/scan.sh` is the scanner. It greps PHP and JS for candidate sinks and missing guards, sorted into `HIGH-RISK SINK`, `REVIEW`, and `HARDENING` buckets - search aids, not severities - and checks per-file REST `permission_callback`, handler capability and nonce checks, ABSPATH guards, and `wp-config.php` keys and constants. It skips `vendor/`, `vendor-prefixed/`, `node_modules/`, `.git/`, `build/`, `dist/`, and `*.min.js`, and exits 0, or 2 if the target is not a directory.
+
+## ✨ Features
+
+- 🎯 One round of scope questions (target, depth, exposure, output), skipped when the request already answers them
+- 🔎 Grep scan for candidate sinks, then every candidate traced through guards, mitigations, and reachability
+- 🗄️ Second-order injection: stored values (options, meta, custom tables, transients, imported rows) treated as user input when a lower-privileged path wrote them
+- 🧾 Checks by file type:
+  - form handlers: nonce, capability, and sanitizing on every state change
+  - AJAX: `check_ajax_referer()` with `false` and an unchecked result, `nopriv` writes, `is_admin()` used as an auth check
+  - REST: missing or `__return_true` `permission_callback` on write routes, login-only checks for privileged actions, raw `get_param()`
+  - `$wpdb`: interpolated values, `esc_sql()` outside quotes, variables inside the `prepare()` format string, `%1s` placeholders, identifiers and `ASC`/`DESC` from input
+  - templates: unescaped output, the wrong escape for the context, PHP values inside `<script>`
+  - redirects and outbound requests: open redirects and SSRF
+  - uploads: `move_uploaded_file()`, `'test_type' => false`, SVG without sanitizing
+  - JavaScript: `innerHTML`, `.html()`, `dangerouslySetInnerHTML`, and state changes without a nonce
+- ⚖️ CRITICAL only with a written exploit path; "needs confirmation" when a precondition is unproven
+- 📚 A safe-function cheat sheet and BAD/GOOD code pairs from the reference files
+- 🏷️ Findings grouped by file and severity, each with the line, CWE, issue, risk, and fix
+
+## 🔄 How it works
+
+1. **Intake.** One round of questions on target, depth, exposure, and output, or stated defaults.
+2. **Scan.** `scan.sh` lists candidate lines in three search buckets.
+3. **Verify.** Each candidate is opened and traced: guards on earlier lines, mitigations further along, reachability, and where stored data came from.
+4. **Manual pass.** Checks by file type for what a single-line grep cannot see: multi-line flows, wrong capabilities, and logic flaws.
+5. **Rate.** Severity from the exploit path, with the context adjustments applied.
+6. **Report.** Findings grouped by file, then severity, with patches only if you asked for them.
+
+## 🚀 How to use it
+
+```
+/wp-security-review                                  ← asks what to review, then scans
+/wp-security-review ~/plugins/my-plugin              ← a specific plugin folder
+/wp-security-review ~/site/wp-content/themes/mine ~/site/wp-config.php   ← a theme, plus wp-config.php checks
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"review this plugin for security issues"*, *"is this AJAX handler safe?"*, *"check my REST endpoint permissions"*, *"is this `$wpdb` query injectable?"*, *"harden wp-config"*
+
+**Needs:** Bash and standard tools: `grep` (extended regex), `awk`, and `find`. A pasted snippet skips the scan and is reviewed by hand.
+
+Code-level WordPress security only:
+- For the 65-check scanner review with every input traced to its sink, use [`/wp-security`](#wp-security).
+- For plugin architecture and WordPress.org compliance, use [`/wp-plugin-review`](#wp-plugin-review).
+- For performance, use [`/wp-performance`](#wordpress-performance).
+- To change the code, use [`/wp-build`](#wp-builder-pro).
+- Server hardening (web server, firewall, WAF, TLS) is out of scope.
+
+The full procedure lives at [`lib/wp-security-review/SKILL.md`](../lib/wp-security-review/SKILL.md), the reference files under [`lib/wp-security-review/references/`](../lib/wp-security-review/references/), the scanner at [`lib/wp-security-review/scripts/scan.sh`](../lib/wp-security-review/scripts/scan.sh), and the slash command at [`commands/wp-security-review.md`](../commands/wp-security-review.md).
+
+---
+
+## `wp-plugin-review`
+
+Review a WordPress plugin for architecture, lifecycle, API usage, and WordPress.org compliance: set the context first, run a scanner, read every PHP file, and report each finding with its severity, file and line, and a BAD/GOOD fix.
+
+```
+/wp-plugin-review
+```
+
+What counts as a problem depends on where the plugin will run. A text domain that does not match the slug blocks a WordPress.org submission but is a warning, or nothing, on a private site. Missing activation hooks are fine in an mu-plugin, because they never fire there - unless some setup depends on them. A drop-in such as `object-cache.php` needs no header at all. A review that ignores this reports the same list for every plugin, and half of it is noise. This tool establishes the context first - WordPress.org, private, mu-plugin, or drop-in, from what you say or from what it finds, such as a `readme.txt` with a `Stable tag` - and every severity follows from it.
+
+It then reads the code, not just the scanner's hits. Many plugin problems sit in files with nothing for grep to find: a closure passed to `register_uninstall_hook()` that never runs, a post type registered before `init`, an admin-only function called on a front-end hook that fatals every page load, a filter callback that returns `null`. Every PHP file on the scanner's read list is read in full, main file and `uninstall.php` first. Severity comes only from a fixed catalog (PLG-01 to PLG-20), and a "Not a Problem" list drops valid patterns entirely instead of reporting them and calling them acceptable.
+
+Each finding is rated with the catalog:
+- **CRITICAL:** a fatal error, lost data, a broken lifecycle, or a WordPress.org blocker in that context.
+- **WARNING:** works today but breaks compatibility, translation, upgrades, or maintainability.
+- **INFO:** an improvement or a note to verify.
+
+Security depth (nonces, capabilities, sanitizing, escaping) is not rated here. Each security observation gets one line under `Security note:`, outside the issue counts, with a pointer to [`/wp-security-review`](#wp-security-review).
+
+## 📋 Technical Overview
+
+One slash command and a procedure bundle. `lib/wp-plugin-review/SKILL.md` carries the context table, the review workflow, the "Not a Problem" list, and the report format. Seven reference files hold the depth:
+- `references/severity-catalog.md`: the CRITICAL, WARNING, and INFO tables, read before anything is classified.
+- `references/review-checklist.md`: checks by file type, the platform context rules, the drop-in list, and the WordPress.org submission checklist.
+- `references/code-examples.md`: one BAD/GOOD pair per check ID.
+- `references/architecture-patterns.md`: structure, lifecycle (including multisite uninstall), upgrades, prefixing, and dependencies.
+- `references/hooks-guide.md`: hook order, timing, priority, `accepted_args`, and removal.
+- `references/oop-patterns.md`: namespaces, callbacks, autoloading, and bundled Composer code.
+- `references/api-patterns.md`: Settings, Options autoload, REST, Transients, `dbDelta()`, AJAX, Cron, and admin menus.
+
+`scripts/scan.sh` is the scanner. It needs ripgrep, prints candidates by severity, and ends with a READ LIST of every PHP file outside `vendor/`, `node_modules/`, and `tests/`, plus the files that register hooks. Two tokenizer helpers run with the PHP CLI: `scripts/hooks.php` checks hook callbacks against their registrations, and `scripts/toplevel.php` separates files that run code at load from definition-only files. Neither runs plugin code.
+
+## ✨ Features
+
+- 🧭 Context first: WordPress.org, private, mu-plugin, or drop-in, with the severity rules for each
+- 🔄 Lifecycle: activation, deactivation, and uninstall hooks, closures in `register_uninstall_hook()`, multisite cleanup, and upgrade paths
+- 🧱 Structure: plugin headers, ABSPATH guards on files that run code at load, and prefixes on functions, classes, constants, options, and hooks
+- 🪝 Hooks: filter callbacks that return `null`, `accepted_args` lower than the callback needs, and hook timing such as post types before `init`
+- 🔌 APIs: custom post types and taxonomies, the Settings API, REST routes, AJAX, cron, transients, `dbDelta()` tables, and admin menus
+- 🌐 i18n: text domain against the slug, missing domains, and translation calls that run too early
+- 📦 WordPress.org: readme, license, Plugin Check requirements, and obfuscated code, with a submission checklist
+- 📖 Every PHP file read, not just the scanner's hits; unread files listed under `Coverage:` when a very large plugin runs out of room
+- 🚫 A "Not a Problem" list keeps valid code out of the report
+- 🏷️ Every finding with its line, severity, catalog ID, one-sentence impact, and a BAD/GOOD fix using the plugin's own prefix and text domain
+- ❓ How-to questions with no code to review are answered straight from the reference files
+
+## 🔄 How it works
+
+1. **Establish context.** WordPress.org, private, mu-plugin, or drop-in. Asked once if it is unclear.
+2. **Run the scanner.** `scan.sh` prints candidates by severity and the READ LIST.
+3. **Read every file.** Main file and `uninstall.php` first, then the rest, with the severity catalog and the checklist for each file type.
+4. **Filter.** Anything on the "Not a Problem" list is dropped entirely.
+5. **Report.** Findings by file in line order, then a summary with counts, the WordPress.org readiness verdict, the submission checklist, and security notes.
+
+## 🚀 How to use it
+
+```
+/wp-plugin-review                        ← the plugin in the current directory
+/wp-plugin-review ~/plugins/my-plugin    ← a specific plugin folder
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"review my plugin"*, *"is my plugin ready for the plugin directory?"*, *"check this mu-plugin before we deploy"*, *"fix the Plugin Check errors"*, *"how do I add a settings page to my plugin?"*
+
+**Needs:** Bash, ripgrep, `awk`, and `xargs`. The hook and load-time checks also need the PHP CLI with the tokenizer extension; without it the scanner skips them and says so. Pasted code skips the scanner and the report says so.
+
+Plugin architecture review only:
+- For security depth, use [`/wp-security-review`](#wp-security-review) or [`/wp-security`](#wp-security).
+- For the full WordPress.org submission gate with a reply to the review team, use [`/wp-submission`](#wordpress-plugin-submission).
+- For themes, use [`/wp-theme-review`](#wp-theme-review); for block code, use [`/wp-block-review`](#wp-block-review).
+- For performance, use [`/wp-performance`](#wordpress-performance).
+- To change the code, use [`/wp-build`](#wp-builder-pro).
+
+The full procedure lives at [`lib/wp-plugin-review/SKILL.md`](../lib/wp-plugin-review/SKILL.md), the reference files under [`lib/wp-plugin-review/references/`](../lib/wp-plugin-review/references/), the scanner and its helpers under [`lib/wp-plugin-review/scripts/`](../lib/wp-plugin-review/scripts/), and the slash command at [`commands/wp-plugin-review.md`](../commands/wp-plugin-review.md).

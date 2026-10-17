@@ -96,6 +96,15 @@ Reviews a WordPress theme against current theme standards. It works on block, cl
 ## wp-block-review
 
 Reviews the code of WordPress blocks. It works on any block plugin: a single block, a library of dozens, a plugin that ships only compiled files, or older blocks registered in PHP. A bundled scanner first works out what kind of project it is, then finds likely problems in block.json, the editor and save code, deprecations, the PHP that renders blocks, the Interactivity API, registration, and the build output. Each one is confirmed by reading the code before it is reported. It catches things like saved block markup that changes with the editor's language and breaks the block for other users, deprecations that no longer match old content, render code that lets a Contributor inject script, and built files the block points at but that were never built. The report lists each finding as CRITICAL, WARNING, or INFO, with the file and line and a BAD/GOOD fix.
+
+## wp-security-review
+
+Reviews WordPress plugins, themes, and custom code for security holes. It first asks one round of questions: what to review, how deep to go, who can reach the site, and whether you want patches. It skips them when your request already says. A scan finds likely problem lines, and each one is traced back to see whether a visitor or a low-level user can really reach it, including data they saved earlier that comes back out later. A finding is rated CRITICAL only after the attack is written out step by step: where it starts, who can do it, which check is missing, and what it breaks. Each finding has the file and line, a CWE number, and a BAD/GOOD fix.
+
+## wp-plugin-review
+
+Reviews how a WordPress plugin is built: its headers, activation and uninstall code, hooks, settings, REST routes, cron jobs, database tables, translations, and prefixes. It first works out whether the plugin is for WordPress.org, a private site, an mu-plugin, or a drop-in, because that changes what counts as a problem. A scanner finds likely problems, then it reads every PHP file, not just the ones with hits. Each finding is CRITICAL, WARNING, or INFO, with the file and line and a BAD/GOOD fix that uses the plugin's own prefix. The report ends with whether the plugin is ready for WordPress.org. Security problems get one line each and a pointer to wp-security-review.
+
 ## html-design-styles
 
 Applies one of 53 named design styles to a page or component, such as bento, brutalist, vaporwave, kawaii, or glassmorphism. If you do not name a style, it shows a picker, and if your style name matches several entries, it asks you to choose one. Each style has a full spec covering colors, fonts, component patterns, and visual effects. The output is a single self-contained HTML file that uses the exact values from the spec.
@@ -183,6 +192,10 @@ Builds one jq command you can copy and paste. It asks where the JSON comes from,
 ## git-forge
 
 Handles any Git or Git-hosting task, from a first commit to a history rewrite. It covers branches, merges and conflicts, rebases, lost work, rejected pushes, pull requests on GitHub, GitLab, Azure DevOps, and Bitbucket, GitHub Actions, and secret scanning. Before anything that could delete work, it checks the repository, says exactly what is at risk, makes a backup, gives the undo command, and waits for your yes. It asks once whether to commit for you, only stage, or only explain.
+
+## bash-forge
+
+Writes, reviews, fixes, and speeds up Bash scripts for Linux, macOS, WSL, Git Bash on Windows, and containers. It reads the matching guide before it answers, for topics like arrays, text handling, running jobs in parallel, security, ShellCheck, debugging, and CI/CD. Every script it writes stops on errors, quotes its variables, checks its input, and cleans up after itself. It has fixed steps for reviewing a script, making one faster, starting from a template, and writing a new one. Three bundled scripts run ShellCheck over many files, time a script line by line, and run commands in parallel.
 
 ## system-design
 
@@ -303,6 +316,10 @@ Works in two modes that share the same 14 section format. Scan mode reads an exi
 ## explain-code
 
 Explains a snippet, file, or function at your experience level: beginner, intermediate, or advanced. You also pick the style, such as a tutorial, a quick summary, interview prep, or a line by line walkthrough. It works out the programming language on its own. At the end it offers to save the explanation as a Markdown file.
+
+## python-forge
+
+Helps with modern Python work in your own project: setting up with uv, async code, type hints, FastAPI, tests with pytest, GitHub Actions, Cloudflare and Modal deploys, and video and image work with OpenCV and FFmpeg. It reads the matching guide before it answers, writes typed code with tests, and keeps the tools your project already uses. It can start a new project and check that it builds, or run your tests and find why one fails. Four bundled scripts check type hints, async code, test coverage, and dependencies.
 
 ## mermaid-to-ascii
 
