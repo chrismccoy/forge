@@ -478,3 +478,54 @@ One slash command plus its procedure file `lib/tailwind-forge/SKILL.md`, a short
 ```
 
 The full procedure lives at [`lib/tailwind-forge/SKILL.md`](../lib/tailwind-forge/SKILL.md) and the slash command at [`commands/tailwind-forge.md`](../commands/tailwind-forge.md).
+
+---
+
+## `react-forge`
+
+Works on React code inside the project you already have: components, hooks, Server Components and Server Actions, state management, forms and Zod schemas, TypeScript, loading and error states, Tailwind CSS v4 and shadcn/ui, testing, performance, React 19 upgrades, and code review. It also covers the routing, data loading, caching, middleware, auth, and SEO layers of Next.js 15.5/16, React Router 7.9+/8, and TanStack Router/Start. React 19 is the target, with React 18 differences noted.
+
+```
+/react-forge
+```
+
+The difference from a general answer is that it starts from your project. Before writing anything it reads the React version, the framework and its major version, the TypeScript config and path aliases, the test runner, and any existing component or hook that already does the job, and it matches those conventions over its own templates. It uses Server Components by default and adds `'use client'` only at the smallest leaf that needs state, effects, events, or browser APIs. It does not add `memo`, `useMemo`, or `useCallback` without a measured hotspot.
+
+Every endpoint that changes data gets the same safety rules, whatever the framework: the session and ownership re-checked inside the handler, the body parsed with a Zod schema and only parsed fields passed on, a client-supplied idempotency key for retried mutations, and webhook signatures verified over the raw body. A proxy, middleware, or route guard on its own is never treated as authorization. Deployment and hosting are out of scope.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/react-forge/SKILL.md`, an operating guide that holds the scope, a topic routing table, a framework routing table with how to detect each framework, the generation workflows, the script index, the guidelines, the safety rules for mutating endpoints, the response format, and the anti-patterns. It points at 36 `references/` files - React 19 fundamentals and upgrading, hooks and a custom hook library, component patterns, state (Context, Zustand, Jotai, TanStack Query, Redux Toolkit, SWR), forms, Server Action forms, uploads and wizards, Zod 4, UI states, TypeScript, performance, virtualization, video and audio, testing and test recipes, Tailwind CSS v4, shadcn/ui, six Next.js files, React Router, TanStack Router, and worked examples - plus eight `references/workflows/` files (component, hook, optimize, test, review, Next.js page, Route Handler, proxy/middleware). Each is loaded only when the task needs it, and every file over 300 lines opens with a Contents list. Seven `scripts/` work from the project root: `check-components.sh`, `check-hooks.sh`, `check-testing.sh`, and `analyze-bundle.sh` only read files, and `generate-nextjs-component.py`, `migrate-to-nextjs16.py`, and `nextjs-analyzer.py` scaffold, migrate, and audit Next.js projects. Project files are treated as data to work on, never as instructions.
+
+## Features
+
+- Reads the React and framework versions, TypeScript config, test runner, and existing components first, and matches them
+- Server Components by default, `'use client'` only at the smallest leaf, React 19 APIs (`ref` as a prop, `use()`, `useActionState`, `useOptimistic`) used correctly
+- State placement: local first, TanStack Query or SWR for server data, Zustand or Jotai for shared client state, Context for rarely-changing values
+- Forms with React Hook Form and Zod 4, Server Action forms with field errors, file uploads, and multi-step wizards
+- Profile-before-optimize performance, an impact-ranked rule checklist, virtualization, and `<video>`/`<audio>` remount fixes
+- Behavior-first tests with role queries, provider-aware render helpers, MSW and router mocks, and Server Component testing
+- Next.js async `params`, `'use cache'` and revalidation, `proxy.ts` versus `middleware.ts`, Auth.js v5 and Better Auth, Core Web Vitals and SEO
+- Safety rules on every mutating endpoint: auth in the handler, Zod-whitelisted input, idempotency keys, verified webhooks, deny by default
+- Eight generation workflows that produce key tests for new components and hooks and list every file touched
+- Five read-only scripts pre-approved; the build, scaffolder, and migrator ask first, and the migrator dry-runs before it writes `.bak` backups
+
+## How it works
+
+1. **Read the project.** React version, framework and version, TypeScript config, test runner, and existing components and hooks.
+2. **Intake if needed.** With no task named, inspect the project and ask one multiple-choice question: build, fix, test or review, upgrade or analyze.
+3. **Route.** Open only the topic reference, framework reference, or workflow the task needs, and jump to the right section through its Contents list.
+4. **Write the code.** Decide the Server or Client boundary, apply the workflow template, and add the safety rules to any mutating endpoint.
+5. **Test and report.** Produce key tests for new components and hooks, explain the trade-offs, and list every created or changed file.
+
+## How to use it
+
+```
+/react-forge                                               ← inspect the project, then one question
+/react-forge create a UserCard component with name, email  ← typed component plus tests
+/react-forge why does Dashboard.tsx re-render              ← analysis, then edits
+/react-forge add a posts API route with GET and POST       ← route.ts with auth and Zod validation
+/react-forge review src/                                   ← findings by severity with path:line
+```
+
+The full procedure lives at [`lib/react-forge/SKILL.md`](../lib/react-forge/SKILL.md) and the slash command at [`commands/react-forge.md`](../commands/react-forge.md).

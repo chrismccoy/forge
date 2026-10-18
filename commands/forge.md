@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 95 commands in this plugin and then run it. This command
+Route the user to one of the 96 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -30,7 +30,7 @@ Each category also has its own command, which skips Step 1 entirely:
 | Command | Covers |
 |---|---|
 | `/forge-wordpress` | 26 WordPress commands |
-| `/forge-design` | 7 design and frontend commands |
+| `/forge-design` | 8 design and frontend commands |
 | `/forge-writing` | 10 writing and content commands |
 | `/forge-devops` | 6 DevOps and data commands |
 | `/forge-cloud` | 8 cloud and architecture commands |
@@ -55,7 +55,7 @@ such answer as a Step 0 direct hit.
 | Label | Description |
 |---|---|
 | WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 26 commands. |
-| Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning, Tailwind project work. 7 commands. |
+| Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning, Tailwind and React project work. 8 commands. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts. 10 commands. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
 
@@ -153,21 +153,26 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Exploit-path security review | wp-security-review | Scoped intake, grep scan, each candidate traced to its sink; CRITICAL only with a written exploit path, plus CWE and fixes. |
 | Plugin architecture review | wp-plugin-review | Context-aware read of every PHP file for lifecycle, hooks, APIs, and prefixing; CRITICAL / WARNING / INFO with fixes and a WordPress.org verdict. |
 
-### Design & Frontend (7 - page at 4)
+### Design & Frontend (8 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Apply a design style | html-design-styles | 53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism - with full specs. |
 | Accessibility audit | accessibility-audit | Find, report, and fix WCAG issues in files, live pages, or a pasted component. |
 | Extract a design system | design-system | Reverse-engineer HTML/CSS into a reusable DESIGN.md: colors, type, components, motifs. |
-| More... | - | Tailwind conversion, page cloning, and Tailwind project commands. |
+| More... | - | Tailwind conversion, page cloning, and Tailwind and React project commands. |
 
 | Label | Command | Description |
 |---|---|---|
 | Convert CSS to Tailwind | tailwind-convert | Rip out custom CSS and rewrite a page in Tailwind utilities, pixel-identical, with a report. |
 | Clone a web page | page-cloner | Copy a live URL into one self-contained working HTML file, faithful, no redesign. |
 | Rebuild a page in Tailwind | page-tailwindify | Reproduce a live page's exact look in clean Tailwind, generated class hashes replaced. |
+| More... | - | Tailwind project and React project commands. |
+
+| Label | Command | Description |
+|---|---|---|
 | Tailwind project work | tailwind-forge | Setup, migration, tokens, components, responsive, dark mode, and debugging in a Tailwind project. |
+| React project work | react-forge | Components, hooks, state, forms, tests, and review in React 19, Next.js, React Router, or TanStack. |
 
 ### Writing & Content (10 - page at 4)
 

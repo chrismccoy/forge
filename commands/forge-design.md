@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-design - Design & Frontend picker
 
-Route the user to one of the 7 Design & Frontend commands and run it. Named design styles, accessibility, design-system extraction, CSS-to-Tailwind conversion, live page cloning, and everyday Tailwind project work.
+Route the user to one of the 8 Design & Frontend commands and run it. Named design styles, accessibility, design-system extraction, CSS-to-Tailwind conversion, live page cloning, and everyday Tailwind and React project work.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -39,7 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Apply a design style | html-design-styles | 53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism - with full specs. |
 | Accessibility audit | accessibility-audit | Find, report, and fix WCAG issues in files, live pages, or a pasted component. |
 | Extract a design system | design-system | Reverse-engineer HTML/CSS into a reusable DESIGN.md: colors, type, components, motifs. |
-| More... | - | Tailwind conversion, page cloning, and Tailwind project commands. |
+| More... | - | Tailwind conversion, page cloning, and Tailwind and React project commands. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
 
@@ -48,7 +48,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Convert CSS to Tailwind | tailwind-convert | Rip out custom CSS and rewrite a page in Tailwind utilities, pixel-identical, with a report. |
 | Clone a web page | page-cloner | Copy a live URL into one self-contained working HTML file, faithful, no redesign. |
 | Rebuild a page in Tailwind | page-tailwindify | Reproduce a live page's exact look in clean Tailwind, generated class hashes replaced. |
+| More... | - | Tailwind project and React project commands. |
+
+**Page 3** (only if `More...` was chosen again) - question: "Which command?", header: "Command"
+
+| Label | Command | Description |
+|---|---|---|
 | Tailwind project work | tailwind-forge | Setup, migration, tokens, components, responsive, dark mode, and debugging in a Tailwind project. |
+| React project work | react-forge | Components, hooks, state, forms, tests, and review in React 19, Next.js, React Router, or TanStack. |
 
 ## Step 2 - run it
 

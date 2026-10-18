@@ -121,6 +121,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `pentest-report` | `/forge-security` |
 | `powershell-script-engine` | `/forge-devops` |
 | `python-forge` | `/forge-code` |
+| `react-forge` | `/forge-design` |
 | `readme-builder` | `/forge-code` |
 | `refactor` | `/forge-code` |
 | `script-refactor` | `/forge-code` |

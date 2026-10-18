@@ -113,6 +113,7 @@ a Step 0 direct hit.
 | `prompt-stencil` | `/forge-docs` |
 | `python-forge` | `/forge-code` |
 | `rank-prompt` | `/forge-docs` |
+| `react-forge` | `/forge-design` |
 | `readme-builder` | `/forge-code` |
 | `refactor` | `/forge-code` |
 | `script-refactor` | `/forge-code` |

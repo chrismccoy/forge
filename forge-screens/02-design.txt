@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  Design & Frontend          ( /forge-design )          7 commands, 2 pages
+  FORGE  -  Design & Frontend          ( /forge-design )          8 commands, 3 pages
 ================================================================================
-  Design styles, accessibility, DESIGN.md, Tailwind, page cloning.
+  Design styles, accessibility, DESIGN.md, Tailwind, page cloning, React.
 
   STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/2) |
+  | [Command]                                           Which command?  (pg 1/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Apply a design style                         -> /html-design-styles  |
   |         53 named styles - bento, brutalist, vaporwave, kawaii, glassmorphism |
@@ -21,13 +21,14 @@
   |         components, motifs.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Tailwind conversion, page cloning, and Tailwind project commands.    |
+  |         Tailwind conversion, page cloning, and Tailwind and React project    |
+  |         commands.                                                            |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/2) |
+  | [Command]                                           Which command?  (pg 2/3) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Convert CSS to Tailwind                        -> /tailwind-convert  |
   |         Rip out custom CSS and rewrite a page in Tailwind utilities, pixel-  |
@@ -41,9 +42,22 @@
   |         Reproduce a live page's exact look in clean Tailwind, generated      |
   |         class hashes replaced.                                               |
   |                                                                              |
-  |  ( 4 )  Tailwind project work                            -> /tailwind-forge  |
+  |  ( 4 )  More...                                                   -> page 3  |
+  |         Tailwind project and React project commands.                         |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 3/3) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Tailwind project work                            -> /tailwind-forge  |
   |         Setup, migration, tokens, components, responsive, dark mode, and     |
   |         debugging in a Tailwind project.                                     |
+  |                                                                              |
+  |  ( 2 )  React project work                                  -> /react-forge  |
+  |         Components, hooks, state, forms, tests, and review in React 19,      |
+  |         Next.js, React Router, or TanStack.                                  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -155,5 +169,24 @@
   '----------------------------------------------------------------------------'
   .--[Result]-- routed workflow or reference; audits change nothing -----------.
   |  edits use the project's tokens . audit report ordered by severity         |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------------- /react-forge -
+  No menus when a task is passed - it goes straight to the routing tables.
+  With no task: inspects the project, then one multiple-choice question.
+  Follow-up questions only when the answer changes the design.
+
+  .--[Inspect]-- before any question (React, framework, TS, test runner) ------.
+  |  reads package.json, next.config / react-router.config / routeTree.gen     |
+  |  matches existing components, hooks, path aliases, and conventions         |
+  '----------------------------------------------------------------------------'
+  .--[Task]-- What do you want to do in React? --------------------------------.
+  |  ( ) Build something      ( ) Fix something                                |
+  |  ( ) Test or review       ( ) Upgrade or analyze                           |
+  |  [Other] anything else                                                     |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- routed reference or workflow; reviews change nothing ----------.
+  |  code + key tests . every changed file listed . findings by severity       |
   '----------------------------------------------------------------------------'
 ================================================================================
