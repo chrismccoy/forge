@@ -334,7 +334,11 @@ function Settings() {
 Notes:
 - localStorage is the single source of truth. If a write fails (quota exceeded, storage blocked), the value does not change.
 - Values must be JSON-serializable. Never store auth tokens or other secrets in localStorage.
-- Content that depends on the stored value renders with `initialValue` on the server and during hydration, then updates on the client.
+- Version the key (`'prefs:v2'`). When the stored shape changes, bump the version, migrate the old key's data once at app start, and remove the old key. Readers then never parse a stale shape.
+- Persist only the fields the UI needs (`{ theme, density }`), not a whole server object. Storage is small (about 5 MB per origin), synchronous, and readable by any script on the page.
+- For hot paths that read storage repeatedly, cache reads in memory; see [performance-rules.md](performance-rules.md#7-javascript-micro-optimizations-low).
+- Content that depends on the stored value renders with `initialValue` on the server and during hydration, then updates on the client, so it visibly flips after load. For theme or other layout-affecting preferences, use a cookie the server can read or an inline pre-hydration script instead; see [react-19-upgrade.md](react-19-upgrade.md#hydration-mismatches).
+- Changing `key` at runtime keeps the original `initialValue`, as with `useState`. Remount the component (pass a different React `key`) when the default must change too.
 
 ### usePrevious - Track Previous Value
 
@@ -546,7 +550,7 @@ export function useMediaQuery(query: string, serverFallback = false): boolean {
 
 // Convenience hooks
 export function useIsMobile() {
-  return useMediaQuery('(max-width: 768px)');
+  return useMediaQuery('(max-width: 767px)');
 }
 
 export function useIsDesktop() {

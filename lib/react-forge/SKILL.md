@@ -30,7 +30,7 @@ Every reference over 300 lines opens with a `## Contents` list of its sections. 
 | Generic components, utility types, type-safe Context | `references/typescript-generics-utilities-context.md` |
 | Profiling, memoization, code splitting, concurrent rendering | `references/performance.md` |
 | `<video>`/`<audio>` performance: remounts, stable keys, portals, lazy loading, mobile attributes, multiple decoders | `references/media-video.md` |
-| Impact-ranked performance rules: waterfalls, bundle size, server work, re-renders, rendering | `references/performance-rules.md` |
+| Impact-ranked performance rules: waterfalls, bundle size, server work, client listeners, re-renders, rendering, JS micro-optimizations | `references/performance-rules.md` |
 | `react-window`, `react-virtuoso`, TanStack Virtual | `references/performance-virtualization.md` |
 | Testing concepts: Vitest/Jest setup, RTL query priority, `userEvent`, async and mocking principles, Server Components, gotchas | `references/testing.md` |
 | Copy-paste tests: provider-aware custom render, components and forms, async, hooks, module/timer/router/MSW mocks, integration, accessibility | `references/testing-recipes.md` |

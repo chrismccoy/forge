@@ -555,7 +555,7 @@ See `hooks-custom-library.md` → `useMediaQuery` (built on `useSyncExternalStor
 
 ```tsx
 function App() {
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useMediaQuery('(max-width: 767px)');
   return isMobile ? <MobileNav /> : <DesktopNav />;
 }
 ```
@@ -582,9 +582,12 @@ Effects synchronize with systems outside React (network, DOM APIs, timers, subsc
 |------------------------------|---------|
 | Sets state derived from props or other state | Compute it during render |
 | Resets all state when a prop changes | Pass that prop as `key` to the component |
+| Adjusts some state when a prop changes | Store the previous prop in state and update during render when it differs (see [usePrevious](hooks-custom-library.md#useprevious---track-previous-value)) |
+| Subscribes to an external store | Use `useSyncExternalStore` |
 | Runs logic after a user action | Run it in the event handler |
 | Notifies a parent of a state change | Call the parent's callback in the same handler that sets state |
 | Fetches data in a framework | Fetch on the server, or use TanStack Query or SWR |
+| Runs app-wide setup once (analytics, SDK init) | Call it from the client entry module or behind a module-level `didInit` guard; see [performance-rules.md](performance-rules.md#initialize-the-app-once-not-per-mount) |
 
 ```tsx
 // Avoid: extra render, and visibleTodos lags one render behind
@@ -618,7 +621,7 @@ useEffect(() => {
 }, []);
 ```
 
-List every reactive value the effect reads in the dependency array and keep `react-hooks/exhaustive-deps` on. An effect that sets state it also depends on (`setData(process(data))` with `[data]`) loops forever: derive the value during render instead.
+List every reactive value the effect reads in the dependency array and keep `react-hooks/exhaustive-deps` on. An effect that sets state it also depends on (`setData(process(data))` with `[data]`) loops whenever `process` returns a new object or a different value: derive the value during render instead.
 
 ### useEffectEvent (React 19.2+)
 

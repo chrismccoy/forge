@@ -23,8 +23,8 @@ An impact-ranked checklist of performance rules for React 19 and Next.js 15.5/16
 | 1 | Waterfalls | Seconds; each serial `await` adds a full round trip | Server Components, loaders, Route Handlers, Server Actions |
 | 2 | Bundle size | Hundreds of ms of TTI/LCP, faster dev boot | Client Components, icon and UI libraries, editors, charts |
 | 3 | Server-side work | Lower TTFB, smaller HTML/RSC payload | RSC props, repeated DB calls, logging in the response path |
-| 4 | Client data fetching | Fewer duplicate requests | `useEffect` + `fetch`, global listeners |
-| 5 | Re-renders | Smoother typing, scrolling, INP | State placement, subscriptions, effects |
+| 4 | Client data fetching | Fewer duplicate requests | `useEffect` + `fetch` |
+| 5 | Re-renders | Smoother typing, scrolling, INP | State placement, subscriptions, global listeners, effects |
 | 6 | Rendering | Faster paint for long or hidden content | Long lists, tabs, theme flashes |
 | 7 | JS micro-optimizations | Matters only in hot loops over large data | Lookups, sorting, regex |
 
@@ -61,6 +61,7 @@ Full Server Component examples: [nextjs-data-fetching.md](nextjs-data-fetching.m
 export async function GET() {
   const sessionPromise = getSession();   // starts now
   const configPromise = getAppConfig();  // starts now, does not need the session
+  configPromise.catch(() => {});          // the 401 path never awaits it; avoid an unhandled rejection
 
   const session = await sessionPromise;
   if (!session) return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -72,6 +73,16 @@ export async function GET() {
 ```
 
 Authorization still runs before any user data leaves the handler. A started-but-unused promise is fine as long as it cannot reject unhandled; attach `.catch` or await it on every path.
+
+When a call needs one earlier result but the rest do not, chain it onto that promise instead of awaiting first. Each call then starts as soon as its own input is ready:
+
+```ts
+const userPromise = getUser(id);
+const profilePromise = userPromise.then((user) => getProfile(user.profileId));
+const [user, config, profile] = await Promise.all([userPromise, getConfig(), profilePromise]);
+```
+
+For larger dependency graphs, a helper such as `better-all` resolves named tasks in dependency order. Plain chaining covers most cases without a dependency.
 
 ### Defer `await` into the branch that uses it
 
@@ -211,7 +222,7 @@ Reuse the same loader for `lazy()` and the preload so the bundler caches one mod
 
 ### Cache across requests, carefully
 
-**What:** For data read by many requests within seconds (feature flags, catalog lookups), use the framework cache (`'use cache'` with `cacheLife`/`cacheTag` in Next.js 16) or a bounded in-memory LRU.
+**What:** For data read by many requests within seconds (feature flags, catalog lookups), use the framework cache (`'use cache'` with `cacheLife`/`cacheTag` in Next.js 16 with `cacheComponents: true`; `unstable_cache` on 15) or a bounded in-memory LRU.
 **Why:** `cache()` resets on every request; a short cross-request cache avoids repeated identical queries.
 **Impact:** High for read-heavy endpoints.
 
@@ -256,6 +267,22 @@ return <ProfileCard name={user.name} avatarUrl={user.avatarUrl} />;
 
 Map rows to explicit DTOs in a `server-only` data layer so new columns are not exposed by default.
 
+### Pass a value once, derive copies on the client
+
+**What:** Pass a list to a Client Component once, and sort, filter, or slice it there. Do not pass both the original and a derived copy as separate props.
+**Why:** The RSC payload reuses a value only when the same reference appears twice. `items.toSorted()`, `items.filter()`, and `[...items]` create new arrays, so the data is serialized again.
+**Impact:** Low; higher for large arrays of primitives, which are copied in full. Arrays of objects repeat only the array structure.
+
+```tsx
+// Bad: the list is serialized twice
+<ProductList items={products} featured={products.filter((p) => p.featured)} />
+
+// Good: serialize once; derive in the Client Component
+<ProductList items={products} />
+```
+
+Derive on the server instead when the derivation is expensive, or when the client needs only the derived subset; then pass only that subset.
+
 ### Move non-critical work out of the response with `after()`
 
 **What:** Schedule logging, analytics, audit writes, and cache warming with `after()` from `next/server`.
@@ -298,14 +325,6 @@ const { data: users } = useQuery({ queryKey: ['users'], queryFn: fetchUsers });
 
 Setup and mutations: [state-jotai-and-tanstack-query.md](state-jotai-and-tanstack-query.md) and [state-management.md](state-management.md) (SWR). In Server Component frameworks, prefer fetching on the server first.
 
-### Share and mark global event listeners
-
-**What:** Register one listener per event type for all subscribers, and pass `{ passive: true }` for `scroll`, `touchstart`, `touchmove`, and `wheel` handlers that never call `preventDefault()`.
-**Why:** N component instances each adding a `window` listener do N times the work per event; non-passive touch and wheel listeners can block scrolling.
-**Impact:** Low to medium.
-
-Keep one module-level subscription and read it through `useSyncExternalStore`, so every component reads the same source and server rendering gets a stable snapshot. Reuse the hooks in [hooks-custom-library.md](hooks-custom-library.md) (media query, window size, scroll position) instead of writing new listeners.
-
 ## 5. Re-renders (Medium)
 
 React Compiler handles most memoization automatically. Without it, reach for structure first (colocate state, pass `children`) and add `memo`/`useMemo`/`useCallback` only at a measured hotspot or a stable-prop boundary. Never memoize by default. See [performance.md](performance.md#memoization) and [hooks-performance-and-react-19.md](hooks-performance-and-react-19.md).
@@ -333,6 +352,35 @@ const fullName = `${first} ${last}`;
 
 Store selectors follow the same rule: select `state.cart.items.length > 0`, not `state.cart`.
 
+### Share and mark global event listeners
+
+**What:** Register one listener per event type for all subscribers, and pass `{ passive: true }` to `touchstart`, `touchmove`, and `wheel` handlers that never call `preventDefault()`.
+**Why:** N component instances each adding a `window` listener do N times the work per event. Non-passive touch and wheel listeners make the browser wait for the handler before scrolling. `scroll` itself cannot be cancelled, so the flag is harmless there but changes nothing.
+**Impact:** Low to medium.
+
+The hooks in [hooks-custom-library.md](hooks-custom-library.md) (media query, window size, scroll position, key press) are SSR-safe, but each mounted instance adds its own listener. That is fine for a handful of components. When many instances listen to the same event, share one `window` listener through a module-level subscriber set and read it with `useSyncExternalStore`:
+
+```ts
+// lib/scroll-store.ts
+const subscribers = new Set<() => void>();
+const onScroll = () => subscribers.forEach((notify) => notify());
+
+export function subscribe(notify: () => void) {
+  if (subscribers.size === 0) window.addEventListener('scroll', onScroll, { passive: true });
+  subscribers.add(notify);
+  return () => {
+    subscribers.delete(notify);
+    if (subscribers.size === 0) window.removeEventListener('scroll', onScroll);
+  };
+}
+export const getSnapshot = () => window.scrollY;
+export const getServerSnapshot = () => 0;
+
+// in a component: useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+```
+
+A keyboard-shortcut registry follows the same shape: one `keydown` listener dispatching to a `Map` of shortcut handlers. Omit `{ passive: true }` only for a handler that calls `preventDefault()`, such as custom swipe or pinch-zoom handling.
+
 ### Use functional `setState`
 
 **What:** Write `setItems((prev) => [...prev, item])` when the next value depends on the previous one.
@@ -355,6 +403,22 @@ Do not read `localStorage` or `window` in a `useState` initializer in server-ren
 
 Keep controlled input values outside the transition. Details: [performance.md](performance.md#concurrent-features).
 
+For async work, prefer `useTransition`'s `isPending` over a hand-managed `isLoading` state, which is easy to leave stuck on an early return or an error:
+
+```tsx
+const [isPending, startTransition] = useTransition();
+
+function search(query: string) {
+  startTransition(async () => {
+    const data = await fetchResults(query);
+    // State updates after an await need their own startTransition
+    startTransition(() => setResults(data));
+  });
+}
+```
+
+Async transitions are not cancelled when a new one starts and can finish out of order. Ignore stale results (compare a request id or use an `AbortController`), or use a data library that handles this. An error thrown inside the transition goes to the nearest error boundary, so catch errors the UI should handle inline.
+
 ### Read volatile values where they are used
 
 **What:** Read values that only an event handler needs (URL search params, storage) inside the handler instead of subscribing at render time.
@@ -372,6 +436,63 @@ function ShareButton({ postId }: { postId: string }) {
 }
 ```
 
+### Keep high-frequency values in refs
+
+**What:** Store values that change at pointer, scroll, or animation-frame rate, and that render does not display, in `useRef`. Apply visual updates by writing to the DOM node through a ref.
+**Why:** `setState` on every `pointermove` or `scroll` event re-renders the component dozens of times per second.
+**Impact:** Medium for INP and animation smoothness.
+
+```tsx
+'use client';
+import { useRef } from 'react';
+
+function Spotlight() {
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  function handlePointerMove(e: React.PointerEvent) {
+    // No state update: write the style directly, relative to the container
+    const box = e.currentTarget.getBoundingClientRect();
+    glowRef.current?.style.setProperty(
+      'transform',
+      `translate(${e.clientX - box.left}px, ${e.clientY - box.top}px)`
+    );
+  }
+
+  return (
+    <div onPointerMove={handlePointerMove} className="relative h-96">
+      <div ref={glowRef} className="pointer-events-none absolute size-32 rounded-full bg-white/10" />
+    </div>
+  );
+}
+```
+
+Never read `ref.current` during render. Move a value into state only when render must show it, and throttle it (for example once per `requestAnimationFrame`).
+
+### Initialize the app once, not per mount
+
+**What:** Run app-wide setup (analytics init, SDK configuration, a one-time storage migration) in the client entry module or behind a module-level guard, not in a component's `useEffect(() => {}, [])`.
+**Why:** Effects re-run whenever the component remounts, and React Strict Mode runs them twice in development.
+**Impact:** Low; mainly correctness.
+
+```tsx
+'use client';
+import { useEffect } from 'react';
+
+let didInit = false;
+
+export function AppInit() {
+  useEffect(() => {
+    if (didInit) return;
+    didInit = true;
+    initAnalytics();
+    migrateStoredPrefs();
+  }, []);
+  return null;
+}
+```
+
+Keep this client-only. On the server, module state is shared across all requests, so a server-side "once" flag leaks between users.
+
 ### Narrow effect dependencies
 
 **What:** Depend on primitives (`user.id`) or a derived boolean (`isMobile`), not whole objects or continuous values.
@@ -387,6 +508,19 @@ For an effect that must call the latest callback without resubscribing, use `use
 **Impact:** Medium at a real hotspot; negative elsewhere.
 
 A useful structural trick: move expensive work into a child component placed after an early return (`if (loading) return <Skeleton />`) so the work does not run at all while loading.
+
+Watch default values for non-primitive props on a memoized component. `function Row({ onSelect = () => {}, tags = [] })` creates a new function and array on every render where the prop is omitted, so `memo` sees changed props every time. Hoist the defaults:
+
+```tsx
+const NOOP = () => {};
+const NO_TAGS: string[] = [];
+
+const Row = memo(function Row({ onSelect = NOOP, tags = NO_TAGS }: RowProps) {
+  /* ... */
+});
+```
+
+React Compiler handles this automatically.
 
 ## 6. Rendering (Medium)
 
@@ -461,6 +595,8 @@ Patterns and the narrow use of `suppressHydrationWarning`: [react-19-upgrade.md]
 **Why:** Some browsers do not GPU-accelerate transforms on SVG elements; overly precise path data bloats markup.
 **Impact:** Low.
 
+Optimize icons once at build time: `npx svgo --multipass --precision=1 icons/*.svg` (this overwrites the files in place; commit first, or pass `-o dist/icons`). The right precision depends on the `viewBox` size: one decimal is plenty for a `0 0 24 24` icon, while a small `viewBox` scaled up may need two or three. Compare the result visually.
+
 ## 7. JavaScript Micro-Optimizations (Low)
 
 Apply these only inside a measured hot path (a loop over thousands of items, a function called during every render of a large list).
@@ -470,28 +606,34 @@ Apply these only inside a measured hot path (a loop over thousands of items, a f
 | Set/Map lookups | `ids.includes(x)` inside a loop | `const idSet = new Set(ids); idSet.has(x)` | O(1) per lookup instead of O(n) |
 | Index by key | `users.find((u) => u.id === o.userId)` per order | `const byId = new Map(users.map((u) => [u.id, u]))` | Builds once, then O(1) |
 | Immutable sort | `props.items.sort(...)` | `items.toSorted(...)` (or `[...items].sort(...)`) | `sort` mutates props/state; `toSorted` needs Node 20+ / modern browsers |
-| Min/max | Sorting to take the first element | One pass loop | O(n) instead of O(n log n) |
+| Min/max | Sorting to take the first element | One pass loop | O(n) instead of O(n log n). Avoid `Math.min(...arr)` on large arrays: spreading passes every element as an argument, which can throw a `RangeError` (engine limits are often around 10⁵) |
 | Early exit | Looping on after the answer is known | `return` on first match; compare lengths before deep comparison | Skips wasted work |
-| Hoist RegExp | `new RegExp(...)` in render or a loop | Module-level literal; derive a dynamic one once per input | Avoids recompiling; beware shared `lastIndex` on `/g` regexes |
+| Hoist RegExp | `new RegExp(...)` in render or a loop | Module-level literal; derive a dynamic one once per input (`useMemo` keyed on the input without React Compiler) | Avoids recompiling; beware shared `lastIndex` on `/g` regexes. Escape user input first: `RegExp.escape(q)` where supported, else `q.replace(/[.*+?^${}()\|[\]\\]/g, '\\$&')` |
 | Combine passes | Several `.filter()` calls over the same array | One `for...of` that pushes into several buckets | One iteration |
-| Batch style writes | Setting `el.style.*` one property at a time | Toggle a class, or set `cssText` once | Fewer style recalculations |
+| Avoid layout thrashing | Alternating layout reads (`offsetWidth`, `getBoundingClientRect()`, `getComputedStyle()`) with style writes in a loop | Do all reads first, then all writes; or toggle a class | Each read after a write forces a synchronous reflow. Consecutive writes alone are batched by the browser |
 | Cache pure results | Calling an expensive pure function with repeated inputs | Module-level `Map` cache, bounded | Never cache user-specific values at module scope on the server |
+| Cache storage reads | Calling `localStorage.getItem` or parsing `document.cookie` repeatedly in a hot path | Read once into a module `Map`, update it on write, clear it on the `storage` and `visibilitychange` events | Storage and cookie access is synchronous and comparatively slow. Client only |
+| Hoist property reads | Reading `obj.a.b.c` on every iteration of a hot loop | `const c = obj.a.b.c` before the loop | Smallest win here; JIT compilers often do it already |
 
 ## Review Checklist
 
 Work through the categories in order and stop where the profile stops pointing.
 
 - [ ] Profile captured; the bottleneck is named (network, bundle, server time, render, or JS).
-- [ ] No sequential `await` of independent requests; dependent requests start as early as possible.
+- [ ] No sequential `await` of independent requests; dependent requests start as early as possible; `await` sits in the branch that uses it.
 - [ ] Slow sections sit behind `<Suspense>` with size-matched fallbacks.
-- [ ] Large libraries imported per module or optimized; heavy widgets loaded on demand.
+- [ ] Large libraries imported per module or optimized; heavy widgets loaded on demand and preloaded on hover or focus.
 - [ ] Third-party scripts load after hydration.
 - [ ] Server loaders deduplicated with `cache()`; any cross-request cache is keyed safely and never used for authorization.
 - [ ] Client Components receive only the fields they render.
 - [ ] Logging and analytics run in `after()`, not in the response path.
 - [ ] Client fetching goes through TanStack Query or SWR, not ad-hoc effects.
 - [ ] No derived state stored via effects; state is colocated.
+- [ ] Pointer, scroll, and animation values live in refs, not state; global listeners are shared and passive where possible.
+- [ ] No non-primitive default props on memoized components; app-wide init runs once, not per mount.
 - [ ] `memo`/`useMemo`/`useCallback` exist only at measured hotspots (or React Compiler is on).
+- [ ] Heavy updates run in transitions or behind `useDeferredValue`; often-toggled panels use `<Activity>`.
 - [ ] Long lists virtualized or use `content-visibility`.
+- [ ] No `&&` conditions whose left side can be `0` or `NaN`.
 - [ ] No hydration flicker for theme or other client-only preferences.
 - [ ] Re-measured after each change; changes without a measured gain reverted.

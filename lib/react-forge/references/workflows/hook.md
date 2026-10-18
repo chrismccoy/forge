@@ -87,7 +87,7 @@ const { data: user, loading, error, refetch } = useFetch<User>(`/api/users/${use
 Subscribe to external sources (media queries, window size, storage, browser APIs) with `useSyncExternalStore` and a `getServerSnapshot`, which keeps server-rendered markup in sync during hydration. `getSnapshot` must return a primitive or a cached value: a new object on every call causes an infinite loop. The canonical `useMediaQuery` and `useWindowSize` in `../hooks-custom-library.md` show the shape:
 
 ```tsx
-const isMobile = useMediaQuery('(max-width: 768px)');
+const isMobile = useMediaQuery('(max-width: 767px)');
 ```
 
 ### Ref-Based Pattern

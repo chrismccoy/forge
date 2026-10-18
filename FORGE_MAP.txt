@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  96 commands . 11 pickers . 0 skills . nothing auto-fires.
+  97 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -73,15 +73,14 @@
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
   |         refactors, regex teardowns, script refactors, explanations, Python   |
-  |         project work.  16 commands.                                          |
+  |         project work, codebase PRDs.  17 commands.                           |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils.  9          |
   |         commands.                                                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The teaching annotator, full stack feature READMEs, the regex tutor, |
-  |         safe script refactors, codebase blueprints, and the code explainer.  |
+  |         Utilities.                                                           |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -578,10 +577,10 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  16 commands, 5 pages -----------------------------
+--- Code  ( /forge-code )  -  17 commands, 6 pages -----------------------------
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/5) |
+  | [Command]                                           Which command?  (pg 1/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
   |         12-section app blueprint, fact-checked review, scaffold, spikes.     |
@@ -597,13 +596,14 @@
   |  ( 4 )  More...                                                   -> page 2  |
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
-  |         codebase blueprints, code explanations, Python project work.         |
+  |         codebase blueprints, code explanations, Python project work, PRDs    |
+  |         from code.                                                           |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/5) |
+  | [Command]                                           Which command?  (pg 2/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
   |         Validated Mermaid diagrams of a codebase with file:line citations.   |
@@ -618,13 +618,13 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
   |         feature READMEs, regex teardowns, script refactors, codebase         |
-  |         blueprints, code explanations, Python project work.                  |
+  |         blueprints, code explanations, Python project work, PRDs from code.  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/5) |
+  | [Command]                                           Which command?  (pg 3/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactoring plan                                       -> /refactor  |
   |         Evidence-first refactoring analysis with file:line citations. Read-  |
@@ -640,14 +640,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
-  |         safe script refactors, codebase blueprints, the code explainer, and  |
-  |         Python project work.                                                 |
+  |         safe script refactors, codebase blueprints, the code explainer,      |
+  |         Python project work, and PRDs from code.                             |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 4/5) |
+  | [Command]                                           Which command?  (pg 4/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
@@ -663,13 +663,13 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
   |         Safe script refactors, codebase blueprints with rebuilds, the code   |
-  |         explainer, and Python project work.                                  |
+  |         explainer, Python project work, and PRDs from code.                  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 5/5) |
+  | [Command]                                           Which command?  (pg 5/6) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactor a script safely                        -> /script-refactor  |
   |         Clean up bash and Python scripts an agent runs without changing      |
@@ -683,9 +683,22 @@
   |         Explain a snippet, file, or function at your level: tutorial, quick  |
   |         summary, interview prep, or line by line.                            |
   |                                                                              |
-  |  ( 4 )  Python project work                                -> /python-forge  |
+  |  ( 4 )  More...                                                   -> page 6  |
+  |         Python project work and PRDs from code.                              |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 6/6) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Python project work                                -> /python-forge  |
   |         uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV,    |
   |         FFmpeg; init and test workflows, four analysis scripts.              |
+  |                                                                              |
+  |  ( 2 )  Codebase to PRD                                       -> /retrospec  |
+  |         Reverse-engineer a codebase into a business-readable PRD: pages,     |
+  |         fields, interactions, enums, APIs.                                   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -845,6 +858,7 @@
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
    |    +-- docblock-rewrite  code-teacher  fullstack-readme  explain-regex
    |    +-- script-refactor  blueprint-forge  explain-code  python-forge
+   |    +-- retrospec
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt

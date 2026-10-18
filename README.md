@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 96 commands and 11 pickers.
+One Claude Code plugin - `forge` - holding 97 commands and 11 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -118,6 +118,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/blueprint-forge`](docs/code.md#blueprint-forge). Reads an existing codebase and writes one `BLUEPRINT.md` in 14 fixed sections - tech stack with every version's source, architecture, auth, a module map with every export's types, data models, every API route, features, UI, environment variables, tests, open questions, and step-by-step rebuild instructions - detailed enough to rebuild the app without the original code. Secrets are never copied, and a bundled checker confirms the format before you get it. Point it at a blueprint instead and it rebuilds the app: it proposes a plan, waits for your approval, then builds and verifies one step at a time. Afterwards it can scan the new app and compare it with the original blueprint, listing any endpoint, model, or environment variable the rebuild lost.
 - [`/explain-code`](docs/code.md#code-explainer). Explains one snippet, file, line range, or named function the way an experienced engineer who teaches would, pitched at your level - Beginner, Intermediate, or Advanced - and shaped as a detailed tutorial, a quick summary of 300 words or fewer, interview preparation, or a line-by-line walkthrough. Every risk is marked confirmed or possible, every improvement shows before and after code, and the result can be saved as a Markdown document. It never edits the code.
 - [`/python-forge`](docs/code.md#python-forge). Modern Python (3.11 to 3.13+) work in your own project: uv and `pyproject.toml`, asyncio, type hints and mypy, FastAPI and Pydantic, pytest and coverage, Ruff and pre-commit, GitHub Actions and PyPI, Cloudflare Python Workers, Modal, OpenCV, FFmpeg, and GPU video pipelines. It loads the matching guide before answering, writes typed code with tests, and keeps your existing framework and tools. A project-init workflow scaffolds a FastAPI app, CLI tool, library, or minimal project with uv and verifies it, a run-tests workflow reports coverage and finds the cause of failures, and four scripts check types, async code, coverage, and dependencies.
+- [`/retrospec`](docs/code.md#retrospec). Reverse-engineers an existing frontend, backend, or fullstack codebase into a Product Requirements Document a product manager can read - a system README with the module overview, page inventory, and permission model, one file per page (or per API resource group for backend projects) with every field, every interaction written as user action and system response, the APIs it calls, and where users go next, plus appendices for every enum value, every API, and the navigation map. It writes in business language, marks anything it cannot work out from the code as `[TBC]` instead of guessing, and labels APIs backed by hardcoded or stubbed data as `Mock` with a suggested real spec. Two standard-library Python scripts find routes, endpoints, API calls, and models as leads and scaffold the `prd/` folder; projects with more than 15 pages are done in batches with a review pause between them.
 
 **Docs & Diagrams**
 
@@ -149,7 +150,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 96 commands and 11 pickers, nothing running in the background.
+That is the whole install. One plugin, 97 commands and 11 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -167,7 +168,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 /forge-cloud        # 8 cloud and architecture commands
 /forge-security     # 3 security commands
 /forge-cleanup      # 4 code-cleanup commands
-/forge-code         # 16 code commands
+/forge-code         # 17 code commands
 /forge-docs         # 9 docs and diagram commands
 /forge-utils        # 6 utilities
 ```
@@ -271,6 +272,7 @@ Or call any command directly:
 /blueprint-forge                # codebase -> BLUEPRINT.md, or BLUEPRINT.md -> app
 /explain-code                   # explain one snippet, file, or function at your level
 /python-forge                   # modern Python: uv, asyncio, typing, FastAPI, pytest
+/retrospec                      # codebase -> business-readable PRD in prd/
 
 # Docs & Diagrams
 /mermaid-to-ascii               # Mermaid file -> monospace ASCII .txt
@@ -327,7 +329,7 @@ description each.
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
-| `/forge-code` | 16 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-code` | 17 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-docs` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
@@ -386,7 +388,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              107 command files - 96 commands, 11 pickers
+commands/              108 command files - 97 commands, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -424,7 +426,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
-| Code | 16 | [docs/code.md](docs/code.md) |
+| Code | 17 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 9 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
@@ -436,15 +438,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 96 commands + 11 pickers
-├── lib/                      ← 96 procedure folders (SKILL.md + bundled
+├── commands/                 ← 97 commands + 11 pickers
+├── lib/                      ← 97 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 96 commands compared by how much each does
+├── SUMMARY.md                ← the 97 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

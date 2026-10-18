@@ -325,6 +325,10 @@ Explains a snippet, file, or function at your experience level: beginner, interm
 
 Helps with modern Python work in your own project: setting up with uv, async code, type hints, FastAPI, tests with pytest, GitHub Actions, Cloudflare and Modal deploys, and video and image work with OpenCV and FFmpeg. It reads the matching guide before it answers, writes typed code with tests, and keeps the tools your project already uses. It can start a new project and check that it builds, or run your tests and find why one fails. Four bundled scripts check type hints, async code, test coverage, and dependencies.
 
+## retrospec
+
+Writes a Product Requirements Document for an app that already exists, by reading its code. It lists every page, or every group of API endpoints for a backend, and for each one describes the fields, what happens when a user clicks or submits, which APIs it calls, and which pages it links to. It writes in plain business language for product managers. Anything it cannot work out from the code is marked TBC instead of guessed, and APIs that only return made-up data are labelled Mock. Two bundled scripts find routes and endpoints to start from and set up the prd folder.
+
 ## mermaid-to-ascii
 
 Converts a Mermaid diagram file into an ASCII diagram that displays correctly in a terminal or plain text file. It supports sequence diagrams, flowcharts, class diagrams, state diagrams, ER diagrams, and Gantt charts. The result is saved as a .txt file with the same name as the source. Use it when you need a diagram in a place that cannot render Mermaid.

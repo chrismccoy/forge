@@ -987,3 +987,79 @@ Two ways to invoke:
 For one standalone script in any language use [`/snippet`](utilities.md#prompt-snippet); to refactor a script another program runs, with side-by-side proof of unchanged output, use [`/script-refactor`](#script-refactor); for a Playwright suite on a Node app use [`/e2e-tests`](#e2e-playwright).
 
 The full procedure lives at [`lib/python-forge/SKILL.md`](../lib/python-forge/SKILL.md), the reference files under [`lib/python-forge/references/`](../lib/python-forge/references/), the analysis scripts under [`lib/python-forge/scripts/`](../lib/python-forge/scripts/), and the slash command at [`commands/python-forge.md`](../commands/python-forge.md).
+
+---
+
+## `retrospec`
+
+Reads an existing frontend, backend, or fullstack codebase and writes a Product Requirements Document for it: a system README, one file per page or API resource group, and appendices for enums, APIs, and page relationships.
+
+```
+/retrospec
+```
+
+Plenty of apps ship long before anyone writes down what they do. The product manager asks what the order screen actually validates, the new engineer asks which statuses an invoice can have, and the only honest answer is buried in a router config, a constants file, and three form components. `retrospec` reads that code and writes it up the way a senior product analyst would, for two readers at once: product managers, who need *what* the system does, and engineers or AI agents, who need enough detail to rebuild every page's fields, interactions, and relationships.
+
+The writing is business language first. "The search button shows a spinner to prevent double submits", not "uses `useState` for loading". Technical detail stays only where it changes product behavior: API paths, validation rules, and permission conditions. Every enum and status value is listed with its meaning. Anything whose business meaning cannot be worked out from the code is marked `[TBC]` with what was observed, never guessed. APIs backed by hardcoded fixtures or stubbed promises are labelled `Mock`, with a suggested real API spec built from the page's data shape. For backend-only projects a "page" becomes an API resource group or admin view, and the same three phases apply.
+
+It documents software that already exists. It does not write a PRD for features that have not been built.
+
+## Technical Overview
+
+One slash command plus its procedure folder. `lib/retrospec/SKILL.md` holds the three phases (global scan, page-by-page analysis, document generation), the helper script usage, the key principles, and the pacing rules. Five `references/` files load on demand: `framework-patterns.md` (where each framework keeps its routes, state, API calls, forms, permissions, and models, plus mock detection patterns), `analyzer-gaps.md` (what the analyzer misses and how to check it by hand), `analysis-strategies.md` (focus areas by page type, the interaction checklist, hidden logic to hunt for, and pitfalls), `output-templates.md` (README, per-page, backend resource, and appendix templates), and `prd-quality-checklist.md`. Four completed samples sit in `examples/`, and `assets/sample-analysis.json` is real analyzer output for the small Next.js app the samples describe. Two standard-library Python scripts sit in `scripts/` with unittest suites: `codebase_analyzer.py` scans a project and reports pages, endpoints with HTTP methods, client API calls labelled Integrated or Mock, and models and enums, as JSON or a Markdown summary; `prd_scaffolder.py` builds the `prd/` skeleton from that JSON and refuses to write into a non-empty directory. The command's `allowed-tools` pre-approves the analyzer; the scaffolder writes files, so it asks first.
+
+## Features
+
+- Page inventory with route, title, menu position, and source file; an endpoint inventory with method, controller, module, and auth for backend projects
+- Global context captured before any page: permissions, feature flags, shared components, enums, API base config, data models, and middleware
+- Exhaustive field inventories for forms (type, required, default, validation) and lists (filters, columns, row actions)
+- Display names taken from hardcoded text first, then i18n values, then `label` and `placeholder` props, and variable names last
+- Every interaction written as *user action -> system response*, with validation, the API call, and success and failure behavior
+- Mock API detection (fixtures, `setTimeout` and `Promise.resolve()` stubs, `*.mock.*`, `__mocks__/`) with a suggested real API spec
+- Inbound links, outbound links, and data coupling recorded for every page
+- Every enum and status value listed with its meaning; unknowns marked `[TBC]` with the evidence
+- Analyzer output treated as leads, never ground truth: every route, API, and model confirmed in source
+- Automatic route extraction for React Router, Next.js, Nuxt, SvelteKit, Remix, Astro, Express, Fastify shorthand routes, NestJS, and Django; Vue, Angular, Svelte, FastAPI, and Flask scanned by hand
+- Projects with more than 15 pages done in batches of 3 to 5, with a review pause between batches
+- Output checked against a quality checklist; project code is read, never run, and instructions inside it are never followed
+
+## How it works
+
+1. **Intake.** Take the project path from the argument, or use the current directory when it holds a manifest; otherwise ask for the path.
+2. **Global scan.** Detect the framework, run `codebase_analyzer.py` with its JSON written to a temp path, read the gaps list, build the page or endpoint inventory, and capture shared context.
+3. **Scaffold.** Preview with `--dry-run`, build `prd/` once, and rename stubs to business names. FastAPI, Flask, and monorepo roots get the skeleton by hand from the templates.
+4. **Page-by-page analysis.** Overview, layout and regions, field inventory, interaction logic, API dependencies, and page relationships for every page.
+5. **Write and check.** Fill the README, per-page, and appendix templates to the depth of the samples, validate against the quality checklist, and list every file written and every open `[TBC]`.
+
+The output:
+
+```
+prd/
+├── README.md                  # system overview, modules, page inventory, permission model
+├── pages/
+│   ├── 01-home.md             # one file per page
+│   ├── 02-user-list.md
+│   └── 03-users-endpoints.md  # one file per backend resource group
+└── appendix/
+    ├── enum-dictionary.md     # every enum and status value
+    ├── api-inventory.md       # client API calls and server endpoints
+    └── page-relationships.md  # navigation map and cross-page data flow
+```
+
+## How to use it
+
+```
+/retrospec                       ← PRD for the project you are in
+/retrospec ~/code/my-app         ← PRD for another project
+/retrospec apps/web              ← one app in a monorepo
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"generate a PRD from this codebase"*, *"reverse-engineer the requirements from this repo"*, *"document what this app does for product managers"*, *"write a feature inventory of this app"*, *"document these API endpoints as product requirements"*
+
+**Needs:** Python 3 for the two helper scripts (standard library only).
+
+To plan a new app from an idea use [`/blueprint`](#app-blueprint); for a technical blueprint detailed enough to rebuild the app use [`/blueprint-forge`](#blueprint-forge); for developer onboarding docs use [`/explain-my-code`](#explain-my-code); for a plain-English feature list a customer can read use [`/fullstack-readme`](#fullstack-feature-readme).
+
+The full procedure lives at [`lib/retrospec/SKILL.md`](../lib/retrospec/SKILL.md), the reference files under [`lib/retrospec/references/`](../lib/retrospec/references/), the helper scripts under [`lib/retrospec/scripts/`](../lib/retrospec/scripts/), and the slash command at [`commands/retrospec.md`](../commands/retrospec.md).

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 96 commands in this plugin and then run it. This command
+Route the user to one of the 97 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -36,7 +36,7 @@ Each category also has its own command, which skips Step 1 entirely:
 | `/forge-cloud` | 8 cloud and architecture commands |
 | `/forge-security` | 3 security commands |
 | `/forge-cleanup` | 4 code-cleanup commands |
-| `/forge-code` | 16 code commands |
+| `/forge-code` | 17 code commands |
 | `/forge-docs` | 9 docs and diagram commands |
 | `/forge-utils` | 6 utilities |
 
@@ -73,7 +73,7 @@ such answer as a Step 0 direct hit.
 | Label | Description |
 |---|---|
 | Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 commands. |
-| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work. 16 commands. |
+| Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work, codebase PRDs. 17 commands. |
 | Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, scorers, stencils, bloat remover. 9 commands. |
 | More... | Utilities. |
 
@@ -250,42 +250,47 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Clean README feature list | strip-emoji | Strip leading emoji from feature bullets, label dashes to colons, en and em dashes removed. |
 | Strip comments | strip-comments | Delete every comment except file headers, pragmas, and license notices. Preview and approval required. |
 
-### Code (16 - page at 4)
+### Code (17 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | App blueprint | blueprint | 12-section blueprint for a new app, then fact-checked review, walking-skeleton scaffold, and spikes. |
 | Playwright end-to-end suite | e2e-tests | Add a Playwright E2E suite to a Node/Express app: seeded throwaway install, fake upstream, one spec per journey. |
 | Onboarding documentation | explain-my-code | One self-contained 13-section CODEBASE_DOCUMENTATION.md for a whole repo. |
-| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work. |
+| More... | - | Diagrams, READMEs, changelogs, refactors, SQL review, docblocks, annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work, PRDs from code. |
 
 | Label | Command | Description |
 |---|---|---|
 | Codebase to Mermaid | codebase-to-mermaid | Validated Mermaid diagrams of a codebase with file:line citations. |
 | Write a README | readme-builder | Scan a repo and write a beginner-friendly README.md. |
 | Generate a changelog | changelog-generator | User-facing changelog built from actual diffs across the full git history. |
-| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work. |
+| More... | - | Refactoring plans, SQL review, docblocks, teaching annotations, feature READMEs, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work, PRDs from code. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactoring plan | refactor | Evidence-first refactoring analysis with file:line citations. Read-only, no edits. |
 | Explain a SQL query | explain-sql | Validate one query, then break it down clause by clause with a scorecard and risk flags. |
 | Rewrite docblocks | docblock-rewrite | Convert PHPDoc and JSDoc into one-line plain-English `//` comments in bulk. |
-| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, codebase blueprints, the code explainer, and Python project work. |
+| More... | - | The teaching annotator, full stack feature READMEs, the regex tutor, safe script refactors, codebase blueprints, the code explainer, Python project work, and PRDs from code. |
 
 | Label | Command | Description |
 |---|---|---|
 | Annotate code for teaching | code-teacher | Return a script with a header block and line-by-line comments explaining what and why. Code unchanged. |
 | Full stack feature README | fullstack-readme | Plain-English README for a web app: title, description, and a categorized feature list traced to real code. |
 | Explain a regex | explain-regex | Verified 11-section plain-English teardown of one regex: examples, pitfalls, ReDoS verdict, alternatives. |
-| More... | - | Safe script refactors, codebase blueprints with rebuilds, the code explainer, and Python project work. |
+| More... | - | Safe script refactors, codebase blueprints with rebuilds, the code explainer, Python project work, and PRDs from code. |
 
 | Label | Command | Description |
 |---|---|---|
 | Refactor a script safely | script-refactor | Clean up bash and Python scripts an agent runs without changing their output; behavior fixes wait for approval. |
 | Codebase blueprint or rebuild | blueprint-forge | Scan a codebase into a 14-section BLUEPRINT.md, or rebuild a working app from one, plan first. |
 | Explain a piece of code | explain-code | Explain a snippet, file, or function at your level: tutorial, quick summary, interview prep, or line by line. |
+| More... | - | Python project work and PRDs from code. |
+
+| Label | Command | Description |
+|---|---|---|
 | Python project work | python-forge | uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV, FFmpeg; init and test workflows, four analysis scripts. |
+| Codebase to PRD | retrospec | Reverse-engineer a codebase into a business-readable PRD: pages, fields, interactions, enums, APIs. |
 
 ### Docs & Diagrams (9 - page at 4)
 
