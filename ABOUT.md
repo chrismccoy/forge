@@ -365,6 +365,10 @@ Removes padding from a prompt or skill file while keeping every rule that affect
 
 Scores a prompt out of 100 across nine dimensions, or out of 115 for agent prompts. Every point taken off quotes the part of the prompt that caused it. The report also scans for AI-sounding language, ranks the fixes, and gives three exact replacements you can drop in. It ends with the score the prompt would get after the fixes.
 
+## readme-forge
+
+Combines a folder of markdown files, one bio file plus one file per project, into a single README.md. The header comes from the bio, a table of contents links to every project, and each project gets either a short section (full mode) or one table row (compact mode), optionally grouped under your own categories. Links come only from your files, and local and relative links are dropped. Two small Python scripts count the files and check the finished README, and Claude fixes whatever the check reports. Use readme-builder instead when you want a README for one codebase.
+
 ## snippet
 
 Writes one complete standalone script in any of 19 languages, including bash, Python, Go, and TypeScript. Every script has a help option, clear exit codes, cleanup on exit, and a dry run before any destructive step. Secrets are read from environment variables and files are replaced safely so a failed write cannot corrupt them. You choose whether to see the script in the chat or save it to a file.

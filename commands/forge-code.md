@@ -144,6 +144,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `prompt-stencil` | `/forge-docs` |
 | `rank-prompt` | `/forge-docs` |
 | `react-forge` | `/forge-design` |
+| `readme-forge` | `/forge-docs` |
 | `seo-duel` | `/forge-writing` |
 | `session-stats` | `/forge-utils` |
 | `snippet` | `/forge-utils` |

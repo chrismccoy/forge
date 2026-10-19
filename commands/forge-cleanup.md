@@ -115,6 +115,7 @@ a Step 0 direct hit.
 | `rank-prompt` | `/forge-docs` |
 | `react-forge` | `/forge-design` |
 | `readme-builder` | `/forge-code` |
+| `readme-forge` | `/forge-docs` |
 | `refactor` | `/forge-code` |
 | `retrospec` | `/forge-code` |
 | `script-refactor` | `/forge-code` |

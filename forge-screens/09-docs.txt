@@ -1,13 +1,13 @@
 ================================================================================
-  FORGE  -  Docs & Diagrams          ( /forge-docs )          9 commands, 3 pages
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          10 commands, 4 pages
 ================================================================================
   Mermaid diagrams, prompt explainers, auditors and scorers, the stencil
-  cutter, and the bloat remover.
+  cutter, the bloat remover, and the README builder.
 
   STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Mermaid to ASCII                               -> /mermaid-to-ascii  |
   |         Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
@@ -21,13 +21,13 @@
   |         fixed sections.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The prompt analyzer, auditors, and stencil cutter.                   |
+  |         The prompt analyzer, auditors, stencil cutter, and README builder.   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Analyze a prompt (deep dive)                     -> /analyze-prompt  |
   |         Rigorous review-ready prompt breakdown: anatomy, techniques, failure |
@@ -42,14 +42,14 @@
   |         a one-line verdict.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The image prompt stencil cutter, prompt bloat remover, and scored    |
-  |         prompt auditor.                                                      |
+  |         The image prompt stencil cutter, prompt bloat remover, scored prompt |
+  |         auditor, and README builder.                                         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Cut an image prompt stencil                      -> /prompt-stencil  |
   |         Turn a working image prompt into a reusable template: locks,         |
@@ -62,6 +62,19 @@
   |  ( 3 )  Score a prompt with fixes                          -> /prompt-audit  |
   |         Score a prompt /100 across 9 dimensions, every deduction cited, with |
   |         three drop-in fixes.                                                 |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 4  |
+  |         The markdown-files-to-README builder.                                |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 4/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  README from markdown files                         -> /readme-forge  |
+  |         Combine a bio and one .md file per project into one portfolio        |
+  |         README.md: full or compact, optional categories, checked links.      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -181,5 +194,32 @@
   |  Routing . profile and tier . anti-AI scan . 9-dimension score, every      |
   |  deduction cited . model notes . ranked fixes . strengths . 3 exact        |
   |  fixes . projected score . band and PASS / CONDITIONAL / FAIL gate.        |
+  '----------------------------------------------------------------------------'
+
+------------------------------------------------------------ /readme-forge -----
+  Folder from the arg, or one plain ask.  Then ONE intake screen; answers
+  given in the arg (mode, categories, links, order) skip their questions.
+
+  .--[Folder]-- which folder holds the bio and project .md files? -------------.
+  |  ___ plain ask, STOP for the reply.  Top-level .md files only;             |
+  |      stops if the folder is missing or has no project files                |
+  '----------------------------------------------------------------------------'
+  .--[Mode]-- lists the files found and the count first -----------------------.
+  |  ( ) full - a section per project   ( ) compact - one table row each       |
+  |  Recommends compact for more than 25 projects.                             |
+  '----------------------------------------------------------------------------'
+  .--[Bio]-- only when no bio file matches, or several do ---------------------.
+  |  ( ) <one of the listed files>   ( ) No bio - header gets [ADD: bio]       |
+  '----------------------------------------------------------------------------'
+  .--[Options]-- categories, links, order  (all optional) ---------------------.
+  |  ___ "JavaScript: a.md, b.md" . repo / docs / contact links . order        |
+  |      a skip means no categories, no extra links, longest file first        |
+  '----------------------------------------------------------------------------'
+  .--[Overwrite]-- only when README.md already exists -------------------------.
+  |  ( ) Overwrite it   ( ) Write to another path                              |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- README.md, checked before it is reported ----------------------.
+  |  check_readme.py, up to 3 fix passes . report: path, mode, project         |
+  |  count, skipped files, PASS or remaining FAIL lines.                       |
   '----------------------------------------------------------------------------'
 ================================================================================

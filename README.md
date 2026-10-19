@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 97 commands and 11 pickers.
+One Claude Code plugin - `forge` - holding 98 commands and 11 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -131,6 +131,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/prompt-stencil`](docs/docs-and-diagrams.md#prompt-stencil). Turns one image prompt that already works into a reusable template - the wording that makes the look is locked, at most three things become swappable, and you get a copy-ready template plus filled examples proving the swap works.
 - [`/prompt-bloat`](docs/docs-and-diagrams.md#prompt-bloat). Cleans up an overengineered prompt or skill file - trademarks, version banners, invented citations, self-scores, unused mode switches, and repeated text come out, while every rule, gate, score threshold, and output requirement stays. You get a list of every cut with its reason, anything it was unsure about kept and flagged, a check that no rule was lost, and the rewrite, with an offer to save it next to the original.
 - [`/prompt-audit`](docs/docs-and-diagrams.md#prompt-audit). Scores a prompt out of 100 - 115 for agent and coaching prompts - across nine dimensions, with every deduction quoting the passage that caused it. You also get a tier, a scan for stock AI wording, notes for the target model, a ranked fix list, three drop-in replacement fixes, a projected score once they are applied, and a pass, conditional, or fail gate. Instructions hidden in the prompt are logged, never followed.
+- [`/readme-forge`](docs/docs-and-diagrams.md#readme-forge). Combines a folder of markdown files - one bio plus one file per project - into a single portfolio `README.md` with a header from the bio, a table of contents with working links, and one entry per project, in full or compact mode with optional categories. Links come only from your files, local and relative links are dropped, and a bundled script checks the result.
 
 **Utilities**
 
@@ -150,7 +151,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 97 commands and 11 pickers, nothing running in the background.
+That is the whole install. One plugin, 98 commands and 11 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -169,7 +170,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 /forge-security     # 3 security commands
 /forge-cleanup      # 4 code-cleanup commands
 /forge-code         # 17 code commands
-/forge-docs         # 9 docs and diagram commands
+/forge-docs         # 10 docs and diagram commands
 /forge-utils        # 6 utilities
 ```
 
@@ -284,6 +285,7 @@ Or call any command directly:
 /prompt-stencil                 # cut a working image prompt into a reusable template
 /prompt-bloat                   # strip bloat from a prompt or skill file, rules kept
 /prompt-audit                   # score a prompt /100 with cited deductions and fixes
+/readme-forge                   # folder of project .md files -> one portfolio README
 
 # Utilities
 /snippet                        # a complete standalone script in 19 languages
@@ -330,7 +332,7 @@ description each.
 | `/forge-security` | 3 | one |
 | `/forge-cleanup` | 4 | one |
 | `/forge-code` | 17 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-docs` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-docs` | 10 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 1 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
 
 
@@ -388,7 +390,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              108 command files - 97 commands, 11 pickers
+commands/              109 command files - 98 commands, 11 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -427,7 +429,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Security | 3 | [docs/security.md](docs/security.md) |
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
 | Code | 17 | [docs/code.md](docs/code.md) |
-| Docs & Diagrams | 9 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
+| Docs & Diagrams | 10 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
 
 
@@ -438,15 +440,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 97 commands + 11 pickers
-├── lib/                      ← 97 procedure folders (SKILL.md + bundled
+├── commands/                 ← 98 commands + 11 pickers
+├── lib/                      ← 98 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 97 commands compared by how much each does
+├── SUMMARY.md                ← the 98 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

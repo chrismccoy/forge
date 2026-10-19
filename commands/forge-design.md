@@ -125,6 +125,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `python-forge` | `/forge-code` |
 | `rank-prompt` | `/forge-docs` |
 | `readme-builder` | `/forge-code` |
+| `readme-forge` | `/forge-docs` |
 | `refactor` | `/forge-code` |
 | `retrospec` | `/forge-code` |
 | `script-refactor` | `/forge-code` |

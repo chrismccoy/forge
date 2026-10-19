@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-docs - Docs & Diagrams picker
 
-Route the user to one of the 9 Docs & Diagrams commands and run it. Mermaid diagrams, and prompt explainers, auditors, scorers, stencils, and a bloat remover. Nothing here reads a repository.
+Route the user to one of the 10 Docs & Diagrams commands and run it. Mermaid diagrams, prompt explainers, auditors, scorers, stencils, a bloat remover, and a README builder that combines a folder of markdown files. Nothing here reads a repository.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -39,7 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Mermaid to ASCII | mermaid-to-ascii | Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
 | Mermaid sequence diagram | mermaid-sequence | Turn bullet-point process steps into one valid Mermaid sequence diagram. |
 | Explain a prompt (plain English) | explain-prompt | Describe any AI prompt in beginner-friendly plain English, eight fixed sections. |
-| More... | - | The prompt analyzer, auditors, and stencil cutter. |
+| More... | - | The prompt analyzer, auditors, stencil cutter, and README builder. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
 
@@ -48,7 +48,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Analyze a prompt (deep dive) | analyze-prompt | Rigorous review-ready prompt breakdown: anatomy, techniques, failure modes, improvements. |
 | Audit prompt architecture | rank-prompt | Tier and score a prompt across 8 dimensions, with evidence and one concrete improvement. |
 | Audit a prompt as a table | prompt-rank-table | The same 8-dimension audit reduced to a tier, an evidence table, and a one-line verdict. |
-| More... | - | The image prompt stencil cutter, prompt bloat remover, and scored prompt auditor. |
+| More... | - | The image prompt stencil cutter, prompt bloat remover, scored prompt auditor, and README builder. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which command?", header: "Command"
 
@@ -57,6 +57,13 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Cut an image prompt stencil | prompt-stencil | Turn a working image prompt into a reusable template: locks, variables, drift guards, filled proofs. |
 | Remove prompt bloat | prompt-bloat | Strip branding, fake authority, self-grading, and dead config from a prompt, keeping every rule. |
 | Score a prompt with fixes | prompt-audit | Score a prompt /100 across 9 dimensions, every deduction cited, with three drop-in fixes. |
+| More... | - | The markdown-files-to-README builder. |
+
+**Page 4** (only if `More...` was chosen a third time) - question: "Which command?", header: "Command"
+
+| Label | Command | Description |
+|---|---|---|
+| README from markdown files | readme-forge | Combine a bio and one .md file per project into one portfolio README.md: full or compact, optional categories, checked links. |
 
 ## Step 2 - run it
 

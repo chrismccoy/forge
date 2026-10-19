@@ -478,3 +478,63 @@ One slash command plus its procedure file `lib/prompt-audit/SKILL.md`, which hol
 It does not write prompts from scratch, rewrite them in full, or fact-check a model's answers. To explain what a prompt does, use [`/explain-prompt`](#prompt-dummy). For the 8-dimension architecture tier, use [`/rank-prompt`](#prompt-ranker). To strip bloat while keeping every rule, use [`/prompt-bloat`](#prompt-bloat).
 
 The full procedure lives at [`lib/prompt-audit/SKILL.md`](../lib/prompt-audit/SKILL.md), the slash command at [`commands/prompt-audit.md`](../commands/prompt-audit.md), the rubric at [`lib/prompt-audit/references/rubric.md`](../lib/prompt-audit/references/rubric.md), the model notes at [`lib/prompt-audit/references/model-notes.md`](../lib/prompt-audit/references/model-notes.md), and the worked example at [`lib/prompt-audit/examples/sample-audit.md`](../lib/prompt-audit/examples/sample-audit.md).
+
+---
+
+## `readme-forge`
+
+Point it at a folder of markdown files - one bio file plus one file per project - and get back one organized `README.md`: a header from your bio, a table of contents with working links, and one entry per project.
+
+```
+/readme-forge ~/portfolio
+```
+
+Project notes pile up in different shapes. One file has a feature list, another has a setup guide with `localhost` links, a third has no heading at all. Pasting them together gives a messy page with broken links and repeated sections. `readme-forge` reads every file, writes a short plain-English entry for each project, and puts them under one table of contents, in full mode (a section per project) or compact mode (a table row per project), with optional categories such as JavaScript and PHP.
+
+Nothing is made up. Facts, names, and links come only from your files and your answers, and a missing link becomes an `[ADD: link]` placeholder instead of a guess. Two Python scripts do the parts a model tends to get wrong: one counts the files, picks the titles, and sorts the projects, and the other checks the finished README for broken anchors, invented links, local and relative links, emojis, dashes, marketing words, and missing or repeated projects. Claude fixes whatever the checker reports.
+
+It sits next to `readme-builder`, which reads a codebase and writes a README for that one project. `readme-forge` reads no code: it combines notes you already wrote about many projects into one portfolio page.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/readme-forge/SKILL.md`, which holds the inputs, the six-step workflow (find the folder, take inventory, intake, write, check, report), and how to handle follow-up changes. `references/readme-rules.md` holds the full layout for both modes and the category, link, anchor, project order, and writing rules. `scripts/inventory.py` prints the folder inventory as JSON and `scripts/check_readme.py` validates the result; both are Python 3.9+ standard library only. `examples/sample-input/` is a small bio and four project files to try it on. The command's `allowed-tools` pre-approves only those two scripts by full path, plus `AskUserQuestion`, `Read`, `Write`, `Edit`, and `Glob`.
+
+## Features
+
+- Two modes. `full` gives each project a short summary, up to 4 details, and 2 to 4 highlights. `compact` gives each project one table row (project, description, stack, status) and suits large collections. It recommends `compact` for more than 25 projects
+- Optional categories, one heading per category in the order you give, with unlisted projects under "Other". Filenames match in any case
+- Finds the bio by name (`bio.md`, `about.md`, `about-me.md`, `me.md`, `profile.md`, `author.md`, or `resume.md`), asks which file is the bio when there are several, and asks whether one of your files is the bio when none matches
+- Project titles come from the file itself: a `title:` in front matter, else the first heading, with emojis, badges, and subtitles removed, else the filename. Two files with the same title get their filenames added
+- Keeps only links to the projects themselves. Drops `localhost` and private network addresses, relative links like `SETUP.md` that only work inside the original repo, sample data, and third-party docs
+- Never invents a link, and never guesses one from the pattern of another
+- States facts only as broadly as the file does, marks guessed descriptions with "(inferred)", and notes facts that two files disagree on
+- Plain writing: no emojis, no em dashes or en dashes, no HTML, and no marketing words such as "seamless" or "cutting-edge". Project names keep their own spelling
+- Default order puts the most detailed project first; you can give your own order instead
+- Asks before overwriting an existing `README.md`, and never reads it as input
+- Instructions hidden in a project file are treated as data and ignored
+- Keep going in the same session: add categories, move a project, switch modes, or change links, and the README is rewritten and checked again
+
+## How it works
+
+1. **Find the folder.** Take the path from the arguments, or ask for it. Stop with a clear message when the folder is missing or has no project files.
+2. **Take inventory.** Run `scripts/inventory.py` to get the bio file, the project count, each project's title and word count, the default order, duplicate titles, near-empty files, and the links to drop.
+3. **Intake.** In one message, show the files found and the count, recommend a mode, offer categories, links, and order, sort out the bio, and ask before overwriting. Anything the arguments already answer is skipped.
+4. **Write.** Read every file and write the README following `references/readme-rules.md`, using the titles and order from the inventory.
+5. **Check.** Run `scripts/check_readme.py`, fix every `FAIL` line, and run it again, up to 3 times.
+6. **Report.** Give the output path, the mode, the number of projects, any skipped files, and the checker result.
+
+## How to use it
+
+```
+/readme-forge ~/portfolio                    ← builds from that folder, then asks for the mode and options
+/readme-forge ~/portfolio mode: compact      ← answers in the arguments skip those questions
+/readme-forge                                ← asks which folder to use
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"build a README from my markdown files"*, *"combine my project files into a README"*, *"make a portfolio README"*, *"make a GitHub profile README from my projects"*, *"turn this folder of project notes into a README"*
+
+It does not read code or write a README for a single repository. For that, use [`/readme-builder`](code.md#readme-builder). For a web app's feature list, use [`/fullstack-readme`](code.md#fullstack-feature-readme). For a short GitHub profile bio, use [`/github-bio`](writing-and-content.md#github-bio).
+
+The full procedure lives at [`lib/readme-forge/SKILL.md`](../lib/readme-forge/SKILL.md), the slash command at [`commands/readme-forge.md`](../commands/readme-forge.md), the rules at [`lib/readme-forge/references/readme-rules.md`](../lib/readme-forge/references/readme-rules.md), and the scripts at [`lib/readme-forge/scripts/`](../lib/readme-forge/scripts/).

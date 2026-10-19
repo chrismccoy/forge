@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  97 commands . 11 pickers . 0 skills . nothing auto-fires.
+  98 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -76,8 +76,8 @@
   |         project work, codebase PRDs.  17 commands.                           |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
-  |         Mermaid diagrams, prompt explainers, auditors, stencils.  9          |
-  |         commands.                                                            |
+  |         Mermaid diagrams, prompt explainers, auditors, stencils, README      |
+  |         builder.  10 commands.                                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |         Utilities.                                                           |
@@ -704,10 +704,10 @@
   '------------------------------------------------------------------------------'
 
 
---- Docs & Diagrams  ( /forge-docs )  -  9 commands, 3 pages -------------------
+--- Docs & Diagrams  ( /forge-docs )  -  10 commands, 4 pages ------------------
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Mermaid to ASCII                               -> /mermaid-to-ascii  |
   |         Convert a Mermaid file into a monospace ASCII diagram saved as .txt. |
@@ -721,13 +721,13 @@
   |         fixed sections.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The prompt analyzer, auditors, and stencil cutter.                   |
+  |         The prompt analyzer, auditors, stencil cutter, and README builder.   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Analyze a prompt (deep dive)                     -> /analyze-prompt  |
   |         Rigorous review-ready prompt breakdown: anatomy, techniques, failure |
@@ -742,13 +742,14 @@
   |         a one-line verdict.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The image prompt stencil cutter and prompt bloat remover.            |
+  |         The image prompt stencil cutter, prompt bloat remover, scored prompt |
+  |         auditor, and README builder.                                         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Cut an image prompt stencil                      -> /prompt-stencil  |
   |         Turn a working image prompt into a reusable template: locks,         |
@@ -761,6 +762,19 @@
   |  ( 3 )  Score a prompt with fixes                          -> /prompt-audit  |
   |         Score a prompt /100 across 9 dimensions, every deduction cited, with |
   |         three drop-in fixes.                                                 |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 4  |
+  |         The markdown-files-to-README builder.                                |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 4/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  README from markdown files                         -> /readme-forge  |
+  |         Combine a bio and one .md file per project into one portfolio        |
+  |         README.md: full or compact, optional categories, checked links.      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -863,7 +877,7 @@
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt
    |    +-- rank-prompt  prompt-rank-table  prompt-stencil  prompt-bloat
-   |    +-- prompt-audit
+   |    +-- prompt-audit  readme-forge
    |
    +-- Utilities ............. /forge-utils
         +-- snippet  session-stats  token-audit  vgademo  fix-formula

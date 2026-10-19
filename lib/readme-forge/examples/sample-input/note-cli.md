@@ -1,0 +1,3 @@
+- written in Go
+- stores notes as markdown files in ~/notes
+- fuzzy search with fzf

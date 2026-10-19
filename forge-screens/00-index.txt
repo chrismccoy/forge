@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  97 commands . 11 pickers . 0 skills . nothing auto-fires.
+  98 commands . 11 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's command screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -61,8 +61,8 @@
   |         17 commands.                                                        |
   |                                                                             |
   |  ( 3 )  Docs & Diagrams                                -> open  09-docs.txt |
-  |         Mermaid diagrams, prompt explainers, auditors, stencils.  9         |
-  |         commands.                                                           |
+  |         Mermaid diagrams, prompt explainers, auditors, stencils, README     |
+  |         builder.  10 commands.                                              |
   |                                                                             |
   |  ( 4 )  More...                                                   -> page 4 |
   |                                                                             |
@@ -92,7 +92,7 @@
     06-security.txt   /forge-security   . 3 commands
     07-cleanup.txt    /forge-cleanup    . 4 commands
     08-code.txt       /forge-code       . 17 commands
-    09-docs.txt       /forge-docs       . 9 commands
+    09-docs.txt       /forge-docs       . 10 commands
     10-utils.txt      /forge-utils      . 6 commands
 
   Whole map on one screen: ../FORGE_MAP.txt
