@@ -97,12 +97,8 @@ def main():
     prose = strip_code(md)
     if EMOJI.search(prose):
         fails.append("emoji found: " + ", ".join(sorted(set(EMOJI.findall(prose)))))
-    for dash, name in (("—", "em dash"), ("–", "en dash")):
-        n = prose.count(dash)
-        if n:
-            fails.append(f"{name} found {n} time(s)")
     # Project names, technical terms, link text, and URLs are kept as
-    # written, so remove them before the banned-word scan.
+    # written, so remove them before the dash and banned-word scans.
     heads = headings(md)
     plain = strip_inline_code(prose)
     for _, title in heads:
@@ -110,6 +106,10 @@ def main():
     plain = re.sub(r"^\|([^|]*)\|", "|", plain, flags=re.M)
     plain = re.sub(r"\[[^\]]*\]\([^)]*\)", "", plain)
     plain = URL.sub("", plain)
+    for dash, name in (("—", "em dash"), ("–", "en dash")):
+        n = plain.count(dash)
+        if n:
+            fails.append(f"{name} found {n} time(s)")
     hits = sorted({m.group(0).lower() for m in BANNED.finditer(plain)})
     if hits:
         fails.append("banned words: " + ", ".join(hits))

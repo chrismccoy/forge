@@ -54,7 +54,8 @@ rules:
 - Use each category name exactly as the user wrote it, in the order the
   user listed the categories.
 - Match filenames without regard to upper or lower case
-  ("ImageForge.md" means imageforge.md).
+  ("ImageForge.md" means imageforge.md). When a category lists the bio
+  file, ignore that entry.
 - Put a file in the first category that lists it. Never show a project
   twice.
 - Put project files that no category lists in a final category named
@@ -85,8 +86,9 @@ rules:
    - `**Details:**` followed by at most 4 bullets of concrete facts
      (stack, status, version, platform). Put identifiers, commands, and
      package names in inline code.
-   - `**Highlights:**` followed by 2 to 4 bullets with the most notable
-     points. Do not repeat Details items.
+   - `**Highlights:**` followed by up to 4 bullets with the most notable
+     points. Do not repeat Details items. When the file has nothing
+     notable beyond Details, leave out Highlights.
    - The project's own links (see Link rules), as inline links.
 4. `## Summary` (see below).
 5. `## Links` (see below).
@@ -107,10 +109,12 @@ rules:
    each with its own table with the same columns.
    - One row per project, in project order.
    - Project: the project title. When the file has a project link, make
-     the title that link.
+     the title that link. When it has more than one, use the first one
+     in the file.
    - Description: at most 15 words. Add "(inferred)" when the file has
      no clear description.
-   - Stack: at most 4 main technologies, separated by commas.
+   - Stack: at most 4 main technologies, separated by commas. When the
+     file names none, "Not stated".
    - Status: as stated in the file, otherwise "Not stated".
    - Write `\|` for a pipe character inside a cell.
 4. `## Summary` (see below).
@@ -126,8 +130,9 @@ rules:
   items with project names.
 - `## Links`: every link the user supplied and every project link from
   the files, with duplicates removed. Use no headings inside Summary or
-  Links. For repo, docs, and contact, when
-  no link was supplied, add `- <Label>: [ADD: link]`.
+  Links. For repo, docs, and contact, when the user did not supply
+  that link, add `- <Label>: [ADD: link]`. Project links from the files
+  do not count as the user's repo, docs, or contact link.
 
 ## Link rules
 
@@ -168,9 +173,11 @@ rules:
 - No marketing language. Do not use: cutting-edge, seamless, leverage,
   revolutionize, empower, robust, game-changing, unlock, supercharge,
   elevate, next-level, innovative, state-of-the-art, harness, delve,
-  streamline, comprehensive, showcase, or close synonyms. Project names
-  and technical terms are kept as written, even when they contain one
-  of these words (a project named "Showcase" stays "Showcase").
+  streamline, comprehensive, showcase. "Harness" and "unlock" are fine
+  in their plain technical sense ("test harness", "unlock the vault").
+- Exceptions: project names, inline code, commands, and package names
+  are kept as written, even when they contain a banned word or a dash
+  (a project named "Showcase" stays "Showcase").
 - Never invent details, metrics, names, or links. Use only the files
   and the user's answers.
 - State facts only as broadly as the file does. Do not name a

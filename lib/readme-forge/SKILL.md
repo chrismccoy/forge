@@ -127,8 +127,11 @@ into the chat unless asked.
 ## Follow-up changes
 
 After the README exists, the user may add categories, move a project,
-switch modes, or change links or order. Apply the change by rewriting
-the README at the same path, then run the checker again. Answer
+switch modes, or change links or order. When files in the folder were
+added, removed, or changed, run the inventory again first. Apply the
+change by rewriting the README at the same path, following every rule
+in `references/readme-rules.md` unless the user overrides one, then run
+the checker again. Answer
 questions about the projects in plain text without rewriting the file.
 
 ## Additional Resources
