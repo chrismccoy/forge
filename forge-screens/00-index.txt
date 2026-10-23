@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  99 commands . 11 pickers . 0 skills . nothing auto-fires.
+  100 commands . 11 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's command screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -85,7 +85,7 @@
   FILES IN THIS FOLDER
     00-index.txtyou are here
     01-wordpress.txt  /forge-wordpress  . 26 commands
-    02-design.txt     /forge-design     . 8 commands
+    02-design.txt     /forge-design     . 9 commands
     03-writing.txt    /forge-writing    . 10 commands
     04-devops.txt     /forge-devops     . 6 commands
     05-cloud.txt      /forge-cloud      . 8 commands

@@ -146,6 +146,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `rank-prompt` | `/forge-docs` |
 | `react-forge` | `/forge-design` |
 | `readme-forge` | `/forge-docs` |
+| `screenshot-forge` | `/forge-design` |
 | `seo-duel` | `/forge-writing` |
 | `session-stats` | `/forge-utils` |
 | `snippet` | `/forge-utils` |

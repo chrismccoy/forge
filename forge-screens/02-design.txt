@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  Design & Frontend          ( /forge-design )          8 commands, 3 pages
+  FORGE  -  Design & Frontend          ( /forge-design )          9 commands, 3 pages
 ================================================================================
   Design styles, accessibility, DESIGN.md, Tailwind, page cloning, React.
 
@@ -21,8 +21,8 @@
   |         components, motifs.                                                  |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Tailwind conversion, page cloning, and Tailwind and React project    |
-  |         commands.                                                            |
+  |         Tailwind conversion, page cloning, Tailwind and React project        |
+  |         commands, and page screenshots.                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -43,7 +43,7 @@
   |         class hashes replaced.                                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Tailwind project and React project commands.                         |
+  |         Tailwind project and React project commands, and page screenshots.   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -58,6 +58,10 @@
   |  ( 2 )  React project work                                  -> /react-forge  |
   |         Components, hooks, state, forms, tests, and review in React 19,      |
   |         Next.js, React Router, or TanStack.                                  |
+  |                                                                              |
+  |  ( 3 )  Screenshot a page                              -> /screenshot-forge  |
+  |         Desktop, tablet, and mobile PNGs of a URL or a URL list, optionally  |
+  |         in transparent device frames.                                        |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -147,6 +151,23 @@
   .--[URL]-- Which live page should I rebuild in Tailwind? (paste the URL) ------.
   |  ___ e.g. https://example.com  - same look, generated class hashes replaced  |
   '------------------------------------------------------------------------------'
+
+
+----------------------------------------------------------- /screenshot-forge -
+  With a URL or list file: no menus - it captures, then offers frames.
+  With nothing: one plain prompt for the URL, then one call with two menus.
+
+  .--[URL]-- Which URL should I capture? (or a .txt file, one URL per line) ---.
+  |  ___ e.g. https://example.com  or  urls.txt                                |
+  '----------------------------------------------------------------------------'
+  .--[Viewports]-- Which viewports should I capture? --------------------------.
+  |  [ ] Desktop   [ ] Tablet   [ ] Mobile    (none picked = desktop + mobile) |
+  '----------------------------------------------------------------------------'
+  .--[Frames]-- Would you like device frames? ---------------------------------.
+  |  ( ) No frames                 ( ) Device frames                           |
+  |  ( ) Frames + combined, overlapping                                        |
+  |  ( ) Frames + combined, side by side                                       |
+  '----------------------------------------------------------------------------'
 
 
 -------------------------------------------------------------- /tailwind-forge -

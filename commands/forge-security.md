@@ -118,6 +118,7 @@ answer as a Step 0 direct hit.
 | `readme-forge` | `/forge-docs` |
 | `refactor` | `/forge-code` |
 | `retrospec` | `/forge-code` |
+| `screenshot-forge` | `/forge-design` |
 | `script-refactor` | `/forge-code` |
 | `seo-duel` | `/forge-writing` |
 | `session-stats` | `/forge-utils` |

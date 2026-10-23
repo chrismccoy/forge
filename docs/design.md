@@ -432,6 +432,57 @@ The full procedure lives at [`lib/page-tailwindify/SKILL.md`](../lib/page-tailwi
 
 ---
 
+## `screenshot-forge`
+
+Captures PNG screenshots of a live web page at desktop, tablet and mobile sizes in one command, and can place them in transparent laptop, tablet and phone frames, alone or combined into a single image.
+
+```
+/screenshot-forge
+```
+
+Give it a URL, or a text file with one URL per line. It captures every view in parallel with Playwright, then checks each image for the real page rather than a blank screen, a cookie wall or a bot challenge. If you want device frames, it adds them from the screenshots it already took, without capturing again. The plain screenshots are always kept; frames are extra files.
+
+There is no `npm install`. The script runs a pinned Playwright release through `npx`, uses Google Chrome when it is installed, and otherwise downloads Playwright's own Chromium once. It needs Node.js 20 or later and network access to the pages. iPhone and iPad devices render in WebKit, which downloads about 100 MB and, on Linux, needs system libraries installed with `sudo` - the command gives you that line to run instead of running it. The default devices, `Pixel 7` and `Galaxy Tab S4`, need none of this.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/screenshot-forge/SKILL.md`, which points at its own `references/` (every flag, devices and browsers, troubleshooting), `scripts/` (`capture.mjs`, the capture and framing script, Node only, no dependencies) and `assets/` (`frame.html`, the laptop, tablet and phone frame template). The command `/screenshot-forge` takes a URL or a list file as its argument; with none it asks for one, then asks which viewports and whether you want frames. The script prints one absolute path per PNG it writes and exits `0` on success, `1` when something failed, and `2` when nothing ran. All page content is treated as data to capture, never as instructions to follow.
+
+## Features
+
+- Desktop (1440×900), tablet (`Galaxy Tab S4`) and mobile (`Pixel 7`) captures of any http(s) URL, in parallel
+- Lists of URLs from a text file, with bad entries skipped and every failure reported by URL
+- Full-page captures, dark mode, any Playwright device, and a wait or CSS selector for slow pages
+- Transparent device frames: a laptop with a browser bar, a portrait tablet, and a phone
+- A combined image of every captured device, overlapping or side by side
+- Status bars tinted from each screenshot, so dark sites get dark bars
+- Frames added afterwards from existing screenshots in a few seconds, without capturing again
+- Generic frame designs drawn in HTML/CSS, with no third-party branding
+- Checks every image for blank pages, cookie walls and bot challenges, and retries slow pages once
+
+## How it works
+
+1. **Intake.** Take the URL or list file from the arguments. With none, ask for it, then ask which viewports (desktop, tablet, mobile) and whether to add frames.
+2. **Capture.** Look up the browser each device needs in the pinned Playwright release, install any missing browser once, then capture every view in parallel.
+3. **Check.** View the images, retry a blank or half-loaded page once with a longer wait, and report any wall or challenge.
+4. **Frame.** When frames are wanted, render the laptop, tablet and phone frames and the combined image as transparent PNGs at 2× resolution.
+5. **Report.** List every file written, plus any URL that failed or was skipped.
+
+## How to use it
+
+```
+/screenshot-forge https://example.com            ← desktop and mobile
+/screenshot-forge https://example.com --tablet   ← desktop, tablet and mobile
+/screenshot-forge urls.txt                       ← every URL in the file
+/screenshot-forge                                ← asks for the URL, viewports and frames
+```
+
+When you give a URL, it captures first and then asks **"Would you like device frames?"** with four choices: no frames, device frames, frames plus a combined image (overlapping), or frames plus a combined image (side by side). Files go to `./screenshots/`, named from the URL: `<name>-desktop.png`, `-tablet.png`, `-mobile.png`, and with frames `-desktop-framed.png`, `-tablet-framed.png`, `-mobile-framed.png` and `-combo.png`.
+
+The full procedure lives at [`lib/screenshot-forge/SKILL.md`](../lib/screenshot-forge/SKILL.md) and the slash command at [`commands/screenshot-forge.md`](../commands/screenshot-forge.md).
+
+---
+
 ## `tailwind-forge`
 
 Works on Tailwind CSS inside the project you already have: setting it up, moving from v3 to v4, design tokens, custom utilities, components, responsive layout, dark mode, shadcn/ui themes, animation, accessibility, plugins, output size, and fixing classes that do not apply. It writes v4 by default and v3 syntax in a project that has not migrated.

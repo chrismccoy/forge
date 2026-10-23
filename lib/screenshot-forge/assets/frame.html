@@ -1,0 +1,220 @@
+<!doctype html>
+<!--
+  Device frame template used by scripts/capture.mjs --frame.
+  The script loads this page in Chromium, calls window.render(), and screenshots #out
+  with a transparent background. Sizes are CSS pixels; the page renders at 2x.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; background: transparent; }
+  #out { display: inline-block; padding: 40px 48px 56px; }
+
+  /* ---------- Laptop (screen is 720 CSS px wide, so a 1440 px capture stays sharp) ---------- */
+  .laptop { width: 875px; position: relative; }
+  .laptop .lid {
+    position: relative; margin: 0 7.5%;
+    padding: 2.4% 1.6% 1.8%;
+    background: #0b0b0c;
+    border-radius: 18px 18px 6px 6px;
+    box-shadow: inset 0 0 0 1.5px #2a2b2e, inset 0 0 0 3px #0b0b0c, 0 0 0 1px #8d9097;
+  }
+  .laptop .lid::before {
+    content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 13%; height: 2.6%; min-height: 12px; background: #0b0b0c; border-radius: 0 0 8px 8px; z-index: 2;
+  }
+  .laptop .lid::after {
+    content: ""; position: absolute; top: 0.9%; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 6px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #34405a, #050506 70%); z-index: 3;
+  }
+  .laptop .screen { container-type: inline-size; overflow: hidden; border-radius: 3px; background: #fff; }
+  .laptop .bar {
+    display: flex; align-items: center; gap: 2cqw;
+    height: 4.2cqw; padding: 0 2cqw; background: #ececec; border-bottom: 1px solid #d6d6d6;
+  }
+  .laptop .dots { display: flex; gap: 1.1cqw; }
+  .laptop .dots i { width: 1.5cqw; height: 1.5cqw; border-radius: 50%; background: #ff5f57; }
+  .laptop .dots i:nth-child(2) { background: #febc2e; }
+  .laptop .dots i:nth-child(3) { background: #28c840; }
+  .laptop .url {
+    flex: 1; max-width: 50%; margin: 0 auto; height: 2.7cqw; border-radius: .8cqw; overflow: hidden;
+    background: #fff; color: #555; font: 1.45cqw/2.7cqw ui-sans-serif, system-ui, sans-serif; text-align: center;
+    white-space: nowrap; text-overflow: ellipsis;
+  }
+  .laptop .spacer { width: 6.5cqw; }
+  .laptop .base {
+    position: relative; height: 0; padding-bottom: 3.3%;
+    background: linear-gradient(to bottom, #e3e4e8 0%, #b9bbc1 45%, #8d9097 100%);
+    border-radius: 2px 2px 14px 14px / 2px 2px 60% 60%;
+    box-shadow: 0 1px 0 rgba(255,255,255,.35) inset;
+  }
+  .laptop .base::before {
+    content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 15%; height: 42%; border-radius: 0 0 10px 10px;
+    background: linear-gradient(to bottom, #8d9097, #b9bbc1); opacity: .55;
+  }
+  .laptop::after {
+    content: ""; position: absolute; left: 4%; right: 4%; bottom: -14px; height: 18px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.28), transparent 70%);
+    filter: blur(4px); z-index: -1;
+  }
+
+  /* ---------- Phone (render() sets --w to the device's CSS width; tablets get a wide body) ---------- */
+  .phone {
+    --w: 412px; --bezel: 11px; --radius: 52px; --body: #1b1c1f; --edge: #3a3c41;
+    position: relative; width: calc(var(--w) + var(--bezel) * 2);
+    padding: var(--bezel); border-radius: var(--radius); background: var(--body);
+    box-shadow: inset 0 0 0 1.5px var(--edge), inset 0 0 0 4px var(--body),
+      0 30px 60px -20px rgba(0,0,0,.45), 0 18px 36px -18px rgba(0,0,0,.35);
+  }
+  .phone .screen { overflow: hidden; border-radius: calc(var(--radius) - var(--bezel)); background: #fff; }
+  .phone .status {
+    display: flex; align-items: center; justify-content: space-between; height: 30px; padding: 0 22px 0 26px;
+    font: 600 12px/1 ui-sans-serif, system-ui, -apple-system, sans-serif; background: #fff; color: #111;
+  }
+  .phone .status .icons { display: flex; gap: 5px; align-items: center; }
+  .phone::before {
+    content: ""; position: absolute; z-index: 2; top: calc(var(--bezel) + 9px); left: 50%; transform: translateX(-50%);
+    width: 13px; height: 13px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #2c3340 0 30%, #07080a 60%); box-shadow: 0 0 0 2px rgba(0,0,0,.6);
+  }
+  .phone::after {
+    content: ""; position: absolute; right: -3px; top: 22%; width: 3px; height: 62px; border-radius: 0 3px 3px 0;
+    background: var(--edge); box-shadow: 0 82px 0 0 var(--edge);
+  }
+
+  /* Captures are cropped to the first screen, so full-page captures frame cleanly too. */
+  .shot { display: block; width: 100%; object-fit: cover; object-position: top; }
+
+  /* ---------- Combo: laptop with the phone in front ---------- */
+  .combo { position: relative; padding-right: 64px; }
+  .combo .phone {
+    position: absolute; right: 0; bottom: -6px;
+    --w: 190px; --bezel: 8px; --radius: 34px;
+  }
+  .combo .phone .status { height: 20px; padding: 0 13px 0 17px; font-size: 8.5px; }
+  .combo .phone .status .icons { zoom: .62; gap: 4px; }
+  .combo .phone::before { width: 9px; height: 9px; top: calc(var(--bezel) + 6px); }
+  .combo .phone::after { height: 40px; box-shadow: 0 54px 0 0 var(--edge); }
+
+  /* ---------- Tablet, portrait (render() sets --w to the device's CSS width) ---------- */
+  .tablet {
+    --w: 712px; --bezel: 22px; --radius: 36px; --body: #1b1c1f; --edge: #3a3c41;
+    position: relative; width: calc(var(--w) + var(--bezel) * 2);
+    padding: var(--bezel); border-radius: var(--radius); background: var(--body);
+    box-shadow: inset 0 0 0 1.5px var(--edge), inset 0 0 0 4px var(--body),
+      0 30px 60px -20px rgba(0,0,0,.45), 0 18px 36px -18px rgba(0,0,0,.35);
+  }
+  .tablet .screen { overflow: hidden; border-radius: 12px; background: #fff; }
+  .tablet .status {
+    display: flex; align-items: center; justify-content: space-between; height: 26px; padding: 0 18px;
+    font: 600 12px/1 ui-sans-serif, system-ui, -apple-system, sans-serif; background: #fff; color: #111;
+  }
+  .tablet .status .icons { display: flex; gap: 5px; align-items: center; }
+  /* camera in the top bezel */
+  .tablet::before {
+    content: ""; position: absolute; z-index: 2; top: calc(var(--bezel) / 2 - 4px); left: 50%; transform: translateX(-50%);
+    width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #34405a, #050506 70%);
+  }
+  /* power and volume on the top edge */
+  .tablet::after {
+    content: ""; position: absolute; top: -3px; right: 18%; width: 52px; height: 3px; border-radius: 3px 3px 0 0;
+    background: var(--edge); box-shadow: -72px 0 0 0 var(--edge);
+  }
+
+  /* Small tablet, as used inside the combined images */
+  .combo .tablet, .row .tablet { --bezel: 12px; --radius: 22px; }
+  .combo .tablet .status, .row .tablet .status { height: 15px; padding: 0 10px; font-size: 7.5px; }
+  .combo .tablet .status .icons, .row .tablet .status .icons { zoom: .55; }
+  .combo .tablet::before, .row .tablet::before { width: 5px; height: 5px; top: calc(var(--bezel) / 2 - 2.5px); }
+  .combo .tablet::after, .row .tablet::after { width: 30px; box-shadow: -42px 0 0 0 var(--edge); }
+
+  /* ---------- Combined, overlapping, with a tablet: tablet front-left, phone front-right ---------- */
+  .combo.trio { padding-left: 170px; padding-right: 72px; }
+  .combo.trio .tablet { position: absolute; left: 0; bottom: -10px; --w: 230px; }
+  .combo.trio .phone { --w: 180px; bottom: -10px; }
+
+  /* ---------- Combined, side by side ---------- */
+  .row { display: flex; align-items: flex-end; gap: 40px; }
+  .row .laptop { flex: none; }
+  .row .tablet { --w: 241px; flex: none; }
+  .row .phone { --w: 175px; --bezel: 8px; --radius: 32px; flex: none; }
+  .row .phone .status { height: 19px; padding: 0 12px 0 16px; font-size: 8px; }
+  .row .phone .status .icons { zoom: .58; gap: 4px; }
+  .row .phone::before { width: 8px; height: 8px; top: calc(var(--bezel) + 6px); }
+  .row .phone::after { height: 36px; box-shadow: 0 48px 0 0 var(--edge); }
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+  const ICONS = `<span class="icons">
+    <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx=".6"/><rect x="4.3" y="5" width="3" height="6" rx=".6"/><rect x="8.6" y="2.5" width="3" height="8.5" rx=".6"/><rect x="12.9" y="0" width="3" height="11" rx=".6"/></svg>
+    <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2.2c2.2 0 4.2.8 5.7 2.2l1.2-1.3A10 10 0 0 0 7.5.4 10 10 0 0 0 .6 3.1l1.2 1.3a8.2 8.2 0 0 1 5.7-2.2Zm0 3.3c1.3 0 2.5.5 3.4 1.3l1.2-1.3a6.7 6.7 0 0 0-9.2 0l1.2 1.3c.9-.8 2.1-1.3 3.4-1.3Zm0 3.2a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg>
+    <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.8" fill="currentColor"/><rect x="22.6" y="4" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".45"/></svg>
+  </span>`;
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  function laptop(d) {
+    return `<div class="laptop"><div class="lid"><div class="screen">
+      <div class="bar"><div class="dots"><i></i><i></i><i></i></div><div class="url">${esc(d.host)}</div><div class="spacer"></div></div>
+      <img class="shot" src="${d.desktop}" style="aspect-ratio: ${d.desktopSize[0]} / ${d.desktopSize[1]}">
+    </div></div><div class="base"></div></div>`;
+  }
+
+  // Phone and tablet share one shape: a body, a status bar, then the capture. Alone, the
+  // frame takes the device's CSS width; inside a combined image, the CSS sets a small width.
+  function handheld(cls, src, size, d, inCombo) {
+    const width = inCombo ? "" : ` style="--w: ${size[0]}px"`;
+    return `<div class="${cls}"${width}><div class="screen">
+      <div class="status"><span>9:41</span>${ICONS}</div>
+      <img class="shot" src="${src}" style="aspect-ratio: ${size[0]} / ${size[1]}">
+    </div></div>`;
+  }
+  const phone = (d, inCombo = false) => handheld("phone", d.mobile, d.mobileSize, d, inCombo);
+  const tablet = (d, inCombo = false) => handheld("tablet", d.tablet, d.tabletSize, d, inCombo);
+
+  // layout "overlap": laptop behind, tablet front-left, phone front-right.
+  // layout "row": tablet, laptop, phone side by side. Missing devices are left out.
+  function combo(d) {
+    if (d.layout === "row") {
+      return `<div class="row">${d.tablet ? tablet(d, true) : ""}${laptop(d)}${d.mobile ? phone(d, true) : ""}</div>`;
+    }
+    const trio = d.tablet ? " trio" : "";
+    return `<div class="combo${trio}">${laptop(d)}${d.tablet ? tablet(d, true) : ""}${d.mobile ? phone(d, true) : ""}</div>`;
+  }
+
+  // Colours each status bar like the top rows of its capture, so a dark site gets a dark
+  // bar without --dark. Needs data: URLs; a file:// image would taint the canvas.
+  function tintStatusBars(out) {
+    for (const screen of out.querySelectorAll(".screen")) {
+      const status = screen.querySelector(".status");
+      const img = screen.querySelector("img");
+      if (!status || !img) continue;
+      const canvas = document.createElement("canvas");
+      canvas.width = 64;
+      canvas.height = 4;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, img.naturalWidth, 8, 0, 0, 64, 4);
+      const px = ctx.getImageData(0, 0, 64, 4).data;
+      let r = 0, g = 0, b = 0;
+      for (let i = 0; i < px.length; i += 4) { r += px[i]; g += px[i + 1]; b += px[i + 2]; }
+      const n = px.length / 4;
+      [r, g, b] = [r / n, g / n, b / n].map(Math.round);
+      status.style.background = `rgb(${r}, ${g}, ${b})`;
+      status.style.color = 0.2126 * r + 0.7152 * g + 0.0722 * b < 140 ? "#f2f2f2" : "#111";
+    }
+  }
+
+  // kind: "laptop" | "phone" | "tablet" | "combo". Resolves once every image has decoded.
+  window.render = async (kind, d) => {
+    const out = document.getElementById("out");
+    out.innerHTML = { laptop, phone, tablet, combo }[kind](d);
+    await Promise.all([...out.querySelectorAll("img")].map((img) => img.decode()));
+    tintStatusBars(out);
+  };
+</script>
+</body>
+</html>
