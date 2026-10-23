@@ -80,6 +80,7 @@ answer as a Step 0 direct hit.
 | `crash-report` | `/forge-utils` |
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
+| `doc-pass` | `/forge-code` |
 | `docblock-rewrite` | `/forge-code` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |

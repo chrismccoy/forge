@@ -329,6 +329,10 @@ Helps with modern Python work in your own project: setting up with uv, async cod
 
 Writes a Product Requirements Document for an app that already exists, by reading its code. It lists every page, or every group of API endpoints for a backend, and for each one describes the fields, what happens when a user clicks or submits, which APIs it calls, and which pages it links to. It writes in plain business language for product managers. Anything it cannot work out from the code is marked TBC instead of guessed, and APIs that only return made-up data are labelled Mock. Two bundled scripts find routes and endpoints to start from and set up the prd folder.
 
+## doc-pass
+
+Adds doc comments to every file in a codebase, in any of 19 popular languages, without changing any code. Every file, type, function, route, and handler gets a full comment in the style that language uses, plus short notes where the logic is not obvious. A bundled checker compares every file before and after and fails if anything other than a comment changed, including the special comments that tools rely on, such as lint switches, build tags, and doctests. Your own tests and code-style tools run before and after in a scratch copy, and their results must match. Any bugs it notices come back as a ranked list it does not fix. It can also run as a read-only bug check that changes nothing. Use wp-doc-pass instead for a WordPress plugin or theme.
+
 ## mermaid-to-ascii
 
 Converts a Mermaid diagram file into an ASCII diagram that displays correctly in a terminal or plain text file. It supports sequence diagrams, flowcharts, class diagrams, state diagrams, ER diagrams, and Gantt charts. The result is saved as a .txt file with the same name as the source. Use it when you need a diagram in a place that cannot render Mermaid.

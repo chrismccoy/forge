@@ -103,6 +103,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `data-pipeline` | `/forge-cloud` |
 | `design-system` | `/forge-design` |
 | `devsecops` | `/forge-security` |
+| `doc-pass` | `/forge-code` |
 | `docblock-rewrite` | `/forge-code` |
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |

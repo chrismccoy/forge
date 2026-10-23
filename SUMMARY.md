@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 98 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 99 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 49 guided helpers · 48 full toolkits.
+**At a glance:** 1 quick win · 49 guided helpers · 49 full toolkits.
 
 ## Small Utils
 
@@ -122,6 +122,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `react-forge` | `/react-forge` | React 19 project work - components, hooks, state, forms with Zod, TypeScript, Tailwind and shadcn/ui, testing, performance, and code review, plus routing, caching, middleware, and auth for Next.js, React Router, and TanStack - reading your versions and conventions first, guarding every mutating endpoint with auth, validation, and idempotency rules, with eight generation workflows, four checker scripts, and three Next.js scripts |
 | `retrospec` | `/retrospec` | Reads an existing app's code and writes a Product Requirements Document a product manager can follow - every page's fields, interactions, and API calls, every enum value, and how the pages link, in business language, with unknowns marked `[TBC]` instead of guessed, stubbed APIs labelled `Mock`, and two scripts that find routes and endpoints and scaffold the `prd/` folder |
 | `readme-forge` | `/readme-forge` | Combines a bio file and one markdown file per project into one portfolio README - full or compact mode, optional categories, links only from your files - with a script that takes the inventory and another that checks the result |
+| `doc-pass` | `/doc-pass` | Documents a whole codebase in any of 19 languages - doc comments on every file, type, function, route, and handler - and proves with a bundled checker, your own tests, and your own linters that no code changed, then ranks the bugs it noticed without fixing them; also runs as a read-only bug check |
 
 ## A few extra notes
 
@@ -172,14 +173,14 @@ And eighteen others are shortened or renamed:
 - `regex-tutor` → type `/explain-regex`
 - `code-explainer` → type `/explain-code`
 
-The other 59, including `/wp-security`, `/wp-theme-review`, `/wp-block-review`, `/wp-security-review`, `/wp-plugin-review`, `/tailwind-forge`, `/react-forge`, `/bash-forge`, `/python-forge`, `/retrospec`, and `/readme-forge`, use their own name as the command. Every tool has exactly one command.
+The other 60, including `/wp-security`, `/wp-theme-review`, `/wp-block-review`, `/wp-security-review`, `/wp-plugin-review`, `/tailwind-forge`, `/react-forge`, `/bash-forge`, `/python-forge`, `/retrospec`, `/readme-forge`, and `/doc-pass`, use their own name as the command. Every tool has exactly one command.
 
-**Eleven pickers sit on top of the 98 commands:**
+**Eleven pickers sit on top of the 99 commands:**
 
 `/forge` walks you through every category, then the commands in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, and `/forge-utils` skip the category step
-and go straight to one of the ten categories - 26, 8, 10, 6, 8, 3, 4, 17, 10 and 6 commands
+and go straight to one of the ten categories - 26, 8, 10, 6, 8, 3, 4, 18, 10 and 6 commands
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a command name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -188,7 +189,7 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 66 commands - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 67 commands - the easiest way to start
 - **Asks a few questions directly:** 4 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`
 - **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 28 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wp-security`, `wp-theme-review`, `wp-block-review`, `wp-plugin-review`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`, `seo-duel`, `git-forge`, `human`, `retrospec`
 
@@ -196,4 +197,4 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 98 commands here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 99 commands here.

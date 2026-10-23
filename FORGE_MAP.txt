@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  98 commands . 11 pickers . 0 skills . nothing auto-fires.
+  99 commands . 11 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -73,7 +73,7 @@
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
   |         refactors, regex teardowns, script refactors, explanations, Python   |
-  |         project work, codebase PRDs.  17 commands.                           |
+  |         project work, codebase PRDs, doc passes.  18 commands.               |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils, README      |
@@ -577,7 +577,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  17 commands, 6 pages -----------------------------
+--- Code  ( /forge-code )  -  18 commands, 6 pages -----------------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/6) |
@@ -597,7 +597,7 @@
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
   |         codebase blueprints, code explanations, Python project work, PRDs    |
-  |         from code.                                                           |
+  |         from code, doc passes.                                               |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -618,7 +618,8 @@
   |  ( 4 )  More...                                                   -> page 3  |
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
   |         feature READMEs, regex teardowns, script refactors, codebase         |
-  |         blueprints, code explanations, Python project work, PRDs from code.  |
+  |         blueprints, code explanations, Python project work, PRDs from code,  |
+  |         doc passes.                                                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -641,7 +642,7 @@
   |  ( 4 )  More...                                                   -> page 4  |
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
   |         safe script refactors, codebase blueprints, the code explainer,      |
-  |         Python project work, and PRDs from code.                             |
+  |         Python project work, PRDs from code, and doc passes.                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -663,7 +664,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
   |         Safe script refactors, codebase blueprints with rebuilds, the code   |
-  |         explainer, Python project work, and PRDs from code.                  |
+  |         explainer, Python project work, PRDs from code, and doc passes.      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -684,7 +685,7 @@
   |         summary, interview prep, or line by line.                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
-  |         Python project work and PRDs from code.                              |
+  |         Python project work, PRDs from code, and doc passes.                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -699,6 +700,10 @@
   |  ( 2 )  Codebase to PRD                                       -> /retrospec  |
   |         Reverse-engineer a codebase into a business-readable PRD: pages,     |
   |         fields, interactions, enums, APIs.                                   |
+  |                                                                              |
+  |  ( 3 )  Document a codebase                                    -> /doc-pass  |
+  |         Doc comments on every file and function in 19 languages; a checker   |
+  |         proves no code changed. Bugs ranked, not fixed.                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -872,7 +877,7 @@
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
    |    +-- docblock-rewrite  code-teacher  fullstack-readme  explain-regex
    |    +-- script-refactor  blueprint-forge  explain-code  python-forge
-   |    +-- retrospec
+   |    +-- retrospec  doc-pass
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt

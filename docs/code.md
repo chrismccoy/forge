@@ -1063,3 +1063,69 @@ prd/
 To plan a new app from an idea use [`/blueprint`](#app-blueprint); for a technical blueprint detailed enough to rebuild the app use [`/blueprint-forge`](#blueprint-forge); for developer onboarding docs use [`/explain-my-code`](#explain-my-code); for a plain-English feature list a customer can read use [`/fullstack-readme`](#fullstack-feature-readme).
 
 The full procedure lives at [`lib/retrospec/SKILL.md`](../lib/retrospec/SKILL.md), the reference files under [`lib/retrospec/references/`](../lib/retrospec/references/), the helper scripts under [`lib/retrospec/scripts/`](../lib/retrospec/scripts/), and the slash command at [`commands/retrospec.md`](../commands/retrospec.md).
+
+## `doc-pass`
+
+Documents a whole codebase in one pass, comments only, in any of 19 languages, and proves mechanically that no code changed. The bugs it notices along the way come back as a ranked list it never fixes.
+
+```
+/doc-pass
+```
+
+Adding doc comments to every file sounds harmless until one edit slips: a reflowed line, a deleted pragma, a lint directive pushed off the line it guards, a doctest rewritten. None of those break a test run you would notice, and a reviewer scrolling a few thousand changed comment lines will not catch them either. `doc-pass` writes full doc comments - file headers, types, members, functions, routes, and handlers, plus inline comments where the logic is not obvious - in each language's own dialect, then proves the result with a bundled checker instead of trusting it.
+
+The checker parses every file before and after with Babel or tree-sitter (or its own readers for Clojure, Erlang, Haskell, Perl, and Lua) and compares the code token by token. It fails on any code change, any layout change outside comments, and any change to a comment that is really code: lint and type-check directives, build tags, doctests, magic comments, license headers, and spec-generating blocks. A coverage pass lists every file, type, and function still missing a doc comment, and it must reach zero. The project's own tests, type checkers, linters, and formatters run before and after in a scratch copy, and their results must match.
+
+It documents code, it does not change it. A file that fails a check is restored from the backup and redone, never patched by hand. For a WordPress plugin or theme, `/wp-doc-pass` does the same job with the WordPress coding standards built in.
+
+## Technical Overview
+
+One slash command plus its procedure folder. `lib/doc-pass/SKILL.md` holds the five steps (discover, safety net, document, verify, report), the intake, and the report format. `references/` holds the shared rules: `rules-core.md` (the hard rule, the failure protocol, and the universal comment rules), `discovery.md` (the file list, frozen scan, route, event, env, and shape maps, groups, and baselines), `agent-verification.md` (the checks every agent runs on its own files), `bug-check.md` (the read-only mode), and `checker-spec.md`. `references/lang/` holds one file per language - doc dialect, coverage, comments to preserve, framework notes, and bug-report additions - with JS / TS split into a base file, two style files (JSDoc, TSDoc), and backend, frontend, and meta-framework files. The checker sits in `scripts/`: `verify.mjs` (code identity, layout, frozen comments, line length), `coverage.mjs` (the gap list), and `selftest.mjs` (mutates copies of the project's own files and must catch every deliberate mistake), on top of `lib.mjs` (Babel), `treesitter.mjs` and `langs.mjs` (tree-sitter), and `clojure.mjs` and `lexers.mjs`. Each run copies the checker into the session scratchpad and installs its pinned dependencies there with `npm ci`; nothing is installed into the project or the plugin folder. The command's `allowed-tools` pre-approves the checker commands; installs, tests, and anything else ask first.
+
+## Features
+
+- Code identity proven, not promised: the checker compares the code before and after and fails on any change outside comments
+- Comments that are code stay byte-identical - lint and type-check directives, build tags, doctests, magic comments, license headers, spec blocks (`@openapi`, swaggo, Scramble), and checked types are frozen
+- A self-tested checker: before any edit it mutates copies of the project's own files and must catch every deliberate mistake
+- Full coverage, measured: every file, type, member, function, route, and handler, with a gap list that must reach zero
+- The project's own tools as a second check: tests run twice to spot flaky ones, then type checks, linters, and formatters, all before and after, in a scratch copy
+- Nothing outside the plan changes: a changed-paths check against a start marker (and `git status` in a repository) lists any other file written
+- Shared facts written once: route, event, and env maps and shared data shapes, so each fact is explained in one place
+- Parallel agents for large projects, in groups of 500 to 900 lines and waves of at most 7, each with the same rules and its own checks
+- Bugs reported, never fixed: a ranked list with `file:line`, a one-line problem, and a one-line fix; each fix you ask for comes with a test that proves the bug
+- A read-only bug check mode, proven with a byte compare against the backup
+- `.env` and credential files are never opened, and comments or strings in the project are never taken as instructions
+- Doc dialects for JS / TS (JSDoc, TSDoc, plus Vue, Svelte, and Astro), PHP, Python, Go, Rust, Ruby, Java, Kotlin, C#, Swift, C / C++, Dart, Elixir, Erlang, Haskell, Clojure, Lua, Perl, and PowerShell
+
+## How it works
+
+1. **Intake.** Take the project from the argument; otherwise ask for it, then the scope (application, client, tests, scripts) and the mode: doc pass with a bug report, doc pass only, or bug check only.
+2. **Discover.** Read the manifests and configs, pick each language's doc dialect, copy and self-test the checker, build the file list, run the frozen scan, and build the maps and the agent groups. Show the plan.
+3. **Safety net.** Back up every in-scope file, record a start marker, and run tests (twice), syntax checks, type checks, linters, and formatters in a scratch work copy as the baseline.
+4. **Document.** Parallel agents (or the main session, for small projects) write the comments, each checking its own files with verify, coverage, and the syntax check.
+5. **Verify and report.** Rerun every check on the whole project against the baseline, then the changed-paths check. Report what was documented, how it was checked and what could not run, then the ranked bug list.
+
+The checker's verdict on a finished pass:
+
+```
+OK: 8 files, code identical (0 frozen comments/lines protected)
+OK: 8 files fully documented
+```
+
+## How to use it
+
+```
+/doc-pass                        ← full intake
+/doc-pass src/                   ← document one folder of the project
+/doc-pass ~/code/api bug check only   ← ranked bug list, nothing changed
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"document this codebase"*, *"add docstrings to every function"*, *"add JSDoc to all the components"*, *"comment this repo without changing code"*, *"bring the comments up to standard"*, *"find bugs in this codebase without changing it"*
+
+**Needs:** Node.js (`node` and `npm`) with access to the npm registry, or a local npm cache, for the checker's dependencies. The project's own tests, type checkers, linters, and formatters are used when installed; any that are missing are listed in the report, and the pass is marked unverified for them.
+
+For a WordPress plugin or theme use [`/wp-doc-pass`](wordpress.md#wordpress-doc-pass); to turn existing docblocks into one-line plain-English comments use [`/docblock-rewrite`](#docblock-rewrite); for a beginner README use [`/readme-builder`](#readme-builder); for developer onboarding docs use [`/explain-my-code`](#explain-my-code).
+
+The full procedure lives at [`lib/doc-pass/SKILL.md`](../lib/doc-pass/SKILL.md), the reference files under [`lib/doc-pass/references/`](../lib/doc-pass/references/), the checker under [`lib/doc-pass/scripts/`](../lib/doc-pass/scripts/), and the slash command at [`commands/doc-pass.md`](../commands/doc-pass.md).
