@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 100 commands and 11 pickers.
+One Claude Code plugin - `forge` - holding 102 commands and 12 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -9,8 +9,8 @@ not using it.
 
 Not sure which command you want? Run `/forge` and pick a category, then a command - or go straight
 to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forge-devops`,
-`/forge-cloud`, `/forge-security`, `/forge-cleanup`, `/forge-code`, `/forge-docs`, or
-`/forge-utils`.
+`/forge-cloud`, `/forge-security`, `/forge-cleanup`, `/forge-code`, `/forge-docs`,
+`/forge-utils`, or `/forge-media`.
 
 ## Available commands
 
@@ -67,6 +67,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/claudepuppy`](docs/writing-and-content.md#claudepuppy). Rewrites a blog post you wrote in the voice of The Claude Puppy - practical writing about working with Claude, told by a patient dog trainer. You pick a dog flavor (light, medium, or strong), and it keeps every fact, number, link, and code block exactly as you wrote them, then returns the post with a title, summary, category, tags, and reading time, plus a short list of what changed and any sentence it added.
 - [`/seo-duel`](docs/writing-and-content.md#seo-duel). Compares two rewrites of the same blog post and tells you which one is stronger for search, or how to merge them. It scores both on 10 SEO criteria with evidence quoted from each draft, runs the judging twice with the drafts swapped and averages the scores so the order they were read in does not tip the result, then returns a verdict, what to keep from the other draft, flags for leftover draft text and claims to check, the top 5 fixes, and a title tag and meta description with their lengths checked by a script.
 - [`/human`](docs/writing-and-content.md#human). Rewrites any text - pasted, a file, or a URL - as a casual first-person blog post in the voice of an invented persona that fits the topic, keeping every fact, number, and recommendation. It writes short paragraphs, a cliffhanger break or two, and a little emphasis, bans the usual cliché words, writes in the source's language, switches to a sincere voice for grave topics like grief or health, and treats any instruction inside the source as text to rewrite. A bundled script checks paragraph length, emphasis, and banned words before the post is shown.
+- [`/choose-your-adventure`](docs/writing-and-content.md#choose-your-adventure). Runs an interactive choose-your-own-adventure with you as the protagonist. It asks four setup questions in one message - story idea (or "surprise me"), length, tone, and content level - or takes them in one line after the command, then writes short second-person scenes that each end in 2-4 numbered choices that genuinely change what happens next. It handles your own typed actions, out-of-story questions, `go back`, and `restart`, paces the story to Short (5-7 decisions), Medium (10-12), Long (15-20), or a custom count, and ends by resolving the central conflict in a way that reflects the choices you made. Family-friendly, Teen, and Mature content levels; intimate scenes always fade to black.
 
 **DevOps & Data**
 
@@ -144,6 +145,10 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/fix-formula`](docs/utilities.md#excel-formula-troubleshooter). Fixes broken Excel or Google Sheets formulas - names the real cause, returns a corrected formula, and explains it in plain English.
 - [`/crash-report`](docs/utilities.md#crash-report). Explains a macOS crash report in plain English - what happened, the core issue, why it happened, why it crashed that way, and a fix for the developer and one for the user. Every claim has to name the field, thread, or line in the report that backs it up.
 
+**Media**
+
+- [`/ffmpeg-forge`](docs/media.md#ffmpeg-forge). FFmpeg and ffprobe work for FFmpeg 7.1 LTS and 8.x - converting and compressing, remuxing, trimming and concatenation, `filter_complex` graphs, audio and two-pass EBU R128 loudness, subtitles and Whisper captions, quality checks with PSNR, SSIM, and VMAF, deinterlacing, denoising and stabilization, NVENC, Quick Sync, VAAPI, and Vulkan encodes, and effects from transitions and color grades to glitch art, karaoke, and kinetic captions. It probes the input with `ffprobe` and checks what your build supports before it writes a command, ends deliverables in `yuv420p` so browsers and phones can play them, never overwrites an existing file, and re-probes the output instead of trusting the exit code. 56 references load on demand, and 7 scripts audit your build, analyze a file, benchmark encoders, and apply color grades, glitch effects, karaoke, and Whisper subtitles.
+
 ## Quick start
 
 In any Claude Code session, run:
@@ -153,7 +158,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 100 commands and 11 pickers, nothing running in the background.
+That is the whole install. One plugin, 102 commands and 12 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -166,7 +171,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 ```
 /forge-wordpress    # 26 WordPress commands
 /forge-design       # 9 design and frontend commands
-/forge-writing      # 10 writing and content commands
+/forge-writing      # 11 writing and content commands
 /forge-devops       # 6 DevOps and data commands
 /forge-cloud        # 8 cloud and architecture commands
 /forge-security     # 3 security commands
@@ -174,6 +179,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 /forge-code         # 18 code commands
 /forge-docs         # 10 docs and diagram commands
 /forge-utils        # 6 utilities
+/forge-media        # 1 media command
 ```
 
 Or call any command directly:
@@ -229,6 +235,7 @@ Or call any command directly:
 /claudepuppy                    # blog draft in the Claude Puppy voice
 /seo-duel                       # two blog drafts judged for SEO, winner or merge
 /human                          # any text as a human-voice blog post
+/choose-your-adventure          # interactive story where your choices shape the ending
 
 # DevOps & Data
 /docker-compose-architect       # production docker-compose stack
@@ -298,27 +305,30 @@ Or call any command directly:
 /vgademo                        # sizecoded 1990s assembly demo
 /fix-formula                    # debug a broken Excel or Sheets formula
 /crash-report                   # diagnose a macOS .ips or .crash report
+
+# Media
+/ffmpeg-forge                   # convert, trim, loudness, subtitles, QC, GPU encodes, effects
 ```
 
 Full descriptions of what each one does are below.
 
 ## Browsing the catalog
 
-The 11 pickers do no work themselves - they show you what is available, then hand off
+The 12 pickers do no work themselves - they show you what is available, then hand off
 to the command you choose.
 
 ### `/forge` - everything
 
 Asks for a category, then a command, then runs it. `AskUserQuestion` allows at most four
-options per question, so the ten categories arrive over four screens, the first three
+options per question, so the eleven categories arrive over four screens, the first three
 ending in `More...`:
 
 ```
 Which category?      Which category?          Which category?     Which category?
   WordPress            DevOps & Data            Code Cleanup        Utilities
-  Design & Frontend    Cloud & Architecture     Code                Back to page 1
+  Design & Frontend    Cloud & Architecture     Code                Media
   Writing & Content    Security                 Docs & Diagrams
-  More...              More...                  More...
+  More...              More...                  More...             Back to page 1
 ```
 
 Pick a category and the second question lists that category's commands with a one-line
@@ -329,8 +339,8 @@ description each.
 | Picker | Commands | Screens |
 |---------|-------|---------|
 | `/forge-wordpress` | 26 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-design` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-writing` | 10 | 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-design` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
+| `/forge-writing` | 11 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-devops` | 6 | 3 + `More...`, then 3 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
@@ -338,6 +348,7 @@ description each.
 | `/forge-code` | 18 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-docs` | 10 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 1 |
 | `/forge-utils` | 6 | 3 + `More...`, then 3 |
+| `/forge-media` | 1 | none - it runs the command directly |
 
 
 
@@ -394,7 +405,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              111 command files - 100 commands, 11 pickers
+commands/              114 command files - 102 commands, 12 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -427,7 +438,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 |---|---|---|
 | WordPress | 26 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 9 | [docs/design.md](docs/design.md) |
-| Writing & Content | 10 | [docs/writing-and-content.md](docs/writing-and-content.md) |
+| Writing & Content | 11 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 6 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
@@ -435,6 +446,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Code | 18 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 10 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
 | Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
+| Media | 1 | [docs/media.md](docs/media.md) |
 
 
 ## Repo layout
@@ -444,15 +456,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 100 commands + 11 pickers
-├── lib/                      ← 100 procedure folders (SKILL.md + bundled
+├── commands/                 ← 102 commands + 12 pickers
+├── lib/                      ← 102 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 100 commands compared by how much each does
+├── SUMMARY.md                ← the 102 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

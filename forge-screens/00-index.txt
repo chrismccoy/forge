@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  100 commands . 11 pickers . 0 skills . nothing auto-fires.
+  102 commands . 12 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's command screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -19,12 +19,12 @@
   |                                                                             |
   |  ( 2 )  Design & Frontend                            -> open  02-design.txt |
   |         Design styles, accessibility, DESIGN.md, Tailwind, cloning, React.  |
-  |         8 commands.                                                         |
+  |         9 commands.                                                         |
   |                                                                             |
   |  ( 3 )  Writing & Content                           -> open  03-writing.txt |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios, |
   |         book summaries, Claude Puppy rewrites, SEO duels, human-voice       |
-  |         posts.  10 commands.                                                |
+  |         posts, interactive stories.  11 commands.                           |
   |                                                                             |
   |  ( 4 )  More...                                                   -> page 2 |
   |                                                                             |
@@ -76,7 +76,11 @@
   |         Scripts, session stats, token grades, VGA demos, formulas, crashes. |
   |         6 commands.                                                         |
   |                                                                             |
-  |  ( 2 )  Back to page 1                                            -> page 1 |
+  |  ( 2 )  Media                                         -> open  11-media.txt |
+  |         FFmpeg: convert, trim, loudness, subtitles, QC, GPU, effects.       |
+  |         1 command.                                                          |
+  |                                                                             |
+  |  ( 3 )  Back to page 1                                            -> page 1 |
   |                                                                             |
   |  [Other] type a command name .............................................  |
   '-----------------------------------------------------------------------------'
@@ -86,7 +90,7 @@
     00-index.txtyou are here
     01-wordpress.txt  /forge-wordpress  . 26 commands
     02-design.txt     /forge-design     . 9 commands
-    03-writing.txt    /forge-writing    . 10 commands
+    03-writing.txt    /forge-writing    . 11 commands
     04-devops.txt     /forge-devops     . 6 commands
     05-cloud.txt      /forge-cloud      . 8 commands
     06-security.txt   /forge-security   . 3 commands
@@ -94,6 +98,7 @@
     08-code.txt       /forge-code       . 18 commands
     09-docs.txt       /forge-docs       . 10 commands
     10-utils.txt      /forge-utils      . 6 commands
+    11-media.txt      /forge-media      . 1 command
 
   Whole map on one screen: ../FORGE_MAP.txt
 ================================================================================

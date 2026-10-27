@@ -112,6 +112,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `analyze-prompt` | `/forge-docs` |
 | `bash-forge` | `/forge-devops` |
 | `book-summary` | `/forge-writing` |
+| `choose-your-adventure` | `/forge-writing` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `claudepuppy` | `/forge-writing` |
 | `cloud-migration` | `/forge-cloud` |
@@ -122,6 +123,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `docker-compose-architect` | `/forge-devops` |
 | `draft-contract` | `/forge-writing` |
 | `explain-prompt` | `/forge-docs` |
+| `ffmpeg-forge` | `/forge-media` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `git-forge` | `/forge-devops` |

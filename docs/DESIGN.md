@@ -49,7 +49,7 @@ Rules that keep the style intact:
 | Warning | `#f59e0b` | `amber-500` | Quick win |
 | Danger | `#ef4444` | `red-500` | Negative delta, "off" icon |
 
-There are ten categories and the style has only five colors, so categories are **not** color coded. Every chart bar is the same blue, and categories are told apart by their label and Font Awesome icon (the `icon` field in `CATS`). Color carries meaning only for tool size: full toolkit, guided helper, quick win.
+There are eleven categories and the style has only five colors, so categories are **not** color coded. Every chart bar is the same blue, and categories are told apart by their label and Font Awesome icon (the `icon` field in `CATS`). Color carries meaning only for tool size: full toolkit, guided helper, quick win.
 
 Text selection is `#3b82f6` on white.
 
@@ -134,9 +134,9 @@ All behavior is plain JavaScript at the bottom of the file. There are no framewo
 | `lines` | Lines of `.md` in the tool's `lib/` folder |
 | `refs`, `scripts`, `files` | Files under `references/`, under `scripts/`, and in total |
 
-`CATS` lists the ten categories in README order. Each entry has `name` (must match `cat`), `short` (chart label), `picker` (category command), `icon`, and `screens` (from the README picker table).
+`CATS` lists the eleven categories in README order. Each entry has `name` (must match `cat`), `short` (chart label), `picker` (category command), `icon`, and `screens` (from the README picker table).
 
-Totals in the stat cards, the chart, the tool size card, the sidebar counts, the dropdown counts, and the category pickers table are all computed from `TOOLS` and `CATS`. Only the 11 pickers card and the text in the header and install sections are hard-coded.
+Totals in the stat cards, the chart, the tool size card, the sidebar counts, the dropdown counts, and the category pickers table are all computed from `TOOLS` and `CATS`. Only the 12 pickers card and the text in the header and install sections are hard-coded.
 
 **Render functions.** `renderChart(metric)`, `renderTable()`, `renderDetail(cmd)`, and `renderPicker()` rebuild their part of the page from the data. `jumpTo(cmd)` clears the filters, opens the table page that holds a tool, selects it, and scrolls to the table; the picker demo and the "Deepest procedures" list use it through `data-jump`. Change the data, not the generated HTML. Any text from the data goes through `esc()` before it is put into HTML, and `cap()` capitalizes taglines for display.
 
@@ -156,7 +156,7 @@ Totals in the stat cards, the chart, the tool size card, the sidebar counts, the
 
 All of these are edits to `tools/landing-template.html`, followed by a rebuild.
 
-- **A new tool:** add it to the README (an "Available commands" entry and a quick-start tagline) and to a `SUMMARY.md` table, then rebuild. No template change is needed unless it adds a picker screen (update `screens` for its category in `CATS`) or changes the command total (update the 100 / 11 counts in the header, install text, and repo layout block).
+- **A new tool:** add it to the README (an "Available commands" entry and a quick-start tagline) and to a `SUMMARY.md` table, then rebuild. No template change is needed unless it adds a picker screen (update `screens` for its category in `CATS`) or changes the command total (update the 102 / 12 counts in the header, install text, and repo layout block).
 - **A new category:** add an entry to `CATS` in README order with a `short` label of one word and a Font Awesome icon. The build stops until you do.
 - **A new section:** wrap it in `.chart-container` (or a bordered table panel), give it an `id` and `scroll-mt-6`, add a sidebar link with `data-nav`, and use the section title and subtitle recipe above.
 - **A new stat:** copy a `.metric-card`, add the value to `STATS`, and use an icon circle color from the token table.

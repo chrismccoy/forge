@@ -90,6 +90,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `blueprint-forge` | `/forge-code` |
 | `book-summary` | `/forge-writing` |
 | `changelog-generator` | `/forge-code` |
+| `choose-your-adventure` | `/forge-writing` |
 | `claudepuppy` | `/forge-writing` |
 | `code-teacher` | `/forge-code` |
 | `codebase-to-mermaid` | `/forge-code` |
@@ -106,6 +107,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-prompt` | `/forge-docs` |
 | `explain-regex` | `/forge-code` |
 | `explain-sql` | `/forge-code` |
+| `ffmpeg-forge` | `/forge-media` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |
 | `git-forge` | `/forge-devops` |

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-writing - Writing & Content picker
 
-Route the user to one of the 10 Writing & Content commands and run it. Articles, tutorials, contracts, naming, language help, GitHub profile bios, book summaries, Claude Puppy rewrites, SEO draft comparisons, and human-voice blog posts.
+Route the user to one of the 11 Writing & Content commands and run it. Articles, tutorials, contracts, naming, language help, GitHub profile bios, book summaries, Claude Puppy rewrites, SEO draft comparisons, human-voice blog posts, and interactive choose-your-own-adventure stories.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -48,7 +48,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 | Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
-| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, and the human-voice rewriter. |
+| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, the human-voice rewriter, and the interactive story. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which command?", header: "Command"
 
@@ -57,7 +57,14 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Summarize a book | book-summary | Structured book summary: main ideas, checked quotes, takeaways, optional social post. |
 | Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 | Compare two SEO drafts | seo-duel | Two rewrites of one blog post scored on 10 SEO criteria in both orders: winner or merge plan, fixes, title and meta. |
+| More... | - | The human-voice rewriter and the interactive choose-your-own-adventure story. |
+
+**Page 4** (only if `More...` was chosen a third time) - question: "Which command?", header: "Command"
+
+| Label | Command | Description |
+|---|---|---|
 | Rewrite as a human blog post | human | Any text rewritten as a first-person blog post in an invented persona's voice, every fact kept. |
+| Play an interactive story | choose-your-adventure | Choose-your-own-adventure with you as the protagonist: 2-4 choices per scene, paced to your length, a real ending. |
 
 ## Step 2 - run it
 
@@ -105,6 +112,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-prompt` | `/forge-docs` |
 | `explain-regex` | `/forge-code` |
 | `explain-sql` | `/forge-code` |
+| `ffmpeg-forge` | `/forge-media` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 100 commands in this plugin and then run it. This command
+Route the user to one of the 102 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -31,7 +31,7 @@ Each category also has its own command, which skips Step 1 entirely:
 |---|---|
 | `/forge-wordpress` | 26 WordPress commands |
 | `/forge-design` | 9 design and frontend commands |
-| `/forge-writing` | 10 writing and content commands |
+| `/forge-writing` | 11 writing and content commands |
 | `/forge-devops` | 6 DevOps and data commands |
 | `/forge-cloud` | 8 cloud and architecture commands |
 | `/forge-security` | 3 security commands |
@@ -39,6 +39,7 @@ Each category also has its own command, which skips Step 1 entirely:
 | `/forge-code` | 18 code commands |
 | `/forge-docs` | 10 docs and diagram commands |
 | `/forge-utils` | 6 utilities |
+| `/forge-media` | 1 media command |
 
 If the user's input clearly names one category and no specific tool, mention the matching
 command in one line, then continue with Step 1 rather than making them retype anything.
@@ -56,8 +57,8 @@ such answer as a Step 0 direct hit.
 |---|---|
 | WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 26 commands. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning, Tailwind and React project work, page screenshots and device mockups. 9 commands. |
-| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts. 10 commands. |
-| More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities. |
+| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts, interactive stories. 11 commands. |
+| More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities, media. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which category?", header: "Category"
 
@@ -66,7 +67,7 @@ such answer as a Step 0 direct hit.
 | DevOps & Data | Compose stacks, Kubernetes manifests, PowerShell, jq, safe Git, Bash scripting. 6 commands. |
 | Cloud & Architecture | System design, Terraform, CI/CD, ETL, migration, SRE, FinOps, incidents. 8 commands. |
 | Security | STRIDE threat models, DevSecOps hardening, vulnerability reports. 3 commands. |
-| More... | Code cleanup, code, docs and diagrams, utilities. |
+| More... | Code cleanup, code, docs and diagrams, utilities, media. |
 
 **Page 3** (only if `More...` was chosen again) - question: "Which category?", header: "Category"
 
@@ -75,13 +76,14 @@ such answer as a Step 0 direct hit.
 | Code Cleanup | Strip AI voice, Unicode, comments, README feature bullets. 4 commands. |
 | Code | App blueprints, tests, onboarding docs, diagrams, READMEs, changelogs, refactors, SQL review, regex teardowns, script refactors, codebase blueprints, code explanations, Python project work, codebase PRDs, doc passes. 18 commands. |
 | Docs & Diagrams | Mermaid diagrams and prompt explainers, auditors, scorers, stencils, bloat remover, README from markdown files. 10 commands. |
-| More... | Utilities. |
+| More... | Utilities, media. |
 
 **Page 4** (only if `More...` was chosen a third time) - question: "Which category?", header: "Category"
 
 | Label | Description |
 |---|---|
 | Utilities | Standalone scripts, session stats, token grades, VGA demos, formulas, macOS crashes. 6 commands. |
+| Media | FFmpeg and ffprobe: convert, compress, trim, loudness, subtitles, quality checks, GPU encodes, video effects. 1 command. |
 | Back to page 1 | Return to the first category page. |
 
 ## Step 2 - pick a command
@@ -175,28 +177,33 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | React project work | react-forge | Components, hooks, state, forms, tests, and review in React 19, Next.js, React Router, or TanStack. |
 | Screenshot a page | screenshot-forge | Desktop, tablet, and mobile PNGs of a URL or a URL list, optionally in transparent device frames. |
 
-### Writing & Content (10 - page at 4)
+### Writing & Content (11 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Technical article | tech-blog-article | Front-page-quality technical article from topic, audience, angle, and length. |
 | Hands-on tutorial | tutorial-builder | Step-by-step tutorial built from code or a topic. |
 | Service contract | draft-contract | Plain-English eight-section service-agreement framework. |
-| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, SEO duel, and human-voice commands. |
+| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, SEO duel, human-voice, and interactive story commands. |
 
 | Label | Command | Description |
 |---|---|---|
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 | Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
-| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, and the human-voice rewriter. |
+| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, the human-voice rewriter, and the interactive story. |
 
 | Label | Command | Description |
 |---|---|---|
 | Summarize a book | book-summary | Structured book summary: main ideas, checked quotes, takeaways, optional social post. |
 | Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 | Compare two SEO drafts | seo-duel | Two rewrites of one blog post scored on 10 SEO criteria in both orders: winner or merge plan, fixes, title and meta. |
+| More... | - | The human-voice rewriter and the interactive choose-your-own-adventure story. |
+
+| Label | Command | Description |
+|---|---|---|
 | Rewrite as a human blog post | human | Any text rewritten as a first-person blog post in an invented persona's voice, every fact kept. |
+| Play an interactive story | choose-your-adventure | Choose-your-own-adventure with you as the protagonist: 2-4 choices per scene, paced to your length, a real ending. |
 
 ### DevOps & Data (6 - page at 4)
 
@@ -335,6 +342,14 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
 | Fix a spreadsheet formula | fix-formula | Debug and fix a broken Excel or Google Sheets formula. |
 | Analyze a macOS crash | crash-report | Diagnose a .ips or .crash report in six plain-English sections, every claim cited. |
+
+### Media (1)
+
+One command, so skip the second question and go straight to Step 3 with it.
+
+| Label | Command | Description |
+|---|---|---|
+| Convert, edit, or fix video and audio | ffmpeg-forge | FFmpeg and ffprobe: convert, compress, trim, loudness, subtitles, QC, GPU encodes, and effects. |
 
 ## Step 3 - run it
 

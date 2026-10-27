@@ -6,7 +6,7 @@
         <title>Forge</title>
         <meta
             name="description"
-            content="100 commands for Claude Code across ten categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, and utilities. Nothing auto-triggers."
+            content="102 commands for Claude Code across eleven categories: WordPress, design, writing, DevOps, cloud, security, cleanup, code, docs, utilities, and media. Nothing auto-triggers."
         />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -290,11 +290,11 @@
                         <div class="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                             <div class="max-w-2xl">
                                 <h1 class="text-2xl md:text-3xl font-medium text-slate-900 tracking-tight">
-                                    100 commands across ten categories. Each one waits to be typed.
+                                    102 commands across eleven categories. Each one waits to be typed.
                                 </h1>
                                 <p class="mt-2 text-sm text-slate-500">
                                     One Claude Code plugin for WordPress, design, writing, DevOps, cloud, security,
-                                    cleanup, code, docs, and small utilities. A tool loads its procedure only when you
+                                    cleanup, code, docs, small utilities, and media. A tool loads its procedure only when you
                                     type its slash command.
                                 </p>
                             </div>
@@ -346,7 +346,7 @@
                                     ><i class="fa-solid fa-terminal" aria-hidden="true"></i
                                 ></span>
                             </div>
-                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">11</p>
+                            <p class="mt-2 text-3xl font-bold font-mono tracking-tight text-slate-900">12</p>
                             <p class="mt-3 text-xs text-slate-500">
                                 <span class="font-mono">/forge</span> plus one per category
                             </p>
@@ -661,7 +661,7 @@
 .claude-plugin/
   marketplace.json     <span class="text-slate-500">one plugin entry</span>
   plugin.json          <span class="text-slate-500">the forge plugin manifest</span>
-commands/              <span class="text-slate-500">111 command files: 100 commands, 11 pickers</span>
+commands/              <span class="text-slate-500">114 command files: 102 commands, 12 pickers</span>
 lib/&lt;tool&gt;/
   SKILL.md             <span class="text-slate-500">the procedure, read only when its command runs</span>
   references/          <span class="text-slate-500">deep detail, loaded on demand</span>
@@ -677,7 +677,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                             <div>
                                 <h2 id="installTitle" class="text-base font-medium text-slate-900">Install</h2>
                                 <p class="text-sm text-slate-500">
-                                    Run these in any Claude Code session. One plugin, 100 commands and 11 pickers, nothing running in
+                                    Run these in any Claude Code session. One plugin, 102 commands and 12 pickers, nothing running in
                                     the background.
                                 </p>
                             </div>
@@ -774,7 +774,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     short: "Writing",
                     picker: "forge-writing",
                     icon: "fa-solid fa-pen-nib",
-                    screens: "3",
+                    screens: "4",
                 },
                 {
                     name: "DevOps & Data",
@@ -818,6 +818,13 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     picker: "forge-utils",
                     icon: "fa-solid fa-wrench",
                     screens: "2",
+                },
+                {
+                    name: "Media",
+                    short: "Media",
+                    picker: "forge-media",
+                    icon: "fa-solid fa-film",
+                    screens: "none",
                 },
             ];
             const GH = "https://github.com/chrismccoy/forge/blob/master/";
@@ -1104,7 +1111,7 @@ docs/                  <span class="text-slate-500">full write-up for each categ
                     pages = Math.ceil(CATS.length / 3);
                     items = CATS.slice(picker.page * 3, picker.page * 3 + 3);
                     html = items.map((c, i) =>
-                        opt(i + 1, c.name, `${byCat(c.name).length} commands`, `data-pick-cat="${esc(c.name)}"`)
+                        opt(i + 1, c.name, `${byCat(c.name).length} command${byCat(c.name).length === 1 ? "" : "s"}`, `data-pick-cat="${esc(c.name)}"`)
                     );
                     document.getElementById("pickerQuestion").textContent = "Which category?";
                     document.getElementById("pickerChip").textContent = "Category";

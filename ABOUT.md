@@ -181,6 +181,10 @@ Compares two rewrites of the same blog post for SEO. It scores both drafts on 10
 
 Rewrites any text as a personal, first-person blog post. It invents a persona that fits the topic and writes in a casual voice with short paragraphs, keeping every fact and number from the source. Grave topics such as grief or health get a sincere voice with no jokes. Instructions written inside the source are rewritten as text, never followed.
 
+## choose-your-adventure
+
+Runs an interactive choose-your-own-adventure where you are the main character. It asks for a story idea, a length, a tone, and a content level in one message, or you can give them right after the command. Each scene ends with two to four numbered choices, and each choice leads somewhere different. The story ends at the length you picked, resolves the main conflict, and reflects the choices you made.
+
 ## docker-compose-architect
 
 Designs a docker-compose stack for production use. It asks about your tech stack, database, network setup, and any constraints. The output includes networks, health checks, secrets passed as environment references, and a .env template. Use it when you need a compose file that is ready to run on a server.
@@ -400,3 +404,7 @@ Debugs and fixes a broken Excel or Google Sheets formula. You give it the formul
 ## crash-report
 
 Explains a macOS crash report in plain English. It reads .ips and .crash files, hang reports, spindumps, and Console.app output. The explanation has six sections: what happened, the main problem, why it happened, why it crashed that way, the fix for developers, and the fix for users. Every claim is tied to a specific field in the report.
+
+## ffmpeg-forge
+
+Writes and runs FFmpeg and ffprobe commands for converting, compressing, trimming, joining, and fixing video and audio. It also covers loudness, subtitles and Whisper captions, quality checks, restoration, GPU encoding, and effects such as transitions, color grades, glitch art, karaoke, and kinetic captions. It probes your file and checks what your FFmpeg build supports before it writes a command. It never overwrites an existing file, and it checks the output instead of trusting the exit code.

@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  100 commands . 11 pickers . 0 skills . nothing auto-fires.
+  102 commands . 12 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -17,7 +17,7 @@
   ENTRY:  /forge
 ================================================================================
 
-  STEP 1 - pick a category  (4 pages, 10 categories)
+  STEP 1 - pick a category  (4 pages, 11 categories)
 
   .------------------------------------------------------------------------------.
   | [Category]                                        Which category?  (pg 1/4)  |
@@ -31,13 +31,12 @@
   |                                                                              |
   |  ( 3 )  Writing & Content                                                    |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios,  |
-  |         book summaries, Claude Puppy rewrites, SEO duels, human-voice posts. |
-  |         10 commands.                                                         |
+  |         book summaries, Claude Puppy rewrites, SEO duels, human-voice posts, |
+  |         interactive stories.  11 commands.                                   |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
-  |         annotations, feature READMEs, regex teardowns, script refactors,     |
-  |         codebase blueprints, code explanations.                              |
+  |         DevOps, cloud, security, code cleanup, code, docs and diagrams,      |
+  |         utilities, media.                                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -57,8 +56,7 @@
   |         STRIDE models, DevSecOps hardening, vuln reports.  3 commands.       |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         The image prompt stencil cutter, prompt bloat remover, and scored    |
-  |         prompt auditor.                                                      |
+  |         Code cleanup, code, docs and diagrams, utilities, media.             |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -80,7 +78,7 @@
   |         builder.  10 commands.                                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Utilities.                                                           |
+  |         Utilities, media.                                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -92,7 +90,11 @@
   |         Scripts, session stats, token grades, VGA demos, formulas, crashes.  |
   |         6 commands.                                                          |
   |                                                                              |
-  |  ( 2 )  Back to page 1                                            -> page 1  |
+  |  ( 2 )  Media                                                                |
+  |         FFmpeg and ffprobe: convert, compress, trim, loudness, subtitles,    |
+  |         quality checks, GPU encodes, video effects.  1 command.              |
+  |                                                                              |
+  |  ( 3 )  Back to page 1                                            -> page 1  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -367,10 +369,10 @@
   '------------------------------------------------------------------------------'
 
 
---- Writing & Content  ( /forge-writing )  -  10 commands, 3 pages -------------
+--- Writing & Content  ( /forge-writing )  -  11 commands, 4 pages -------------
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/3) |
+  | [Command]                                           Which command?  (pg 1/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Technical article                             -> /tech-blog-article  |
   |         Front-page-quality technical article from topic, audience, angle,    |
@@ -389,7 +391,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/3) |
+  | [Command]                                           Which command?  (pg 2/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Name a product                                     -> /name-domains  |
   |         10 brandable SaaS domain candidates, scored, in a locked A-D format. |
@@ -403,14 +405,14 @@
   |         each 160 characters or fewer.                                        |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
-  |         Book summaries, Claude Puppy rewrites, SEO duels, and human-voice    |
-  |         blog posts.                                                          |
+  |         Book summaries, Claude Puppy rewrites, SEO duels, human-voice blog   |
+  |         posts, and interactive stories.                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/3) |
+  | [Command]                                           Which command?  (pg 3/4) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Summarize a book                                   -> /book-summary  |
   |         Structured book summary: main ideas, checked quotes, takeaways,      |
@@ -424,9 +426,23 @@
   |         Two rewrites of one blog post scored on 10 SEO criteria in both      |
   |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
-  |  ( 4 )  Rewrite as a human blog post                              -> /human  |
+  |  ( 4 )  More...                                                   -> page 4  |
+  |         Human-voice blog posts and interactive choose-your-own-adventure     |
+  |         stories.                                                             |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 4/4) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Rewrite as a human blog post                              -> /human  |
   |         Any text rewritten as a first-person blog post in an invented        |
   |         persona's voice, every fact kept.                                    |
+  |                                                                              |
+  |  ( 2 )  Play an interactive story                 -> /choose-your-adventure  |
+  |         Choose-your-own-adventure with you as the protagonist: 2-4 choices   |
+  |         per scene, paced to your length, a real ending.                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -829,6 +845,17 @@
   '------------------------------------------------------------------------------'
 
 
+--- Media  ( /forge-media )  -  1 command --------------------------------------
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                      One command, runs directly    |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Convert, edit, or fix video and audio              -> /ffmpeg-forge  |
+  |         FFmpeg and ffprobe: convert, compress, trim, loudness, subtitles,    |
+  |         QC, GPU encodes, and effects.                                        |
+  '------------------------------------------------------------------------------'
+
+
 ================================================================================
   STEP 3 - run it   (every path ends the same way)
 ================================================================================
@@ -860,7 +887,7 @@
    +-- Writing & Content ..... /forge-writing
    |    +-- tech-blog-article  tutorial-builder  draft-contract  name-domains
    |    +-- language-tutor  github-bio  book-summary  claudepuppy  seo-duel
-   |    +-- human
+   |    +-- human  choose-your-adventure
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect
@@ -889,8 +916,11 @@
    |    +-- prompt-audit  readme-forge
    |
    +-- Utilities ............. /forge-utils
-        +-- snippet  session-stats  token-audit  vgademo  fix-formula
-        +-- crash-report
+   |    +-- snippet  session-stats  token-audit  vgademo  fix-formula
+   |    +-- crash-report
+   |
+   +-- Media ................. /forge-media
+        +-- ffmpeg-forge
 
   SHORTCUTS
     Direct hit ...  /forge wp-format ~/themes/mytheme   (skips every menu)

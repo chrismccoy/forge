@@ -579,3 +579,64 @@ Two ways to invoke:
 The full procedure lives at [`lib/human/SKILL.md`](../lib/human/SKILL.md) and the slash command at [`commands/human.md`](../commands/human.md).
 
 ---
+
+## `choose-your-adventure`
+
+Interactive choose-your-own-adventure stories with you as the protagonist. You give it an idea (or say "surprise me"), and it runs the story one scene at a time: second-person scenes, two to four numbered choices, and an ending that resolves the story's central conflict and reflects what you chose.
+
+```
+/choose-your-adventure
+```
+
+Most "interactive stories" from a chat model drift. The choices turn cosmetic, the same scene comes back whatever you picked, the story forgets what you are carrying, and it either never ends or stops on "To Be Continued." This tool gives the model a fixed set of storyteller rules, tested and rewritten over four versions against scripted readers: every option must lead somewhere different, every scene must follow the choice you made, consequences carry forward, and the story ends at the length you asked for. Fatal choices become costly near-misses rather than a game-over, so every story reaches its ending.
+
+The skill body runs the workflow. It loads the storyteller rules, treats anything typed after the command as the setup, and asks four setup questions in one plain message when there is no story idea. From then on every turn is plain chat text: a 150-350 word scene, then the choices, with no headers, tags, or "What do you do?" line. A private check before each set of choices redesigns any two options that would lead to the same next scene.
+
+Content levels are part of the setup. Family-friendly keeps to peril and mystery, Teen allows real danger without gore, and Mature allows graphic violence, strong language, and non-explicit romance. Intimate scenes fade to black at every level.
+
+## Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/choose-your-adventure/SKILL.md` is three steps: load the rules, take the setup, play. Everything else lives in `references/storyteller.md`, which loads on every invocation: the fixed intake message and defaults, the content-level definitions, voice, turn format, story rules, reader-input handling, pacing, and ending rules. The slash command `/choose-your-adventure` takes the setup as arguments (story idea, length, tone, content level, in any mix) and asks only when no story idea is given, in one plain message rather than an `AskUserQuestion` menu. After the reference is read, no tool runs: the story is plain chat text.
+
+## Features
+
+- Four setup questions in one message: STORY_IDEA (or "surprise me"), LENGTH, TONE, CONTENT_LEVEL. Skipped answers use defaults: Medium, a tone that fits the idea, Teen
+- Arguments skip the questions: `/choose-your-adventure A heist on a sky-train. Short. Whimsical.` starts the story at once
+- Second-person, present-tense scenes of 150-350 words, each ending in 2-4 numbered choices and nothing after them
+- A private branching check before every set of choices; options that would lead to the same next scene are redesigned
+- Short (5-7 decisions), Medium (10-12), Long (15-20), or a custom count; threads converge at about 80% of the target and the story never runs more than 20% over
+- Family-friendly, Teen, and Mature content levels; no explicit sexual content at any level
+- Free-text actions (impossible ones fail in-story, at a cost), out-of-story questions answered from established facts only, `go back`, and `restart`
+- Lasting consequences - injuries, losses, burned bridges - and no game-over before the ending
+- Endings that resolve the opening's central conflict, point back to specific earlier choices, add no sequel hooks, and close with "THE END"
+
+## How it works
+
+1. **Load rules.** Read `references/storyteller.md` and follow it for the rest of the session.
+2. **Setup.** Take the story idea, length, tone, and content level from the arguments. With no story idea, send the fixed intake message, then start from the reply without restating the settings.
+3. **Scene and choices.** Write a 150-350 word scene and 2-4 choices that each lead to a different next situation. Continue from whatever the reader picks or types.
+4. **Pacing.** Count earlier choice lists to track decisions (the intake does not count). Converge the major threads at about 80% of the target, and end at the target or within 20% beyond it.
+5. **Ending.** Resolve the central conflict, reflect the reader's choices, and close with "THE END" on its own line.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/choose-your-adventure                                          ← four setup questions first
+/choose-your-adventure surprise me. Long. Epic.                 ← invented story, your settings
+/choose-your-adventure A haunted lighthouse                     ← your idea, default length, tone, and level
+/choose-your-adventure A heist aboard a sky-train. Short. Whimsical. Family-friendly.
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"let's play a choose your own adventure"*, *"start an interactive story"*, *"run a text adventure"*, *"tell me a story where I make the choices"*
+
+During the story, reply with a choice number, your own action, an out-of-story question, `go back`, or `restart`. For stories over 20 decisions, start Claude Code with `claude --effort xhigh` first: continuity drops sharply past 20 decisions at default effort.
+
+The full procedure lives at [`lib/choose-your-adventure/SKILL.md`](../lib/choose-your-adventure/SKILL.md) and the slash command at [`commands/choose-your-adventure.md`](../commands/choose-your-adventure.md).
+
+---

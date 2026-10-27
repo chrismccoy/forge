@@ -78,6 +78,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `blueprint-forge` | `/forge-code` |
 | `book-summary` | `/forge-writing` |
 | `changelog-generator` | `/forge-code` |
+| `choose-your-adventure` | `/forge-writing` |
 | `cicd-pipeline` | `/forge-cloud` |
 | `claudepuppy` | `/forge-writing` |
 | `cloud-migration` | `/forge-cloud` |
@@ -96,6 +97,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `explain-prompt` | `/forge-docs` |
 | `explain-regex` | `/forge-code` |
 | `explain-sql` | `/forge-code` |
+| `ffmpeg-forge` | `/forge-media` |
 | `finops` | `/forge-cloud` |
 | `fix-formula` | `/forge-utils` |
 | `fullstack-readme` | `/forge-code` |
