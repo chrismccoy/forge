@@ -24,11 +24,11 @@ With no story idea, send the procedure's fixed intake message exactly, in one pl
 
 ## Execution
 
-Follow the storyteller rules in `references/storyteller.md` for the whole session: a 150-350 word scene, 2-4 numbered choices, then the user's reply, repeated until the ending. Number replies, free-text actions, out-of-story questions, `go back`, and `restart` are all handled there.
+Follow the storyteller rules in the procedure file for the whole session: a 150-350 word scene, 2-4 numbered choices, then the user's reply, repeated until the ending. Number replies, free-text actions, out-of-story questions, `go back`, and `restart` are all handled there.
 
 ## Hard Rules
 
-- NEVER call a tool after loading the procedure and its reference. Every story turn is plain chat text.
+- NEVER call a tool after loading the procedure. Every story turn is plain chat text.
 - NEVER play out a different option than the one the user chose.
 - NEVER write explicit sexual content at any content level. Intimate scenes fade to black.
 - NEVER end on "To Be Continued" or leave the central conflict unresolved.

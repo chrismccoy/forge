@@ -596,7 +596,7 @@ Content levels are part of the setup. Family-friendly keeps to peril and mystery
 
 ## Technical Overview
 
-One slash command plus its procedure file. The procedure file `lib/choose-your-adventure/SKILL.md` is three steps: load the rules, take the setup, play. Everything else lives in `references/storyteller.md`, which loads on every invocation: the fixed intake message and defaults, the content-level definitions, voice, turn format, story rules, reader-input handling, pacing, and ending rules. The slash command `/choose-your-adventure` takes the setup as arguments (story idea, length, tone, content level, in any mix) and asks only when no story idea is given, in one plain message rather than an `AskUserQuestion` menu. After the reference is read, no tool runs: the story is plain chat text.
+One slash command plus its procedure file. The procedure file `lib/choose-your-adventure/SKILL.md` is a single file: three steps (follow the rules, take the setup, play), then the storyteller rules themselves: the fixed intake message and defaults, the content-level definitions, voice, turn format, story rules, reader-input handling, pacing, and ending rules. The slash command `/choose-your-adventure` takes the setup as arguments (story idea, length, tone, content level, in any mix) and asks only when no story idea is given, in one plain message rather than an `AskUserQuestion` menu. After the procedure file is read, no tool runs: the story is plain chat text.
 
 ## Features
 
@@ -604,7 +604,7 @@ One slash command plus its procedure file. The procedure file `lib/choose-your-a
 - Arguments skip the questions: `/choose-your-adventure A heist on a sky-train. Short. Whimsical.` starts the story at once
 - Second-person, present-tense scenes of 150-350 words, each ending in 2-4 numbered choices and nothing after them
 - A private branching check before every set of choices; options that would lead to the same next scene are redesigned
-- Short (5-7 decisions), Medium (10-12), Long (15-20), or a custom count; threads converge at about 80% of the target and the story never runs more than 20% over
+- Short (5-7 decisions), Medium (10-12), Long (15-20), or a custom count; threads converge at about 80% of the target and the story never runs more than 20% over; targets above 20 decisions get a one-line tip, above the opening scene, to use a higher-effort session
 - Family-friendly, Teen, and Mature content levels; no explicit sexual content at any level
 - Free-text actions (impossible ones fail in-story, at a cost), out-of-story questions answered from established facts only, `go back`, and `restart`
 - Lasting consequences - injuries, losses, burned bridges - and no game-over before the ending
@@ -612,10 +612,10 @@ One slash command plus its procedure file. The procedure file `lib/choose-your-a
 
 ## How it works
 
-1. **Load rules.** Read `references/storyteller.md` and follow it for the rest of the session.
+1. **Load rules.** Read the procedure file, which holds every rule, and follow it for the rest of the session.
 2. **Setup.** Take the story idea, length, tone, and content level from the arguments. With no story idea, send the fixed intake message, then start from the reply without restating the settings.
 3. **Scene and choices.** Write a 150-350 word scene and 2-4 choices that each lead to a different next situation. Continue from whatever the reader picks or types.
-4. **Pacing.** Count earlier choice lists to track decisions (the intake does not count). Converge the major threads at about 80% of the target, and end at the target or within 20% beyond it.
+4. **Pacing.** Count the scenes on the current path to track decisions. The count skips the intake, repeated choice lists, and branches abandoned with `go back`. Converge the major threads at about 80% of the target, and end at the target or within 20% beyond it.
 5. **Ending.** Resolve the central conflict, reflect the reader's choices, and close with "THE END" on its own line.
 
 ## How to use it
