@@ -1,6 +1,6 @@
 # OpenCL Filters
 
-OpenCL provides GPU acceleration that works across vendors (NVIDIA, AMD, Intel).
+OpenCL GPU filters, which work across vendors (NVIDIA, AMD, Intel): device setup, compositing, keying, denoising, stabilization, sharpening, tonemapping, blur and convolution. OpenCL has no encoders; pair these filters with a CPU or vendor encoder.
 
 ## OpenCL Filter Reference
 
@@ -47,13 +47,14 @@ ffmpeg -init_hw_device opencl=gpu -filter_hw_device gpu \
 
 ## Chroma Keying (colorkey_opencl)
 
+`colorkey_opencl` works on RGB and writes the key into the alpha channel. `overlay_opencl` does not blend that alpha when main and overlay have the same layout (both `rgba` selects its no-alpha kernel, so the foreground simply covers the background). Download the keyed foreground and composite on the CPU:
+
 ```bash
 ffmpeg -init_hw_device opencl=gpu -filter_hw_device gpu \
   -i greenscreen.mp4 -i background.mp4 \
   -filter_complex "\
-    [0:v]format=rgba,hwupload,colorkey_opencl=0x00FF00:0.3:0.1[fg];\
-    [1:v]format=rgba,hwupload[bg];\
-    [bg][fg]overlay_opencl,hwdownload,format=rgba,format=yuv420p[out]" \
+    [0:v]format=rgba,hwupload,colorkey_opencl=0x00FF00:0.3:0.1,hwdownload,format=rgba[fg];\
+    [1:v][fg]overlay=format=auto,format=yuv420p[out]" \
   -map "[out]" output.mp4
 ```
 

@@ -1,28 +1,26 @@
-# Vulkan Video and Vulkan Filters (FFmpeg 7.1+/8.0)
+# Vulkan Video and Vulkan Filters
 
-Cross-platform GPU acceleration via Vulkan (AMD, Intel, NVIDIA). Two different mechanisms are involved:
+Vulkan encode/decode pipelines and the `*_vulkan` / `libplacebo` filters. Compute codecs (FFv1, ProRes RAW), the per-version feature table, device selection and troubleshooting are in [`fundamentals-vulkan-compute-codecs.md`](fundamentals-vulkan-compute-codecs.md).
+
+## Contents
+
+- [Mechanisms](#mechanisms)
+- [Basic Vulkan Encoding](#basic-vulkan-encoding) and [Full Vulkan Pipeline](#full-vulkan-pipeline)
+- [Vulkan Filters Reference](#vulkan-filters-reference)
+- [Scaling](#vulkan-scaling), [Compositing](#vulkan-compositing), [Rotation and Flip](#rotation-and-flip), [Blur](#blur-effects), [Chromatic Aberration](#chromatic-aberration)
+- [Denoising](#vulkan-denoising-nlmeans_vulkan), [Deinterlacing](#vulkan-deinterlacing-bwdif_vulkan), [Transitions](#vulkan-transitions-xfade_vulkan)
+- [Libplacebo Processing](#libplacebo-processing-advanced)
+
+## Mechanisms
+
+Cross-platform GPU acceleration via Vulkan (AMD, Intel, NVIDIA) uses two different mechanisms:
 
 - **Vulkan Video (fixed-function)**: H.264/HEVC/AV1 encode and H.264/HEVC/AV1/VP9 decode drive the GPU's hardware video engine through the `VK_KHR_video_queue`, `VK_KHR_video_encode_queue` / `VK_KHR_video_decode_queue` and per-codec extensions. A Vulkan 1.3 driver is not enough: the driver and GPU must expose these extensions, otherwise the encoder fails with `Device does not support the VK_KHR_video_encode_queue extension!`.
 - **Vulkan compute**: FFv1 encode/decode, ProRes RAW decode (8.0+) and all `*_vulkan` filters run as compute shaders and work on any Vulkan 1.3 compute-capable device.
 
-Check what your device exposes with `vulkaninfo | grep VK_KHR_video`.
+To list the video extensions a device exposes, run `vulkaninfo | grep VK_KHR_video`.
 
-## Vulkan Codecs Overview
-
-### FFmpeg 7.1 Vulkan Features
-- H.264 Vulkan encoding
-- H.265/HEVC Vulkan encoding
-
-### FFmpeg 8.0 Vulkan Features (New)
-- **AV1 Vulkan encoding** - fixed-function AV1 encode via `VK_KHR_video_encode_av1`
-- **VP9 Vulkan decoding** - fixed-function VP9 decode via `VK_KHR_video_decode_vp9`
-- **FFv1 Vulkan encode/decode** - lossless codec, compute shaders (archival/capture)
-- **ProRes RAW Vulkan decode** - Apple ProRes RAW, compute shaders
-
-**Benefits:**
-- Cross-platform: same command line on AMD/Intel/NVIDIA (given driver support for the needed extensions)
-- No vendor lock-in
-- Ideal for lossless screen capture, high-throughput archival, professional workflows
+Version support (6.1 decode, 7.1 H.264/HEVC encode, 8.0 AV1 encode, VP9 decode, FFv1 and ProRes RAW) is tabulated in [`fundamentals-vulkan-compute-codecs.md`](fundamentals-vulkan-compute-codecs.md#codec-support-by-version).
 
 ## Basic Vulkan Encoding
 
@@ -40,13 +38,9 @@ ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk -i input.mp4 \
 # AV1 Vulkan (FFmpeg 8.0+)
 ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk -i input.mp4 \
   -vf format=nv12,hwupload -c:v av1_vulkan -b:v 3M output.mp4
-
-# FFv1 Vulkan Lossless (FFmpeg 8.0+, experimental)
-# 4:2:0 input needs FFv1 version 4 (-level 4), which needs -strict experimental;
-# without it: "Encoding frames with subsampling and unaligned dimensions is only supported in version 4"
-ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk -i input.mp4 \
-  -vf format=yuv420p,hwupload -c:v ffv1_vulkan -level 4 -strict experimental output.mkv
 ```
+
+FFv1 Vulkan (lossless, compute shaders, 8.0+) is covered in [`fundamentals-vulkan-compute-codecs.md`](fundamentals-vulkan-compute-codecs.md#ffv1-vulkan-codec).
 
 ## Full Vulkan Pipeline
 
@@ -59,35 +53,16 @@ ffmpeg -init_hw_device vulkan=vk \
   -c:v h264_vulkan output.mp4
 ```
 
-## VP9 / ProRes RAW Vulkan Decoding (FFmpeg 8.0+)
+## Hardware Decode to Vulkan Encode
 
 ```bash
-# VP9 decode (needs VK_KHR_video_decode_vp9) -> H.264 Vulkan encode, frames stay on GPU
+# Any codec the driver decodes (H.264/HEVC/AV1; VP9 needs VK_KHR_video_decode_vp9, 8.0+)
+# -> H.264 Vulkan encode, frames stay on the GPU
 ffmpeg -hwaccel vulkan -hwaccel_output_format vulkan \
   -i input.webm -c:v h264_vulkan output.mp4
-
-# ProRes RAW decode (compute shaders) -> CPU encode
-ffmpeg -hwaccel vulkan \
-  -i input.mov -c:v libx264 output.mp4
 ```
 
-## Lossless Screen Capture with FFv1 Vulkan
-
-```bash
-# Linux X11 (yuv444p keeps full chroma; check the result decodes cleanly, see note below)
-ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk \
-  -f x11grab -framerate 60 -i :0.0 \
-  -vf format=yuv444p,hwupload -c:v ffv1_vulkan -level 4 -strict experimental screen_capture.mkv
-
-# Windows
-ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk \
-  -f gdigrab -framerate 60 -i desktop \
-  -vf format=yuv444p,hwupload -c:v ffv1_vulkan -level 4 -strict experimental screen_capture.mkv
-```
-
-FFv1 Vulkan is still experimental. On FFmpeg 8.0.1 with an Intel iGPU, yuv420p/yuv444p output decoded bit-exact with the software `ffv1` decoder, while RGB (`bgr0`) input produced files the software decoder flagged with `bytestream end mismatching`. Verify archival output with `ffmpeg -i out.mkv -f framemd5 -` against the source before relying on it.
-
-More Vulkan compute codecs (ProRes, VC-2) were announced as following 8.0; check `ffmpeg -encoders | grep vulkan` and `ffmpeg -hwaccels` on newer builds (Vulkan decode is a hwaccel, so `ffmpeg -decoders` never lists it).
+If the driver cannot decode the stream, FFmpeg prints `Failed setup for format vulkan` and silently decodes in software (exit code 0); the `h264_vulkan` encoder then fails because it gets software frames. ProRes RAW decode and FFv1 are in [`fundamentals-vulkan-compute-codecs.md`](fundamentals-vulkan-compute-codecs.md).
 
 ---
 
@@ -103,7 +78,7 @@ More Vulkan compute codecs (ProRes, VC-2) were announced as following 8.0; check
 | `avgblur_vulkan` | Box blur | `sizeX`, `sizeY` | 4.3 |
 | `gblur_vulkan` | Gaussian blur | `sigma`, `sigmaV`, `planes` | 5.0 |
 | `chromaber_vulkan` | Chromatic aberration | `dist_x`, `dist_y` | 4.3 |
-| `nlmeans_vulkan` | NLMeans denoising | `s`, `p`, `r` | 6.1 |
+| `nlmeans_vulkan` | NLMeans denoising | `s`, `p`, `r` (radius) | 6.1 |
 | `bwdif_vulkan` | Deinterlacing | `mode`, `parity`, `deint` | 6.1 |
 | `xfade_vulkan` | Transitions | `transition`, `duration`, `offset` | 6.1 |
 | `libplacebo` | Libplacebo processing | `w`, `h`, `format`, `colorspace`, `tonemapping`, `upscaler` | 5.0 |
@@ -143,7 +118,7 @@ ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk \
   -map "[out]" output.mp4
 
 # Full Vulkan overlay pipeline
-# overlay_vulkan x/y are integers, not expressions: compute W-w-10 yourself
+# overlay_vulkan x/y are integers, not expressions: compute W-w-10 by hand
 # (here 1920x1080 main, 320x180 overlay -> x=1590)
 ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk \
   -hwaccel vulkan -hwaccel_output_format vulkan -i main.mp4 \
@@ -195,9 +170,11 @@ ffmpeg -init_hw_device vulkan -i input.mp4 \
 ## Vulkan Denoising (nlmeans_vulkan)
 
 ```bash
-# Basic
+# Basic. r is a RADIUS here (window = 2r+1 pixels), unlike CPU nlmeans where
+# r is the window size: r=7 matches CPU nlmeans r=15 (15x15). The default r=15
+# searches 31x31 and ran about 4x slower in a test (8.3 s vs 2.1 s, 320x180, 3 s)
 ffmpeg -init_hw_device vulkan -i noisy.mp4 \
-  -vf "hwupload,nlmeans_vulkan=s=3:p=7:r=15,hwdownload,format=yuv420p" output.mp4
+  -vf "hwupload,nlmeans_vulkan=s=3:p=7:r=7,hwdownload,format=yuv420p" output.mp4
 
 # Full pipeline
 ffmpeg -init_hw_device vulkan=vk -filter_hw_device vk \

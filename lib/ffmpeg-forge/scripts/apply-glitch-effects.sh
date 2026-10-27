@@ -1,10 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # FFmpeg Glitch Effects Utility
 # Apply various glitch/distortion effects to video
 # Usage: ./apply-glitch-effects.sh <effect> <input> <output> [intensity]
 #
 # Effects: datamosh, vhs, chromatic, trails, wave, pixelate, combined
 # Intensity: 1-10 (default: 5)
+
+# shellcheck source=lib/filter-escape.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib/filter-escape.sh" || exit 1
+require_bash_43
 
 set -e
 
@@ -21,27 +25,21 @@ if ! [[ "$INTENSITY" =~ ^[0-9]+$ ]] || (( 10#$INTENSITY < 1 || 10#$INTENSITY > 1
 fi
 INTENSITY=$((10#$INTENSITY))
 
-# A relative path like "clip:1.mp4" would be read by ffmpeg as a protocol
-# ("clip:"), so give such paths a ./ prefix
-safe_path() {
-    case "$1" in
-        /*|./*|../*) printf '%s' "$1" ;;
-        *) printf './%s' "$1" ;;
-    esac
-}
-
 # bc prints values below 1 without the leading zero (".86"); add it back
 calc() {
     echo "scale=2; $1" | bc | sed 's/^\(-\{0,1\}\)\./\10./'
 }
 
 # libx264 with yuv420p needs even dimensions; appended to every chain
-# (crop drops the odd last row/column instead of resampling the image)
-EVEN_DIMS="crop=trunc(iw/2)*2:trunc(ih/2)*2"
+# (crop drops the odd last row/column instead of resampling the image).
+# out_range=tv: full-range JPEG-style input (yuvj420p) would otherwise stay
+# full range, which many players show with crushed blacks
+EVEN_DIMS="crop=trunc(iw/2)*2:trunc(ih/2)*2,scale=out_range=tv"
 
 # Validate arguments shared by every effect/preset
 check_io() {
     [[ -z "$INPUT" || -z "$OUTPUT" ]] && { show_help; exit 1; }
+    require_tools ffmpeg ffprobe
     if [[ ! -f "$INPUT" ]]; then
         echo "Error: Input file not found: $INPUT"
         exit 1
@@ -51,16 +49,37 @@ check_io() {
         echo "Error: Output already exists: $OUTPUT"
         exit 1
     fi
-    # Cover art (attached_pic) is reported as a video stream but is not one
-    if ! ffprobe -v error -select_streams v -show_entries stream_disposition=attached_pic \
-            -of default=nw=1:nk=1 "$(safe_path "$INPUT")" | grep -qx 0; then
+    # The output is libx264 + copied audio; WebM and friends cannot hold it
+    local ext="${OUTPUT##*.}"
+    case "${ext,,}" in
+        mp4|m4v|mov|mkv|avi|ts) ;;
+        *)
+            echo "Error: Output must end in .mp4, .m4v, .mov, .mkv, .avi or .ts (H.264 video): $OUTPUT"
+            exit 1
+            ;;
+    esac
+    INPUT=$(safe_path "$INPUT")
+    OUTPUT=$(safe_path "$OUTPUT")
+    # First real video stream; cover art (attached_pic) is reported as video but is not.
+    # Mapped explicitly, so probes, filters and output all use the same stream.
+    VIDX=$(first_video_index "$INPUT")
+    if [[ -z "$VIDX" ]]; then
         echo "Error: No video stream found in: $INPUT"
         exit 1
     fi
-    INPUT=$(safe_path "$INPUT")
-    OUTPUT=$(safe_path "$OUTPUT")
+    MAP_ARGS=(-map "0:${VIDX}" -map "0:a:0?")
+    # Interlaced sources are deinterlaced first: the filters below work on whole
+    # frames, and the output is progressive
+    PRE_VF=""
+    local field_order
+    field_order=$(interlaced_field_order "$INPUT" "$VIDX")
+    if [[ -n "$field_order" ]]; then
+        PRE_VF="bwdif=mode=send_frame,"
+        echo "Interlaced source (field order $field_order): deinterlacing with bwdif"
+    fi
     # The output did not exist before, so remove a partial file if ffmpeg fails;
     # otherwise the leftover would make every retry stop at the check above
+    # shellcheck disable=SC2154  # rc is assigned inside the trap string
     trap 'rc=$?; (( rc != 0 )) && rm -f -- "$OUTPUT"; exit $rc' EXIT
 }
 
@@ -86,13 +105,13 @@ show_help() {
     echo "  $0 chromatic clip.mp4 glitch.mp4 3"
 }
 
-# One stream entry of the first video stream: probe_v0 <entry> [ffprobe options]
-# default=nw=1:nk=1, not csv: csv adds a trailing comma when the stream has
+# One stream entry of the processed video stream ($VIDX, set by check_io):
+# probe_v0 <entry> [ffprobe options]. default=nw=1:nk=1, not csv: csv adds a trailing comma when the stream has
 # side data (e.g. the display matrix of a rotated phone video).
 # head -n1: MPEG-TS/M2TS print each stream twice (again under its program)
 probe_v0() {
     local entry="$1"; shift
-    ffprobe -v error "$@" -select_streams v:0 -show_entries "stream=$entry" \
+    ffprobe -v error "$@" -select_streams "$VIDX" -show_entries "stream=$entry" \
         -of default=nw=1:nk=1 "$INPUT" | head -n1
 }
 
@@ -139,21 +158,26 @@ source_frames() {
 # fps drops the tail and minterpolate stops at the second-to-last kept frame, so
 # tpad clones the last frame for 2x$1 frames first; trim cuts back to the source
 # frame count (no trim if it is unknown).
+# The interpolated picture runs (keep-1)/2 frames ahead of the source (measured:
+# keep 3 -> 1 frame, keep 6 -> 2 frames), so a start tpad delays it back in sync
+# with the copied audio.
 mosh_chain() {
-    local src num den frames trim=""
+    local src num den frames trim="" lead sync=""
     src=$(source_fps)
     num=${src%/*}; den=${src#*/}
     frames=$(source_frames)
     [[ "$frames" =~ ^[0-9]+$ ]] && (( frames > 0 )) && trim=",trim=end_frame=${frames}"
-    echo "tpad=stop_mode=clone:stop=$((2 * $1)),fps=${num}/$((den * $1)),minterpolate='fps=${src}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1:scd=none'${trim}"
+    lead=$(( ($1 - 1) / 2 ))
+    (( lead > 0 )) && sync=",tpad=start_mode=clone:start=${lead}"
+    echo "tpad=stop_mode=clone:stop=$((2 * $1)),fps=${num}/$((den * $1)),minterpolate='fps=${src}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1:scd=none'${sync}${trim}"
 }
 
 apply_datamosh() {
     # Higher intensity drops more frames, so more of the output is interpolated
     local keep_every=$(( (INTENSITY + 1) / 2 + 1 ))
     echo "Applying datamosh effect (intensity: $INTENSITY, 1 of every $keep_every frames kept)..."
-    ffmpeg -i "$INPUT" \
-        -vf "$(mosh_chain "$keep_every"),${EVEN_DIMS}" \
+    ffmpeg -nostdin -i "$INPUT" "${MAP_ARGS[@]}" \
+        -vf "${PRE_VF}$(mosh_chain "$keep_every"),${EVEN_DIMS}" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -c:a copy "$OUTPUT"
 }
@@ -162,8 +186,8 @@ apply_vhs() {
     local noise_strength=$((INTENSITY * 3))
     local chroma_shift=$((INTENSITY / 2 + 1))
     echo "Applying VHS effect (intensity: $INTENSITY)..."
-    ffmpeg -i "$INPUT" \
-        -vf "noise=c0s=${noise_strength}:c0f=t:c1s=$((noise_strength/2)):c1f=t,\
+    ffmpeg -nostdin -i "$INPUT" "${MAP_ARGS[@]}" \
+        -vf "${PRE_VF}noise=c0s=${noise_strength}:c0f=t:c1s=$((noise_strength/2)):c1f=t,\
 eq=saturation=1.3:contrast=1.1:brightness=-0.02,\
 chromashift=cbh=${chroma_shift}:crh=-${chroma_shift},\
 rgbashift=rh=$((chroma_shift/2)):bh=-$((chroma_shift/2)),\
@@ -175,17 +199,18 @@ curves=preset=vintage,${EVEN_DIMS}" \
 apply_chromatic() {
     local shift=$((INTENSITY + 2))
     echo "Applying chromatic aberration (intensity: $INTENSITY)..."
-    ffmpeg -i "$INPUT" \
-        -vf "rgbashift=rh=-${shift}:bh=${shift}:rv=$((shift/2)):bv=-$((shift/2)),${EVEN_DIMS}" \
+    ffmpeg -nostdin -i "$INPUT" "${MAP_ARGS[@]}" \
+        -vf "${PRE_VF}rgbashift=rh=-${shift}:bh=${shift}:rv=$((shift/2)):bv=-$((shift/2)),${EVEN_DIMS}" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -c:a copy "$OUTPUT"
 }
 
 apply_trails() {
-    local decay=$(calc "0.85 + ($INTENSITY * 0.012)")
+    require_bc
+    local decay; decay=$(calc "0.85 + ($INTENSITY * 0.012)")
     echo "Applying motion trails (intensity: $INTENSITY, decay: $decay)..."
-    ffmpeg -i "$INPUT" \
-        -vf "lagfun=decay=${decay},${EVEN_DIMS}" \
+    ffmpeg -nostdin -i "$INPUT" "${MAP_ARGS[@]}" \
+        -vf "${PRE_VF}lagfun=decay=${decay},${EVEN_DIMS}" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -c:a copy "$OUTPUT"
 }
@@ -194,21 +219,31 @@ apply_wave() {
     local amplitude=$((INTENSITY * 2 + 5))
     local frequency=$((20 - INTENSITY))
     echo "Applying wave distortion (intensity: $INTENSITY)..."
-    ffmpeg -i "$INPUT" \
-        -vf "format=gbrp,geq=r='r(X+${amplitude}*sin(Y/${frequency}+T*5),Y)':g='g(X+${amplitude}*sin(Y/${frequency}+T*5),Y)':b='b(X+${amplitude}*sin(Y/${frequency}+T*5),Y)',format=yuv420p,${EVEN_DIMS}" \
+    # displace moves each pixel by (map - 128): the x map holds the sine offset,
+    # the y map is flat 128 (no vertical move). One gray geq per frame instead of
+    # a geq per RGB channel, so about 3x faster with the same look.
+    # displace works per plane: all three inputs go to gbrp (gray -> R=G=B), so
+    # colour moves with luma. On yuv420p the maps' chroma would be a flat 128.
+    ffmpeg -nostdin -i "$INPUT" \
+        -filter_complex "[0:${VIDX}]${PRE_VF}split=3[s0][xs][ys];\
+[s0]format=gbrp[src];\
+[xs]format=gray,geq=lum='128+${amplitude}*sin(Y/${frequency}+T*5)',format=gbrp[xmap];\
+[ys]format=gbrp,lutrgb=r=128:g=128:b=128[ymap];\
+[src][xmap][ymap]displace=edge=smear,${EVEN_DIMS}[v]" \
+        -map "[v]" -map "0:a:0?" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -c:a copy "$OUTPUT"
 }
 
 apply_pixelate() {
-    local scale_factor=$((12 - INTENSITY))
-    [[ "$scale_factor" -lt 2 ]] && scale_factor=2
+    # Higher intensity = bigger blocks: 1 -> 1/2 size, 10 -> 1/11
+    local scale_factor=$((INTENSITY + 1))
     echo "Applying pixelation (intensity: $INTENSITY, scale: 1/${scale_factor})..."
     # Scale back to the size of the frames as decoded (scale's second input is
     # the size reference, FFmpeg 7.1+), not the probed stream size: a rotated
     # phone video is autorotated, so its frames are e.g. 360x640, not 640x360
-    ffmpeg -i "$INPUT" \
-        -vf "split[src][ref];[src]scale=iw/${scale_factor}:ih/${scale_factor}:flags=neighbor[small];\
+    ffmpeg -nostdin -i "$INPUT" "${MAP_ARGS[@]}" \
+        -vf "${PRE_VF}split[src][ref];[src]scale=iw/${scale_factor}:ih/${scale_factor}:flags=neighbor[small];\
 [small][ref]scale=rw:rh:flags=neighbor,${EVEN_DIMS}" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -c:a copy "$OUTPUT"
@@ -220,13 +255,13 @@ apply_combined() {
     echo "Applying combined glitch effect (intensity: $INTENSITY)..."
     # minterpolate has no timeline support, so it runs on a split branch
     # that is overlaid only during the glitch bursts
-    ffmpeg -i "$INPUT" \
-        -filter_complex "[0:v]split[base][mosh];\
+    ffmpeg -nostdin -i "$INPUT" \
+        -filter_complex "[0:${VIDX}]${PRE_VF}split[base][mosh];\
 [mosh]$(mosh_chain 3)[m];\
 [base][m]overlay=enable='lt(mod(t,3),0.2)',\
 rgbashift=rh=${shift}:bh=-${shift}:enable='lt(mod(t,1),0.15)',\
 noise=c0s=${noise_strength}:c0f=t:enable='lt(mod(t,2),0.1)',${EVEN_DIMS}[v]" \
-        -map "[v]" -map 0:a? \
+        -map "[v]" -map "0:a:0?" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -c:a copy "$OUTPUT"
 }

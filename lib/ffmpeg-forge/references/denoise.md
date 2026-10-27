@@ -1,3 +1,17 @@
+# FFmpeg Noise Reduction
+
+Comprehensive guide to video and audio denoising filters.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Video Denoising](#video-denoising)
+- [Audio Denoising](#audio-denoising)
+- [Combined Workflows](#combined-workflows)
+- [Filter Comparison](#filter-comparison)
+- [Parameter Tuning Tips](#parameter-tuning-tips)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Task | Filter | Command Pattern |
@@ -9,10 +23,6 @@
 | Adaptive temporal | `atadenoise` | `-vf atadenoise` |
 
 ---
-
-# FFmpeg Noise Reduction
-
-Comprehensive guide to video and audio denoising filters.
 
 ## Video Denoising
 
@@ -52,10 +62,10 @@ ffmpeg -i noisy.mp4 -vf "nlmeans=s=3.0:p=7:pc=5:r=15:rc=9" output.mp4
 | Parameter | Description | Default | Range |
 |-----------|-------------|---------|-------|
 | `s` | Denoising strength (sigma) | 1.0 | 1-30 |
-| `p` | Patch size | 7 | 1-99 (odd) |
-| `pc` | Patch size for chroma | 0 (same as p) | 1-99 |
-| `r` | Research window size | 15 | 1-99 (odd) |
-| `rc` | Research window for chroma | 0 (same as r) | 1-99 |
+| `p` | Patch size (use odd values) | 7 | 0-99 |
+| `pc` | Patch size for chroma | 0 (same as p) | 0-99 |
+| `r` | Research window size (use odd values) | 15 | 0-99 |
+| `rc` | Research window for chroma | 0 (same as r) | 0-99 |
 
 **Strength guidelines:**
 | s value | Use case |
@@ -83,13 +93,16 @@ ffmpeg -init_hw_device opencl=ocl -filter_hw_device ocl -i noisy.mp4 \
 
 ### nlmeans_vulkan - Vulkan-Accelerated NLMeans (FFmpeg 6.1+)
 
-Cross-platform GPU acceleration using Vulkan.
+Cross-platform GPU acceleration using Vulkan. Unlike CPU `nlmeans`, its `r` is a
+research *radius* (the window is 2r+1), so `r=15` searches a 31x31 window and is
+much slower than CPU `r=15`. Start with `r=7` to match CPU `nlmeans` r=15.
+It also has per-plane strengths `s1`-`s4` and patch sizes `p1`-`p4`.
 
 ```bash
 # Vulkan denoising
 ffmpeg -init_hw_device vulkan \
   -i noisy.mp4 \
-  -vf "hwupload,nlmeans_vulkan=s=3:p=7:r=15,hwdownload,format=yuv420p" \
+  -vf "hwupload,nlmeans_vulkan=s=3:p=7:r=7,hwdownload,format=yuv420p" \
   output.mp4
 
 # Full Vulkan pipeline
@@ -97,7 +110,7 @@ ffmpeg -init_hw_device vulkan=vk \
   -filter_hw_device vk \
   -hwaccel vulkan -hwaccel_output_format vulkan \
   -i noisy.mp4 \
-  -vf "nlmeans_vulkan=s=3" \
+  -vf "nlmeans_vulkan=s=3:r=7" \
   -c:v h264_vulkan output.mp4
 ```
 
@@ -125,10 +138,12 @@ ffmpeg -i noisy.mp4 -vf "hqdn3d=2:1.5:3:2" output.mp4
 **Parameters:**
 | Parameter | Description | Default | Range |
 |-----------|-------------|---------|-------|
-| `luma_spatial` | Luma spatial strength | 4.0 | 0-255 |
-| `chroma_spatial` | Chroma spatial strength | 3.0 | 0-255 |
-| `luma_tmp` | Luma temporal strength | 6.0 | 0-255 |
-| `chroma_tmp` | Chroma temporal strength | 4.5 | 0-255 |
+| `luma_spatial` | Luma spatial strength | 4.0 | 0 and up (no upper limit) |
+| `chroma_spatial` | Chroma spatial strength | 3.0 (derived from luma_spatial) | 0 and up |
+| `luma_tmp` | Luma temporal strength | 6.0 (derived from luma_spatial) | 0 and up |
+| `chroma_tmp` | Chroma temporal strength | 4.5 (derived) | 0 and up |
+
+`ffmpeg -h filter=hqdn3d` shows every default as 0: a value of 0 means "derive it" (4 for luma_spatial, the others scaled from it), so 0 never turns a plane off.
 
 ### atadenoise - Adaptive Temporal Averaging
 
@@ -278,10 +293,11 @@ ffmpeg -i noisy_audio.mp4 -af "anlmdn=s=0.001:p=0.01" output.mp4
 **Parameters:**
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `s` | Denoising strength | 0.00001 |
-| `p` | Patch radius | 0.002 |
-| `r` | Research radius | 0.006 |
-| `m` | Output mode | o (output) |
+| `s` | Denoising strength (0.00001-10000) | 0.00001 |
+| `p` | Patch duration (seconds) | 0.002 |
+| `r` | Research duration (seconds) | 0.006 |
+| `o` | Output mode: `i` input, `o` output, `n` noise | o |
+| `m` | Smooth factor (1-1000) | 11 |
 
 ### adeclick - Remove Clicks/Pops
 
@@ -366,7 +382,7 @@ for video in noisy_*.mp4; do
   output="clean_${video}"
   ffmpeg -init_hw_device vulkan \
     -i "$video" \
-    -vf "hwupload,nlmeans_vulkan=s=3,hwdownload,format=yuv420p" \
+    -vf "hwupload,nlmeans_vulkan=s=3:r=7,hwdownload,format=yuv420p" \
     -c:v libx264 -crf 18 \
     "$output"
 done

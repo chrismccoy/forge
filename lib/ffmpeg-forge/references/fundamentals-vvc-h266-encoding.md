@@ -1,14 +1,18 @@
 # VVC/H.266 Encoding with FFmpeg
 
+Encoding VVC with libvvenc (quality settings, presets, containers, screen content), hardware VVC decoding, and how VVC compares with HEVC.
+
 Versatile Video Coding (VVC/H.266) is the latest video coding standard, offering 25-50% better compression than HEVC at similar quality.
 
 ## FFmpeg VVC Support Timeline
 
 - **FFmpeg 7.0**: Native VVC decoder added (experimental)
 - **FFmpeg 7.1 LTS**: Production-ready VVC decoder, QSV hardware decoding
-- **FFmpeg 8.0**: VA-API hardware decoding, stable native decoder
+- **FFmpeg 8.0**: VA-API hardware decoding; native decoder handles Screen Content Coding (SCC) streams
 
 ## Encoding with libvvenc
+
+libvvenc must be enabled at build time (`ffmpeg -hide_banner -encoders | grep vvenc`). Its own options include `-preset` (faster, fast, medium, slow, slower) and `-qp` (default 32); other vvenc settings go through `-vvenc-params key=value:...`. Confirm with `ffmpeg -h encoder=libvvenc`. The encoder works in 10-bit, so 8-bit input is converted and the output is Main 10.
 
 ```bash
 # Basic VVC encoding
@@ -19,23 +23,22 @@ ffmpeg -i input.mp4 \
 
 # High quality encoding
 ffmpeg -i input.mp4 \
-  -c:v libvvenc -qp 24 \
-  -vvenc-params "preset=medium" \
+  -c:v libvvenc -preset medium -qp 24 \
   -c:a aac -b:a 192k \
   output_hq.mp4
 
-# 4K encoding with tiling (parallel processing)
+# 4K encoding with tiling (parallel processing; the tiles key is passed to
+# vvenc unchanged, check its name against the installed vvenc version)
 ffmpeg -i input_4k.mp4 \
-  -c:v libvvenc -qp 28 \
-  -vvenc-params "preset=fast:tiles=4x4:threads=16" \
+  -c:v libvvenc -preset fast -qp 28 -threads 16 \
+  -vvenc-params "tiles=4x4" \
   -c:a copy \
   output_4k_vvc.mp4
 
-# Specify exact bitrate
+# Target an average bitrate (vvenc rate control is variable bitrate, not CBR)
 ffmpeg -i input.mp4 \
-  -c:v libvvenc -b:v 5M \
-  -vvenc-params "preset=medium" \
-  output_cbr.mp4
+  -c:v libvvenc -preset medium -b:v 5M \
+  output_abr.mp4
 ```
 
 ## Quality Parameters
@@ -81,14 +84,17 @@ ffmpeg -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 \
 ### Intel QSV (FFmpeg 7.1+)
 
 ```bash
-# VVC hardware decoding with QSV
-ffmpeg -hwaccel qsv \
+# VVC hardware decoding with QSV, encode on the CPU. Selecting the vvc_qsv
+# decoder without -hwaccel returns frames in system memory, which libx264 needs.
+# (Plain "-hwaccel qsv" now defaults to GPU surfaces, with a deprecation warning,
+# and those cannot go straight into a CPU encoder.)
+ffmpeg -c:v vvc_qsv \
   -i input_vvc.mp4 \
   -c:v libx264 -crf 20 \
   output.mp4
 
-# Full QSV pipeline
-ffmpeg -hwaccel qsv \
+# Full QSV pipeline (frames stay on the GPU)
+ffmpeg -hwaccel qsv -hwaccel_output_format qsv -c:v vvc_qsv \
   -i input_vvc.mp4 \
   -c:v h264_qsv -preset fast \
   output.mp4
@@ -98,7 +104,7 @@ ffmpeg -hwaccel qsv \
 
 - **MP4/MOV**: Full support
 - **MKV**: Full support (FFmpeg 8.0+)
-- **TS**: Experimental
+- **MPEG-TS**: not verified here; test a short remux on the installed build first
 
 ```bash
 # VVC in MKV container (FFmpeg 8.0+)
@@ -110,20 +116,12 @@ ffmpeg -i input.mp4 \
 
 ## Screen Content Coding (SCC)
 
-FFmpeg 8.0 adds VVC Screen Content Coding support:
-
-```bash
-# Screen content (presentations, desktop capture)
-ffmpeg -i screen_capture.mp4 \
-  -c:v libvvenc -qp 26 \
-  -vvenc-params "preset=medium:scc=1" \
-  output_screen.mp4
-```
-
-SCC features:
+FFmpeg 8.0's native VVC decoder can decode streams that use the Screen Content Coding tools:
 - Intra Block Copy (IBC)
 - Palette Mode
 - Adaptive Color Transform (ACT)
+
+This is decoder support. Whether libvvenc can *encode* with these tools depends on the vvenc library version and its own parameters, not on the FFmpeg version. Check the vvenc documentation for the SCC parameter name, then pass it through `-vvenc-params`.
 
 ## Comparison with HEVC
 
@@ -151,7 +149,7 @@ SCC features:
    ```bash
    # Test settings on sample first
    ffmpeg -i input.mp4 -t 30 \
-     -c:v libvvenc -qp 28 -vvenc-params "preset=medium" \
+     -c:v libvvenc -preset medium -qp 28 \
      test_output.mp4
 
    # Verify quality before full encode

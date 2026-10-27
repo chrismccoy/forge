@@ -2,23 +2,30 @@
 
 Reference for advanced packet-level and container-level options.
 
+## Contents
+
+- [Advanced Timestamp Handling](#advanced-timestamp-handling)
+- [Bitstream Filters (-bsf)](#bitstream-filters--bsf)
+- [Metadata Mapping (-map_metadata)](#metadata-mapping--map_metadata)
+- [Attachments](#attachments)
+- [Disposition Flags](#disposition-flags)
+
 ## Advanced Timestamp Handling
 
 ```bash
 # Copy timestamps exactly from input
 ffmpeg -copyts -i input.mp4 -c copy output.mp4
 
-# Shift timestamps to start at zero
-ffmpeg -start_at_zero -i input.mp4 -c copy output.mp4
-
-# Both: copy but start at zero
+# Copy timestamps but shift them to start at zero (-start_at_zero only has an
+# effect together with -copyts; on its own it does nothing)
 ffmpeg -copyts -start_at_zero -i input.mp4 -c copy output.mp4
 
 # Offset input timestamps
 ffmpeg -itsoffset 5 -i input.mp4 -c copy output.mp4  # Delay by 5 seconds
 
-# Scale input timestamps (2x speed)
-ffmpeg -itsscale 0.5 -i input.mp4 -c copy output.mp4
+# Scale video timestamps (2x speed). Audio samples cannot be rescaled by
+# changing timestamps, so drop the audio (or re-encode it with atempo=2)
+ffmpeg -itsscale:v 0.5 -i input.mp4 -c copy -an output.mp4
 
 # Handle negative timestamps
 ffmpeg -i input.mp4 -avoid_negative_ts make_zero output.mp4
@@ -105,8 +112,8 @@ ffmpeg -i input.mp4 -map_metadata 0 -c copy output.mp4
 # Copy global metadata only
 ffmpeg -i input.mp4 -map_metadata:g 0:g -c copy output.mp4
 
-# Strip all metadata
-ffmpeg -i input.mp4 -map_metadata -1 -c copy output.mp4
+# Strip all metadata (chapters are separate: -map_chapters -1 removes them too)
+ffmpeg -i input.mp4 -map_metadata -1 -map_chapters -1 -c copy output.mp4
 
 # Copy metadata from second input file
 ffmpeg -i video.mp4 -i metadata_source.mp4 -map 0 -map_metadata 1 -c copy output.mp4
@@ -133,8 +140,9 @@ ffmpeg -i input.mp4 -map_metadata 0 -metadata title="New Title" -c copy output.m
 # Add/modify metadata
 ffmpeg -i input.mp4 -metadata title="Video Title" -metadata artist="Creator" output.mp4
 
-# Set stream-specific metadata
-ffmpeg -i input.mp4 -metadata:s:v:0 title="Main Video" -metadata:s:a:0 language=eng output.mp4
+# Set stream-specific metadata (the MP4 muxer does not store a stream title;
+# MKV does, so use MKV when titles matter)
+ffmpeg -i input.mkv -metadata:s:v:0 title="Main Video" -metadata:s:a:0 language=eng -c copy output.mkv
 
 # Set chapter metadata (the output must have chapters, e.g. copied from input)
 ffmpeg -i input.mp4 -metadata:c:0 title="Chapter 1" -c copy output.mp4
@@ -184,17 +192,20 @@ ffmpeg -dump_attachment:3 attachment.bin -i input.mkv
 ## Disposition Flags
 
 ```bash
+# -map 0 keeps every track: without it only one audio stream is selected, so
+# -disposition:a:1 would match nothing and the other tracks would be dropped
+
 # Set stream as default
-ffmpeg -i input.mkv -c copy -disposition:a:0 default output.mkv
+ffmpeg -i input.mkv -map 0 -c copy -disposition:a:0 default output.mkv
 
 # Set as default and forced subtitle
-ffmpeg -i input.mkv -c copy -disposition:s:0 default+forced output.mkv
+ffmpeg -i input.mkv -map 0 -c copy -disposition:s:0 default+forced output.mkv
 
 # Clear all dispositions
-ffmpeg -i input.mkv -c copy -disposition:a:1 0 output.mkv
+ffmpeg -i input.mkv -map 0 -c copy -disposition:a:1 0 output.mkv
 
 # Multiple dispositions
-ffmpeg -i input.mkv -c copy \
+ffmpeg -i input.mkv -map 0 -c copy \
   -disposition:v:0 default \
   -disposition:a:0 default \
   -disposition:a:1 0 \
@@ -221,3 +232,6 @@ ffmpeg -i input.mkv -c copy \
 | `metadata` | Metadata stream |
 | `dependent` | Dependent stream |
 | `still_image` | Still image stream |
+| `timed_thumbnails` | Timed thumbnail stream |
+| `non_diegetic` | Non-diegetic audio |
+| `multilayer` | Multilayer video (e.g. MV-HEVC) |

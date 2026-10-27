@@ -1,3 +1,19 @@
+# FFmpeg Deinterlacing & Telecine
+
+Comprehensive guide to deinterlacing, field processing, and telecine removal.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Understanding Interlaced Video](#understanding-interlaced-video)
+- [Deinterlacing Filters](#deinterlacing-filters)
+- [Hardware-Accelerated Deinterlacing](#hardware-accelerated-deinterlacing)
+- [Inverse Telecine (IVTC)](#inverse-telecine-ivtc)
+- [Field Processing](#field-processing)
+- [Common Workflows](#common-workflows)
+- [Quality Comparison](#quality-comparison)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Task | Filter | Command Pattern |
@@ -11,17 +27,16 @@
 
 ---
 
-# FFmpeg Deinterlacing & Telecine
-
-Comprehensive guide to deinterlacing, field processing, and telecine removal.
-
 ## Understanding Interlaced Video
 
 ### What is Interlacing?
 
 Interlaced video stores two half-resolution fields per frame:
-- **Top Field (TFF)**: Odd lines (1, 3, 5, ...)
-- **Bottom Field (BFF)**: Even lines (2, 4, 6, ...)
+- **Top field**: odd lines counting from 1 (1, 3, 5, ...)
+- **Bottom field**: even lines (2, 4, 6, ...)
+
+Field *order* says which field was captured first: TFF (top field first) or
+BFF (bottom field first).
 
 Common interlaced formats:
 - 1080i (1920x1080, 50i or 60i)
@@ -79,7 +94,8 @@ ffmpeg -i input.mp4 -vf "yadif=deint=interlaced" output.mp4
 
 ### bwdif - Bob Weaver Deinterlacing Filter
 
-Higher quality than yadif, uses more frames for interpolation.
+Higher quality than yadif: motion adaptive like yadif, with w3fdif-style
+interpolation from more fields.
 Unlike yadif, bwdif's default mode is `send_field` (double frame rate).
 
 ```bash
@@ -98,7 +114,8 @@ only accepts 0/`send_frame` and 1/`send_field`, and defaults to `send_field`.
 
 ### w3fdif - Martin Weston 3-Field Deinterlacing
 
-Uses three fields for even higher quality interpolation.
+Uses three fields with fixed filter coefficients. It is not motion adaptive,
+so static detail is softer than with `bwdif`.
 
 ```bash
 # Simple filter (faster); default mode=field doubles the frame rate (30i -> 60p)
@@ -303,14 +320,16 @@ Transforms field order between TFF and BFF.
 # fieldorder outputs 4:2:2 (yuv422p) from 4:2:0 input; scale=interl=1,format=yuv420p
 # converts back field by field so libx264 does not write a High 4:2:2 stream.
 # -flags +ildct+ilme makes libx264 encode (and tag) the output as interlaced;
-# without it the result is tagged progressive.
+# without it the result is tagged progressive. libx264 tags the stream TFF
+# unless told otherwise, so BFF output also needs -x264-params bff=1
+# (without it the frames are BFF but ffprobe reports field_order=tt).
 # Convert BFF to TFF
 ffmpeg -i bff_input.mp4 -vf "fieldorder=tff,scale=interl=1,format=yuv420p" \
   -c:v libx264 -flags +ildct+ilme output.mp4
 
 # Convert TFF to BFF
 ffmpeg -i tff_input.mp4 -vf "fieldorder=bff,scale=interl=1,format=yuv420p" \
-  -c:v libx264 -flags +ildct+ilme output.mp4
+  -c:v libx264 -flags +ildct+ilme -x264-params bff=1 output.mp4
 ```
 
 ### separatefields - Separate Fields
@@ -324,43 +343,52 @@ ffmpeg -i interlaced.mp4 -vf "separatefields" output.mp4
 
 ### weave - Weave Fields Together
 
-Combines two consecutive frames into one interlaced frame.
+Combines two consecutive frames (each one field, half height) into one frame
+of double height at half the frame rate. It is the inverse of `separatefields`.
+On normal full-height progressive video it doubles the height (640x360 30p
+becomes 640x720 15p), so do not use it to make interlaced video; use
+`tinterlace=interleave_top` instead.
 
 ```bash
-# Weave fields (opposite of separatefields)
-ffmpeg -i progressive.mp4 -vf "weave" interlaced.mp4
-
-# Specify first field
-ffmpeg -i progressive.mp4 -vf "weave=first_field=top" interlaced.mp4
+# Re-weave separated fields (round trip is bit-exact: PSNR inf);
+# first_field must match the source field order
+ffmpeg -i interlaced.mp4 -vf "separatefields,weave=first_field=top" \
+  -c:v libx264 -flags +ildct+ilme output.mp4
 ```
 
 ### tinterlace - Temporal Interlacing
 
 Create interlaced output from progressive or modify interlaced content.
+Always add `-flags +ildct+ilme` when encoding the result with libx264 (and
+`-x264-params bff=1` for bottom-field-first output), or it is encoded and
+tagged as progressive.
 
 ```bash
-# Create interlaced from progressive (merge adjacent frames)
-ffmpeg -i progressive.mp4 -vf "tinterlace=merge" interlaced.mp4
+# Progressive to interlaced at half frame rate, same height
+# (50p -> 25i TFF; 640x360 30p -> 640x360 15i, field_order=tt)
+ffmpeg -i progressive.mp4 -vf "tinterlace=interleave_top" \
+  -c:v libx264 -flags +ildct+ilme interlaced.mp4
+
+# Bottom field first
+ffmpeg -i progressive.mp4 -vf "tinterlace=interleave_bottom" \
+  -c:v libx264 -flags +ildct+ilme -x264-params bff=1 interlaced_bff.mp4
 
 # Bob deinterlace (each field line-doubled into its own frame; tinterlace
 # itself only creates interlacing, it does not deinterlace)
 ffmpeg -i interlaced.mp4 -vf "separatefields,scale=iw:ih*2,setsar=1" bobbed.mp4
-
-# Create interlaced at half frame rate
-ffmpeg -i progressive.mp4 -vf "tinterlace=interleave_top" interlaced.mp4
 ```
 
 **Modes:**
 | Mode | Description |
 |------|-------------|
-| `merge` / `0` | Merge fields from consecutive frames |
-| `drop_even` / `1` | Drop even frames, interleave remaining |
-| `drop_odd` / `2` | Drop odd frames, interleave remaining |
-| `pad` / `3` | Pad alternating lines with black |
-| `interleave_top` / `4` | Interleave, TFF |
-| `interleave_bottom` / `5` | Interleave, BFF |
-| `interlacex2` / `6` | Double rate interlacing |
-| `mergex2` / `7` | Double rate field merge |
+| `merge` / `0` | Stack two consecutive frames as fields: double height, half frame rate |
+| `drop_even` / `1` | Output only odd frames: same height, half frame rate, no interlacing |
+| `drop_odd` / `2` | Output only even frames: same height, half frame rate, no interlacing |
+| `pad` / `3` | Each frame becomes one field, other lines black: double height, same rate |
+| `interleave_top` / `4` | Top field from odd frame, bottom from even: same height, half rate, TFF |
+| `interleave_bottom` / `5` | As above, bottom field first (BFF) |
+| `interlacex2` / `6` | Each output frame takes fields from two consecutive frames: double frame rate |
+| `mergex2` / `7` | Like `merge` (double height) but keeps the frame rate: each frame is merged with the next |
 
 ### il - Interleave/Deinterleave Lines
 
@@ -462,8 +490,8 @@ fi
 | Filter | Quality | Speed | Best For |
 |--------|---------|-------|----------|
 | `yadif` | Good | Fast | General use |
-| `bwdif` | Better | Medium | Quality-focused |
-| `w3fdif` | Best | Slow | Critical work |
+| `bwdif` | Best (motion adaptive, yadif + w3fdif hybrid) | Medium | Quality-focused default |
+| `w3fdif` | Good (not motion adaptive) | Medium | Soft, flicker-free output |
 | `yadif_cuda` | Good | Very Fast | GPU systems |
 | `bwdif_cuda` | Better | Fast | GPU systems |
 | `deinterlace_vaapi` | Good | Very Fast | Linux/VAAPI |

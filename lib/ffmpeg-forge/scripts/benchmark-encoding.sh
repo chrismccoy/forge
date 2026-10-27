@@ -1,39 +1,74 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Benchmark FFmpeg encoding performance with different presets and encoders
 
+# shellcheck source=lib/filter-escape.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib/filter-escape.sh" || exit 1
+require_bash_43
+
 set -e
+
+case "$1" in
+    -h|--help)
+        echo "Usage: $0 [input-file] [seconds]"
+        echo ""
+        echo "Encodes the first [seconds] (default 10) of the input's video with each"
+        echo "available encoder and preset, and prints time, speed and bitrate."
+        echo "Audio is not encoded, so the numbers are video only."
+        echo "With no input, a 720p30 test source is generated."
+        exit 0
+        ;;
+esac
+require_tools ffmpeg ffprobe
+require_bc
 
 # Colors (only when stdout is a terminal, so piped/logged output stays clean)
 if [ -t 1 ]; then
     RED='\033[0;31m'
     GREEN='\033[0;32m'
     YELLOW='\033[1;33m'
-    BLUE='\033[0;34m'
     CYAN='\033[0;36m'
     NC='\033[0m' # No Color
 else
-    RED='' GREEN='' YELLOW='' BLUE='' CYAN='' NC=''
+    RED='' GREEN='' YELLOW='' CYAN='' NC=''
 fi
 
-# A relative path like "clip:1.mp4" would be read by ffmpeg as a protocol
-# ("clip:"), so give such paths a ./ prefix
-safe_path() {
-    case "$1" in
-        /*|./*|../*) printf '%s' "$1" ;;
-        *) printf './%s' "$1" ;;
-    esac
-}
+# Colored line; the text goes through %s, so backslashes in file names stay literal
+say() { printf '%b%s%b\n' "$1" "$2" "$NC"; }
 
 # bc prints values below 1 without the leading zero (".96"); add it back
 leading_zero() {
     sed 's/^\(-\{0,1\}\)\./\10./'
 }
 
+# Wall-clock seconds with sub-second precision. EPOCHREALTIME is bash 5.0+
+# (some locales write it with a comma); GNU date has %N, BSD/macOS date does not
+# (it prints a literal N); perl is on every macOS.
+now_s() {
+    local t
+    if [[ -n "${EPOCHREALTIME:-}" ]]; then
+        printf '%s\n' "${EPOCHREALTIME/,/.}"
+        return
+    fi
+    t=$(date +%s.%N)
+    if [[ "$t" =~ ^[0-9]+\.[0-9]+$ ]]; then
+        printf '%s\n' "$t"
+    elif command -v perl >/dev/null 2>&1; then
+        perl -MTime::HiRes=time -e 'printf "%.6f\n", time'
+    else
+        date +%s
+    fi
+}
+
+# Bytes as a short human-readable size (1.2 MB)
+human_size() {
+    awk -v b="$1" 'BEGIN { split("B KB MB GB TB", u); i = 1; while (b >= 1024 && i < 5) { b /= 1024; i++ } printf (i == 1 ? "%d %s\n" : "%.1f %s\n"), b, u[i] }'
+}
+
 INPUT="$1"
 DURATION="${2:-10}"  # Default 10 seconds for benchmark
 
 if ! [[ "$DURATION" =~ ^([0-9]+(\.[0-9]*)?|\.[0-9]+)$ ]] || (( $(echo "$DURATION <= 0" | bc -l) )); then
-    echo -e "${RED}Error: Benchmark duration must be a positive number of seconds: $DURATION${NC}"
+    say "$RED" "Error: Benchmark duration must be a positive number of seconds: $DURATION"
     exit 1
 fi
 
@@ -44,31 +79,61 @@ echo ""
 # only deleted) when no input was given
 OUTPUT="$(safe_path "$(mktemp "${TMPDIR:-/tmp}/ffmpeg_benchmark.XXXXXX")")"
 GENERATED_SOURCE=""
-cleanup() { rm -f "$OUTPUT" ${GENERATED_SOURCE:+"$GENERATED_SOURCE"}; }
+# Each ffmpeg runs in the background and the script waits for it, so Ctrl-C or
+# SIGTERM reaches the traps at once; cleanup then stops that ffmpeg too.
+# (In the foreground, ffmpeg would catch Ctrl-C, exit normally, and the loop
+# would go on to the next encoder.)
+CHILD=""
+cleanup() {
+    if [[ -n "$CHILD" ]]; then
+        kill "$CHILD" 2>/dev/null || true
+        wait "$CHILD" 2>/dev/null || true
+    fi
+    rm -f "$OUTPUT" ${GENERATED_SOURCE:+"$GENERATED_SOURCE"}
+}
 trap cleanup EXIT
+trap 'echo ""; echo "Interrupted"; exit 130' INT
+trap 'exit 143' TERM
+
+# Run a command as the tracked background child and return its status
+run_child() {
+    local rc=0
+    "$@" &
+    CHILD=$!
+    wait "$CHILD" || rc=$?
+    CHILD=""
+    return "$rc"
+}
 
 # Create test source if no input provided
 if [ -z "$INPUT" ]; then
     echo "No input file provided, generating test source..."
     GENERATED_SOURCE="$(safe_path "$(mktemp "${TMPDIR:-/tmp}/ffmpeg_benchmark_source.XXXXXX")")"
     INPUT="$GENERATED_SOURCE"
-    ffmpeg -y -f lavfi -i testsrc=size=1280x720:rate=30 \
-        -f lavfi -i sine=frequency=1000 \
-        -t "$DURATION" -c:v libx264 -preset ultrafast -c:a aac \
+    run_child ffmpeg -nostdin -y -f lavfi -i testsrc=size=1280x720:rate=30 \
+        -t "$DURATION" -c:v libx264 -preset ultrafast \
         -f mp4 "$INPUT" 2>/dev/null
     echo "Generated test source: ${DURATION}s of 720p30"
     echo ""
 fi
 
 if [ ! -f "$INPUT" ]; then
-    echo -e "${RED}Error: Input file not found: $INPUT${NC}"
+    say "$RED" "Error: Input file not found: $INPUT"
     exit 1
 fi
 INPUT=$(safe_path "$INPUT")
 
+# First real video stream: cover art (attached_pic, e.g. in an MP3) is
+# reported as video but is not
+VIDX=$(first_video_index "$INPUT")
+if [ -z "$VIDX" ]; then
+    say "$RED" "Error: No video stream found in: $INPUT"
+    exit 1
+fi
+
 # Get input info (one value per line; csv would add a trailing comma when the
 # stream has side data, e.g. the display matrix of a rotated phone video)
-{ read -r WIDTH; read -r HEIGHT; read -r FPS; read -r AVG_FPS; } < <(ffprobe -v error -select_streams v:0 \
+{ read -r WIDTH; read -r HEIGHT; read -r FPS; read -r AVG_FPS; } < <(ffprobe -v error -select_streams "$VIDX" \
     -show_entries stream=width,height,r_frame_rate,avg_frame_rate \
     -of default=nw=1:nk=1 "$INPUT") || true
 
@@ -101,7 +166,7 @@ real_fps() {
 FPS=$(real_fps "$FPS" "$AVG_FPS")
 
 if [ -z "$WIDTH" ] || [ -z "$HEIGHT" ]; then
-    echo -e "${RED}Error: No video stream found in: $INPUT${NC}"
+    say "$RED" "Error: No video stream found in: $INPUT"
     exit 1
 fi
 
@@ -127,11 +192,11 @@ benchmark_encode() {
     read -ra extra_args <<< "$4"
     read -ra global_args <<< "$5"
 
-    echo -e "${CYAN}Testing: $name${NC}"
+    say "$CYAN" "Testing: $name"
 
     # Check if encoder is available
     if ! ffmpeg -encoders 2>/dev/null | grep -q "^ V..... $encoder "; then
-        echo -e "${YELLOW}  [SKIP] Encoder not available${NC}"
+        say "$YELLOW" "  [SKIP] Encoder not available"
         echo ""
         return
     fi
@@ -143,21 +208,22 @@ benchmark_encode() {
             if ! ffmpeg -nostdin -v error "${global_args[@]}" -f lavfi -i color=size=256x256:rate=30 \
                 -frames:v 1 -c:v "$encoder" "${preset[@]}" "${extra_args[@]}" \
                 -f null - &>/dev/null; then
-                echo -e "${YELLOW}  [SKIP] no usable device${NC}"
+                say "$YELLOW" "  [SKIP] no usable device"
                 echo ""
                 return
             fi
             ;;
     esac
 
-    START_TIME=$(date +%s.%N)
+    START_TIME=$(now_s)
 
-    if ffmpeg -nostdin -y "${global_args[@]}" -i "$INPUT" -t "$DURATION" \
+    # Video only (-an): audio encoding would add the same time and size to every row
+    if run_child ffmpeg -nostdin -y "${global_args[@]}" -i "$INPUT" -t "$DURATION" \
+        -map "0:${VIDX}" -an \
         -c:v "$encoder" "${preset[@]}" "${extra_args[@]}" \
-        -c:a aac -b:a 128k \
         -f mp4 "$OUTPUT" 2>/dev/null; then
 
-        END_TIME=$(date +%s.%N)
+        END_TIME=$(now_s)
         local elapsed_raw
         elapsed_raw=$(echo "$END_TIME - $START_TIME" | bc)
         # Shown rounded to 2 decimals (bc's scale only truncates, so add half a unit)
@@ -167,14 +233,14 @@ benchmark_encode() {
         actual=$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$OUTPUT" 2>/dev/null)
         [[ "$actual" =~ ^[0-9.]+$ ]] && (( $(echo "$actual > 0" | bc -l) )) || actual="$ENCODE_DURATION"
         SPEED=$(echo "scale=2; $actual / $elapsed_raw" | bc | leading_zero)
-        OUTPUT_SIZE=$(ls -lh "$OUTPUT" | awk '{print $5}')
-        OUTPUT_BYTES=$(stat -c %s "$OUTPUT" 2>/dev/null || stat -f %z "$OUTPUT" 2>/dev/null)
+        OUTPUT_BYTES=$(wc -c < "$OUTPUT" | tr -d ' ')
+        OUTPUT_SIZE=$(human_size "$OUTPUT_BYTES")
         BITRATE=$(echo "scale=0; $OUTPUT_BYTES * 8 / $actual / 1000" | bc)
 
         echo "  Time: ${ELAPSED}s"
         echo "  Speed: ${SPEED}x real-time"
         echo "  Output size: $OUTPUT_SIZE"
-        echo "  Bitrate: ${BITRATE} kbps"
+        echo "  Video bitrate: ${BITRATE} kbps"
 
         if (( $(echo "$SPEED >= 1" | bc -l) )); then
             echo -e "  ${GREEN}[✓] Real-time capable${NC}"

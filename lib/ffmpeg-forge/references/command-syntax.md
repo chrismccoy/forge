@@ -1,3 +1,19 @@
+# FFmpeg Command Syntax
+
+Where each option goes (global, input, output), options that change meaning with position, stream specifiers, and common placement mistakes.
+
+## Contents
+
+- [Option Ordering Rules](#critical-ffmpeg-option-ordering-rules)
+- [Option Categories at a Glance](#option-categories-at-a-glance)
+- [Options That Switch Behavior by Position](#options-that-switch-behavior-by-position)
+- [Stream Specifiers](#stream-specifiers)
+- [Multiple Inputs and Outputs](#multiple-inputs-and-outputs)
+- [Common Mistakes and Fixes](#common-mistakes-and-fixes)
+- [Command Structure Examples](#command-structure-examples)
+- [Quick Placement Cheatsheet](#quick-placement-cheatsheet)
+- [Related Files](#related-files)
+
 ## CRITICAL: FFmpeg Option Ordering Rules
 
 **The most common FFmpeg mistake is putting options in the wrong place.** Options in FFmpeg are position-sensitive and apply to the NEXT file specified after them.
@@ -102,7 +118,7 @@ ffmpeg -i input.mp4 -t 60 -c copy output.mp4
 
 # -ss + -to: with timestamp reset, -to is relative to new zero
 ffmpeg -ss 00:01:00 -i input.mp4 -to 00:00:30 output.mp4  # 30s clip
-ffmpeg -ss 00:01:00 -copyts -i input.mp4 -to 00:01:30 output.mp4  # also 30s clip
+ffmpeg -ss 00:01:00 -copyts -i input.mp4 -to 00:01:30 output.mp4  # also 30s clip, but its timestamps start at 60 s
 ```
 
 ### `-r` (Frame Rate)
@@ -137,16 +153,70 @@ ffmpeg -i input.mp4 -c:v libx264 -c:a aac output.mp4
 
 ---
 
-## Stream Specifiers (Quick Form)
+## Stream Specifiers
 
-Target specific streams with `-option[:specifier]`:
+Stream specifiers target specific streams for per-stream options. They are appended to the option name after a colon.
 
-```bash
-ffmpeg -i input.mkv -c:v libx264 -c:a aac -c:s mov_text output.mp4
-ffmpeg -i a.mp4 -i b.mp4 -map 1:0 -c copy output.mp4
+### Syntax
+
+```text
+-option[:stream_specifier] value
 ```
 
-Common specifiers: `:v`, `:V`, `:a`, `:s`, `:d`, `:t`, `:v:0`, `:a:1`, `:0`, `:m:key:value`, `:p:0`. Full table and per-stream examples in [`command-syntax-stream-specifiers.md`](command-syntax-stream-specifiers.md).
+### Stream Specifier Types
+
+| Specifier | Meaning | Example |
+|-----------|---------|---------|
+| `:v` | All video streams | `-c:v libx264` |
+| `:V` | Video streams (not thumbnails/covers) | `-c:V libx264` |
+| `:a` | All audio streams | `-c:a aac` |
+| `:s` | All subtitle streams | `-c:s mov_text` |
+| `:d` | All data streams | `-c:d copy` |
+| `:t` | All attachment streams | `-map 0:t` |
+| `:v:0` | First video stream | `-b:v:0 5M` |
+| `:a:1` | Second audio stream | `-c:a:1 ac3` |
+| `:0` | First stream (any type) | `-c:0 copy` |
+| `:1` | Second stream (any type) | `-c:1 libx264` |
+| `:#0x1234` or `:i:0x1234` | Stream with this stream ID (the MPEG-TS PID); `#` and `i:` are the same specifier | `-c:#0x1234 copy` |
+| `:m:key:value` | Stream with matching metadata | `-c:m:language:eng aac` |
+| `:p:0` | Streams in program 0 | `-c:p:0 copy` |
+| `:u` | Usable configuration streams | `-c:u copy` |
+
+### Input Index Prefix
+
+For multi-input commands, prefix with input index:
+
+```bash
+# Stream 0 from input 1
+ffmpeg -i a.mp4 -i b.mp4 -map 1:0 -c copy output.mp4
+
+# Video from input 0, audio from input 1
+ffmpeg -i video.mp4 -i audio.mp3 -map 0:v -map 1:a output.mp4
+
+# Second audio stream from third input
+ffmpeg -i a.mp4 -i b.mp4 -i c.mp4 -map 2:a:1 output.mp4
+```
+
+### Per-Stream Option Examples
+
+```bash
+# Different codecs per stream type
+ffmpeg -i input.mkv -c:v libx264 -c:a aac -c:s mov_text output.mp4
+
+# Different bitrates per stream index
+ffmpeg -i input.mkv -map 0 \
+  -c:v libx264 -b:v:0 5M \
+  -c:a:0 aac -b:a:0 192k \
+  -c:a:1 ac3 -b:a:1 384k \
+  output.mkv
+
+# Different settings for each audio stream
+ffmpeg -i multichannel.mxf -map 0:v:0 -map 0:a:0 -map 0:a:0 \
+  -c:v libx264 -pix_fmt yuv420p \
+  -c:a:0 ac3 -b:a:0 640k \
+  -ac:a:1 2 -c:a:1 aac -b:a:1 128k \
+  output.mp4
+```
 
 ---
 
@@ -162,7 +232,7 @@ ffmpeg \
 # Per-output options (they RESET between outputs)
 ffmpeg -i input.mp4 \
   -c:v libx264 -crf 23 output_h264.mp4 \
-  -c:v libx265 -crf 28 output_h265.mp4
+  -c:v libx265 -crf 28 -tag:v hvc1 output_h265.mp4
 ```
 
 ```bash
@@ -230,7 +300,7 @@ ffmpeg -i input1.mp4 -i input2.mp4 \
 
 ```bash
 ffmpeg -ss 00:01:00 -i input.mp4 -to 00:00:30 output.mp4         # 30s clip
-ffmpeg -ss 00:01:00 -copyts -i input.mp4 -to 00:01:30 output.mp4 # 30s clip
+ffmpeg -ss 00:01:00 -copyts -i input.mp4 -to 00:01:30 output.mp4 # 30s clip, timestamps start at 60 s
 ffmpeg -ss 00:01:00 -i input.mp4 -t 00:00:30 output.mp4          # 30s clip
 ```
 
@@ -261,7 +331,7 @@ ffmpeg -ss 60 -i input.mp4 -t 30 -c:v libx264 output.mp4
 
 # Hardware acceleration
 ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i input.mp4 \
-  -c:v h264_nvenc -preset p4 output.mp4
+  -c:v h264_nvenc -preset p5 -tune hq output.mp4
 
 # Multiple inputs with filters
 ffmpeg -i main.mp4 -i overlay.png \
@@ -271,14 +341,15 @@ ffmpeg -i main.mp4 -i overlay.png \
 # Real-time streaming
 ffmpeg -re -i input.mp4 -c:v libx264 -f flv rtmp://server/live/stream
 
-# Full structure
+# Full structure. shortest=1 ends the overlay when input1 ends; without it the
+# endlessly looped input2 keeps the overlay (and the encode) running forever
 ffmpeg \
   -y -hide_banner \
   -hwaccel cuda -ss 10 -i input1.mp4 \
   -stream_loop -1 -i input2.mp4 \
-  -filter_complex "[0:v][1:v]overlay[v]" \
+  -filter_complex "[0:v][1:v]overlay=shortest=1[v]" \
   -map "[v]" -map 0:a \
-  -c:v h264_nvenc -b:v 5M \
+  -c:v h264_nvenc -preset p5 -tune hq -b:v 5M \
   -c:a aac -b:a 192k \
   -movflags +faststart \
   output.mp4
@@ -302,14 +373,9 @@ ffmpeg \
 
 ---
 
-## Extended Reference Map
+## Related Files
 
-For exhaustive lookups, see the companion reference files:
-
-- **Complete option catalog** (all global / input / output / color / threading / format flag tables): [`command-syntax-complete-option-reference.md`](command-syntax-complete-option-reference.md)
-- **Stream specifier syntax and examples**: [`command-syntax-stream-specifiers.md`](command-syntax-stream-specifiers.md)
-- **Per-backend hardware device initialization** (CUDA, VAAPI, QSV, Vulkan, D3D11VA, VideoToolbox): [`command-syntax-hardware-device-init.md`](command-syntax-hardware-device-init.md)
-- **Format/protocol/muxer options** (HLS, DASH, segment, RTSP, RTMP, raw video, movflags, MPEG-TS, Matroska): [`command-syntax-format-specific-options.md`](command-syntax-format-specific-options.md)
+- **Complete option catalog** (global / input / output / color / threading / format flag tables): [`command-syntax-complete-option-reference.md`](command-syntax-complete-option-reference.md)
 - **Timestamps, bitstream filters, metadata, attachments, disposition**: [`command-syntax-timestamps-bitstream-metadata.md`](command-syntax-timestamps-bitstream-metadata.md)
 
 ---

@@ -1,3 +1,21 @@
+# FFmpeg Transitions and Effects
+
+Complete guide to video transitions, crossfades, and creative effects using FFmpeg.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Transition Overview](#transition-overview)
+- [Basic Fade Effects](#basic-fade-effects)
+- [xfade Transitions (Between Clips)](#xfade-transitions-between-clips)
+- [Multiple Clip Transitions](#multiple-clip-transitions)
+- [Custom Transitions with Expressions](#custom-transitions-with-expressions)
+- [Advanced Transition Techniques](#advanced-transition-techniques)
+- [Transition with Text/Graphics](#transition-with-textgraphics)
+- [Performance Optimization](#performance-optimization)
+- [Troubleshooting](#troubleshooting)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Transition | Command |
@@ -10,17 +28,13 @@
 | Fade in/out | `-vf "fade=t=in:d=1,fade=t=out:st=9:d=1"` |
 | Audio crossfade | `[0:a][1:a]acrossfade=d=1[a]` |
 
-| Offset Formula | For N clips with transition T |
-|----------------|-------------------------------|
-| offset1 | `clip1_duration - T` |
-| offset2 | `2*duration - 2*T` (equal-length clips) |
-| offsetN | `N*duration - N*T` (equal-length clips) |
+| Offset of cut k | Formula |
+|-----------------|---------|
+| General | `offset_k = (D1 + ... + Dk) - (T1 + ... + Tk)`: length of the stream built so far minus this cut's own transition, i.e. `offset_k = offset_(k-1) + Dk - Tk` |
+| Equal clips D, equal transitions T | `offset_k = k*D - k*T` |
+| Output length | `(D1 + ... + Dn) - (T1 + ... + T(n-1))` |
 
 ---
-
-# FFmpeg Transitions and Effects
-
-Complete guide to video transitions, crossfades, and creative effects using FFmpeg.
 
 > **Pixel format:** `xfade` (every transition type) and `fade` with a non-black `color=` output yuv444p even from yuv420p clips, so libx264/libx265 would write a High 4:4:4 stream that browsers and phones will not play. The MP4 recipes below add `-pix_fmt yuv420p`; keep it (or end the graph with `format=yuv420p`) when adapting them.
 
@@ -37,20 +51,21 @@ Complete guide to video transitions, crossfades, and creative effects using FFmp
 
 ### xfade Transition Types
 
-FFmpeg's xfade filter supports 40+ built-in transitions:
+FFmpeg's xfade filter has 58 built-in transitions plus `custom` (FFmpeg 8.0; `ffmpeg -h filter=xfade` lists them):
 
 | Category | Transitions |
 |----------|-------------|
-| Fades | fade, fadeblack, fadewhite, fadegrays |
+| Fades | fade, fadeblack, fadewhite, fadegrays, fadefast, fadeslow, distance |
 | Wipes | wipeleft, wiperight, wipeup, wipedown, wipetl, wipetr, wipebl, wipebr |
+| Soft wipes | smoothleft, smoothright, smoothup, smoothdown |
 | Slides | slideleft, slideright, slideup, slidedown |
-| Reveals | revealright, revealleft, revealup, revealdown |
-| Pushes | horzopen, horzclose, vertopen, vertclose |
-| Circles | circleopen, circleclose, circlecrop |
-| Rectangles | rectcrop, hblur, radial |
+| Covers / reveals | coverleft, coverright, coverup, coverdown, revealleft, revealright, revealup, revealdown |
+| Open / close (curtain) | horzopen, horzclose, vertopen, vertclose |
+| Shapes | circleopen, circleclose, circlecrop, rectcrop, radial |
 | Diagonals | diagtl, diagtr, diagbl, diagbr |
-| Pixel Effects | dissolve, pixelize, hlslice, hrslice, vuslice, vdslice |
-| Other | zoomin, squeezeh, squeezev, hlwind, hrwind, vuwind, vdwind, coverleft, coverright, coverup, coverdown |
+| Pixel / slice | dissolve, pixelize, hlslice, hrslice, vuslice, vdslice |
+| Blur / wind / zoom | hblur, hlwind, hrwind, vuwind, vdwind, zoomin, squeezeh, squeezev |
+| Custom | custom (with `expr=`) |
 
 ## Basic Fade Effects
 
@@ -278,44 +293,40 @@ ffmpeg -i clip1.mp4 -i clip2.mp4 -i clip3.mp4 \
 
 ### Slideshow with Transitions
 
+`scripts/slideshow.sh` builds a slideshow from any number of images (2 or more), fitting and padding each one to the output size:
+
 ```bash
-#!/bin/bash
-# slideshow.sh - Create slideshow from images with transitions
-
-DURATION=3      # Each image duration
-TRANSITION=1    # Transition duration
-FPS=30
-
-# Generate input commands
-inputs=""
-for img in *.jpg; do
-    inputs="$inputs -loop 1 -t $DURATION -i $img"
-done
-
-# Calculate filter for 4 images
-# Adjust offsets based on image count
-ffmpeg $inputs \
-  -filter_complex "\
-    [0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=$FPS[v0];\
-    [1:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=$FPS[v1];\
-    [2:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=$FPS[v2];\
-    [3:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=$FPS[v3];\
-    [v0][v1]xfade=transition=fade:duration=$TRANSITION:offset=$((DURATION-TRANSITION))[x1];\
-    [x1][v2]xfade=transition=wipeleft:duration=$TRANSITION:offset=$((2*DURATION-2*TRANSITION))[x2];\
-    [x2][v3]xfade=transition=circleopen:duration=$TRANSITION:offset=$((3*DURATION-3*TRANSITION)),scale=out_range=tv,format=yuv420p[v]" \
-  -map "[v]" -c:v libx264 \
-  slideshow.mp4
+# Usage: slideshow.sh [--dur S] [--trans S] [--fps N] [--size WxH] <out.mp4> <transition|cycle> <img>...
+scripts/slideshow.sh slides.mp4 fade a.jpg b.jpg c.jpg            # 3 x 3 s, 1 s fades: 7 s
+scripts/slideshow.sh --dur 4 --trans 1.5 --size 1080x1920 story.mp4 cycle *.jpg
 ```
+
+- `transition` is any xfade name except `custom`; `cycle` rotates through fade, wipeleft, circleopen, slideleft, dissolve.
+- Defaults: `--dur 3` (seconds per image, including its transitions), `--trans 1`, `--fps 30`, `--size 1920x1080`.
+- Output: H.264 High yuv420p, limited range (JPEG full range converted), faststart, no audio. The script refuses to overwrite an existing file.
+
+The offset rule it applies, for N images of equal length `D` with transition `T`:
+
+```text
+offset_k = k*D - k*T        (start of cut k, k = 1..N-1)
+length   = N*D - (N-1)*T
+```
+
+Each image is an input of its own (`-loop 1 -t D -i img`), scaled and padded, then chained: `[v0][v1]xfade=...:offset=D-T[x1]; [x1][v2]xfade=...:offset=2(D-T)[x2]; ...`, ending with `scale=out_range=tv,format=yuv420p`.
 
 ### Different Transitions per Cut
 
 ```bash
-# Use different transitions between each clip
+# Use different transitions between each clip (four 5 s clips).
+# Each offset = length of the stream so far minus THIS cut's duration:
+# x1 = 5+5-1 = 9 s, x2 = 9+5-1 = 13 s, so the 1.5 s cut starts at 13-1.5 = 11.5
+# (offset 12 would run past the end of x2 and cut the transition short).
+# Output length: 11.5 + 5 = 16.5 s
 ffmpeg -i clip1.mp4 -i clip2.mp4 -i clip3.mp4 -i clip4.mp4 \
   -filter_complex "\
     [0:v][1:v]xfade=transition=fade:duration=1:offset=4[x1];\
     [x1][2:v]xfade=transition=wipeleft:duration=1:offset=8[x2];\
-    [x2][3:v]xfade=transition=circleopen:duration=1.5:offset=12[v]" \
+    [x2][3:v]xfade=transition=circleopen:duration=1.5:offset=11.5[v]" \
   -map "[v]" -pix_fmt yuv420p \
   varied_transitions.mp4
 ```
@@ -356,6 +367,7 @@ ffmpeg -i clip1.mp4 -i clip2.mp4 \
 | W | Frame width |
 | H | Frame height |
 | P | Progress, running from 1.0 at the start of the transition to 0.0 at the end |
+| PLANE | Index of the plane being processed (0-3) |
 | A | First clip pixel value |
 | B | Second clip pixel value |
 
@@ -364,20 +376,24 @@ ffmpeg -i clip1.mp4 -i clip2.mp4 \
 ### Luma/Alpha Matte Transitions
 
 ```bash
-# Using a grayscale gradient image as an animated transition mask:
-# from t=4 to t=5, pixels whose gradient value is below the rising threshold
-# 255*(T-4) switch to clip2 (dark areas of the gradient change first).
-# Set -framerate to the clips' frame rate and scale= to the clips' size.
-# All three maskedmerge inputs are forced to planar RGB (gbrp): in YUV the
-# gray mask's chroma planes are 128, which blends the clips' colours ~50/50.
+# Using a grayscale gradient image as an animated transition mask (two 5 s
+# clips, 1 s transition from t=4 to t=5): pixels whose gradient value is below
+# the rising threshold 255*(T-4) switch to clip2 (dark areas change first).
+# - clip2 is delayed by 4 s (tpad start) so it starts at its own beginning
+#   when the wipe starts; clip1 is held on its last frame (tpad stop) so
+#   maskedmerge keeps running to the end of clip2.
+# - Output length = 4 + clip2 duration = 9 s.
+# - Set -framerate to the clips' frame rate and scale= to the clips' size.
+# - All three maskedmerge inputs are planar RGB (gbrp): in YUV the gray mask's
+#   chroma planes are 128, which blends the clips' colours ~50/50.
 ffmpeg -i clip1.mp4 -i clip2.mp4 -loop 1 -framerate 30 -i gradient.png \
   -filter_complex "\
-    [0:v]format=gbrp[a];\
-    [1:v]format=gbrp[b];\
+    [0:v]tpad=stop_mode=clone:stop_duration=4,format=gbrp[a];\
+    [1:v]tpad=start_mode=clone:start_duration=4,format=gbrp[b];\
     [2:v]format=gray,scale=1920:1080,\
          geq=lum='if(lte(lum(X,Y),255*(T-4)),255,0)',format=gbrp[mask];\
     [a][b][mask]maskedmerge,format=yuv420p[v]" \
-  -map "[v]" -t 6 \
+  -map "[v]" -t 9 \
   luma_transition.mp4
 ```
 
@@ -417,9 +433,10 @@ ffmpeg -i clip1.mp4 -i clip2.mp4 \
 ```bash
 # Zoom transition with motion. With d=1 on video, zoom resets every frame,
 # so the zoom is driven by the input time (it), not by the previous zoom.
+# x/y keep the zoom centred (without them zoompan zooms into the top-left).
 ffmpeg -i clip1.mp4 -i clip2.mp4 \
   -filter_complex "\
-    [0:v]scale=2*iw:-1,zoompan=z='min(1+0.1*it,1.5)':d=1:s=1920x1080:fps=30,settb=AVTB[a];\
+    [0:v]scale=2*iw:-2,zoompan=z='min(1+0.1*it,1.5)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1920x1080:fps=30,settb=AVTB[a];\
     [1:v]scale=1920:1080,fps=30,settb=AVTB[b];\
     [a][b]xfade=transition=zoomin:duration=1:offset=4[v]" \
   -map "[v]" -pix_fmt yuv420p -t 6 \
@@ -528,11 +545,11 @@ ffmpeg -i clip1.mp4 -i clip2.mp4 \
 
 **Offset calculation for multiple clips**
 ```text
-For clips of duration D with transition T:
-- offset1 = D - T
-- offset2 = 2D - 2T
-- offset3 = 3D - 3T
-- offsetN = N*D - N*T
+offset_k = (D1 + ... + Dk) - (T1 + ... + Tk)
+          = length of the stream built so far - this cut's transition
+Equal clips D and equal transitions T: offset_k = k*D - k*T
+Mixed transition lengths: subtract each cut's own T (e.g. 5 s clips with
+1, 1, 1.5 s cuts -> offsets 4, 8, 11.5)
 ```
 
 **Audio doesn't match video transition**

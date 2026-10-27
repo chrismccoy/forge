@@ -1,32 +1,39 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # FFmpeg Karaoke & Kinetic Caption Generator Utility
 # Generate ASS karaoke/kinetic subtitles and apply to video
-# Usage: ./generate-karaoke.sh <action> [options]
+# Usage: ./generate-karaoke.sh <action> [options] [--res WxH | --video FILE]
 #
 # Actions: create, apply, template, kinetic
 
+# filter_escape, safe_path, first_video_index, require_bash_43
+# shellcheck source=lib/filter-escape.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib/filter-escape.sh" || exit 1
+require_bash_43
+
 set -e
 
-ACTION="${1:-help}"
-
-# Escape a path for use as a filter option value inside -vf/-af.
-# Two levels: the option parser (\ : ') then the filtergraph parser (\ ' , ; [ ]).
-filter_escape() {
-    local s="$1"
-    s="${s//\\/\\\\}"; s="${s//:/\\:}"; s="${s//\'/\\\'}"
-    s="${s//\\/\\\\}"; s="${s//\'/\\\'}"
-    s="${s//,/\\,}"; s="${s//;/\\;}"; s="${s//\[/\\[}"; s="${s//\]/\\]}"
-    printf '%s' "$s"
-}
-
-# A relative path like "clip:1.mp4" would be read by ffmpeg as a protocol
-# ("clip:"), so give such paths a ./ prefix
-safe_path() {
+# Pull the layout options out of the arguments, wherever they are; the rest
+# stay positional as before. --res sets the ASS canvas (PlayResX x PlayResY),
+# --video reads it from a video's display size.
+RES_ARG=""
+RES_VIDEO=""
+POSITIONAL=()
+while (( $# )); do
     case "$1" in
-        /*|./*|../*) printf '%s' "$1" ;;
-        *) printf './%s' "$1" ;;
+        --res|--video)
+            [[ $# -ge 2 && -n "$2" ]] || { echo "Error: $1 needs a value" >&2; exit 1; }
+            if [[ "$1" == --res ]]; then RES_ARG="$2"; else RES_VIDEO="$2"; fi
+            shift 2
+            ;;
+        --res=*) RES_ARG="${1#*=}"; shift ;;
+        --video=*) RES_VIDEO="${1#*=}"; shift ;;
+        --) shift; POSITIONAL+=("$@"); break ;;
+        *) POSITIONAL+=("$1"); shift ;;
     esac
-}
+done
+set -- "${POSITIONAL[@]}"
+
+ACTION="${1:-help}"
 
 # Valid values; anything else is an error rather than a silent fallback
 KARAOKE_STYLES="default neon outline shadow gradient"
@@ -47,7 +54,7 @@ require_one_of() {
 show_help() {
     echo "FFmpeg Karaoke & Kinetic Caption Generator Utility"
     echo ""
-    echo "Usage: $0 <action> [options]"
+    echo "Usage: $0 <action> [options] [--res WxH | --video FILE]"
     echo ""
     echo "Actions:"
     echo "  create <lyrics.txt> <output.ass> [style]"
@@ -67,56 +74,112 @@ show_help() {
     echo "      Styles: default, neon, outline, shadow, gradient, kinetic-pop,"
     echo "              kinetic-grow, kinetic-bounce, kinetic-elastic"
     echo ""
-    echo "Lyrics format (lyrics.txt):"
-    echo "  [MM:SS.ms] Line text here"
+    echo "Canvas size (create, kinetic, template):"
+    echo "  --res WxH      ASS canvas (PlayResX x PlayResY), e.g. --res 1920x1080"
+    echo "  --video FILE   use the display size of the video the captions are for"
+    echo "  Default: 1920x1080 for karaoke styles and youtube; 1080x1920 for"
+    echo "  tiktok/instagram and the kinetic-* templates. Font sizes, outlines and"
+    echo "  margins scale with the canvas, so the look stays the same."
+    echo ""
+    echo "Lyrics format (lyrics.txt, LRC):"
+    echo "  [MM:SS.xx] Line text here     ([HH:MM:SS.xx] also works)"
     echo "  [00:05.00] First line of song"
     echo "  [00:10.50] Second line continues"
+    echo "  [00:14.00]                    (no text: ends the line before)"
+    echo "  LRC tags such as [ar:Artist] and lines starting with # are ignored."
     echo ""
     echo "Examples:"
-    echo "  $0 create lyrics.txt karaoke.ass neon"
+    echo "  $0 create lyrics.txt karaoke.ass neon --video video.mp4"
     echo "  $0 kinetic lyrics.txt kinetic.ass bounce tiktok"
     echo "  $0 apply video.mp4 karaoke.ass output.mp4"
     echo "  $0 template kinetic-pop template.ass"
 }
 
+# Canvas size: sets RES_W/RES_H from --res, --video, or the given default
+resolve_res() {
+    local def_w="$1" def_h="$2" vidx w h rot
+    if [[ -n "$RES_ARG" && -n "$RES_VIDEO" ]]; then
+        echo "Error: use --res or --video, not both" >&2
+        exit 1
+    fi
+    [[ -n "$RES_VIDEO" ]] && require_tools ffprobe
+    if [[ -n "$RES_ARG" ]]; then
+        if ! [[ "$RES_ARG" =~ ^([1-9][0-9]{1,4})x([1-9][0-9]{1,4})$ ]]; then
+            echo "Error: --res must be WIDTHxHEIGHT, e.g. 1920x1080: $RES_ARG" >&2
+            exit 1
+        fi
+        RES_W=${BASH_REMATCH[1]}; RES_H=${BASH_REMATCH[2]}
+    elif [[ -n "$RES_VIDEO" ]]; then
+        if [[ ! -f "$RES_VIDEO" ]]; then
+            echo "Error: Video file not found: $RES_VIDEO" >&2
+            exit 1
+        fi
+        vidx=$(first_video_index "$(safe_path "$RES_VIDEO")")
+        if [[ -z "$vidx" ]]; then
+            echo "Error: No video stream found in: $RES_VIDEO" >&2
+            exit 1
+        fi
+        { read -r w; read -r h; } < <(ffprobe -v error -select_streams "$vidx" \
+            -show_entries stream=width,height -of default=nw=1:nk=1 "$(safe_path "$RES_VIDEO")")
+        rot=$(ffprobe -v error -select_streams "$vidx" -show_entries stream_side_data=rotation \
+            -of default=nw=1:nk=1 "$(safe_path "$RES_VIDEO")" | head -n1)
+        # ffmpeg autorotates, so a 90/270 phone video is shown (and burned) portrait
+        if [[ "$rot" =~ ^-?(90|270)$ ]]; then RES_W=$h; RES_H=$w; else RES_W=$w; RES_H=$h; fi
+    else
+        RES_W=$def_w; RES_H=$def_h
+    fi
+}
+
+# Style metrics for the RES_W x RES_H canvas. The base values were designed for
+# a 1080-pixel short side; they scale with the short side, so text has the same
+# size relative to the frame on any canvas. MarginV keeps captions in the lower
+# part: 280/1920 of the height on portrait (clear of TikTok/Reels UI), 8% on
+# landscape.
+scaled() {
+    local short=$(( RES_W < RES_H ? RES_W : RES_H ))
+    echo $(( ($1 * short + 540) / 1080 ))
+}
+margin_v() {
+    if (( RES_H > RES_W )); then echo $(( (RES_H * 280 + 960) / 1920 )); else echo $(( (RES_H * 8 + 50) / 100 )); fi
+}
+
+# One "Style:" line: name font size primary secondary outline back bold outline_w shadow_w margin_lr
+style_line() {
+    printf 'Style: %s,%s,%s,%s,%s,%s,%s,%s,0,0,0,100,100,0,0,1,%s,%s,2,%s,%s,%s,1\n' \
+        "$1" "$2" "$(scaled "$3")" "$4" "$5" "$6" "$7" "$8" \
+        "$(scaled "$9")" "$(scaled "${10}")" "$(scaled "${11}")" "$(scaled "${11}")" "$(margin_v)"
+}
+
+script_info() {
+    printf '%s\n' "[Script Info]" "Title: $1" "ScriptType: v4.00+" \
+        "PlayResX: $RES_W" "PlayResY: $RES_H" "Timer: 100.0000" "WrapStyle: 0" \
+        "ScaledBorderAndShadow: yes" "" "[V4+ Styles]" \
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding"
+}
+
 get_style_header() {
     local style="$1"
-    local header="[Script Info]
-Title: Karaoke Subtitles
-ScriptType: v4.00+
-PlayResX: 1080
-PlayResY: 1920
-Timer: 100.0000
-WrapStyle: 0
-
-[V4+ Styles]
-Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding"
-
+    script_info "Karaoke Subtitles"
     case "$style" in
         neon)
-            echo "$header"
-            echo "Style: Default,Arial Black,72,&H00FF00FF,&H0000FFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,2,2,50,50,280,1"
-            echo "Style: Karaoke,Arial Black,72,&H0000FFFF,&H00FF00FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,2,2,50,50,280,1"
+            style_line Default "Arial Black" 72 '&H00FF00FF' '&H0000FFFF' '&H00000000' '&H80000000' -1 4 2 50
+            style_line Karaoke "Arial Black" 72 '&H0000FFFF' '&H00FF00FF' '&H00000000' '&H80000000' -1 4 2 50
             ;;
         outline)
-            echo "$header"
-            echo "Style: Default,Impact,80,&H00FFFFFF,&H00FFFF00,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,5,0,2,50,50,280,1"
-            echo "Style: Karaoke,Impact,80,&H00FFFF00,&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,5,0,2,50,50,280,1"
+            style_line Default Impact 80 '&H00FFFFFF' '&H00FFFF00' '&H00000000' '&H00000000' -1 5 0 50
+            style_line Karaoke Impact 80 '&H00FFFF00' '&H00FFFFFF' '&H00000000' '&H00000000' -1 5 0 50
             ;;
         shadow)
-            echo "$header"
-            echo "Style: Default,Arial Black,68,&H00FFFFFF,&H0000FF00,&H00333333,&H80000000,-1,0,0,0,100,100,0,0,1,3,4,2,50,50,280,1"
-            echo "Style: Karaoke,Arial Black,68,&H0000FF00,&H00FFFFFF,&H00333333,&H80000000,-1,0,0,0,100,100,0,0,1,3,4,2,50,50,280,1"
+            style_line Default "Arial Black" 68 '&H00FFFFFF' '&H0000FF00' '&H00333333' '&H80000000' -1 3 4 50
+            style_line Karaoke "Arial Black" 68 '&H0000FF00' '&H00FFFFFF' '&H00333333' '&H80000000' -1 3 4 50
             ;;
         gradient)
-            echo "$header"
-            echo "Style: Default,Arial Black,72,&H00FFFFFF,&H00FF8800,&H00000000,&H40000000,-1,0,0,0,100,100,0,0,1,3,2,2,50,50,280,1"
-            echo "Style: Karaoke,Arial Black,72,&H00FF8800,&H00FFFFFF,&H00000000,&H40000000,-1,0,0,0,100,100,0,0,1,3,2,2,50,50,280,1"
+            style_line Default "Arial Black" 72 '&H00FFFFFF' '&H00FF8800' '&H00000000' '&H40000000' -1 3 2 50
+            style_line Karaoke "Arial Black" 72 '&H00FF8800' '&H00FFFFFF' '&H00000000' '&H40000000' -1 3 2 50
             ;;
         *)
-            echo "$header"
-            echo "Style: Default,Arial,64,&H00FFFFFF,&H000088FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,3,2,2,50,50,280,1"
-            echo "Style: Karaoke,Arial,64,&H000088FF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,3,2,2,50,50,280,1"
+            style_line Default Arial 64 '&H00FFFFFF' '&H000088FF' '&H00000000' '&H80000000' -1 3 2 50
+            style_line Karaoke Arial 64 '&H000088FF' '&H00FFFFFF' '&H00000000' '&H80000000' -1 3 2 50
             ;;
     esac
 }
@@ -141,23 +204,13 @@ get_kinetic_header() {
             ;;
     esac
 
-    cat << EOF
-[Script Info]
-Title: Kinetic Captions
-ScriptType: v4.00+
-PlayResX: 1080
-PlayResY: 1920
-Timer: 100.0000
-WrapStyle: 0
-
-[V4+ Styles]
-Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: KineticPop,${font_name},${font_size},&H00FFFFFF,&H0000FFFF,&H00000000,&H40000000,1,0,0,0,100,100,0,0,1,5,0,2,10,10,280,1
-Style: KineticGrow,${font_name},${font_size},&H00FFFFFF,&H0000FFFF,&H00000000,&H40000000,1,0,0,0,100,100,0,0,1,5,0,2,10,10,280,1
-Style: KineticBounce,${font_name},${font_size},&H00FFFFFF,&H0000FFFF,&H00000000,&H40000000,1,0,0,0,100,100,0,0,1,5,0,2,10,10,280,1
-Style: KineticElastic,${font_name},${font_size},&H00FFFFFF,&H0000FFFF,&H00000000,&H40000000,1,0,0,0,100,100,0,0,1,6,0,2,10,10,280,1
-Style: KaraokeGrow,${font_name},${font_size},&H0000FFFF,&H00FFFFFF,&H00000000,&H40000000,1,0,0,0,100,100,0,0,1,5,0,2,10,10,280,1
-EOF
+    script_info "Kinetic Captions"
+    local name
+    for name in KineticPop KineticGrow KineticBounce; do
+        style_line "$name" "$font_name" "$font_size" '&H00FFFFFF' '&H0000FFFF' '&H00000000' '&H40000000' 1 5 0 10
+    done
+    style_line KineticElastic "$font_name" "$font_size" '&H00FFFFFF' '&H0000FFFF' '&H00000000' '&H40000000' 1 6 0 10
+    style_line KaraokeGrow "$font_name" "$font_size" '&H0000FFFF' '&H00FFFFFF' '&H00000000' '&H40000000' 1 5 0 10
 }
 
 get_kinetic_effect() {
@@ -167,26 +220,26 @@ get_kinetic_effect() {
     case "$effect" in
         pop)
             # Word pops in: 50% → 115% → 100%
-            echo "{\\fscx50\\fscy50\\t(0,100,\\fscx115\\fscy115)\\t(100,200,\\fscx100\\fscy100)}${word}"
+            printf '%s\n' "{\\fscx50\\fscy50\\t(0,100,\\fscx115\\fscy115)\\t(100,200,\\fscx100\\fscy100)}${word}"
             ;;
         grow)
             # Word grows: 80% → 115% → 100%
-            echo "{\\fscx80\\fscy80\\t(0,150,\\fscx115\\fscy115)\\t(150,300,\\fscx100\\fscy100)}${word}"
+            printf '%s\n' "{\\fscx80\\fscy80\\t(0,150,\\fscx115\\fscy115)\\t(150,300,\\fscx100\\fscy100)}${word}"
             ;;
         bounce)
             # Spring bounce: 80% → 120% → 95% → 100%
-            echo "{\\fscx80\\fscy80\\t(0,100,\\fscx120\\fscy120)\\t(100,200,\\fscx95\\fscy95)\\t(200,300,\\fscx100\\fscy100)}${word}"
+            printf '%s\n' "{\\fscx80\\fscy80\\t(0,100,\\fscx120\\fscy120)\\t(100,200,\\fscx95\\fscy95)\\t(200,300,\\fscx100\\fscy100)}${word}"
             ;;
         elastic)
             # Elastic overshoot: 40% → 130% → 90% → 105% → 100%
-            echo "{\\fscx40\\fscy40\\t(0,80,\\fscx130\\fscy130)\\t(80,160,\\fscx90\\fscy90)\\t(160,260,\\fscx105\\fscy105)\\t(260,380,\\fscx100\\fscy100)}${word}"
+            printf '%s\n' "{\\fscx40\\fscy40\\t(0,80,\\fscx130\\fscy130)\\t(80,160,\\fscx90\\fscy90)\\t(160,260,\\fscx105\\fscy105)\\t(260,380,\\fscx100\\fscy100)}${word}"
             ;;
         karaoke-grow)
             # Karaoke with grow effect (returns just animation, karaoke tag added separately)
-            echo "\\t(0,150,\\fscx115\\fscy115)\\t(150,300,\\fscx100\\fscy100)"
+            printf '%s\n' "\\t(0,150,\\fscx115\\fscy115)\\t(150,300,\\fscx100\\fscy100)"
             ;;
         *)
-            echo "{\\fscx50\\fscy50\\t(0,100,\\fscx115\\fscy115)\\t(100,200,\\fscx100\\fscy100)}${word}"
+            printf '%s\n' "{\\fscx50\\fscy50\\t(0,100,\\fscx115\\fscy115)\\t(100,200,\\fscx100\\fscy100)}${word}"
             ;;
     esac
 }
@@ -217,9 +270,15 @@ ass_escape() {
 }
 
 ts_to_cs() {
-    # Convert [MM:SS.frac] or MM:SS.frac to centiseconds (frac may be 1-3 digits)
+    # Convert [MM:SS.frac], [HH:MM:SS.frac] or the same without brackets to
+    # centiseconds (frac may be 1-3 digits)
     local ts="${1#[}"
     ts="${ts%]}"
+    local hours=0
+    if [[ "$ts" == *:*:* ]]; then
+        hours="${ts%%:*}"
+        ts="${ts#*:}"
+    fi
     local min="${ts%%:*}"
     local rest="${ts#*:}"
     local sec="${rest%.*}"
@@ -227,7 +286,7 @@ ts_to_cs() {
     [[ "$rest" == *.* ]] && frac="${rest#*.}"
     frac="${frac}00"
     # 10# forces base 10 so "08"/"09" are not parsed as octal
-    echo $(( 10#$min * 6000 + 10#$sec * 100 + 10#${frac:0:2} ))
+    echo $(( 10#$hours * 360000 + 10#$min * 6000 + 10#$sec * 100 + 10#${frac:0:2} ))
 }
 
 cs_to_ass() {
@@ -253,8 +312,10 @@ read_lyrics() {
         line_no=$((line_no + 1))
         line="${line%$'\r'}"
         [[ -z "${line//[[:space:]]/}" || "$line" == \#* ]] && continue
-        if [[ "$line" =~ ^\[([0-9]+:[0-9]+(\.[0-9]+)?)\][[:space:]]*(.*)$ ]]; then
-            text="${BASH_REMATCH[3]}"
+        # LRC header tags ([ar:Artist], [ti:Title], [offset:+100], ...) carry no lyrics
+        [[ "$line" =~ ^\[[A-Za-z#]+:[^]]*\][[:space:]]*$ ]] && continue
+        if [[ "$line" =~ ^\[(([0-9]+:)?[0-9]+:[0-9]+(\.[0-9]+)?)\][[:space:]]*(.*)$ ]]; then
+            text="${BASH_REMATCH[4]}"
             text="${text%"${text##*[![:space:]]}"}"
             last=$(( ${#LYRIC_TEXT[@]} - 1 ))
             if [[ -z "$text" ]] && { (( last < 0 )) || [[ -n "${LYRIC_END_CS[last]}" ]]; }; then
@@ -342,13 +403,14 @@ create_karaoke() {
 
     require_one_of style "$style" "$KARAOKE_STYLES"
     check_output "$output_file"
+    resolve_res 1920 1080
     echo "Creating karaoke ASS from: $lyrics_file (style: $style)"
 
     read_lyrics "$lyrics_file"
-    get_style_header "$style" > "$output_file"
-    echo "" >> "$output_file"
-    echo "[Events]" >> "$output_file"
-    echo "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text" >> "$output_file"
+    {
+        get_style_header "$style"
+        printf '%s\n' "" "[Events]" "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"
+    } > "$output_file"
 
     local i start end
     for ((i = 0; i < ${#LYRIC_TEXT[@]}; i++)); do
@@ -374,15 +436,18 @@ create_kinetic() {
     require_one_of effect "$effect" "$KINETIC_EFFECTS"
     require_one_of platform "$platform" "$PLATFORMS"
     check_output "$output_file"
+    # Vertical platforms default to a 9:16 canvas, YouTube to 16:9
+    if [[ "$platform" == youtube ]]; then resolve_res 1920 1080; else resolve_res 1080 1920; fi
     echo "Creating kinetic captions from: $lyrics_file (effect: $effect, platform: $platform)"
 
     read_lyrics "$lyrics_file"
-    get_kinetic_header "$platform" > "$output_file"
-    echo "" >> "$output_file"
-    echo "[Events]" >> "$output_file"
-    echo "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text" >> "$output_file"
+    {
+        get_kinetic_header "$platform"
+        printf '%s\n' "" "[Events]" "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text"
+    } > "$output_file"
 
-    local style_name=$(get_style_for_effect "$effect")
+    local style_name
+    style_name=$(get_style_for_effect "$effect")
     # Words share one screen position, so each word ends exactly when the next starts
     local word_overlap=0
 
@@ -411,6 +476,7 @@ apply_karaoke() {
     local video="$1"
     local subtitles="$2"
     local output="$3"
+    require_tools ffmpeg ffprobe
 
     if [[ ! -f "$video" ]]; then
         echo "Error: Video file not found: $video"
@@ -423,20 +489,71 @@ apply_karaoke() {
     fi
 
     check_output "$output"
+    # The output is libx264 + copied audio; WebM and friends cannot hold it
+    local ext="${output##*.}"
+    case "${ext,,}" in
+        mp4|m4v|mov|mkv) ;;
+        *)
+            echo "Error: Output must end in .mp4, .m4v, .mov or .mkv (H.264 video): $output"
+            exit 1
+            ;;
+    esac
     video=$(safe_path "$video")
     subtitles=$(safe_path "$subtitles")
     output=$(safe_path "$output")
+
+    # First real video stream (cover art is not one). Without it ffmpeg would
+    # ignore -vf and write an audio-only file with no captions.
+    local vidx
+    vidx=$(first_video_index "$video")
+    if [[ -z "$vidx" ]]; then
+        echo "Error: No video stream found in: $video"
+        exit 1
+    fi
+
+    # Captions are laid out on the ASS canvas (PlayResX x PlayResY) and stretched
+    # to the frame; a different aspect ratio distorts positions and sizes
+    local play_w play_h vid_w vid_h rot
+    play_w=$(sed -n 's/^PlayResX:[[:space:]]*\([0-9]*\).*/\1/p' "$subtitles" | head -n1)
+    play_h=$(sed -n 's/^PlayResY:[[:space:]]*\([0-9]*\).*/\1/p' "$subtitles" | head -n1)
+    { read -r vid_w; read -r vid_h; } < <(ffprobe -v error -select_streams "$vidx" \
+        -show_entries stream=width,height -of default=nw=1:nk=1 "$video")
+    rot=$(ffprobe -v error -select_streams "$vidx" -show_entries stream_side_data=rotation \
+        -of default=nw=1:nk=1 "$video" | head -n1)
+    [[ "$rot" =~ ^-?(90|270)$ ]] && { local t=$vid_w; vid_w=$vid_h; vid_h=$t; }
+    if [[ "$play_w" =~ ^[0-9]+$ && "$play_h" =~ ^[0-9]+$ && "$vid_w" =~ ^[0-9]+$ && "$vid_h" =~ ^[0-9]+$ ]] &&
+       (( play_w > 0 && play_h > 0 )); then
+        # aspect ratios differ by more than 2%
+        local d=$(( play_w * vid_h - play_h * vid_w ))
+        (( d < 0 )) && d=$(( -d ))
+        if (( d * 50 > play_w * vid_h )); then
+            echo "Warning: $subtitles is laid out for ${play_w}x${play_h}, but the video is ${vid_w}x${vid_h}." >&2
+            echo "         Captions will be distorted. Recreate it with --video ${video} (or --res ${vid_w}x${vid_h})." >&2
+        fi
+    fi
+
+    # Deinterlace first: captions drawn on interlaced frames would comb, and the
+    # output is progressive
+    local pre_vf="" field_order
+    field_order=$(interlaced_field_order "$video" "$vidx")
+    if [[ -n "$field_order" ]]; then
+        pre_vf="bwdif=mode=send_frame,"
+        echo "Interlaced source (field order $field_order): deinterlacing with bwdif"
+    fi
+
     # The output did not exist before, so remove a partial file if ffmpeg fails;
     # otherwise the leftover would make every retry stop at check_output
     PARTIAL_OUTPUT="$output"
+    # shellcheck disable=SC2154  # rc is assigned inside the trap string
     trap 'rc=$?; (( rc != 0 )) && rm -f -- "$PARTIAL_OUTPUT"; exit $rc' EXIT
 
     echo "Burning karaoke subtitles into video..."
 
     # yuv420p (and so even dimensions) keeps the output playable everywhere:
-    # libx264 would otherwise keep a 4:4:4 or 10-bit source format (High 4:4:4 / High 10)
-    ffmpeg -n -i "$video" \
-        -vf "ass=$(filter_escape "$subtitles"),crop=trunc(iw/2)*2:trunc(ih/2)*2" \
+    # libx264 would otherwise keep a 4:4:4 or 10-bit source format (High 4:4:4 / High 10).
+    # out_range=tv: full-range (JPEG-style) input would otherwise stay full range.
+    ffmpeg -nostdin -n -i "$video" -map "0:${vidx}" -map "0:a:0?" \
+        -vf "${pre_vf}ass=$(filter_escape "$subtitles"),crop=trunc(iw/2)*2:trunc(ih/2)*2,scale=out_range=tv" \
         -c:v libx264 -crf 18 -preset medium -pix_fmt yuv420p \
         -movflags +faststart -c:a copy "$output"
 
@@ -454,8 +571,10 @@ create_template() {
     case "$style" in
         kinetic-pop|kinetic-grow|kinetic-bounce|kinetic-elastic)
             local effect="${style#kinetic-}"
+            resolve_res 1080 1920
             get_kinetic_header "tiktok" > "$output"
-            local style_name=$(get_style_for_effect "$effect")
+            local style_name
+            style_name=$(get_style_for_effect "$effect")
 
             cat >> "$output" << EOF
 
@@ -471,12 +590,14 @@ EOF
             # Each word ends exactly when the next begins (same screen position)
             local start_cs=500 word_cs=50
             for word in "${example_words[@]}"; do
-                local kinetic_text=$(get_kinetic_effect "$effect" "$word")
+                local kinetic_text
+                kinetic_text=$(get_kinetic_effect "$effect" "$word")
                 echo "Dialogue: 0,$(cs_to_ass "$start_cs"),$(cs_to_ass $((start_cs + word_cs))),${style_name},,0,0,0,,${kinetic_text}" >> "$output"
                 start_cs=$((start_cs + word_cs))
             done
             ;;
         *)
+            resolve_res 1920 1080
             get_style_header "$style" > "$output"
 
             cat >> "$output" << EOF

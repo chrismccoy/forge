@@ -1,3 +1,16 @@
+# FFmpeg Video Analysis Filters
+
+Video analysis filters for quality control and automation: detection (black, freeze, blur, scene, crop, interlace), quality metrics (PSNR, SSIM, VMAF), signal statistics, and frame information.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Detection Filters](#detection-filters): blackdetect, blackframe, freezedetect, blurdetect, scdet, cropdetect, idet
+- [Quality Metrics](#quality-metrics): psnr, ssim, libvmaf, vmafmotion, signalstats
+- [Frame Information](#frame-information): showinfo, siti
+- [Automation Patterns](#automation-patterns): QC pipeline script, scene-change frame extraction, quality comparison batch
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Task | Filter | Command Pattern |
@@ -6,15 +19,12 @@
 | Detect frozen frames | `freezedetect` | `-vf freezedetect=n=0.003:d=2` |
 | Detect blur | `blurdetect` | `-vf blurdetect=low=0.05:high=0.12` |
 | Auto crop | `cropdetect` | `-vf cropdetect=24:16:0` |
-| Scene changes | `scdet` | `-vf scdet=threshold=10` |
+| Scene changes | `scdet` | `-vf scdet=threshold=10` (log lines `lavfi.scd.time`) |
 | Quality metrics | `psnr`, `ssim` | `-lavfi "[0:v][1:v]psnr" -f null -` |
 | Frame info | `showinfo` | `-vf showinfo` |
 
----
+Detectors log to stderr. When piping that log into `grep`, add `-hide_banner -nostats`: without `-nostats` the progress line (`frame= ... speed=`) is written with a carriage return and can share a line with a detector message.
 
-# FFmpeg Video Analysis Filters
-
-Comprehensive guide to video analysis filters for quality control, automation, and professional workflows.
 
 ## Detection Filters
 
@@ -30,10 +40,10 @@ ffmpeg -i input.mp4 -vf "blackdetect=d=0.5:pic_th=0.98:pix_th=0.10" -f null -
 ffmpeg -i input.mp4 -vf "blackdetect=d=0.1:pic_th=0.90" -f null -
 
 # Save detection results to log
-ffmpeg -i input.mp4 -vf "blackdetect=d=0.5" -f null - 2>&1 | grep blackdetect
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "blackdetect=d=0.5" -f null - 2>&1 | grep blackdetect
 
-# Detect and extract black segments
-ffmpeg -i input.mp4 -vf "blackdetect=d=2.0" -f null - 2>&1 | \
+# Detect and extract black segments (start and end times, one per line)
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "blackdetect=d=2.0" -f null - 2>&1 | \
   grep -oP 'black_start:\K[0-9.]+|black_end:\K[0-9.]+'
 ```
 
@@ -58,7 +68,8 @@ Similar to blackdetect but reports individual frames and their blackness amount.
 ffmpeg -i input.mp4 -vf "blackframe=amount=98:threshold=32" -f null -
 
 # Output includes frame number and percentage
-ffmpeg -i input.mp4 -vf "blackframe=amount=90" -f null - 2>&1 | grep blackframe
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "blackframe=amount=90" -f null - 2>&1 | grep blackframe
+# [Parsed_blackframe_0 @ 0x...] frame:50 pblack:100 pts:25600 t:2.000000 type:B last_keyframe:0
 ```
 
 **Parameters:**
@@ -88,11 +99,11 @@ ffmpeg -i input.mp4 -vf "freezedetect=n=0:d=1" -f null -
 | `n` | Noise tolerance (frame diff) | 0.001 | 0-1 |
 | `d` | Minimum freeze duration | 2.0 | > 0 |
 
-**Output format:**
+**Output format** (FFmpeg 8.0.1; the same keys are attached as frame metadata):
 ```text
-[freezedetect @ 0x...] freeze_start: 45.2
-[freezedetect @ 0x...] freeze_duration: 3.5
-[freezedetect @ 0x...] freeze_end: 48.7
+[freezedetect @ 0x...] lavfi.freezedetect.freeze_start: 4
+[freezedetect @ 0x...] lavfi.freezedetect.freeze_duration: 3.04
+[freezedetect @ 0x...] lavfi.freezedetect.freeze_end: 7.04
 ```
 
 ### blurdetect - Detect Blurry Frames
@@ -108,6 +119,9 @@ ffmpeg -i input.mp4 -vf "blurdetect=low=0.03:high=0.1" -f null -
 
 # Output blur values per frame
 ffmpeg -i input.mp4 -vf "blurdetect,metadata=print:file=blur.txt" -f null -
+
+# Average over the file (printed at the end)
+ffmpeg -hide_banner -nostats -i input.mp4 -vf blurdetect -f null - 2>&1 | grep -o 'blur mean: .*'
 ```
 
 **Parameters:**
@@ -122,34 +136,43 @@ ffmpeg -i input.mp4 -vf "blurdetect,metadata=print:file=blur.txt" -f null -
 | `planes` | Planes to analyze | 1 | 0-15 |
 
 **Output metadata:**
-- `lavfi.blur` - Blur value (lower = blurrier)
+- `lavfi.blur` - Blur value (**higher = blurrier**). Measured: testsrc2 4.48, the same with `gblur=sigma=4` 12.87.
+- Flat frames (black, solid colour) have no edges and give `nan`. One such frame makes the end-of-file `blur mean` print `-nan`; exclude flat sections or average the per-frame values that are numbers.
 
 ### scdet - Scene Change Detection
 
 Detects scene changes based on frame-to-frame differences.
 
 ```bash
-# Basic scene detection
-ffmpeg -i input.mp4 -vf "scdet=threshold=10:sc_pass=1" -f null -
+# Basic scene detection (each cut is logged: lavfi.scd.score: 31.337, lavfi.scd.time: 2)
+ffmpeg -i input.mp4 -vf "scdet=threshold=10" -f null -
 
 # More sensitive (detect more scene changes)
 ffmpeg -i input.mp4 -vf "scdet=threshold=5" -f null -
 
-# Output scene changes with timestamps
-ffmpeg -i input.mp4 -vf "scdet=t=10,metadata=print:file=scenes.txt" -f null -
+# Write only the scene changes with timestamps to a file
+# (metadata=print alone writes mafd/score for EVERY frame)
+ffmpeg -i input.mp4 -vf "scdet=t=10,metadata=select:key=lavfi.scd.time,metadata=print:file=scenes.txt" -f null -
 
-# Combined with select filter to extract scene thumbnails
-ffmpeg -i input.mp4 -vf "scdet=threshold=10,select='gt(scene,0.4)',showinfo" \
-  -fps_mode vfr scene_%04d.jpg
+# Same with sc_pass: scdet itself drops all non-cut frames
+ffmpeg -i input.mp4 -vf "scdet=t=10:sc_pass=1,metadata=print:file=scenes.txt" -f null -
+
+# Extract one thumbnail per cut: scdet with sc_pass passes only the cut frames
+ffmpeg -i input.mp4 -vf "scdet=threshold=10:sc_pass=1,showinfo" \
+  -fps_mode vfr scene_%04d.png
+
+# Alternative: select's own scene score (0-1 scale, independent of scdet)
+ffmpeg -i input.mp4 -vf "select='gt(scene,0.4)',showinfo" \
+  -fps_mode vfr scene_%04d.png
 ```
 
-> **Gotcha (verified on 8.0.1):** if `select` passes zero frames, JPEG output fails with `Non full-range YUV is non-standard` and exit code 234, because the encoder never sees a frame to negotiate range from. Write `.png` instead, or treat that error as "no scenes found" in scripts.
+> **Gotcha (verified on 8.0.1):** if no frame passes (`select` or `sc_pass`), JPEG output fails with `Non full-range YUV is non-standard` and exit code 234, because the encoder never sees a frame to negotiate range from. Write `.png` instead, or treat that error as "no scenes found" in scripts.
 
 **Parameters:**
 | Parameter | Description | Default | Range |
 |-----------|-------------|---------|-------|
 | `threshold` / `t` | Scene change threshold | 10.0 | 0-100 |
-| `sc_pass` | Pass scene score to output | 0 | 0-1 |
+| `sc_pass` / `s` | Output only scene-change frames (drops all others) | 0 | 0-1 |
 
 **Output metadata:**
 - `lavfi.scd.score` - Scene change score (0-100, same scale as `threshold`)
@@ -167,10 +190,11 @@ ffmpeg -i input.mp4 -vf "cropdetect=24:16:0" -f null -
 # More aggressive detection (lower threshold)
 ffmpeg -i input.mp4 -vf "cropdetect=16:2:0" -f null -
 
-# Detect and apply crop in one command
-crop=$(ffmpeg -i input.mp4 -vf "cropdetect=24:16:0" -f null - 2>&1 | \
-  grep -oP 'crop=\K[0-9:]+' | tail -1)
-ffmpeg -i input.mp4 -vf "crop=$crop" output.mp4
+# Detect, then apply the last reported crop
+crop=$(ffmpeg -hide_banner -nostats -i input.mp4 -vf "cropdetect=24:16:0" -f null - 2>&1 | \
+  grep -oP 'crop=\K[0-9]+:[0-9]+:[0-9]+:[0-9]+' | tail -1)
+[ -n "$crop" ] || { echo "cropdetect found nothing" >&2; exit 1; }
+ffmpeg -n -i input.mp4 -vf "crop=$crop" -c:v libx264 -crf 20 -pix_fmt yuv420p -c:a copy output.mp4
 
 # Detect letterbox dimensions
 ffmpeg -i input.mp4 -vf "cropdetect=round=2:reset=0" -f null - 2>&1 | grep crop
@@ -197,8 +221,9 @@ Detects whether video is interlaced and identifies field order.
 # Basic interlace detection
 ffmpeg -i input.mp4 -vf "idet" -frames:v 500 -f null -
 
-# Output detection summary
-ffmpeg -i input.mp4 -vf "idet" -f null - 2>&1 | grep -A5 "Repeated Fields"
+# Output detection summary (last copy = real counts)
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "idet" -f null - 2>&1 | \
+  grep -E "Repeated Fields|frame detection" | tail -3
 ```
 
 **Output includes** (the summary is printed twice; the first copy is all
@@ -230,9 +255,9 @@ ffmpeg -i original.mp4 -i encoded.mp4 \
 ffmpeg -i original.mp4 -i encoded.mp4 \
   -lavfi "[0:v][1:v]psnr=stats_file=psnr.log" -f null -
 
-# Get average PSNR only
-ffmpeg -i original.mp4 -i encoded.mp4 \
-  -lavfi "[0:v][1:v]psnr" -f null - 2>&1 | grep "average"
+# Get average PSNR only ("inf" when the inputs are identical)
+ffmpeg -hide_banner -nostats -i original.mp4 -i encoded.mp4 \
+  -lavfi "[0:v][1:v]psnr" -f null - 2>&1 | grep -oE 'average:([0-9.]+|inf)'
 ```
 
 **Output format:**
@@ -277,7 +302,7 @@ ffmpeg -i original.mp4 -i encoded.mp4 \
 
 ### libvmaf - VMAF Perceptual Quality Score
 
-Netflix's VMAF (0-100, higher is better). Needs an FFmpeg built with `--enable-libvmaf` (check: `ffmpeg -hide_banner -filters | grep libvmaf`).
+Netflix's VMAF (0-100, higher is better). Needs an FFmpeg built with `--enable-libvmaf` (check: `ffmpeg -hide_banner -filters | grep libvmaf`). The commands in this section are help/source-checked only: the test build has no libvmaf.
 
 ```bash
 # Distorted (encoded) input FIRST, reference (original) SECOND
@@ -309,11 +334,12 @@ ffmpeg -i distorted_4k.mp4 -i reference_4k.mp4 \
 Calculates motion activity score used by VMAF.
 
 ```bash
-# Calculate motion score
-ffmpeg -i input.mp4 -vf "vmafmotion" -f null - 2>&1 | grep vmafmotion
+# Calculate motion score (per-frame values: vmafmotion=stats_file=motion.log)
+ffmpeg -i input.mp4 -vf "vmafmotion" -f null -
 
-# Get average motion
-ffmpeg -i input.mp4 -vf "vmafmotion" -f null - 2>&1 | tail -1
+# Get average motion: the line is "[Parsed_vmafmotion_0 @ ...] VMAF Motion avg: 1.449"
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "vmafmotion" -f null - 2>&1 | \
+  grep -oE 'VMAF Motion avg: [0-9.]+'
 ```
 
 ### signalstats - Video Signal Statistics
@@ -328,7 +354,7 @@ ffmpeg -i input.mp4 -vf "signalstats=stat=tout+vrep+brng" -f null -
 ffmpeg -i input.mp4 -vf "signalstats,metadata=print:file=stats.txt" -f null -
 
 # Check for broadcast-safe levels
-ffmpeg -i input.mp4 -vf "signalstats=stat=brng,metadata=print" -f null - 2>&1 | \
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "signalstats=stat=brng,metadata=print" -f null - 2>&1 | \
   grep "lavfi.signalstats.BRNG"
 ```
 
@@ -345,7 +371,7 @@ ffmpeg -i input.mp4 -vf "signalstats=stat=brng,metadata=print" -f null - 2>&1 | 
 - `UMIN`, `UMAX`, `VMIN`, `VMAX` - Chroma range
 - `SATMIN`, `SATMAX`, `SATAVG` - Saturation
 - `HUEAVG` - Average hue
-- `BRNG` - Out of broadcast range pixel count
+- `BRNG` - Fraction of pixels outside broadcast range (0-1, e.g. `0.0087`; only with `stat=brng`)
 
 ---
 
@@ -363,7 +389,7 @@ ffmpeg -i input.mp4 -vf "showinfo" -f null -
 ffmpeg -i input.mp4 -vf "select='eq(n,0)+eq(n,100)',showinfo" -f null -
 
 # Parse specific information
-ffmpeg -i input.mp4 -vf "showinfo" -f null - 2>&1 | grep "pts_time"
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "showinfo" -f null - 2>&1 | grep -o "n: *[0-9]* pts: *[0-9]* pts_time:[0-9.]*"
 ```
 
 **Output includes:**
@@ -391,7 +417,7 @@ ITU-T P.910 compliant SI/TI calculation.
 ```bash
 # Calculate SI/TI and print the summary (siti prints nothing by default;
 # ffmpeg logs the summary twice, the last block is the real one)
-ffmpeg -i input.mp4 -vf "siti=print_summary=1" -f null - 2>&1 | grep -A11 "SITI Summary" | tail -11
+ffmpeg -hide_banner -nostats -i input.mp4 -vf "siti=print_summary=1" -f null - 2>&1 | grep -A11 "SITI Summary" | tail -11
 
 # Per-frame SI/TI to file (lavfi.siti.si / lavfi.siti.ti metadata)
 ffmpeg -i input.mp4 -vf "siti,metadata=print:file=siti.txt" -f null -
@@ -405,7 +431,102 @@ ffmpeg -i input.mp4 -vf "siti,metadata=print:file=siti.txt" -f null -
 
 ## Automation Patterns
 
-Shell automation recipes for batch analysis, structured report generation, threshold checks, and CI-style validation around FFmpeg detection filters, quality metrics, and frame information live in `analysis-automation-patterns.md`. Load that reference when turning ad hoc analysis commands into repeatable pipelines.
+Repeatable QC pipelines, scene extraction, and batch quality comparison built on the filters above.
+
+### QC Pipeline Script
+
+```bash
+#!/bin/bash
+# qc.sh - video QC: black, freeze, scene cuts, crop, interlace, broadcast range
+INPUT="$1"
+OUTPUT_DIR="qc_results"
+[ -f "$INPUT" ] || { echo "usage: $0 VIDEO" >&2; exit 1; }
+ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 "$INPUT" |
+  grep -q . || { echo "No video stream in $INPUT" >&2; exit 1; }
+mkdir -p "$OUTPUT_DIR"
+
+# Run ffmpeg on the input; the log goes to stdout (no banner, no progress lines)
+ff() { ffmpeg -hide_banner -nostdin -nostats -i "$INPUT" "$@" -f null - 2>&1; }
+
+echo "Analyzing: $INPUT"
+
+# 1. Black segments
+ff -vf "blackdetect=d=0.5" | grep -o 'black_start.*' > "$OUTPUT_DIR/black_frames.txt"
+
+# 2. Freezes
+ff -vf "freezedetect=n=0.003:d=2" | grep -o 'lavfi.freezedetect.*' > "$OUTPUT_DIR/frozen_frames.txt"
+
+# 3. Scene cuts only (score and time per cut)
+ff -vf "scdet=threshold=10" | grep -o 'lavfi.scd.score.*' > "$OUTPUT_DIR/scenes.txt"
+
+# 4. Crop (last estimate)
+ff -vf "cropdetect=24:16:0" | grep -o 'crop=[0-9:]*' | tail -1 > "$OUTPUT_DIR/crop.txt"
+
+# 5. Interlace (idet prints an all-zero summary first; keep the final one)
+ff -vf "idet" -frames:v 500 | grep -oE '(Repeated Fields|[A-Za-z]+ frame detection):.*' |
+  tail -3 > "$OUTPUT_DIR/interlace.txt"
+
+# 6. Broadcast range: frames with more than 1% of pixels out of range
+ff -vf "signalstats=stat=brng,metadata=print" |
+  awk -F= '/lavfi.signalstats.BRNG/ { n++; if ($2 > 0.01) bad++ }
+           END { printf "frames: %d, BRNG > 1%%: %d\n", n, bad }' > "$OUTPUT_DIR/signal.txt"
+
+# A run that analyzed nothing (decode failure) leaves no idet counts
+grep -q 'TFF' "$OUTPUT_DIR/interlace.txt" || { echo "Analysis failed for $INPUT" >&2; exit 1; }
+
+echo "QC analysis complete. Results in $OUTPUT_DIR/"
+for f in "$OUTPUT_DIR"/*.txt; do echo "== $f"; cat "$f"; done
+```
+
+### Extract Frames at Scene Changes
+
+```bash
+# One frame per cut: scdet with sc_pass passes only the cut frames.
+# -frame_pts 1 numbers files by the frame timestamp in output time-base units
+# (the frame index for constant-rate input: scene_00000050.png = frame 50), not 1, 2, 3.
+# PNG output: with zero cuts a JPEG encoder fails with "Non full-range YUV" (exit 234).
+ffmpeg -n -i input.mp4 \
+  -vf "scdet=threshold=10:sc_pass=1" \
+  -fps_mode vfr \
+  -frame_pts 1 \
+  scene_%08d.png
+
+# Log timestamps alongside extracted frames (image2 does not expand %{pts} in filenames)
+ffmpeg -hide_banner -nostats -n -i input.mp4 \
+  -vf "scdet=threshold=10:sc_pass=1,showinfo" \
+  -fps_mode vfr \
+  scene_%04d.png 2>&1 | grep -o 'pts_time:[0-9.]*'
+```
+
+### Quality Comparison Batch
+
+```bash
+#!/bin/bash
+# Compare multiple encodes against a reference
+REFERENCE="reference.mp4"
+[ -f "$REFERENCE" ] || { echo "Missing $REFERENCE" >&2; exit 1; }
+
+for encoded in encode_*.mp4; do
+  [ -f "$encoded" ] || continue
+  echo "Comparing: $encoded"
+
+  # PSNR ("inf" when the two inputs are identical)
+  psnr=$(ffmpeg -hide_banner -nostdin -nostats -i "$encoded" -i "$REFERENCE" \
+    -lavfi "[0:v][1:v]psnr" -f null - 2>&1 | grep -oE 'average:([0-9.]+|inf)' | cut -d: -f2)
+
+  # SSIM
+  ssim=$(ffmpeg -hide_banner -nostdin -nostats -i "$encoded" -i "$REFERENCE" \
+    -lavfi "[0:v][1:v]ssim" -f null - 2>&1 | grep -oE 'All:[0-9.]+' | cut -d: -f2)
+
+  if [ -z "$psnr" ] || [ -z "$ssim" ]; then
+    echo "  FAILED (could not compare)" >&2
+  else
+    echo "  PSNR: $psnr dB, SSIM: $ssim"
+  fi
+done
+```
+
+Both inputs need the same resolution and frame count; scale or trim first if they differ (see the libvmaf notes above).
 
 ---
 
@@ -414,8 +535,8 @@ Shell automation recipes for batch analysis, structured report generation, thres
 1. **Use appropriate thresholds** - Start with defaults, adjust based on content
 2. **Sample long videos** - Use `-t` to analyze portions first
 3. **Combine filters** - Chain detection filters for comprehensive analysis
-4. **Parse output** - Use grep/awk to extract relevant data
+4. **Parse output** - Use grep/awk to extract relevant data; add `-hide_banner -nostats` so progress lines do not mix into the log
 5. **Batch processing** - Create scripts for consistent QC workflows
 6. **Log results** - Use `metadata=print:file=` to save results
 
-This guide covers video analysis filters. For encoding quality, see `fundamentals.md`. For hardware-accelerated analysis, check GPU filter support in `hwaccel.md`.
+Audio measurement (astats, ebur128, volumedetect) is in `audio-measurement.md`. Encoder quality settings are in `fundamentals-common-operations.md`; GPU filter support is in `hwaccel.md`.

@@ -1,17 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Check FFmpeg codec and encoder availability
 
+# shellcheck source=lib/filter-escape.sh
+. "$(dirname "${BASH_SOURCE[0]}")/lib/filter-escape.sh" || exit 1
+require_bash_43
+
 set -e  # check_* functions return 1 on "missing"; callers below append "|| true"
+
+case "$1" in
+    -h|--help)
+        echo "Usage: $0"
+        echo ""
+        echo "Lists which encoders, decoders, filters, muxers, protocols and hwaccels"
+        echo "this FFmpeg build has. ✓ means compiled in, not that the GPU is present."
+        exit 0
+        ;;
+esac
 
 # Colors (only when stdout is a terminal, so piped/logged output stays clean)
 if [ -t 1 ]; then
     RED='\033[0;31m'
     GREEN='\033[0;32m'
     YELLOW='\033[1;33m'
-    BLUE='\033[0;34m'
     NC='\033[0m' # No Color
 else
-    RED='' GREEN='' YELLOW='' BLUE='' NC=''
+    RED='' GREEN='' YELLOW='' NC=''
 fi
 
 echo "=== FFmpeg Codec Availability Check ==="
@@ -36,6 +49,19 @@ if [ "$MAJOR_VERSION" -lt 8 ] 2>/dev/null; then
     echo ""
 fi
 
+# Each list is read once; the checks below match the name column exactly
+# (awk $2 == name), so a word in a description never counts as a match
+ENCODERS=$(ffmpeg -hide_banner -encoders 2>/dev/null || true)
+DECODERS=$(ffmpeg -hide_banner -decoders 2>/dev/null || true)
+FILTERS=$(ffmpeg -hide_banner -filters 2>/dev/null || true)
+MUXERS=$(ffmpeg -hide_banner -muxers 2>/dev/null || true)
+PROTOCOLS=$(ffmpeg -hide_banner -protocols 2>/dev/null || true)
+
+# has_name <list> <name> [flag-regex]: name in column 2, flags (column 1) matching the regex
+has_name() {
+    awk -v n="$2" -v f="${3:-.}" '$2 == n && $1 ~ f { found = 1 } END { exit !found }' <<< "$1"
+}
+
 # Video Encoders
 echo "=== Video Encoders ==="
 echo ""
@@ -43,7 +69,7 @@ echo ""
 check_encoder() {
     local encoder=$1
     local name=$2
-    if ffmpeg -encoders 2>/dev/null | grep -q "^ [VAS]..... $encoder "; then
+    if has_name "$ENCODERS" "$encoder" '^[VAS]'; then
         echo -e "${GREEN}[✓] $name ($encoder)${NC}"
         return 0
     else
@@ -97,7 +123,7 @@ echo ""
 check_decoder() {
     local decoder=$1
     local name=$2
-    if ffmpeg -decoders 2>/dev/null | grep -q "^ V..... $decoder "; then
+    if has_name "$DECODERS" "$decoder" '^V'; then
         echo -e "${GREEN}[✓] $name ($decoder)${NC}"
         return 0
     else
@@ -139,7 +165,7 @@ echo ""
 check_filter() {
     local filter=$1
     local name=$2
-    if ffmpeg -filters 2>/dev/null | grep -q " $filter "; then
+    if has_name "$FILTERS" "$filter"; then
         echo -e "${GREEN}[✓] $name ($filter)${NC}"
         return 0
     else
@@ -166,7 +192,7 @@ echo ""
 HWACCELS=$(ffmpeg -hwaccels 2>/dev/null | tail -n +2)
 if [ -n "$HWACCELS" ]; then
     echo "Available hardware accelerators:"
-    echo "$HWACCELS" | while read hw; do
+    echo "$HWACCELS" | while read -r hw; do
         [ -n "$hw" ] && echo -e "  ${GREEN}[✓] $hw${NC}"
     done
 else
@@ -182,7 +208,7 @@ echo ""
 check_muxer() {
     local muxer=$1
     local name=$2
-    if ffmpeg -muxers 2>/dev/null | grep -q " $muxer "; then
+    if has_name "$MUXERS" "$muxer" 'E'; then
         echo -e "${GREEN}[✓] $name${NC}"
         return 0
     else
@@ -191,7 +217,14 @@ check_muxer() {
     fi
 }
 
-check_muxer "flv" "RTMP (FLV)" || true
+# RTMP needs both the rtmp protocol and the FLV muxer it carries
+# (-protocols lists names only, indented, under "Input:" and "Output:")
+if awk '/^Output:/ { out = 1 } out && $1 == "rtmp" { found = 1 } END { exit !found }' <<< "$PROTOCOLS" &&
+   has_name "$MUXERS" flv 'E'; then
+    echo -e "${GREEN}[✓] RTMP (rtmp protocol + FLV muxer)${NC}"
+else
+    echo -e "${RED}[✗] RTMP (rtmp protocol + FLV muxer)${NC}"
+fi
 check_muxer "hls" "HLS" || true
 check_muxer "dash" "DASH" || true
 check_muxer "rtsp" "RTSP" || true
@@ -204,10 +237,10 @@ echo "=== Summary ==="
 echo ""
 
 # Only the codec rows (" V....D name  ..."), not the legend line " V..... = Video"
-ENCODER_COUNT=$(ffmpeg -encoders 2>/dev/null | grep -cE '^ V[^ ]{5} [^ =]')
-DECODER_COUNT=$(ffmpeg -decoders 2>/dev/null | grep -cE '^ V[^ ]{5} [^ =]')
+ENCODER_COUNT=$(grep -cE '^ V[^ ]{5} [^ =]' <<< "$ENCODERS" || true)
+DECODER_COUNT=$(grep -cE '^ V[^ ]{5} [^ =]' <<< "$DECODERS" || true)
 # Only the filter rows (" TS name  A->V  ..."), not the legend above them
-FILTER_COUNT=$(ffmpeg -filters 2>/dev/null | grep -cE '^ [T.][S.] [^ ]+ +[^ ]*->')
+FILTER_COUNT=$(grep -cE '^ [T.][S.] [^ ]+ +[^ ]*->' <<< "$FILTERS" || true)
 
 echo "Note: ✓ means compiled in. Hardware encoders also need the matching GPU and driver."
 echo "Video encoders: $ENCODER_COUNT"

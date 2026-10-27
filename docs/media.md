@@ -14,13 +14,14 @@ It writes FFmpeg commands that work the first time and produce files that play e
 
 The rules come from testing, not only from the manual. Deliverables end in `yuv420p` so browsers and phones can play them, color tags are set in a way FFmpeg 8 actually keeps, loudness targets use two-pass `loudnorm`, filter paths are escaped at both levels, and seeking uses the fast, accurate option position. Commands are checked against the output they produce, not just their exit code.
 
-**Targets:** FFmpeg 7.1 LTS and 8.x, written against 8.0 and tested on 8.0.1. FFmpeg 9.0-specific features are not covered.
+**Targets:** FFmpeg 7.1 LTS and 8.0, verified on 8.0.1. Changes in 8.1 and later have not been reviewed.
 
 **Requirements:**
 
 - `ffmpeg` and `ffprobe` on `PATH` (`ffmpeg -version`).
-- Bash 4+ and `bc` for the helper scripts (`bc` is missing on some minimal systems).
-- Python 3, only for the kinetic-caption generator in `references/kinetic-captions-complete-generator.md`.
+- Bash 4.3+ for the helper scripts. On macOS, install a newer bash (e.g. Homebrew), since `/bin/bash` there is 3.2.
+- `bc` for `analyze-video.sh`, `benchmark-encoding.sh`, `apply-color-grade.sh` and the glitch `trails` effect (`bc` is missing on some minimal systems).
+- Python 3, only for `scripts/kinetic_captions.py`.
 - Optional features depend on how your FFmpeg was built. Run `scripts/check-codecs.sh` to see what yours has:
   - `whisper` filter for speech-to-text subtitles (FFmpeg 8.0+ built with whisper.cpp)
   - `libvmaf` for VMAF scores, `libvvenc` for VVC/H.266 encoding
@@ -28,48 +29,56 @@ The rules come from testing, not only from the manual. Deliverables end in `yuv4
 
 ## Technical Overview
 
-One slash command plus its procedure folder: one operating guide, 56 topic references, and 7 scripts.
+One slash command plus its procedure folder: one operating guide, 40 topic references, and 11 scripts.
 
 ```
 lib/ffmpeg-forge/
 ├── SKILL.md                     # workflow, non-negotiable rules, quality table, routing table, anti-patterns
-├── references/                  # loaded on demand
-│   ├── fundamentals*.md         # codecs, common operations, frame manipulation, versions, VVC, Vulkan codecs, Whisper
-│   ├── command-syntax*.md       # option order, every option, stream specifiers, timestamps, format options, device init
-│   ├── filter-complex.md        # multi-input graphs, PiP, grids, ABR ladders
-│   ├── audio*.md                # codecs, loudness, EQ, dynamics, channels, measurement, troubleshooting
-│   ├── captions*.md             # burn-in, soft subtitles, conversion, CEA-608/708, drawtext, Whisper
-│   ├── analysis*.md             # ffprobe, detection filters, PSNR/SSIM/VMAF, QC automation
+├── references/                  # loaded on demand through the routing table (40 files)
+│   ├── fundamentals*.md         # codecs, common operations, version history, VVC, Vulkan compute codecs
+│   ├── command-syntax*.md       # option order, every option, stream specifiers, timestamps, bitstream filters, metadata
+│   ├── filters-basics.md, filter-complex.md   # single chains; multi-input graphs, PiP, grids, ABR ladders
+│   ├── audio.md, audio-chains.md, audio-measurement.md   # codecs, loudness, EQ, dynamics, channels, measurement
+│   ├── captions.md, whisper.md  # burn-in, soft subtitles, conversion, CEA-608/708, Whisper transcription
+│   ├── drawtext.md, drawtext-animation.md     # text overlays, tickers, countdowns, credits
+│   ├── analysis.md              # ffprobe, detection filters, PSNR/SSIM/VMAF, QC automation
+│   ├── streaming.md, capture.md # HLS/DASH, RTMP/SRT push, WHIP; screen, webcam, and audio capture
+│   ├── troubleshooting.md       # symptom table, common errors, smart-TV playback
 │   ├── deinterlace.md, denoise.md, stabilization-360.md      # restoration, vidstab, v360, zoompan
 │   ├── hwaccel*.md              # NVENC, Quick Sync, AMF/VAAPI/VideoToolbox, Vulkan, OpenCL, GPU memory
 │   ├── transitions.md, color-chromakey.md, shapes-graphics.md, glitch.md, waveforms.md
-│   ├── karaoke-text*.md, kinetic-captions*.md, animation-timing*.md   # animated text, karaoke, timing
-│   ├── research-gpu-filter-complex.md                         # hybrid GPU + CPU filter chains
-│   └── workflow-*.md            # transcode, audio, color, effects, kinetic, debug: step by step, with checklists
+│   └── karaoke-text.md, kinetic-captions.md, animation-timing.md, easing-and-springs.md   # animated text and timing
 └── scripts/
-    ├── check-codecs.sh                 # which encoders, decoders, filters, muxers and hwaccels your build has
+    ├── check-codecs.sh                 # which encoders, decoders, filters, muxers, protocols and hwaccels your build has
     ├── analyze-video.sh                # probe a file and print encoding recommendations
     ├── benchmark-encoding.sh           # compare encoder and preset speed and file size
+    ├── encode-to-size.sh               # two-pass encode to a target file size (upload limits)
+    ├── loudnorm-2pass.sh               # two-pass EBU R128 loudness normalization, verified after encoding
     ├── apply-color-grade.sh            # 8 color-grade presets, intensity 1-10
     ├── apply-glitch-effects.sh         # 7 glitch effects, intensity 1-10
+    ├── slideshow.sh                    # xfade slideshow from any number of images
     ├── generate-karaoke.sh             # karaoke and kinetic captions from timed lyrics, burned into video
-    └── generate-whisper-subtitles.sh   # subtitles with the whisper filter, including model download
+    ├── kinetic_captions.py             # kinetic ASS captions from word-level timestamps
+    ├── generate-whisper-subtitles.sh   # subtitles with the whisper filter, including model download
+    └── lib/filter-escape.sh            # shared helpers: filter-path escaping, bash and bc checks, stream selection
 ```
 
-`SKILL.md` holds the seven-step workflow, the rules for option order, seeking, `-vf` versus `-filter_complex`, delivery defaults and GPU pipelines, the per-encoder quality table, the routing table, and the anti-patterns. The command pre-approves only `Read` and `ffprobe`, which reads files and never writes them. Every `ffmpeg` command and script asks for permission first.
+`SKILL.md` holds the seven-step workflow, the most common recipes, the rules for option order, seeking, `-vf` versus `-filter_complex`, delivery defaults and GPU pipelines, the per-encoder quality table, the routing table, and the anti-patterns. The command pre-approves only `Read` and `ffprobe`, which reads files and never writes them. Every `ffmpeg` command and script asks for permission first.
 
-The scripts refuse to overwrite an existing output, remove partial output when ffmpeg fails, skip cover-art streams, keep the source frame count and duration, and handle paths containing spaces, `:`, `'`, `,`, `;`, `[` and `]`. Most print their usage when run with no arguments. `check-codecs.sh` takes none, and `benchmark-encoding.sh` with none benchmarks a generated test clip.
+The scripts refuse to overwrite an existing output, remove partial output when ffmpeg fails, skip cover-art streams, keep the source frame count and duration, and handle paths containing spaces, `:`, `'`, `,`, `;`, `[` and `]`. The bash scripts share `scripts/lib/filter-escape.sh`. Most print their usage when run with no arguments or `-h`. `check-codecs.sh` takes none, and `benchmark-encoding.sh` with none benchmarks a generated test clip.
 
 ## Features
 
 ### Encoding and conversion
 
-- Codec choice for H.264, H.265/HEVC, H.266/VVC, AV1 (SVT-AV1, libaom), VP9, ProRes, APV, and FFv1, with per-encoder quality defaults
-- CRF/CQ, bitrate, two-pass target size, and capped VBR
+- Codec choice for H.264, H.265/HEVC, H.266/VVC, AV1 (SVT-AV1, libaom), VP9, ProRes and DNxHR intermediates, and FFv1, with per-encoder quality defaults
+- CRF/CQ, bitrate, two-pass target size (`encode-to-size.sh`), and capped VBR
 - Remuxing without re-encoding, trimming, splitting, and concatenation, with fast versus frame-accurate seeking
 - Scaling, cropping, rotation, padding, frame rate, speed changes, reverse, loop, and freeze frame
 - Frames, thumbnails, contact sheets, and GIFs with palettes
-- Web, iOS, and Android presets; HLS, DASH, segment, RTMP/RTSP, and WHIP (WebRTC) on 8.0+
+- Web, iOS, Android, and smart-TV presets
+- Streaming: HLS and DASH (including ABR ladders), RTMP/RTMPS and SRT push, receiving streams, segment output, and WHIP (WebRTC) on 8.0+ builds that include it
+- Capture: screen (x11grab, kmsgrab, gdigrab, ddagrab, avfoundation), webcam (v4l2, dshow), and audio devices
 - Color tags that FFmpeg 8 keeps (`setparams`, `h264_metadata`), chapters, attachments, and disposition flags
 
 ### Filtergraphs and hardware
@@ -89,7 +98,7 @@ The scripts refuse to overwrite an existing output, remove partial output when f
 ### Subtitles and captions
 
 - Burn-in of SRT, Advanced SubStation Alpha (`.ass`), and WebVTT, with forced styling
-- Soft subtitle tracks for MP4, MKV, and WebM with languages and default and forced flags; conversion between formats; CEA-608/708
+- Soft subtitle tracks for MP4, MKV, and WebM with languages and default and forced flags; conversion between formats; CEA-608/708 extraction and passthrough (FFmpeg cannot author new 608/708 data)
 - `drawtext` overlays, countdowns, tickers, and scrolling credits
 - Whisper speech-to-text (FFmpeg 8.0+): models, languages, voice activity detection, and GPU
 
@@ -137,6 +146,7 @@ Tested on Ubuntu with FFmpeg 8.0.1 on CPU, plus Vulkan compute on an Intel iGPU:
 
 - **Scripts:** every glitch effect and color grade at intensity 1, 5, and 10 on `.mp4`, `.ts`, raw `.h264` and `.hevc` (24, 25, 30, and 60 fps), rotated, odd-size (321x241), audio-only, cover-art, and truncated input, with frame counts, durations, and `yuv420p` output checked. Every karaoke mode, including LRC input, CRLF files, and text containing `{}` and `\N`, with colors checked on rendered frames.
 - **References:** six independent review passes. The largest ran 1,410 command invocations from the reference files. Each confirmed error was fixed and re-run, including commands that exited 0 but gave wrong results (pixel format, color tags and range, duration, frame rate, sample rate, aspect ratio), checked by probing the output and sampling pixels.
-- **Known FFmpeg 8.0.1 issue:** `drawtext` with an animated `fontsize` expression segfaults on the Ubuntu build. Each affected recipe is marked, with a crash-free alternative (Advanced SubStation Alpha `\t` scaling).
+- **2026-10-27 review:** seven reviewers ran about 1,230 commands from the references and scripts. About 100 broken recipes and 36 failing script cases were fixed and re-run, including silent failures: `blend`/`tblend`/`displace` on YUV tinting the frame, chromakey output losing alpha, video-only timing filters desyncing audio, unclamped easing, and wrong interlaced field-order tags. A separate verification pass confirmed the fixes.
+\1 `drawtext` with an animated `fontsize` expression segfaults on the Ubuntu build. Each affected recipe is marked, with a crash-free alternative (Advanced SubStation Alpha `\t` scaling).
 - **Not tested** (no hardware or library on the test machine): NVENC/CUDA, Quick Sync, VAAPI, AMF, VideoToolbox, OpenCL, Vulkan Video encode and decode, `whisper`, `libvmaf`, `libvvenc`, and `lensfun`. These recipes were checked against `ffmpeg -h` option listings and the FFmpeg 8.0 sources.
 

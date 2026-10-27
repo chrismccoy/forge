@@ -1,5 +1,7 @@
 # AMD AMF, VAAPI, and Apple VideoToolbox
 
+Encoding, decoding and GPU filters on AMD (AMF on Windows), VAAPI (Linux AMD and Intel) and Apple VideoToolbox (macOS): requirements, device setup, rate control and full GPU pipelines. Backend choice and the cross-vendor filter map are in `hwaccel.md`.
+
 ## AMD AMF
 
 ### Requirements
@@ -34,6 +36,20 @@ ffmpeg -i input.mp4 -c:v av1_amf -quality balanced -b:v 3M output.mp4
 | balanced | **Recommended** |
 | quality | Best quality |
 
+### AMF with Hardware Decode (Windows)
+
+AMF encoders accept D3D11 (and DXVA2) surfaces directly, so decode on the GPU and keep frames there:
+
+```bash
+# D3D11VA decode -> AMF encode
+ffmpeg -hwaccel d3d11va -hwaccel_output_format d3d11 \
+  -i input.mp4 -c:v hevc_amf -quality balanced output.mp4
+
+# DXVA2 decode (older Windows systems)
+ffmpeg -hwaccel dxva2 -hwaccel_output_format dxva2_vld \
+  -i input.mp4 -c:v h264_amf output.mp4
+```
+
 ### AMD Hardware Upscaling (FFmpeg 8.0+)
 
 ```bash
@@ -46,7 +62,7 @@ ffmpeg -i input.mp4 \
 ## VAAPI (Linux)
 
 ### Requirements
-- Intel, AMD, or NVIDIA GPU on Linux
+- Intel or AMD GPU on Linux. NVIDIA works only through the third-party `nvidia-vaapi-driver`, which is decode-only; encode on NVIDIA with NVENC (`hwaccel-nvidia-nvenc.md`)
 - VAAPI drivers (intel-media-driver, mesa-va-drivers)
 - FFmpeg built with `--enable-vaapi`
 
@@ -89,6 +105,34 @@ ffmpeg -hwaccel vaapi \
   -hwaccel_output_format vaapi \
   -i input.mp4 -vf 'scale_vaapi=w=1280:h=720' \
   -c:v h264_vaapi output.mp4
+```
+
+### VAAPI Deinterlacing
+
+```bash
+ffmpeg -hwaccel vaapi \
+  -hwaccel_device /dev/dri/renderD128 \
+  -hwaccel_output_format vaapi \
+  -i interlaced.mp4 -vf 'deinterlace_vaapi' \
+  -c:v h264_vaapi output.mp4
+```
+
+Other VAAPI filters: `denoise_vaapi`, `sharpness_vaapi`, `procamp_vaapi`, `tonemap_vaapi`, `transpose_vaapi`, `overlay_vaapi`, `pad_vaapi`, `drawbox_vaapi`, `hstack_vaapi`/`vstack_vaapi`/`xstack_vaapi`.
+
+### VAAPI Rate Control
+
+`-rc_mode` takes `auto`, `CQP`, `CBR`, `VBR`, `ICQ`, `QVBR`, `AVBR`; which ones work depends on the driver and GPU.
+
+```bash
+# Constant QP (SKILL.md default for *_vaapi)
+ffmpeg -vaapi_device /dev/dri/renderD128 \
+  -i input.mp4 -vf 'format=nv12,hwupload' \
+  -c:v hevc_vaapi -rc_mode CQP -qp 23 output.mp4
+
+# Capped VBR
+ffmpeg -vaapi_device /dev/dri/renderD128 \
+  -i input.mp4 -vf 'format=nv12,hwupload' \
+  -c:v h264_vaapi -rc_mode VBR -b:v 5M -maxrate 7M output.mp4
 ```
 
 ### VVC VAAPI Decoding (FFmpeg 8.0+)

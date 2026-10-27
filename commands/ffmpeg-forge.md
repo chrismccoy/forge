@@ -18,7 +18,7 @@ Task (if provided): $ARGUMENTS
 
 ## Intake
 
-If `$ARGUMENTS` names a task, a media file, or a failing command, treat it as the request. Load only the reference files the procedure's **Routing Table** names for that task, and follow a `workflow-*.md` procedure when one matches.
+If `$ARGUMENTS` names a task, a media file, or a failing command, treat it as the request. Load only the reference files the procedure's **Routing Table** names for that task.
 
 If `$ARGUMENTS` is empty, ask with `AskUserQuestion` - question: "What do you want to do with FFmpeg?", header: "Task":
 

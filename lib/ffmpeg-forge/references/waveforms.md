@@ -1,3 +1,24 @@
+# FFmpeg Waveforms and Audio Visualization
+
+Complete guide to generating audio waveforms, spectrum analyzers, and audio-reactive visualizations using FFmpeg.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Audio Visualization Filters](#audio-visualization-filters)
+- [Waveform Generation (showwaves)](#waveform-generation-showwaves)
+- [Static Waveform Images (showwavespic)](#static-waveform-images-showwavespic)
+- [Spectrum Visualization (showspectrum)](#spectrum-visualization-showspectrum)
+- [Static Spectrum Image (showspectrumpic)](#static-spectrum-image-showspectrumpic)
+- [Frequency Bars (showfreqs)](#frequency-bars-showfreqs)
+- [Constant-Q Transform (showcqt)](#constant-q-transform-showcqt)
+- [Vector Scope (avectorscope)](#vector-scope-avectorscope)
+- [Audio Histogram (ahistogram)](#audio-histogram-ahistogram)
+- [Combining Visualizations](#combining-visualizations)
+- [Podcast/Music Video Templates](#podcastmusic-video-templates)
+- [Performance Optimization](#performance-optimization)
+- [Troubleshooting](#troubleshooting)
+
 ## Quick Reference
 
 | Visualization | Filter | Output | Command Snippet |
@@ -15,13 +36,10 @@
 | `cool` | Blue tones |
 | `viridis` | Scientific colormap |
 
----
+Default colour is `channel`; the full list is under Spectrum Visualization.
 
-# FFmpeg Waveforms and Audio Visualization
 
-Complete guide to generating audio waveforms, spectrum analyzers, and audio-reactive visualizations using FFmpeg.
-
-> **Pixel format:** showwaves, showspectrum, showfreqs, avectorscope and ahistogram output RGB, which libx264 turns into a High 4:4:4 stream that browsers and phones will not play. The MP4 recipes below add `-pix_fmt yuv420p`; keep it (or end the graph with `format=yuv420p`) when adapting them. Recipes that overlay the visualization onto a yuv420p video or background already come out 4:2:0.
+> **Pixel format:** showwaves, showfreqs and avectorscope output RGBA, showspectrum outputs full-range `yuvj444p`, and ahistogram `yuva444p`. libx264 turns any of these into a High 4:4:4 stream that browsers and phones will not play. The MP4 recipes below add `-pix_fmt yuv420p`; keep it (or end the graph with `format=yuv420p`) when adapting them. Recipes that overlay the visualization onto a yuv420p video or background already come out 4:2:0.
 
 ## Audio Visualization Filters
 
@@ -104,19 +122,21 @@ ffmpeg -i audio.mp3 \
   -filter_complex "[0:a]showwaves=s=1280x360:mode=line:colors=red|blue:split_channels=1[v]" \
   -map "[v]" -pix_fmt yuv420p stereo_wave.mp4
 
-# Gradient-style (requires multiple passes)
+# Single accent colour
 ffmpeg -i audio.mp3 \
   -filter_complex "[0:a]showwaves=s=1280x360:mode=cline:colors=0xFF6600[v]" \
   -map "[v]" -pix_fmt yuv420p orange_wave.mp4
 ```
 
-### Rate and Scale
+### Rate, Speed and Scale
+
+showwaves draws a fresh page per frame. Each frame shows `sample_rate / rate` samples spread over the width, so `rate` (default 25) and the width set how much audio a frame covers. `n` (samples per column) overrides `rate`: with `n` set, the frame rate becomes `sample_rate / (n * width)`, e.g. 44100 / (2 * 1280) = 17.2 fps for `n=2`. Avoid `n` for video and set `rate` instead.
 
 ```bash
-# Adjust waveform speed (n = samples per column)
+# Normal video rate (30 fps); each frame covers 1/30 s of audio
 ffmpeg -i audio.mp3 \
-  -filter_complex "[0:a]showwaves=s=1280x360:mode=line:n=2[v]" \
-  -map "[v]" -pix_fmt yuv420p fast_wave.mp4
+  -filter_complex "[0:a]showwaves=s=1280x360:mode=line:rate=30[v]" \
+  -map "[v]" -map 0:a -pix_fmt yuv420p rate30_wave.mp4
 
 # Adjust scale (amplitude)
 ffmpeg -i audio.mp3 \
@@ -211,7 +231,7 @@ ffmpeg -f lavfi \
 
 ## Spectrum Visualization (showspectrum)
 
-`showspectrum` defaults to `fps=auto`: one frame per audio chunk (about 245 fps at 44.1 kHz). The recipes set `fps=30` for a normal video rate.
+`showspectrum` defaults to `fps=auto`, a rate that depends on the output height (measured on 8.0.1 at 44.1 kHz: 61.25 fps at 360 px, 30.62 at 720, 20.42 at 1080). The recipes set `fps=30` for a predictable video rate.
 
 ### Basic Spectrum Analyzer
 
@@ -272,7 +292,8 @@ ffmpeg -i audio.mp3 \
 
 | Color | Description |
 |-------|-------------|
-| channel | Use channel colors |
+| channel | Use channel colors (default) |
+| intensity | Brightness by intensity |
 | rainbow | Rainbow gradient |
 | moreland | Diverging color map |
 | nebulae | Space-like colors |
@@ -311,11 +332,12 @@ ffmpeg -i audio.mp3 \
 ```bash
 # Full audio spectrogram
 ffmpeg -i audio.mp3 \
-  -filter_complex "[0:a]showspectrumpic=s=1920x480:color=fire[v]" \
+  -filter_complex "[0:a]showspectrumpic=s=1920x480:color=fire:legend=0[v]" \
   -map "[v]" -update 1 \
   spectrogram.png
 
-# With legend
+# With legend (legend=1 is the default; the axes and labels add margins, so
+# the image is larger than s=, e.g. 960x240 -> 1242x368)
 ffmpeg -i audio.mp3 \
   -filter_complex "[0:a]showspectrumpic=s=1920x480:color=rainbow:legend=1[v]" \
   -map "[v]" -update 1 \
@@ -323,7 +345,7 @@ ffmpeg -i audio.mp3 \
 
 # Logarithmic frequency scale
 ffmpeg -i audio.mp3 \
-  -filter_complex "[0:a]showspectrumpic=s=1920x480:fscale=log:color=viridis[v]" \
+  -filter_complex "[0:a]showspectrumpic=s=1920x480:fscale=log:color=viridis:legend=0[v]" \
   -map "[v]" -update 1 \
   spectrogram_log.png
 ```
@@ -374,9 +396,10 @@ ffmpeg -i audio.mp3 \
   -map "[v]" -map 0:a \
   cqt.mp4
 
-# CQT with axis labels
+# Axis and note labels are on by default (axis=1, text=1); fontfile only
+# changes the label font, which should be monospace (showcqt warns otherwise)
 ffmpeg -i audio.mp3 \
-  -filter_complex "[0:a]showcqt=s=1920x1080:axis=1:text=1:fontfile=/path/to/font.ttf[v]" \
+  -filter_complex "[0:a]showcqt=s=1920x1080:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf[v]" \
   -map "[v]" -map 0:a \
   cqt_labeled.mp4
 
@@ -442,21 +465,25 @@ ffmpeg -i video.mp4 \
   -c:v libx264 -c:a copy \
   video_waveform.mp4
 
-# Transparent waveform overlay
+# Semi-transparent full-frame waveform: overlay uses the waveform's alpha
+# (blend would ignore alpha and, on YUV, add the background's chroma and
+# tint the whole frame magenta)
 ffmpeg -i video.mp4 \
   -filter_complex "[0:a]showwaves=s=1920x1080:mode=p2p:colors=0x00FF00@0.5:scale=sqrt[wave];\
-                   [0:v][wave]blend=all_mode=addition[v]" \
-  -map "[v]" -map 0:a \
-  video_wave_blend.mp4
+                   [0:v][wave]overlay=format=auto,format=yuv420p[v]" \
+  -map "[v]" -map 0:a -c:a copy \
+  video_wave_overlay.mp4
 ```
 
 ### Multiple Visualizations
 
 ```bash
-# Waveform + Spectrum side by side
+# Waveform + Spectrum side by side. Give every visualizer the same rate:
+# hstack/vstack emit a frame whenever any input does, so 25 fps showwaves
+# next to 30 fps showspectrum gives variable-rate output tagged 150 fps
 ffmpeg -i audio.mp3 \
   -filter_complex "[0:a]asplit=2[a1][a2];\
-                   [a1]showwaves=s=640x360:mode=cline:colors=green[wave];\
+                   [a1]showwaves=s=640x360:mode=cline:colors=green:rate=30[wave];\
                    [a2]showspectrum=s=640x360:color=fire:fps=30[spec];\
                    [wave][spec]hstack,scale=out_range=tv,format=yuv420p[v]" \
   -map "[v]" -map 0:a \
@@ -465,10 +492,10 @@ ffmpeg -i audio.mp3 \
 # Full visualization dashboard
 ffmpeg -i audio.mp3 \
   -filter_complex "[0:a]asplit=4[a1][a2][a3][a4];\
-                   [a1]showwaves=s=640x240:mode=cline:colors=cyan[wave];\
+                   [a1]showwaves=s=640x240:mode=cline:colors=cyan:rate=30[wave];\
                    [a2]showspectrum=s=640x240:color=fire:scale=log:fps=30[spec];\
-                   [a3]showfreqs=s=640x240:mode=bar:colors=lime[freq];\
-                   [a4]avectorscope=s=640x240:mode=lissajous[vec];\
+                   [a3]showfreqs=s=640x240:mode=bar:colors=lime:rate=30[freq];\
+                   [a4]avectorscope=s=640x240:mode=lissajous:rate=30[vec];\
                    [wave][spec]hstack[top];\
                    [freq][vec]hstack[bottom];\
                    [top][bottom]vstack[v]" \
@@ -516,7 +543,7 @@ ffmpeg -i audio.mp3 \
 ```bash
 # Full music visualizer
 ffmpeg -i audio.mp3 -loop 1 -i album_art.jpg \
-  -filter_complex "[1:v]scale=1920:1080,boxblur=30[bg];\
+  -filter_complex "[1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,boxblur=30[bg];\
                    [0:a]showwaves=s=1920x300:mode=cline:colors=white:scale=sqrt[wave];\
                    [1:v]scale=400:400[art];\
                    [bg][wave]overlay=0:H-350:shortest=1[tmp];\
@@ -544,13 +571,13 @@ ffmpeg -i podcast.mp3 \
 
 ### Large Audio Files
 
+Visualizers are single-threaded and cheap next to the encode. For long files, speed up the encode, not the visualizer, and keep `n` out of it (it would lower the frame rate):
+
 ```bash
-# Use threading for faster processing
 ffmpeg -i long_audio.mp3 \
-  -filter_complex "[0:a]showwaves=s=1280x360:mode=line:n=4[v]" \
-  -threads 0 \
+  -filter_complex "[0:a]showwaves=s=1280x360:mode=line:rate=25[v]" \
   -map "[v]" -map 0:a -pix_fmt yuv420p \
-  -c:v libx264 -preset fast -c:a aac \
+  -c:v libx264 -preset veryfast -c:a aac \
   output.mp4
 ```
 
@@ -587,13 +614,13 @@ ffmpeg -i audio.mp3 \
   output.mp4
 ```
 
-**Visualization too fast/slow**
+**Waveform moves too fast/slow**
 ```bash
-# Adjust samples per column (n)
-# Higher n = faster scrolling
-# Lower n = slower scrolling
+# Each frame covers sample_rate/rate samples. A higher rate shows less audio
+# per frame (calmer, more detailed); a lower rate shows more (busier).
+# Do not use n for this: it overrides rate and lowers the frame rate.
 ffmpeg -i audio.mp3 \
-  -filter_complex "[0:a]showwaves=s=1280x360:mode=line:n=3[v]" \
+  -filter_complex "[0:a]showwaves=s=1280x360:mode=line:rate=50[v]" \
   -map "[v]" -pix_fmt yuv420p output.mp4
 ```
 

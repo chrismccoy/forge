@@ -1,3 +1,17 @@
+# FFmpeg filter_complex Reference
+
+Complex filtergraphs: multi-input compositions, overlays, grids, transitions, audio mixing, color correction, and multi-output chains.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [filter_complex Syntax](#filter_complex-syntax)
+- [Common Composition Patterns](#common-composition-patterns) (PiP, grids, xfade, audio mixing, text, split to multiple outputs, concat, color correction, looping)
+- [GPU-Accelerated Filtergraphs](#gpu-accelerated-filtergraphs)
+- [Advanced Patterns](#advanced-patterns) (multi-layer, green screen, visualizers, timed effects)
+- [Debugging Filtergraphs](#debugging-filtergraphs)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Task | Command Pattern |
@@ -7,12 +21,6 @@
 | Chain filters | `filter1,filter2,filter3` |
 | Separate chains | `chain1;chain2` |
 | Map output | `-map "[label]"` |
-
----
-
-# FFmpeg filter_complex Reference
-
-Comprehensive guide to complex filtergraphs, multi-input compositions, and advanced filter chains.
 
 ## filter_complex Syntax
 
@@ -57,11 +65,12 @@ Each filterchain consists of:
 | `[0:v:0]` | First input, first video stream |
 | `[1:a:1]` | Second input, second audio stream |
 
-### Default Labels
+### Unlabeled Pads
 
-- Unlabeled first filter input uses `in`
-- Unlabeled last filter output uses `out`
-- Unlabeled pads connect sequentially
+- An unlabeled input pad (or a label that matches no stream and no other filter's output) binds to the first unused input stream of the matching type.
+- An unlabeled output pad of the whole graph is mapped to the first output file automatically.
+- Inside one chain, filters separated by `,` connect output to input in order.
+- Use explicit labels plus `-map "[label]"` whenever there is more than one input or output; implicit binding is easy to get wrong.
 
 ### Escaping Rules
 
@@ -124,6 +133,11 @@ ffmpeg -i main.mp4 -i pip.mp4 \
 **Using hstack/vstack (fast, simple):**
 
 ```bash
+# Side by side (hstack needs equal heights; scale first if they differ)
+ffmpeg -i left.mp4 -i right.mp4 \
+  -filter_complex "[0:v][1:v]hstack=inputs=2[out]" \
+  -map "[out]" output.mp4
+
 # 2x2 Grid
 ffmpeg -i 1.mp4 -i 2.mp4 -i 3.mp4 -i 4.mp4 \
   -filter_complex "\
@@ -225,13 +239,14 @@ ffmpeg -i video.mp4 -i music.mp3 \
     [0:a][1:a]amix=inputs=2:duration=first:dropout_transition=2[aout]" \
   -map 0:v -map "[aout]" output.mp4
 
-# Mix with volume control
+# Mix with volume control (duration=first keeps the mix as long as the video's
+# own audio; the default duration=longest would run on if the music is longer)
 ffmpeg -i vocals.mp4 -i music.mp3 \
   -filter_complex "\
-    [0:a]volume=1.0[v0];\
-    [1:a]volume=0.3[v1];\
-    [v0][v1]amix=inputs=2:duration=first[aout]" \
-  -map 0:v -map "[aout]" output.mp4
+    [0:a]volume=1.0[a0];\
+    [1:a]volume=0.3[a1];\
+    [a0][a1]amix=inputs=2:duration=first[aout]" \
+  -map 0:v -map "[aout]" -c:v copy output.mp4
 
 # Audio with delay (sound effect starts at 2 s; adelay takes ms per channel)
 ffmpeg -i main.mp4 -i effect.mp3 \
@@ -279,7 +294,9 @@ ffmpeg -i input.mp4 \
     alpha='if(lt(t,1),t,1)'[out]" \
   -map "[out]" output.mp4
 
-# Scrolling credits
+# Scrolling credits. On the 8.0.1 Ubuntu build a multi-line textfile draws a
+# missing-glyph box at every line end: for real credits use the ASS recipe in
+# drawtext-animation.md (Scrolling Credits)
 ffmpeg -i input.mp4 \
   -filter_complex "\
     [0:v]drawtext=textfile=credits.txt:\
@@ -304,7 +321,9 @@ ffmpeg -i video.mp4 -i logo.png \
   -map "[out]" -map 0:a output.mp4
 ```
 
-### 6. Stream Splitting and Multiple Outputs
+### 6. Split to Multiple Outputs
+
+One decode feeding several independent files. This is not an ABR ladder: the outputs have no aligned keyframes, bitrate caps or master playlist. HLS/DASH ladders are in [`streaming.md`](streaming.md#abr-ladder-master-playlist).
 
 ```bash
 # Split for multiple resolutions
@@ -345,6 +364,45 @@ ffmpeg -i 1.mp4 -i 2.mp4 -i 3.mp4 \
   -map "[outv]" -map "[outa]" output.mp4
 ```
 
+### 8. Color Correction
+
+RGB-based filters (`lut3d`, `colorbalance`, `curves`) can change the pixel format, so end deliverable chains with `-pix_fmt yuv420p`.
+
+```bash
+# Basic EQ adjustment
+ffmpeg -i input.mp4 \
+  -filter_complex "[0:v]eq=brightness=0.1:contrast=1.2:saturation=1.3[out]" \
+  -map "[out]" -map 0:a? -c:a copy output.mp4
+
+# Apply a 3D LUT (.cube)
+ffmpeg -i input.mp4 \
+  -filter_complex "[0:v]lut3d=file=cinematic.cube[out]" \
+  -map "[out]" -map 0:a? -c:a copy -pix_fmt yuv420p output.mp4
+
+# Color balance (shadows / midtones / highlights)
+ffmpeg -i input.mp4 \
+  -filter_complex "\
+    [0:v]colorbalance=\
+    rs=0.1:gs=-0.05:bs=-0.1:\
+    rm=0.05:gm=0:bm=-0.05:\
+    rh=0.1:gh=0:bh=-0.1[out]" \
+  -map "[out]" -map 0:a? -c:a copy -pix_fmt yuv420p output.mp4
+
+# Curves preset
+ffmpeg -i input.mp4 \
+  -filter_complex "[0:v]curves=preset=vintage[out]" \
+  -map "[out]" -map 0:a? -c:a copy -pix_fmt yuv420p output.mp4
+```
+
+### 9. Looping an Input
+
+```bash
+# Play the input 4 times (-stream_loop 3 = 3 extra loops), capped at 60 s
+ffmpeg -stream_loop 3 -i input.mp4 \
+  -filter_complex "[0:v]setpts=N/FRAME_RATE/TB[out]" \
+  -map "[out]" -t 60 output.mp4
+```
+
 ---
 
 ## GPU-Accelerated Filtergraphs
@@ -363,38 +421,9 @@ ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i main.mp4 \
   -c:v h264_nvenc -preset p4 output.mp4
 ```
 
-### Hybrid GPU + CPU Pipeline
+### Hybrid Pipelines and GPU ABR Ladders
 
-When you need CPU-only filters (drawtext, subtitles), use hwdownload/hwupload:
-
-```bash
-# GPU scale -> CPU text -> GPU encode
-ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i input.mp4 \
-  -filter_complex "\
-    [0:v]scale_cuda=1920:1080[scaled];\
-    [scaled]hwdownload,format=nv12[cpu];\
-    [cpu]drawtext=text='Watermark':fontsize=48:x=10:y=10[text];\
-    [text]hwupload_cuda[out]" \
-  -map "[out]" \
-  -c:v h264_nvenc output.mp4
-```
-
-### ABR Ladder with GPU
-
-```bash
-# Generate multiple resolutions on GPU
-ffmpeg -y \
-  -hwaccel cuda \
-  -hwaccel_output_format cuda \
-  -i input.mp4 \
-  -filter_complex "[0:v]split=3[v1][v2][v3];\
-    [v1]scale_cuda=1920:1080[hd];\
-    [v2]scale_cuda=1280:720[sd];\
-    [v3]scale_cuda=640:360[mobile]" \
-  -map "[hd]" -fps_mode passthrough -c:v h264_nvenc -b:v 5M output_1080p.mp4 \
-  -map "[sd]" -fps_mode passthrough -c:v h264_nvenc -b:v 2M output_720p.mp4 \
-  -map "[mobile]" -fps_mode passthrough -c:v h264_nvenc -b:v 500k output_360p.mp4
-```
+CPU-only filters (`drawtext`, `subtitles`) need `hwdownload,format=nv12` (8-bit) or `format=p010le` (10-bit) before them and `hwupload_cuda` after. The GPU-scale -> CPU-text -> GPU-encode graph and the 1:N CUDA ABR ladder (`split` + `scale_cuda` per rung) are in [`hwaccel-nvidia-nvenc.md`](hwaccel-nvidia-nvenc.md#hybrid-gpu--cpu-pipelines). Vulkan and OpenCL graphs are in [`hwaccel-vulkan.md`](hwaccel-vulkan.md) and [`hwaccel-opencl-filters.md`](hwaccel-opencl-filters.md).
 
 ---
 
@@ -415,6 +444,26 @@ ffmpeg -i main.mp4 -i logo.png -i lower_third.png \
       x=W-tw-20:y=H-th-20[out]" \
   -map "[out]" -map 0:a output.mp4
 ```
+
+### Green Screen Pipeline (CPU)
+
+```bash
+# Key, despill-ish green reduction, composite, then grade the composite
+ffmpeg -i greenscreen.mp4 -i background.mp4 \
+  -filter_complex "\
+    [0:v]chromakey=0x00FF00:0.2:0.1,\
+         colorbalance=gs=-0.15:gm=-0.1:gh=-0.05,\
+         eq=saturation=1.1[fg];\
+    [1:v]scale=1920:1080[bg];\
+    [bg][fg]overlay=format=auto,\
+         eq=contrast=1.1:saturation=1.1,\
+         colorbalance=rs=0.1:bs=-0.1:rh=0.05:bh=-0.08,\
+         curves=all='0/0.02 0.5/0.5 1/0.98'[out]" \
+  -map "[out]" -map 0:a? \
+  -c:v libx264 -crf 18 -pix_fmt yuv420p output.mp4
+```
+
+Scale the foreground first if it is not already the background size. For the GPU version see `chromakey_cuda` in [`hwaccel-nvidia-nvenc.md`](hwaccel-nvidia-nvenc.md#gpu-chromakey-green-screen).
 
 ### Audio Visualization Overlay
 
@@ -446,7 +495,20 @@ ffmpeg -i input.mp4 \
     [v3]trim=10,setpts=PTS-STARTPTS[part3];\
     [part1][part2][part3]concat=n=3:v=1:a=0[out]" \
   -map "[out]" -map 0:a output.mp4
+
+# Glitch bursts: a motion-interpolated copy flashes in for 0.3 s every 4 s,
+# plus an RGB split for 0.15 s every second (minterpolate has no timeline
+# support, so it runs on a split branch and overlay's enable= gates it)
+ffmpeg -i music_video.mp4 \
+  -filter_complex "\
+    [0:v]split[base][m];\
+    [m]fps=10,minterpolate='fps=30:mi_mode=mci:mc_mode=aobmc:scd=none'[mosh];\
+    [base][mosh]overlay=enable='lt(mod(t,4),0.3)',\
+    rgbashift=rh=3:bh=-3:enable='lt(mod(t,1),0.15)'[out]" \
+  -map "[out]" -map 0:a -pix_fmt yuv420p output.mp4
 ```
+
+The `fps=30` in `minterpolate` assumes a 30 fps source; set it to the source rate.
 
 ---
 
@@ -482,19 +544,25 @@ ffmpeg -h filter=amix
 
 | Error | Cause | Solution |
 |-------|-------|----------|
-| "Input pad not connected" | Missing input label | Add `[0:v]` or correct label |
-| "Output pad not connected" | Unused filter output | Add `-map` or connect to next filter |
-| "Stream specifier not found" | Invalid stream reference | Check input has that stream type |
-| "Filter not found" | Missing filter in FFmpeg build | Check `ffmpeg -filters` |
-| "Discarding frame" | Timestamp discontinuity | Add `setpts=PTS-STARTPTS` |
+| `Filter 'split' has output 1 (b) unconnected` | A filter output is neither mapped nor fed to another filter | Add `-map "[b]"`, connect it, or reduce `split=N` |
+| `Stream specifier ':v' in filtergraph description ... matches no streams.` | The input has no stream of that type/index | Probe the input; fix `[N:v]`/`[N:a]` or add `?` to optional `-map`s |
+| `No such filter: 'foo'` | Typo, or filter not compiled into this build | Check `ffmpeg -filters` |
+| `Impossible to convert between the formats supported by the filter ...` | GPU frames fed to a CPU filter (or the reverse), or incompatible formats on a two-input filter | Add `hwdownload,format=...` / `hwupload`, or a `format=` before the filter |
+| `Too many packets buffered for output stream` | One output stream waits on a slow filter branch | Add `-max_muxing_queue_size 1024` (output option) |
 
 ### Performance Tips
 
-1. **Order matters** - Put expensive filters later in the chain
+1. **Reduce work early** - Put `crop`, downscaling `scale`, `fps` and `trim` before expensive filters (denoise, minterpolate, overlays)
 2. **Use GPU filters** when available (scale_cuda, overlay_cuda)
-3. **Avoid unnecessary format conversions** - Keep same pixel format
-4. **Split before filters** if creating multiple outputs
-5. **Use `-threads 0`** to auto-detect optimal thread count
+3. **Avoid unnecessary format conversions** - Keep the same pixel format through the chain
+4. **Decode once, `split` for multiple outputs** - One graph with `split` beats several ffmpeg runs on the same input
+5. **Buffering** - With several inputs, raise the demuxer queue with `-thread_queue_size 512` before each `-i`; for "Too many packets buffered" raise `-max_muxing_queue_size 1024` (this uses more memory, not less)
+
+```bash
+ffmpeg -thread_queue_size 512 -i input1.mp4 \
+       -thread_queue_size 512 -i input2.mp4 \
+  -filter_complex "[0:v][1:v]overlay" -max_muxing_queue_size 1024 output.mp4
+```
 
 ---
 
@@ -507,4 +575,4 @@ ffmpeg -h filter=amix
 5. **Quote the filtergraph** - Use double quotes around entire -filter_complex
 6. **Handle audio separately** - Video and audio often need different processing
 
-This guide covers filter_complex patterns. For hardware acceleration details, see `hwaccel.md`. For basic filter syntax, see `fundamentals.md`.
+This file covers filter_complex patterns. For hardware acceleration details, see `hwaccel.md`. For basic filter syntax, see `fundamentals.md`.

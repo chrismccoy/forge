@@ -1,3 +1,17 @@
+# FFmpeg Stabilization & 360 Video
+
+Comprehensive guide to video stabilization, VR processing, and motion effects.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Video Stabilization](#video-stabilization)
+- [360/VR Video Processing](#360vr-video-processing)
+- [Ken Burns and Zoom Effects](#ken-burns-and-zoom-effects)
+- [Lens Correction](#lens-correction)
+- [Common Workflows](#common-workflows)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Task | Filter | Command Pattern |
@@ -10,10 +24,6 @@
 | Lens correction | `lenscorrection` | `-vf lenscorrection=k1=...` |
 
 ---
-
-# FFmpeg Stabilization & 360 Video
-
-Comprehensive guide to video stabilization, VR processing, and motion effects.
 
 ## Video Stabilization
 
@@ -250,15 +260,69 @@ ffmpeg -i image.jpg \
 |-----------|-------------|---------|
 | `z` | Zoom factor expression | `z='min(zoom+0.001,1.5)'` |
 | `x`, `y` | Pan position expression | `x='iw/2'` |
-| `d` | Duration per image (frames) | `d=125` |
+| `d` | Output frames per input frame | `d=125` |
 | `s` | Output size | `s=1920x1080` |
-| `fps` | Output frame rate | `fps=30` |
+| `fps` | Output frame rate (default 25, not the input rate) | `fps=30` |
 
 **Useful expressions:**
 - `zoom` - Current zoom value
 - `pzoom` - Previous zoom value
 - `iw`, `ih` - Input width/height
-- `on` - Output frame number
+- `in`, `on` - Input and output frame number
+- `it` / `in_time`, `ot` / `time` - Input and output time in seconds (there is no `t`: `z='...t...'` fails with "Undefined constant")
+
+### Zoompan Timing
+
+`d=` is the number of output frames produced **per input frame**, and the output rate is `fps=` (default 25), so set both.
+
+- **Still image:** `d` > 1 makes a clip from one picture. Frames = seconds x fps: `d=60:fps=30` is 2 s, `d=120:fps=60` is 2 s.
+- **Video:** use `d=1` (one output frame per input frame) and drive the zoom from the input time `it`. `d=60` on a video turns every input frame into 60 frames (a 4 s 25 fps clip becomes 6000 frames = 4 minutes).
+- Without `x`/`y`, zoompan zooms into the top-left corner; `x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2'` keeps it centred.
+- `scale+crop` to the `s=` size first, so a source with another aspect ratio is cropped, not stretched.
+
+```bash
+# 2-second zoom on a vertical STILL at 30 fps: d=60 frames / fps=30 = 2 s
+ffmpeg -i photo.jpg -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,zoompan=z='min(zoom+0.0015,1.2)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=60:s=1080x1920:fps=30,scale=out_range=tv,format=yuv420p" output.mp4
+
+# Zoom over the first 2 seconds of a VIDEO: d=1, zoom from the input time;
+# duration stays equal to the input, zoom reaches 1.2 at t=2 s and holds
+ffmpeg -i input.mp4 -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,zoompan=z='1+0.2*min(it/2,1)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=30" -pix_fmt yuv420p output.mp4
+```
+
+### Hook Zooms for Short-Form Video
+
+Hook animations should finish within ~0.5 s to fit the first ~1.3 s attention window with room for text. Gate them with a time conditional such as `if(lt(it,0.5),effect,1)`, not with `d=`.
+
+| Effect Type | FPS | Effect Duration | Frame Count | `d=` Parameter |
+|-------------|-----|-----------------|-------------|----------------|
+| Hook zoom punch | 60 | 0.4-0.5s | 24-30 frames | `d=1` (use time conditional) |
+| Hook flash | 60 | 0.2-0.3s | 12-18 frames | `d=1` (use time conditional) |
+| Continuous zoom | 30 | Entire video | N/A | `d=1` (recalc per frame) |
+| Text animations | 60 | 0.3-0.5s | 18-30 frames | `d=1` (use time conditional) |
+
+| Platform | Hook Zoom | Hook Duration | Continuous Zoom | Recommended FPS |
+|----------|-----------|---------------|-----------------|-----------------|
+| TikTok | 1.5x (50%) | 0.4-0.5s | +0.2%/sec | 60fps for hooks |
+| YouTube Shorts | 1.5x (50%) | 0.5-0.6s | +0.15%/sec | 60fps throughout |
+| Instagram Reels | 1.4x (40%) | 0.5-0.6s | +0.18%/sec | 60fps for hooks |
+
+```bash
+# Each formula starts with scale+crop to 1080x1920 so a 16:9 (or any non-9:16)
+# source is cropped, not stretched, by zoompan's s=1080x1920.
+# 1.5x zoom punch over 0.5s at 60fps: starts at 1.5x and eases back to 1x (a
+# punch-out). For a punch-in that ends zoomed, use z='if(lt(it,0.5),1+it,1.5)':
+scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=60,zoompan=z='if(lt(it,0.5),1.5-it,1)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=60
+
+# 8% zoom pulse at ~2Hz for 1.5s (abs(sin(it*6)) peaks every pi/6 = 0.52s, ~1.9 Hz;
+# abs() because zoompan clamps zoom values below 1):
+scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=60,zoompan=z='if(lt(it,1.5),1+0.08*abs(sin(it*6)),1)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=60
+
+# Subtle continuous zoom for TikTok (0.2%/sec):
+scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,zoompan=z='1+0.002*it':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=30
+
+# Subtle continuous zoom for YouTube Shorts (0.15%/sec):
+scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,zoompan=z='1+0.0015*it':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1080x1920:fps=30
+```
 
 ### Animated Slideshow Example
 
@@ -273,7 +337,7 @@ ffmpeg -i img1.jpg \
   -filter_complex "\
     [0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='min(zoom+0.001,1.3)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=150:s=1920x1080:fps=30[v0];\
     [1:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z=1.3:x='if(gte(x,iw-iw/zoom),0,x+2)':y='ih/2-(ih/zoom/2)':d=150:s=1920x1080:fps=30[v1];\
-    [2:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1.3-0.002*on':d=150:s=1920x1080:fps=30[v2];\
+    [2:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1.3-0.002*on':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=150:s=1920x1080:fps=30[v2];\
     [v0][v1]xfade=transition=fade:duration=1:offset=4[x1];\
     [x1][v2]xfade=transition=fade:duration=1:offset=8,scale=out_range=tv,format=yuv420p[out]" \
   -map "[out]" slideshow.mp4
@@ -294,8 +358,8 @@ ffmpeg -i distorted.mp4 -vf "lenscorrection=k1=-0.2:k2=-0.05" corrected.mp4
 # Correct pincushion distortion
 ffmpeg -i distorted.mp4 -vf "lenscorrection=k1=0.2:k2=0.05" corrected.mp4
 
-# With center offset
-ffmpeg -i distorted.mp4 -vf "lenscorrection=cx=0.5:cy=0.5:k1=-0.2:k2=-0.05" corrected.mp4
+# With the optical centre moved off the frame centre (cx/cy are 0-1, default 0.5)
+ffmpeg -i distorted.mp4 -vf "lenscorrection=cx=0.45:cy=0.55:k1=-0.2:k2=-0.05" corrected.mp4
 ```
 
 **Parameters:**
@@ -316,8 +380,9 @@ ffmpeg -i distorted.mp4 -vf "lenscorrection=cx=0.5:cy=0.5:k1=-0.2:k2=-0.05" corr
 Uses the lensfun database for automatic lens correction.
 
 ```bash
-# Auto-detect lens from metadata
-ffmpeg -i photo.jpg -vf "lensfun=make=Canon:model=EOS 5D Mark II:lens_model=Canon EF 24-70mm" -update 1 corrected.jpg
+# The filter does not read EXIF: give make, model and lens_model exactly as they
+# appear in the lensfun database, plus focal_length (default 18) for zoom lenses
+ffmpeg -i photo.jpg -vf "lensfun=make=Canon:model=EOS 5D Mark II:lens_model=Canon EF 24-70mm:focal_length=24" -update 1 corrected.jpg
 
 # With specific parameters
 ffmpeg -i video.mp4 -vf "lensfun=make=GoPro:model=HERO10:mode=geometry" corrected.mp4
@@ -389,6 +454,10 @@ ffmpeg -i insta360.mp4 \
 3. **Match frame rates** - Ensure consistent fps before and after
 4. **GPU when available** - Use deshake_opencl for speed
 5. **Test coefficients** - Lens correction needs experimentation
-6. **Preserve 360 metadata** - Use `-map_metadata 0` for VR videos
+6. **Check 360 metadata** - Spherical (VR) projection info is stream side data, not a
+   metadata tag, so `-map_metadata` does not control it. Check the output with
+   `ffprobe -show_streams` (side data "Spherical Mapping"); if it is missing, re-inject
+   it with Google's spatial-media tool. After `v360` changes the projection, the
+   source's spherical data no longer applies.
 
 This guide covers stabilization and 360 processing. For hardware acceleration, see `hwaccel.md`. For filters and effects, see `filter-complex.md`.

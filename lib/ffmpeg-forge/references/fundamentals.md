@@ -1,6 +1,16 @@
 # FFmpeg Fundamentals
 
-Foundational FFmpeg knowledge for 7.1 LTS and 8.x. Detailed recipes and tables live in the `fundamentals-*.md` files.
+Codec and container tables, probing commands, capability discovery, and exit codes for FFmpeg 7.1 LTS and 8.x. The core workflow, option order, seeking, and delivery defaults are in SKILL.md.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Codec Reference](#codec-reference)
+- [Container Compatibility](#container-compatibility)
+- [Probing](#probing)
+- [Capability Discovery](#capability-discovery)
+- [Exit Codes](#exit-codes)
+- [Related Files](#related-files)
 
 ## Quick Reference
 
@@ -8,52 +18,13 @@ Foundational FFmpeg knowledge for 7.1 LTS and 8.x. Detailed recipes and tables l
 |------|-----------------|
 | Convert format | `ffmpeg -i input.ext output.ext` |
 | Set quality (CRF) | `-c:v libx264 -crf 23` |
-| Scale video | `-vf "scale=1920:1080"` |
+| Bitrate mode | `-c:v libx264 -b:v 5M` |
+| Scale video | `-vf "scale=-2:1080"` |
 | Trim video | `-ss 00:00:10 -t 00:00:30` |
 | Extract audio | `-vn -c:a aac output.m4a` |
+| Machine-readable progress | `ffmpeg -progress - -nostats -i input.mp4 output.mp4` |
+| Detailed log file | `ffmpeg -report -i input.mp4 output.mp4` |
 | Probe file | `ffprobe -v error -show_format -show_streams file` |
-
-## Core Workflow
-
-1. Verify your FFmpeg version with `ffmpeg -version`. Prefer the 8.0 or the 7.1 LTS.
-2. Probe the input with `ffprobe` to inspect codecs, container, resolution, and duration.
-3. Decide whether to **remux** (`-c copy`) or **transcode** (specify encoders, quality).
-4. Pick encoders and quality settings (see Codec Reference below).
-5. Add filters as needed (see `fundamentals-filter-essentials.md` and `fundamentals-frame-manipulation.md`).
-6. Verify the output: re-probe, check duration, A/V sync, and pixel format.
-
-## Basic Command Syntax
-
-```bash
-ffmpeg [global_options] {[input_options] -i input} ... {[output_options] output} ...
-```
-
-Common examples:
-
-```bash
-# Basic transcode
-ffmpeg -i input.mp4 output.mkv
-
-# Specify codecs
-ffmpeg -i input.mp4 -c:v libx264 -c:a aac output.mp4
-
-# Copy streams without re-encoding (remux)
-ffmpeg -i input.mkv -c copy output.mp4
-
-# CRF quality mode
-ffmpeg -i input.mp4 -c:v libx264 -crf 23 output.mp4
-
-# Bitrate mode
-ffmpeg -i input.mp4 -c:v libx264 -b:v 5M output.mp4
-
-# Overwrite without prompting
-ffmpeg -y -i input.mp4 output.mp4
-
-# Show progress as parseable stats
-ffmpeg -progress - -i input.mp4 output.mp4
-```
-
-For exhaustive option ordering rules, stream specifiers, and per-format option tables, see the `command-syntax.md`.
 
 ## Codec Reference
 
@@ -67,6 +38,10 @@ For exhaustive option ordering rules, stream specifiers, and per-format option t
 | AV1 | libsvtav1, libaom-av1 | Web streaming, royalty-free | Excellent | Slow-Medium |
 | VP9 | libvpx-vp9 | WebM, YouTube | Very Good | Slow |
 | ProRes | prores_ks | Professional editing | Visually lossless (lossy intra) | Fast |
+| DNxHR | dnxhd | Avid/broadcast editing | Visually lossless (lossy intra) | Fast |
+| FFV1 | ffv1 | Lossless archival | Lossless | Medium |
+
+Quality defaults per encoder are in SKILL.md (Quality Quick Reference). Intermediate codecs (ProRes, DNxHR) are in `fundamentals-common-operations.md`.
 
 ### Hardware Encoders
 
@@ -78,7 +53,7 @@ For exhaustive option ordering rules, stream specifiers, and per-format option t
 | Apple | h264_videotoolbox | hevc_videotoolbox | - | - | - |
 | Vulkan | h264_vulkan | hevc_vulkan | av1_vulkan (8.0+) | - | ffv1_vulkan (8.0+) |
 
-### Hardware Decoders (FFmpeg 8.0+)
+### Hardware Decoders (7.1 and 8.0 additions)
 
 | Platform | VVC/H.266 | VP9 | ProRes RAW |
 |----------|-----------|-----|------------|
@@ -97,7 +72,21 @@ For exhaustive option ordering rules, stream specifiers, and per-format option t
 | AC3 | ac3 | DVD, Blu-ray | 384-640 kbps |
 | EAC3 | eac3 | Streaming, Dolby Digital+ | 192-768 kbps |
 
-## Probing & Analysis
+Recommended bitrates per use are in `audio.md` (Recommended Bitrates).
+
+## Container Compatibility
+
+| Container | Video | Audio | Subtitles | Notes |
+|-----------|-------|-------|-----------|-------|
+| MP4 / MOV | H.264, HEVC, AV1, VP9; ProRes in MOV only | AAC, MP3, AC-3, E-AC-3, Opus, FLAC, ALAC | `mov_text` only | Web needs `+faststart`; Apple HEVC needs `hvc1` |
+| MKV | Almost any | Almost any | SRT, ASS, PGS, VobSub, WebVTT | Best for archival and remux; poor browser support |
+| WebM | VP8, VP9, AV1 | Opus, Vorbis | WebVTT | Browser-native; FFmpeg refuses other codecs |
+| MPEG-TS | H.264, HEVC, MPEG-2, AV1 | AAC, MP3, AC-3, E-AC-3, Opus | DVB, Teletext | Broadcast, HLS segments, survives truncation |
+| MXF | MPEG-2, H.264, DNxHD/HR, ProRes | PCM only | - | Broadcast exchange; refuses non-broadcast frame rates (e.g. 10 fps) |
+
+Browser playback in MP4: H.264 + AAC is universal. HEVC, AC-3 and E-AC-3 depend on browser and OS (Safari plays them; Chrome and Firefox vary). Use WebM or H.264 + AAC as the fallback. Bitmap subtitles (PGS, VobSub) cannot go into MP4; burn them in or keep MKV (see `captions.md`).
+
+## Probing
 
 ```bash
 # Get media info as JSON
@@ -112,41 +101,18 @@ ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p
 # Get codec
 ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 input.mp4
 
+# Pixel format, profile, color tags and field order of the first video stream
+ffprobe -v error -select_streams v:0 \
+  -show_entries stream=pix_fmt,profile,color_range,color_space,color_primaries,color_transfer,field_order \
+  -of default=noprint_wrappers=1 input.mp4
+
 # Validate headers (fast; does not decode frames, so corrupt video data passes)
 ffprobe -v error input.mp4 && echo "Valid" || echo "Invalid"
-# Full decode check: exit code stays 0 on concealed errors, so test stderr
-[ -z "$(ffmpeg -v error -i input.mp4 -f null - 2>&1)" ] && echo "Decodes cleanly" || echo "Has errors"
 ```
 
-## Best Practices
+For a full decode check (exit code stays 0 on concealed errors), see [Validate the File](troubleshooting.md#1-validate-the-file).
 
-### Performance
-
-1. Use `-threads 0` to auto-detect optimal thread count.
-2. Place `-ss` before `-i` for seeking: it is fast and frame-accurate when transcoding. Only with `-c copy` does the cut start at the preceding keyframe. `-ss` after `-i` is also accurate but slow (decodes and discards everything before the position).
-3. Use `-c copy` when possible to avoid re-encoding.
-4. Use hardware acceleration when available.
-
-### Quality
-
-1. Prefer CRF over bitrate for single-pass encoding.
-2. Use `-preset slow` or slower for better compression.
-3. Use `-tune` options (`film`, `animation`, `grain`) when appropriate.
-4. Keep `-pix_fmt yuv420p` for broad compatibility.
-
-### Compatibility
-
-1. Use `-movflags +faststart` for web MP4 files.
-2. Use `-vtag hvc1` for HEVC on Apple devices.
-3. Test on target devices before mass conversion.
-4. Provide fallback formats for older browsers.
-
-### Error Prevention
-
-1. Test commands on a sample file first.
-2. Use `-report` for detailed logging.
-3. Check output file size and duration.
-4. Verify A/V sync after conversion.
+`scripts/analyze-video.sh <file>` runs a full probe and prints encoding recommendations.
 
 ## Capability Discovery
 
@@ -157,26 +123,23 @@ ffmpeg -formats           # List formats
 ffmpeg -filters           # List filters
 ffmpeg -hwaccels          # List hardware acceleration methods
 ffmpeg -h encoder=libx264 # Encoder-specific options
+ffmpeg -h filter=scale    # Filter options and their types
+ffmpeg -h muxer=hls       # Muxer options
 ```
 
-Exit codes:
+`scripts/check-codecs.sh` audits the whole build.
+
+## Exit Codes
 
 - 0: success
 - non-zero: error (check stderr). The value varies: sometimes 1, often a negative AVERROR truncated to 8 bits (e.g. 234 for EINVAL, 254 for a missing input file; 8, 187 and 218 also occur), so test for non-zero rather than a specific number
 - 255: interrupted with Ctrl+C (SIGINT)
 
-The exit code reports fatal errors only. Concealed decode errors (corrupt frames) still exit 0, so scan stderr when validating files.
+The exit code reports fatal errors only. Concealed decode errors (corrupt frames) still exit 0, so scan stderr when validating files. FFmpeg also exits 0 when it declines to overwrite an existing output (`-n`), so check that the output exists.
 
-## Reference Map
+## Related Files
 
-Detailed recipes, option tables, and FFmpeg 8.0-specific guides:
-
-- `fundamentals-version-history.md` - Full FFmpeg 8.0 / 7.1 LTS feature lists, update strategy, official resources
-- `fundamentals-common-operations.md` - Format conversion, scaling, trimming, concat, audio, subtitles, Whisper recipe, image ops, output optimization (web/iOS/Android)
-- `fundamentals-filter-essentials.md` - Video filters (`-vf`), audio filters (`-af`), complex filtergraphs, filter_complex syntax reference
-- `fundamentals-frame-manipulation.md` - Frame rate, setpts, select, thumbnails, tiles, freezing, looping, reversing
-- `fundamentals-whisper-transcription.md` - Whisper AI filter for speech recognition and subtitle generation
+- `fundamentals-common-operations.md` - Transcode checklist, conversion, scaling, trimming, concat, audio, image ops, device-targeted output, target-size encodes, intermediates
+- `fundamentals-version-history.md` - FFmpeg 8.0 / 7.1 LTS feature lists, version-sensitive claims
 - `fundamentals-vvc-h266-encoding.md` - VVC/H.266 encoding with libvvenc plus hardware decode
-- `fundamentals-vulkan-compute-codecs.md` - Vulkan compute-based codecs (FFv1, AV1, VP9, ProRes RAW)
-
-For deeper dives: `filter-complex.md`, `hwaccel.md`, `captions.md`, `audio.md`.
+- `fundamentals-vulkan-compute-codecs.md` - Vulkan compute-based codecs (FFv1, ProRes RAW)

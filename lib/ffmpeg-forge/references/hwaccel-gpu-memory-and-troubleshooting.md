@@ -1,4 +1,6 @@
-# GPU Memory Management, Filter Comparison, Docker, and Troubleshooting
+# GPU Memory and Hardware Troubleshooting
+
+How frames move between CPU and GPU memory (hwupload, hwdownload, surface formats), and fixes for hardware pipeline errors: device and driver failures, format mismatches, and silent software fallback. Backend choice, device setup, the cross-vendor filter map and Docker are in `hwaccel.md`.
 
 ## GPU Memory Management
 
@@ -74,80 +76,29 @@ intel_gpu_top
 
 ---
 
-## GPU Filter Comparison
-
-### Cross-Platform Filter Availability
-
-| Filter Type | CUDA | Vulkan | OpenCL | VAAPI | QSV |
-|-------------|------|--------|--------|-------|-----|
-| Scaling | `scale_cuda` | `scale_vulkan` | — (scale on CPU) | `scale_vaapi` | `vpp_qsv` |
-| Overlay | `overlay_cuda` | `overlay_vulkan` | `overlay_opencl` | - | - |
-| Denoising | `bilateral_cuda` | `nlmeans_vulkan` | `nlmeans_opencl` | - | - |
-| Deinterlace | `bwdif_cuda` | `bwdif_vulkan` | - | `deinterlace_vaapi` | `vpp_qsv` |
-| Chromakey | `chromakey_cuda` | - | `colorkey_opencl` | - | - |
-| Tonemapping | - | `libplacebo` | `tonemap_opencl` | `tonemap_vaapi` | - |
-| Stabilization | - | - | `deshake_opencl` | - | - |
-| Padding | `pad_cuda` | - | `pad_opencl` | - | - |
-
-### Performance Comparison
-
-| API | Platform Support | Filter Variety | Performance |
-|-----|------------------|----------------|-------------|
-| CUDA | NVIDIA only | Excellent | Best on NVIDIA |
-| Vulkan | Cross-platform | Good (growing) | Very good |
-| OpenCL | Cross-platform | Good | Good |
-| VAAPI | Linux only | Limited | Good on Linux |
-| QSV | Intel only | Limited | Good on Intel |
-
----
-
-## Docker with Hardware Acceleration
-
-### NVIDIA GPU in Docker
-
-```bash
-docker run --gpus all --rm \
-  -v $(pwd):/data \
-  jrottenberg/ffmpeg:nvidia \
-  -hwaccel cuda -hwaccel_output_format cuda \
-  -i /data/input.mp4 \
-  -c:v h264_nvenc /data/output.mp4
-```
-
-### Intel QSV in Docker
-
-```bash
-docker run --rm \
-  --device=/dev/dri:/dev/dri \
-  -v $(pwd):/data \
-  jrottenberg/ffmpeg:vaapi \
-  -hwaccel qsv -i /data/input.mp4 \
-  -c:v h264_qsv /data/output.mp4
-```
-
----
-
 ## Troubleshooting
 
-### "No NVENC capable devices found"
+### "No NVENC capable devices found" / "OpenEncodeSessionEx failed"
 
 ```bash
-nvidia-smi
-nvidia-smi --query-gpu=driver_version --format=csv
-nvcc --version
+nvidia-smi                                            # GPU visible, driver loaded?
+nvidia-smi --query-gpu=name,driver_version --format=csv
+ffmpeg -hide_banner -encoders | grep nvenc            # encoder compiled in?
 ```
 
-### "Cannot load libcuda.so"
+The GPU must have NVENC (most GeForce/RTX/Quadro do; some datacenter parts such as A100 do not). Too many concurrent sessions on a GeForce card also fail with `OpenEncodeSessionEx failed: incompatible client key (21)` or `out of memory (10)`.
 
-```bash
-export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
-```
+### "Driver does not support the required nvenc API version"
 
-### QSV "Unsupported format"
+The driver is older than the nv-codec-headers FFmpeg was built against. Update the driver, or use an FFmpeg build made with older headers. See [`hwaccel-nvidia-nvenc.md`](hwaccel-nvidia-nvenc.md#requirements).
 
-```bash
-ffmpeg -i input.mp4 -vf "format=nv12" -c:v h264_qsv output.mp4
-```
+### "Cannot load libcuda.so.1" / "Cannot load libnvidia-encode.so.1"
+
+These libraries ship with the NVIDIA driver, not the CUDA toolkit; no toolkit is needed for NVENC/NVDEC. Install or repair the driver (`nvidia-smi` must work). In Docker, run with `--gpus all -e NVIDIA_DRIVER_CAPABILITIES=compute,video,utility` so the container toolkit mounts the video libraries.
+
+### VAAPI/QSV: "va_openDriver() returns -1" / "Failed to initialise VAAPI connection"
+
+libva found no usable driver for the GPU. Install the driver (`intel-media-va-driver` / `intel-media-va-driver-non-free` for Intel Broadwell and newer, `mesa-va-drivers` for AMD) and check with `vainfo`. QSV on Linux sits on top of VAAPI, so it fails the same way.
 
 ### VAAPI permission denied
 
@@ -156,6 +107,22 @@ sudo usermod -aG video $USER
 sudo usermod -aG render $USER
 # Re-login or use newgrp
 ```
+
+### QSV "Unsupported format"
+
+QSV encoders take `nv12` (8-bit) or `p010le` (10-bit) system-memory frames, or `qsv` frames:
+
+```bash
+ffmpeg -i input.mp4 -vf "format=nv12" -c:v h264_qsv output.mp4
+```
+
+### "Impossible to convert between the formats supported by the filter ..."
+
+A filter or encoder got frames in the wrong memory. `*_vaapi` and `*_vulkan` encoders accept only hardware frames: add `-hwaccel_output_format vaapi|vulkan` to the decode, or `format=nv12,hwupload` (with a filter device) before the encoder. CPU filters after GPU decode need `hwdownload,format=nv12` (8-bit) or `format=p010le` (10-bit) first.
+
+### "Failed setup for format vaapi|vulkan|cuda: hwaccel initialisation returned error"
+
+The hardware decoder could not handle this stream (unsupported codec/profile, or no device). FFmpeg then decodes in software and still exits 0, so check stderr, not the exit code.
 
 ### Performance Debugging
 
@@ -171,45 +138,4 @@ nvidia-smi dmon -s u
 
 # Intel monitoring
 intel_gpu_top
-```
-
----
-
-## Best Practices Recap
-
-1. Use full GPU pipelines when possible to avoid CPU-GPU memory transfers
-2. Match decode and encode hardware for best performance
-3. Use appropriate presets - faster is not always better for quality
-4. Enable lookahead and AQ for quality-critical encodes
-5. Test on target hardware - quality varies by GPU generation
-6. Monitor GPU memory for high-resolution content
-7. Consider power efficiency for laptops and servers
-8. Update drivers regularly for performance and feature improvements
-
-## Recommended Settings by Use Case
-
-### Live Streaming
-
-```bash
-ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i input \
-  -c:v h264_nvenc -preset p3 -tune ll -zerolatency 1 -b:v 6M \
-  -f flv rtmp://server/live/stream
-```
-
-### VOD (Quality)
-
-```bash
-ffmpeg -i input.mp4 \
-  -c:v hevc_nvenc -preset p6 -tune hq \
-  -rc vbr -cq 22 -b:v 0 \
-  -rc-lookahead 32 -spatial-aq 1 \
-  output.mp4
-```
-
-### Batch Processing
-
-```bash
-ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i input1.mp4 -c:v h264_nvenc output1.mp4 &
-ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i input2.mp4 -c:v h264_nvenc output2.mp4 &
-wait
 ```

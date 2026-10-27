@@ -1,3 +1,21 @@
+# FFmpeg Captions and Subtitles
+
+Subtitles and closed captions with FFmpeg: formats, burn-in, soft subtitle tracks, extraction, conversion, CEA-608, positioning, batch processing, and troubleshooting.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Subtitle Format Reference](#subtitle-format-reference)
+- [Burning Subtitles (Hardcoding)](#burning-subtitles-hardcoding)
+- [Adding Subtitle Tracks (Soft Subs)](#adding-subtitle-tracks-soft-subs)
+- [Extracting Subtitles](#extracting-subtitles)
+- [drawtext Overlays and Whisper Transcription](#drawtext-overlays-and-whisper-transcription)
+- [CEA-608/708 Closed Captions](#cea-608708-closed-captions)
+- [Subtitle Positioning](#subtitle-positioning)
+- [Batch Processing](#batch-processing)
+- [Troubleshooting](#troubleshooting)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Task | Command |
@@ -9,17 +27,7 @@
 | Style subs | `-vf "subtitles=s.srt:force_style='FontSize=24,PrimaryColour=&HFFFFFF'"` |
 | Text overlay | `-vf "drawtext=text='Hello':x=10:y=10:fontsize=24:fontcolor=white"` |
 
-| Format | Extension | Best For |
-|--------|-----------|----------|
-| SRT | .srt | Simple, universal |
-| ASS | .ass | Styled, animated, anime |
-| VTT | .vtt | Web/HTML5 video |
-
----
-
-# FFmpeg Captions and Subtitles
-
-Complete guide to working with subtitles, closed captions, and text overlays using FFmpeg.
+File paths inside `subtitles=`/`ass=` are filter option values: a name containing `:`, `'`, `,`, `;`, `[` or `]` must be escaped twice (see SKILL.md). In scripts, source `scripts/lib/filter-escape.sh` and use `filter_escape "$(safe_path "$file")"`.
 
 ## Subtitle Format Reference
 
@@ -103,7 +111,7 @@ ffmpeg -i video.mp4 \
 | Parameter | Description | Example |
 |-----------|-------------|---------|
 | FontName | Font family | `FontName=Arial` |
-| FontSize | Size in points | `FontSize=24` |
+| FontSize | Size in script units (see below) | `FontSize=24` |
 | PrimaryColour | Text color (AABBGGRR) | `PrimaryColour=&HFFFFFF` |
 | SecondaryColour | Karaoke color | `SecondaryColour=&H00FFFF` |
 | OutlineColour | Outline/border color | `OutlineColour=&H000000` |
@@ -114,7 +122,9 @@ ffmpeg -i video.mp4 \
 | Outline | Outline width | `Outline=2` |
 | Shadow | Shadow depth | `Shadow=1` |
 | Alignment | Position (numpad style) | `Alignment=2` |
-| MarginL/R/V | Margins in pixels | `MarginV=50` |
+| MarginL/R/V | Margins in script units | `MarginV=50` |
+
+**Units.** `FontSize`, margins, `Outline` and `Shadow` are in script units, scaled from the script's `PlayResX`/`PlayResY` to the video size, not pixels or points. SRT, VTT and `force_style` on them use libass's default 384x288 script, so `FontSize=24` is 24/288 of the picture height at any resolution. Measured: `FontSize=48` renders at the same relative size on 640x360 and 3840x2160. An `.ass` file sets its own `PlayResY` (often 1080), so `FontSize=24` there is about a quarter of that size (24/1080 vs 24/288 of the height).
 
 ### Color Format (ASS)
 
@@ -243,9 +253,9 @@ ffmpeg -i subs.srt subs.vtt
 ffmpeg -i subs.vtt subs.srt
 ```
 
-## drawtext Overlays and Whisper AI Integration
+## drawtext Overlays and Whisper Transcription
 
-Detailed examples for `drawtext` overlays (fonts, positioning, escaping, time expressions, boxes, outlines, animated text) and Whisper AI transcription / subtitle generation workflows live in `captions-drawtext-and-whisper.md`. Load that reference when creating burned-in text graphics or generating subtitles from speech.
+`drawtext` overlays (fonts, positioning, escaping, time expressions, boxes, outlines) are in `drawtext.md`, animated text in `drawtext-animation.md`. Speech-to-subtitle generation with the FFmpeg 8.0 `whisper` filter is in `whisper.md`.
 
 ## CEA-608/708 Closed Captions
 
@@ -335,20 +345,33 @@ ffmpeg -i video.mp4 \
 ### Burn Subtitles to Multiple Videos
 
 ```bash
-#!/bin/bash
-# burn_subs_batch.sh
+#!/usr/bin/env bash
+# burn_subs_batch.sh - burn NAME.srt into NAME.mp4 for every pair in the folder
+FORGE=/path/to/ffmpeg-forge                 # the skill directory
+. "$FORGE/scripts/lib/filter-escape.sh"     # filter_escape, safe_path (bash 4.3+)
+require_bash_43
 
 mkdir -p output
+fail=0
 for video in *.mp4; do
-    base="${video%.mp4}"
-    if [ -f "${base}.srt" ]; then
-        ffmpeg -i "$video" \
-          -vf "subtitles=${base}.srt:force_style='FontSize=24,Outline=2'" \
-          -c:a copy \
-          "output/${base}_subbed.mp4"
-    fi
+  base="${video%.mp4}"
+  [ -f "$base.srt" ] || continue
+  out="output/${base}_subbed.mp4"
+  # ffmpeg -n exits 0 when it declines to overwrite, so check first
+  if [ -e "$out" ]; then echo "SKIP (exists): $out"; continue; fi
+  sub=$(filter_escape "$(safe_path "$base.srt")")
+  if ffmpeg -nostdin -n -loglevel error -i "$(safe_path "$video")" \
+       -vf "subtitles=$sub:force_style='FontSize=24,Outline=2'" \
+       -c:v libx264 -crf 20 -pix_fmt yuv420p -c:a copy "$out" && [ -s "$out" ]; then
+    echo "OK: $video"
+  else
+    echo "FAILED: $video" >&2; fail=1
+  fi
 done
+exit $fail
 ```
+
+`filter_escape` handles names such as `it's.srt`, `a:b.srt`, `x,y [1].srt` and `semi;colon.srt`. Unescaped, `it's.srt` fails with `No option name near ...`. `safe_path` adds `./` so `a:b.mp4` is not read as a protocol.
 
 ### Convert Subtitle Format Batch
 
@@ -358,7 +381,9 @@ done
 
 for srt in *.srt; do
     base="${srt%.srt}"
-    ffmpeg -i "$srt" "${base}.vtt"
+    [ -e "$base.vtt" ] && { echo "SKIP (exists): $base.vtt"; continue; }
+    ffmpeg -nostdin -n -loglevel error -i "./$srt" "./$base.vtt" && [ -s "$base.vtt" ] ||
+      echo "FAILED: $srt" >&2
 done
 ```
 
@@ -408,13 +433,18 @@ ffmpeg -i video.mp4 -itsoffset 2 -i subs.srt \
   output.mp4
 ```
 
-**Subtitle not showing on high-res video**
+**Subtitles too small or too large**
+
+Burned SRT/VTT text scales with the video (sizes are relative to the 288-line default script), so a 4K encode does not shrink it. To change the size, change `FontSize` relative to the default of 16:
+
 ```bash
-# Scale subtitle rendering to video resolution
+# About 1.5x the default size, at any resolution
 ffmpeg -i video_4k.mp4 \
-  -vf "subtitles=subs.srt:force_style='FontSize=48,Outline=3'" \
+  -vf "subtitles=subs.srt:force_style='FontSize=24,Outline=2'" \
   output.mp4
 ```
+
+For an `.ass` file, check its `PlayResY` (`grep PlayRes subs.ass`); sizes and margins in that file are relative to it.
 
 ### Verification Commands
 
@@ -422,19 +452,34 @@ ffmpeg -i video_4k.mp4 \
 # Check if subtitles are present
 ffprobe -v error -select_streams s -show_entries stream=codec_name -of default=nw=1 video.mp4
 
-# Count subtitle lines
-grep -c "^[0-9]" subs.srt
+# Count cues (one "-->" timing line per cue)
+grep -c -- '-->' subs.srt
 
-# Validate SRT format (parse + re-mux; no output means OK, a parse failure
-# prints "Invalid data found when processing input")
+# Coarse parse check: fails (exit 183, "Invalid data found when processing
+# input") only when the file cannot be read as SRT at all. A broken timestamp
+# in a later cue, or an end before its start, still passes silently.
 ffmpeg -v error -i subs.srt -f srt -y /dev/null
+
+# Structural check: every cue needs a valid "start --> end" line with end > start
+tr -d '\r' < subs.srt | awk -v RS= -F'\n' '
+  function ms(t, a) { split(t, a, /[:,.]/); return ((a[1] * 60 + a[2]) * 60 + a[3]) * 1000 + a[4] }
+  {
+    n++; ts = ""
+    for (i = 1; i <= NF; i++) if ($i ~ /-->/) { ts = $i; break }
+    if (ts !~ /^[0-9]+:[0-5][0-9]:[0-5][0-9][,.][0-9][0-9][0-9] --> [0-9]+:[0-5][0-9]:[0-5][0-9][,.][0-9][0-9][0-9]/) {
+      printf "cue %d: bad or missing timing line: %s\n", n, (ts == "" ? $1 : ts); bad++; next
+    }
+    split(ts, p, / --> /)
+    if (ms(p[2]) <= ms(p[1])) { printf "cue %d: end is not after start: %s\n", n, ts; bad++ }
+  }
+  END { printf "%d cues, %d problems\n", n, bad; exit bad > 0 }'
 ```
 
 ## Best Practices
 
 ### Accessibility
 1. Use high contrast colors (white on dark, yellow on dark)
-2. Minimum font size of 24pt for standard video
+2. Keep text large enough: at least the default SRT size (`FontSize=16` on the 288-line script, about 1/18 of picture height); larger for mobile
 3. Include speaker identification for multiple speakers
 4. Position subtitles to avoid obscuring important visual content
 5. Keep lines short (42 characters max per line)

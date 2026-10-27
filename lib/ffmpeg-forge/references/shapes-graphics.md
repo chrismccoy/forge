@@ -1,10 +1,33 @@
+# FFmpeg Shapes and Graphics
+
+Shapes, boxes, grids, image overlays, progress bars, blend modes, safe-area guides, masks and generated patterns. Text overlays are in `drawtext.md`.
+
+## Contents
+
+- [Quick Reference](#quick-reference)
+- [Shape Drawing Filters](#shape-drawing-filters)
+- [Drawing Boxes (drawbox)](#drawing-boxes-drawbox)
+- [Drawing Grids (drawgrid)](#drawing-grids-drawgrid)
+- [Drawing Circles and Ellipses (geq)](#drawing-circles-and-ellipses-geq)
+- [Image Overlays](#image-overlays)
+- [Text Graphics (drawtext)](#text-graphics-drawtext)
+- [Progress Bars and Indicators](#progress-bars-and-indicators)
+- [Color Correction Overlays](#color-correction-overlays)
+- [Blend Modes](#blend-modes)
+- [Safe Areas and Guides](#safe-areas-and-guides)
+- [Masking](#masking)
+- [Generating Graphics Programmatically](#generating-graphics-programmatically)
+- [Performance Tips](#performance-tips)
+- [Troubleshooting](#troubleshooting)
+- [Best Practices](#best-practices)
+
 ## Quick Reference
 
 | Shape | Filter | Command Example |
 |-------|--------|-----------------|
 | Rectangle | `drawbox` | `-vf "drawbox=x=100:y=100:w=200:h=150:color=red:t=fill"` |
 | Grid | `drawgrid` | `-vf "drawgrid=w=iw/3:h=ih/3:t=2:color=white"` |
-| Text | `drawtext` | `-vf "drawtext=text='Hello':x=10:y=10:fontsize=24"` |
+| Text | `drawtext` | `-vf "drawtext=text='Hello':x=10:y=10:fontsize=24:fontcolor=white"` (see `drawtext.md`) |
 | Watermark | `overlay` | `[0:v][1:v]overlay=W-w-10:10` |
 
 | Position | Expression |
@@ -14,10 +37,6 @@
 | Full-width bar | `x=0:y=0:w=iw:h=80` |
 
 ---
-
-# FFmpeg Shapes and Graphics
-
-Complete guide to drawing shapes, graphics overlays, and geometric patterns using FFmpeg.
 
 ## Shape Drawing Filters
 
@@ -88,7 +107,7 @@ ffmpeg -i video_16x9.mp4 \
 
 # Add pillarbox bars (4:3 in 16:9 frame)
 ffmpeg -i video_4x3.mp4 \
-  -vf "scale=-1:1080,pad=1920:1080:(ow-iw)/2:0:black" \
+  -vf "scale=-2:1080,pad=1920:1080:(ow-iw)/2:0:black" \
   pillarbox.mp4
 ```
 
@@ -331,65 +350,7 @@ ffmpeg -i main.mp4 -i thumb1.png -i thumb2.png -i thumb3.png -i thumb4.png \
 
 ## Text Graphics (drawtext)
 
-### Styled Text
-
-```bash
-# Text with background box
-ffmpeg -i video.mp4 \
-  -vf "drawtext=text='LIVE':x=10:y=10:fontsize=36:fontcolor=white:\
-       box=1:boxcolor=red:boxborderw=10" \
-  live_badge.mp4
-
-# Text with shadow
-ffmpeg -i video.mp4 \
-  -vf "drawtext=text='Title':x=(w-tw)/2:y=50:fontsize=72:fontcolor=white:\
-       shadowcolor=black:shadowx=3:shadowy=3" \
-  title.mp4
-
-# Text with outline
-ffmpeg -i video.mp4 \
-  -vf "drawtext=text='Outlined':x=100:y=100:fontsize=64:fontcolor=yellow:\
-       borderw=3:bordercolor=black" \
-  outlined.mp4
-```
-
-### Lower Thirds
-
-```bash
-# Professional lower third
-ffmpeg -i video.mp4 \
-  -vf "drawbox=x=0:y=ih-120:w=400:h=100:color=0x1a1a2e@0.9:t=fill,\
-       drawbox=x=0:y=ih-120:w=5:h=100:color=0x00ff88:t=fill,\
-       drawtext=text='John Smith':x=20:y=h-110:fontsize=32:fontcolor=white,\
-       drawtext=text='Senior Developer':x=20:y=h-70:fontsize=24:fontcolor=0xaaaaaa" \
-  lower_third.mp4
-
-# Animated lower third (slide in). The bar is an overlaid color source,
-# because drawbox positions cannot change over time; drawtext x can.
-ffmpeg -i video.mp4 \
-  -filter_complex "color=c=blue@0.8:s=400x100,format=yuva420p[bar];\
-       [0:v][bar]overlay=x='if(lt(t,1),-400+t*400,0)':y=H-120:shortest=1:\
-       enable='gte(t,0.5)',\
-       drawtext=text='Guest Speaker':x='if(lt(t,1.2),-400+t*333,20)':y=h-100:\
-       fontsize=28:fontcolor=white:enable='gte(t,0.7)'" \
-  animated_lower.mp4
-```
-
-### Timecode Display
-
-```bash
-# Timecode overlay
-ffmpeg -i video.mp4 \
-  -vf "drawtext=timecode='00\:00\:00\:00':rate=30:x=10:y=10:\
-       fontsize=32:fontcolor=white:box=1:boxcolor=black@0.6" \
-  with_timecode.mp4
-
-# Frame counter
-ffmpeg -i video.mp4 \
-  -vf "drawtext=text='Frame\: %{frame_num}':x=10:y=10:fontsize=24:fontcolor=white:\
-       box=1:boxcolor=black@0.5" \
-  frame_counter.mp4
-```
+Text overlays (styled text, badges, lower thirds, timecode, frame counters) are in `drawtext.md`; animated text (sliding lower thirds, tickers, credits) is in `drawtext-animation.md`.
 
 ## Progress Bars and Indicators
 
@@ -431,7 +392,8 @@ ffmpeg -i video.mp4 \
   vignette.mp4
 
 # Softer vignette: a smaller angle darkens the corners less
-# (mid-grey corners: PI/4 -> ~29% of centre, PI/6 -> ~60%).
+# (mid-grey 1920x1080 yuv420p frame, corner vs centre: PI/4 -> ~12%,
+# PI/6 -> ~48%; RGB input darkens less: ~25% and ~56%).
 # mode=backward inverts the effect (brightens the corners), so keep forward.
 ffmpeg -i video.mp4 \
   -vf "vignette=angle=PI/6" \
@@ -442,16 +404,19 @@ ffmpeg -i video.mp4 \
 
 ```bash
 # Warm tint using blend (the color source is endless and must match the video
-# size; shortest=1 ends the output with the video)
+# size; shortest=1 ends the output with the video). Blend modes run per plane,
+# so blend in planar RGB (gbrp) and convert back to yuv420p afterwards.
 ffmpeg -i video.mp4 \
   -f lavfi -i "color=c=0xFF8800:s=1920x1080" \
-  -filter_complex "[0:v][1:v]blend=all_mode=softlight:all_opacity=0.3:shortest=1" \
+  -filter_complex "[0:v]format=gbrp[v];[1:v]format=gbrp[c];\
+    [v][c]blend=all_mode=softlight:all_opacity=0.3:shortest=1,format=yuv420p" \
   warm_tint.mp4
 
 # Cool tint
 ffmpeg -i video.mp4 \
   -f lavfi -i "color=c=0x0088FF:s=1920x1080" \
-  -filter_complex "[0:v][1:v]blend=all_mode=softlight:all_opacity=0.2:shortest=1" \
+  -filter_complex "[0:v]format=gbrp[v];[1:v]format=gbrp[c];\
+    [v][c]blend=all_mode=softlight:all_opacity=0.2:shortest=1,format=yuv420p" \
   cool_tint.mp4
 ```
 
@@ -475,21 +440,29 @@ ffmpeg -i video.mp4 \
 ### Blend Mode Examples
 
 ```bash
-# blend needs both inputs at the same size (scale the texture first if not);
-# a single still image is repeated for every video frame
+# blend works plane by plane. On yuv420p video the U/V planes are blended too,
+# which tints the result (multiply turns the frame green, screen pink). Convert
+# both inputs to planar RGB (gbrp), blend, then go back to yuv420p.
+# Both inputs must be the same size: scale with a reference input (rw/rh =
+# the reference's size, FFmpeg 7.1+) matches the texture to the video. A single
+# still image is repeated for every video frame.
+
 # Multiply blend (darken)
 ffmpeg -i video.mp4 -i texture.png \
-  -filter_complex "[0:v][1:v]blend=all_mode=multiply" \
+  -filter_complex "[0:v]split[v][ref];[1:v][ref]scale=rw:rh,format=gbrp[b];[v]format=gbrp[a];\
+    [a][b]blend=all_mode=multiply,format=yuv420p" \
   multiply.mp4
 
 # Screen blend (lighten)
 ffmpeg -i video.mp4 -i light_leak.png \
-  -filter_complex "[0:v][1:v]blend=all_mode=screen" \
+  -filter_complex "[0:v]split[v][ref];[1:v][ref]scale=rw:rh,format=gbrp[b];[v]format=gbrp[a];\
+    [a][b]blend=all_mode=screen,format=yuv420p" \
   light_leak.mp4
 
 # Overlay blend
 ffmpeg -i video.mp4 -i texture.png \
-  -filter_complex "[0:v][1:v]blend=all_mode=overlay:all_opacity=0.5" \
+  -filter_complex "[0:v]split[v][ref];[1:v][ref]scale=rw:rh,format=gbrp[b];[v]format=gbrp[a];\
+    [a][b]blend=all_mode=overlay:all_opacity=0.5,format=yuv420p" \
   textured.mp4
 ```
 
@@ -650,16 +623,7 @@ ffprobe -v error -select_streams v -show_entries stream=pix_fmt overlay.png
 ffmpeg -i overlay.png -pix_fmt rgba -update 1 overlay_rgba.png
 ```
 
-**Text not rendering**
-```bash
-# Specify font file explicitly
-ffmpeg -i video.mp4 \
-  -vf "drawtext=text='Hello':fontfile=/path/to/font.ttf:fontsize=24:fontcolor=white" \
-  output.mp4
-
-# List available fonts
-fc-list : family | sort | uniq
-```
+**Text not rendering**: `fontcolor` defaults to black, and a missing font falls back silently; see Troubleshooting in `drawtext.md`.
 
 **Performance issues with complex filters**
 ```bash
@@ -667,7 +631,7 @@ fc-list : family | sort | uniq
 # Pre-render graphics
 # Use lower resolution for preview
 ffmpeg -i video.mp4 \
-  -vf "scale=640:360,drawbox=..." \
+  -vf "scale=640:360,drawbox=x=20:y=20:w=200:h=100:color=red:t=fill" \
   -preset ultrafast \
   preview.mp4
 ```
@@ -692,4 +656,4 @@ ffmpeg -i video.mp4 \
 3. Keep important content within safe areas
 4. Test at multiple resolutions
 
-This guide covers FFmpeg shape and graphics operations. For subtitle and caption overlays, see `captions.md`.
+For text overlays see `drawtext.md`; for subtitle files and burn-in see `captions.md`.

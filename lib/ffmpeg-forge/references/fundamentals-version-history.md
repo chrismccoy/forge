@@ -1,6 +1,18 @@
 # FFmpeg Version History
 
-## Checking Your Version
+Feature lists for FFmpeg 8.0 and 7.1 LTS, a checklist of version-sensitive claims in this skill, and update guidance. Last verified: 2026-10 against 8.0.1.
+
+## Contents
+
+- [Checking the Installed Version](#checking-the-installed-version)
+- [Official Sources for Latest Version](#official-sources-for-latest-version)
+- [Current Releases](#current-releases)
+- [Version-Sensitive Claims](#version-sensitive-claims)
+- [FFmpeg 8.0 "Huffman"](#ffmpeg-80-huffman)
+- [FFmpeg 7.1 "Péter" LTS (September 2024)](#ffmpeg-71-péter-lts-september-2024)
+- [Staying Up-to-Date](#staying-up-to-date)
+
+## Checking the Installed Version
 
 ```bash
 # Check installed version
@@ -16,15 +28,25 @@ ffmpeg -buildconf
 - Official Git Repository: https://git.ffmpeg.org/gitweb/ffmpeg.git
 - GitHub Releases: https://github.com/FFmpeg/FFmpeg/releases
 
-## Current Releases (as of 2026-10)
+## Current Releases
 
-- **9.0.2 "Lei"** (2026-09-18): latest stable. These references do not yet document 9.0-specific features; check https://ffmpeg.org/download.html and the changelog.
-- **8.1.3 "Hoare"** (2026-09-21): latest on the 8.1 branch.
-- **7.1.5**: latest on the 7.1 LTS branch.
+Release numbers and patch levels change often. Check https://ffmpeg.org/download.html for the current stable release and the latest patch on each branch (including the 7.1 LTS branch). These references cover 7.1 LTS and 8.x; features added in 9.0 or later are not documented here.
+
+## Version-Sensitive Claims
+
+Changes in FFmpeg 8.1 and 9.0 have not been reviewed for this skill. The claims below depend on the version and were checked on 8.0.1 only. Re-check them after an upgrade with the command given; the SKILL.md section that relies on each is named so it can be updated.
+
+| Claim | Where in SKILL.md | Re-check command | Result on 8.0.1 |
+|---|---|---|---|
+| 8.x overwrites the output options `-color_primaries`/`-color_trc` with the frame's values, so tags must be set with `setparams` | Non-Negotiable Rules, "Delivery defaults" (Color) | `ffmpeg -f lavfi -i testsrc2 -t 1 -pix_fmt yuv420p -color_primaries bt709 -color_trc bt709 -colorspace bt709 c.mp4` then `ffprobe -v error -show_entries stream=color_primaries,color_transfer c.mp4` | Primaries and transfer `unknown` (only `colorspace` kept); the `setparams` form gives `bt709` for all three |
+| `-crf` alone gives constant quality on `libvpx-vp9`/`libaom-av1` in 8.x; `-b:v 0` is needed on older builds | Anti-Patterns (`-crf` with nonzero `-b:v`) | `ffmpeg -i in.mp4 -t 1 -c:v libvpx-vp9 -crf 31 -an v.webm` and watch for a "bitrate not specified" warning | No warning; encode runs at q=31 |
+| Animating `drawtext` `fontsize` with a time expression segfaults on some 8.0.1 builds | Anti-Patterns (drawtext `fontsize`) | `ffmpeg -i in.mp4 -t 1 -vf "drawtext=text=A:fontsize='20+10*t'" -f null -` | Segmentation fault, exit code 139 (Ubuntu 8.0.1) |
+| The `whisper` filter exists from 8.0 and needs `--enable-whisper` | Scripts table (`generate-whisper-subtitles.sh`), Anti-Patterns (`whisper` writes via `destination=`) | `ffmpeg -h filter=whisper` | `Unknown filter 'whisper'.` on the Ubuntu build (not compiled in); options checked against the 8.0 source |
+| Latest stable release named in the version-coverage note | Version coverage paragraph at the top | https://ffmpeg.org/download.html | Changes with each release |
+
+Other version-dependent statements in the references: the WHIP muxer (8.0+, `streaming.md`), Vulkan codec availability (7.1/8.0, `fundamentals-vulkan-compute-codecs.md`), `pad_cuda` (8.0+), `tls_verify` still defaulting to 0 in 8.0, and `-/filter_complex` replacing the deprecated `-filter_complex_script`.
 
 ## FFmpeg 8.0 "Huffman"
-
-The 8.0 branch was cut from master on 2025-08-09 (8.0.1 released 2025-11-20).
 
 FFmpeg 8.0 is one of the largest releases to date, named after the Huffman code algorithm invented in 1952.
 
@@ -64,7 +86,7 @@ FFmpeg 8.0 is one of the largest releases to date, named after the Huffman code 
 - **Animated JPEG XL Encoding**: Via libjxl library
 - **FLV v2 Support**: Multitrack audio/video and modern codecs
 - **VVC in Matroska**: H.266/VVC support in MKV container
-- **VVC SCC Support**: Screen Content Coding with IBC, Palette Mode, ACT
+- **VVC SCC Support (native decoder)**: decodes Screen Content Coding tools (IBC, Palette Mode, ACT)
 - **TLS Verification**: Still off by default in 8.0 (`tls_verify` defaults to 0; the Changelog defers default-on to the next major version bump). Enable it with `-tls_verify 1` (plus `-ca_file` if needed)
 
 ### New Filters
@@ -110,7 +132,7 @@ FFmpeg 8.0 is one of the largest releases to date, named after the Huffman code 
 ### Recommended Update Strategy
 
 1. **Production**: Use LTS releases (7.1) for stability, apply patch updates
-2. **Development**: Use the latest stable release (9.0.x as of 2026-10) for new features
+2. **Development**: Use the latest stable release (see https://ffmpeg.org/download.html) for new features
 3. **Always**: Check release notes before upgrading
 
 ### Official Resources

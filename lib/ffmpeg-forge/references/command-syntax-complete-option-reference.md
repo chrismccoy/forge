@@ -2,6 +2,17 @@
 
 Exhaustive option catalogs grouped by category. Use this for lookup; for the placement rules and common mistakes see `command-syntax.md`.
 
+## Contents
+
+- [Global Options](#global-options-complete-list)
+- [Input-Only Options](#input-only-options-complete-list)
+- [Output-Only Options](#output-only-options-complete-list)
+- [Video Color/HDR Options](#video-colorhdr-options-output)
+- [Subtitle Options](#subtitle-options)
+- [Encoding/Muxing Statistics and Per-Stream Output Options](#encodingmuxing-statistics-and-other-per-stream-output-options)
+- [Threading Options](#threading-options)
+- [Format Flags (-fflags)](#format-flags--fflags)
+
 ## Global Options (Complete List)
 
 | Option | Description |
@@ -27,14 +38,14 @@ Exhaustive option catalogs grouped by category. Use this for lookup; for the pla
 | `-filter_threads n` | Set filter processing threads |
 | `-filter_buffered_frames n` | Max buffered frames in filtergraph |
 | `-lavfi graph` | Alias for -filter_complex |
-| `-/filter_complex file` | Read filtergraph from file (`-filter_complex_script` is deprecated in 8.0) |
+| `-/filter_complex file` | Read filtergraph from file (`-filter_complex_script` is deprecated; use `-/filter_complex`) |
 | `-sdp_file file` | Write SDP info to file |
 | `-init_hw_device type=name` | Initialize hardware device |
 | `-filter_hw_device name` | Hardware device for filters |
 | `-hwaccels` | List available hardware accelerations |
 | `-benchmark` | Show benchmarking info |
 | `-benchmark_all` | Show per-step benchmarking |
-| `-timelimit duration` | Exit after duration seconds |
+| `-timelimit duration` | Exit after this many seconds of CPU user time (not wall-clock time) |
 | `-dump` | Dump each input packet |
 | `-hex` | Dump packets in hex |
 | `-debug_ts` | Print timestamp/latency debugging info |
@@ -49,7 +60,6 @@ Exhaustive option catalogs grouped by category. Use this for lookup; for the pla
 | `-dts_error_threshold threshold` | DTS error timestamp threshold |
 | `-muxdelay seconds` | Maximum mux delay |
 | `-muxpreload seconds` | Initial mux delay |
-| `-streamid output_index:new_id` | Set stream ID in output |
 | `-bitexact` | Use only bit-exact algorithms (per-file, input or output) |
 | `-vstats` | Dump video coding stats to vstats_HHMMSS.log |
 | `-vstats_file file` | Dump video coding stats to specified file |
@@ -172,6 +182,7 @@ Exhaustive option catalogs grouped by category. Use this for lookup; for the pla
 | `-program title=name:st=0:st=1` | Create program in output |
 | `-stream_group type=value:...` | Create stream group |
 | `-target type` | Target format (vcd, svcd, dvd, dv, dv50) |
+| `-streamid output_index:new_id` | Set stream ID in output (per-output option) |
 | `-shortest` | Stop at shortest stream |
 | `-shortest_buf_duration duration` | Buffer for shortest detection |
 | `-apad` | Pad audio to match video (use with -shortest) |
@@ -188,7 +199,7 @@ Exhaustive option catalogs grouped by category. Use this for lookup; for the pla
 | `-force_key_frames expr` | Force keyframe positions |
 | `-copyinkf` | Copy initial non-keyframes (stream copy) |
 | `-fps_mode mode` | Frame rate mode, per stream (passthrough, cfr, vfr, auto); replaces `-vsync` |
-| `-enc_time_base tb` | Encoder timebase (`demux`, `filter`, a ratio such as `1:90000`, `0` = frame/sample rate, `-1` = source) |
+| `-enc_time_base tb` | Encoder timebase (`demux`, `filter`, a ratio such as `1:90000`, `0` = frame/sample rate; `-1` = source is deprecated, use `demux`) |
 | `-attach filename` | Add attachment (fonts, images) |
 | `-pre preset_name` | Use preset file (per-stream) |
 | `-fpre preset_file` | Use preset file (per-file) |
@@ -214,7 +225,7 @@ Removed options: `-intra` (use `-g 1`), `-vol` (use `-af volume=`), `-override_f
 | `-dc precision` | Intra DC precision |
 | `-qphist` | Deprecated, does nothing |
 
-In FFmpeg 8.0, `-color_primaries` and `-color_trc` are overwritten by the decoded frame's values when re-encoding (libx264/libx265 then write "unspecified"). To tag a re-encode, use `-vf setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709` (plus `-x265-params colorprim=..:transfer=..:colormatrix=..` for libx265). With `-c copy`, use `-bsf:v h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1` (or `hevc_metadata`). Check with `-bsf:v trace_headers -f null -`.
+In FFmpeg 8.0, `-color_primaries` and `-color_trc` are overwritten by the decoded frame's values when re-encoding (libx264/libx265 then write "unspecified"). To tag a re-encode, use `-vf setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709` (this also tags libx265 output; `-x265-params colorprim=..:transfer=..:colormatrix=..` is optional). With `-c copy`, use `-bsf:v h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1` (or `hevc_metadata`). Check with `-bsf:v trace_headers -f null -`.
 
 ## Subtitle Options
 
