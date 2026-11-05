@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 102 commands and 12 pickers.
+One Claude Code plugin - `forge` - holding 104 commands and 12 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -42,6 +42,8 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-block-review`](docs/wordpress.md#wp-block-review). Reviews WordPress block (Gutenberg) code in any block plugin. A bundled scanner detects the project type - modern build, multi-block library, metadata collection, compiled-only, no-build, apiVersion 1, or PHP-registered - and finds candidates in block.json, edit and save, deprecations, render files and callbacks, the Interactivity API, registration, and build output. Each one is confirmed in the source before it is reported as CRITICAL, WARNING, or INFO with the file and line and a BAD/GOOD fix.
 - [`/wp-security-review`](docs/wordpress.md#wp-security-review). Security review of a WordPress plugin, theme, specific files, a diff, or a pasted snippet. One round of questions settles the target, the depth (quick triage or full audit), who can reach the site (public, members, or admin-only, plus multisite and VIP), and whether you want patches, and it is skipped when your request already answers them. A grep scan finds candidate sinks, and each one is traced back through nonces, capability checks, sanitizing, allowlists, and stored data written by lower-privileged users. A finding is rated CRITICAL only after its exploit path is written out - entry point, who can reach it, the missing guard, and the impact - and every finding comes with the line, a CWE, and a BAD/GOOD fix.
 - [`/wp-plugin-review`](docs/wordpress.md#wp-plugin-review). Reviews a WordPress plugin for architecture, lifecycle, API usage, and WordPress.org compliance. It sets the context first - WordPress.org, private, mu-plugin, or drop-in - because that changes what counts as a problem, runs a bundled scanner, then reads every PHP file, not just the ones with hits. Severity comes only from a fixed catalog, a "Not a Problem" list drops known false positives, and each finding has the line, CRITICAL, WARNING, or INFO, and a BAD/GOOD fix using the plugin's own prefix and text domain. The report ends with a WordPress.org readiness verdict, and security observations are listed in one line each for `/wp-security-review`.
+- [`/wp-wpcs`](docs/wordpress.md#wp-wpcs). Converts a modern WordPress plugin to the WordPress Coding Standards: PSR-12, PSR-4 namespaces, and strict types become a WPCS ruleset, snake_case names, and WordPress class files in `includes/`. Intake settles the layout, types, and ruleset, and nine tested and tagged phases finish with an upgrade test on the plugin's real PHP floor. Nothing visible from outside the plugin changes unless you choose it.
+- [`/wp-plugin-convert`](docs/wordpress.md#wp-plugin-convert). Converts a WordPress plugin in either direction. It reads the code, confirms which way to go, then runs the whole `/wp-modernize` or `/wp-wpcs` procedure, and it resumes an unfinished run. Each direction keeps its own phases, tags, and log.
 
 **Design & Frontend**
 
@@ -158,7 +160,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 102 commands and 12 pickers, nothing running in the background.
+That is the whole install. One plugin, 104 commands and 12 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -169,7 +171,7 @@ Then either browse the whole catalog:
 which asks for a category, then a command, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 26 WordPress commands
+/forge-wordpress    # 28 WordPress commands
 /forge-design       # 9 design and frontend commands
 /forge-writing      # 11 writing and content commands
 /forge-devops       # 6 DevOps and data commands
@@ -212,6 +214,8 @@ Or call any command directly:
 /wp-block-review                # block code review: block.json, edit/save, render, Interactivity API
 /wp-security-review             # security review, CRITICAL only with a written exploit path
 /wp-plugin-review               # plugin architecture, lifecycle, and WordPress.org review
+/wp-wpcs                        # PSR-12 and strict types back to WPCS, snake_case, includes/
+/wp-plugin-convert              # either direction: reads the code, confirms, runs the procedure
 
 # Design & Frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -338,7 +342,7 @@ description each.
 
 | Picker | Commands | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 26 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
+| `/forge-wordpress` | 28 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-design` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-writing` | 11 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-devops` | 6 | 3 + `More...`, then 3 |
@@ -405,7 +409,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              114 command files - 102 commands, 12 pickers
+commands/              116 command files - 104 commands, 12 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -436,7 +440,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Commands | Reference |
 |---|---|---|
-| WordPress | 26 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 28 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 9 | [docs/design.md](docs/design.md) |
 | Writing & Content | 11 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 6 | [docs/devops-and-data.md](docs/devops-and-data.md) |
@@ -456,15 +460,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 102 commands + 12 pickers
-├── lib/                      ← 102 procedure folders (SKILL.md + bundled
+├── commands/                 ← 104 commands + 12 pickers
+├── lib/                      ← 104 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 102 commands compared by how much each does
+├── SUMMARY.md                ← the 104 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

@@ -152,6 +152,7 @@ to ask. Take the row below and go to Step 2.
 | `wp-modernize` | `/forge-wordpress` |
 | `wp-performance` | `/forge-wordpress` |
 | `wp-plugin` | `/forge-wordpress` |
+| `wp-plugin-convert` | `/forge-wordpress` |
 | `wp-plugin-review` | `/forge-wordpress` |
 | `wp-report-card` | `/forge-wordpress` |
 | `wp-review` | `/forge-wordpress` |
@@ -160,3 +161,4 @@ to ask. Take the row below and go to Step 2.
 | `wp-submission` | `/forge-wordpress` |
 | `wp-theme` | `/forge-wordpress` |
 | `wp-theme-review` | `/forge-wordpress` |
+| `wp-wpcs` | `/forge-wordpress` |

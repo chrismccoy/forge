@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  screen map  -  INDEX
 ================================================================================
-  102 commands . 12 pickers . 0 skills . nothing auto-fires.
+  104 commands . 12 pickers . 0 skills . nothing auto-fires.
 
   Pick a category below, then open its file for that category's command screens.
   Every menu is an AskUserQuestion (caps at 4; longer lists page via "More...").
@@ -14,7 +14,7 @@
   | [Category]                                        Which category?  (pg 1/4) |
   |-----------------------------------------------------------------------------|
   |  ( 1 )  WordPress                                 -> open  01-wordpress.txt |
-  |         Build, review, format, and fill WP plugins and themes.  26          |
+  |         Build, review, format, and fill WP plugins and themes.  28          |
   |         commands.                                                           |
   |                                                                             |
   |  ( 2 )  Design & Frontend                            -> open  02-design.txt |
@@ -88,7 +88,7 @@
 
   FILES IN THIS FOLDER
     00-index.txtyou are here
-    01-wordpress.txt  /forge-wordpress  . 26 commands
+    01-wordpress.txt  /forge-wordpress  . 28 commands
     02-design.txt     /forge-design     . 9 commands
     03-writing.txt    /forge-writing    . 11 commands
     04-devops.txt     /forge-devops     . 6 commands

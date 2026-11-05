@@ -1,5 +1,5 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          26 commands, 9 pages
+  FORGE  -  WordPress          ( /forge-wordpress )          28 commands, 9 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
@@ -87,8 +87,9 @@
   |         bug audit, theme mockups, the documentation pass, plugin             |
   |         modernization, the WordPress.org submission gate, plugin demo        |
   |         videos, the security review, the theme standards review, the block   |
-  |         code review, the exploit-path security review, and the plugin        |
-  |         architecture review.                                                 |
+  |         code review, the exploit-path security review, the plugin            |
+  |         architecture review, the WPCS conversion, and the either-way plugin  |
+  |         conversion.                                                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -112,8 +113,9 @@
   |         The theme bug audit, theme mockups, the documentation pass, plugin   |
   |         modernization, the WordPress.org submission gate, plugin demo        |
   |         videos, the security review, the theme standards review, the block   |
-  |         code review, the exploit-path security review, and the plugin        |
-  |         architecture review.                                                 |
+  |         code review, the exploit-path security review, the plugin            |
+  |         architecture review, the WPCS conversion, and the either-way plugin  |
+  |         conversion.                                                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -136,8 +138,9 @@
   |  ( 4 )  More...                                                   -> page 7  |
   |         Plugin modernization, the WordPress.org submission gate, plugin demo |
   |         videos, the security review, the theme standards review, the block   |
-  |         code review, the exploit-path security review, and the plugin        |
-  |         architecture review.                                                 |
+  |         code review, the exploit-path security review, the plugin            |
+  |         architecture review, the WPCS conversion, and the either-way plugin  |
+  |         conversion.                                                          |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -159,8 +162,8 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 8  |
   |         The security review, the theme standards review, the block code      |
-  |         review, the exploit-path security review, and the plugin             |
-  |         architecture review.                                                 |
+  |         review, the exploit-path security review, the plugin architecture    |
+  |         review, the WPCS conversion, and the either-way plugin conversion.   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -182,7 +185,8 @@
   |         INFO with file:line and fixes.                                       |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 9  |
-  |         The exploit-path security review and the plugin architecture review. |
+  |         The exploit-path security review, the plugin architecture review,    |
+  |         the WPCS conversion, and the either-way plugin conversion.           |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -198,6 +202,14 @@
   |         Context-aware read of every PHP file for lifecycle, hooks, APIs, and |
   |         prefixing; CRITICAL / WARNING / INFO with fixes and a WordPress.org  |
   |         verdict.                                                             |
+  |                                                                              |
+  |  ( 3 )  Convert a plugin to WPCS                                -> /wp-wpcs  |
+  |         PSR-12, PSR-4, and strict types back to WPCS, snake_case, and        |
+  |         includes/; tested and tagged per phase, outward names kept.          |
+  |                                                                              |
+  |  ( 4 )  Convert a plugin, either way                  -> /wp-plugin-convert  |
+  |         Reads the code, confirms the direction, then runs the full           |
+  |         /wp-modernize or /wp-wpcs procedure.                                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -854,5 +866,52 @@
   |  Line . severity . PLG-ID . impact . BAD/GOOD fix with the plugin's        |
   |  prefix.  Summary: counts, WordPress.org readiness, submission checklist,  |
   |  Security note -> /wp-security-review.                                     |
+  '----------------------------------------------------------------------------'
+
+--------------------------------------------------------------------- /wp-wpcs -
+  Reads the code first, then asks in four rounds, each answer inferred and
+  marked (Recommended).  A path argument sets the plugin.
+
+  .--[Plugin]-- prefix, released, tests, PHP floor ----------------------------.
+  |  Prefix:   ___ from the plugin's constants and options                     |
+  |  Released: ( ) No: clean break   ( ) Yes: aliases for old names            |
+  |  Tests:    ( ) detected setup   ( ) wp-env   ( ) throwaway SQLite site     |
+  |  PHP floor: asked when the header is missing or wrong                      |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- layout, types, ruleset, autoloader ----------------------------.
+  |  Layout:  ( ) prefixed globals in includes/   ( ) keep namespaces          |
+  |  Types:   ( ) remove strict_types   ( ) keep all   ( ) lower the floor     |
+  |  Ruleset: ( ) WordPress   ( ) WordPress-Extra   ( ) WordPress-Core         |
+  |  runtime vendor/autoload.php:  ( ) keep Composer   ( ) classmap            |
+  '----------------------------------------------------------------------------'
+  .--[Run]-- pauses, docblocks, downloads -------------------------------------.
+  |  Where to pause . docblocks in tests . @since tags . what may download     |
+  '----------------------------------------------------------------------------'
+  .--[Bugs]-- found during the run --------------------------------------------.
+  |  ( ) ask about each   ( ) fix security, report the rest   ( ) report only  |
+  '----------------------------------------------------------------------------'
+  .--[Only if needed]-- asked once each ---------------------------------------.
+  |  Phase 3: keep or rename public names of objects passed to hooks           |
+  |  Phase 4: eager or lazy aliases; approve the includes/ tree                |
+  |  Phase 8: install a floor runtime; copy the finished plugin                |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- nine tagged phases, outward names kept ------------------------.
+  |  0 violations against the ruleset, snake_case names, includes/ classes.    |
+  |  Every phase: full suite, per-test assertion counts, commit, tag.          |
+  |  Proof: outward names, msgid set, flows and upgrade test on the floor.     |
+  '----------------------------------------------------------------------------'
+
+----------------------------------------------------------- /wp-plugin-convert -
+  Reads the code first.  ONE question, skipped when the request names the
+  target style or an unfinished run is found.
+
+  .--[Direction]-- which way? -------------------------------------------------.
+  |  ( ) WPCS to modern: PSR-12, PSR-4 src/, strict PHP 8.1 types              |
+  |  ( ) Modern to WPCS: WPCS ruleset, snake_case, includes/ classes           |
+  |  the code's direction is marked (Recommended); mixed code, neither         |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one direction, run to its end ---------------------------------.
+  |  Hands over to /wp-modernize or /wp-wpcs: that intake, those phases,       |
+  |  tags, log, and final report.  Never both in one run.                      |
   '----------------------------------------------------------------------------'
 ================================================================================

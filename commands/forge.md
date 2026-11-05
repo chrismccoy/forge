@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 102 commands in this plugin and then run it. This command
+Route the user to one of the 104 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -29,7 +29,7 @@ Each category also has its own command, which skips Step 1 entirely:
 
 | Command | Covers |
 |---|---|
-| `/forge-wordpress` | 26 WordPress commands |
+| `/forge-wordpress` | 28 WordPress commands |
 | `/forge-design` | 9 design and frontend commands |
 | `/forge-writing` | 11 writing and content commands |
 | `/forge-devops` | 6 DevOps and data commands |
@@ -55,7 +55,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 26 commands. |
+| WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 28 commands. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning, Tailwind and React project work, page screenshots and device mockups. 9 commands. |
 | Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts, interactive stories. 11 commands. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities, media. |
@@ -92,7 +92,7 @@ Ask a second `AskUserQuestion` using only the rows for the chosen category. Use 
 **Label** column verbatim as the option label and the **Description** column as the
 option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 
-### WordPress (26 - page at 4)
+### WordPress (28 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
@@ -106,7 +106,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Architect review | wp-review | Security, performance, and architecture review of a plugin or theme, with a scorecard. |
 | Consulting audit | wp-consult | 10-section senior consulting audit with a 0-100 scorecard. |
 | Coding-standards formatting | wp-format | Set up WPCS and apply auto-fixable formatting without changing rendering. |
-| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, modernize, submission-gate, demo-video, security, theme-review, block-review, security-review, and plugin-review commands. |
+| More... | - | Menu-icon, report-card, grader, performance, demo-content, feature-README, WP-CLI, block-theme, classic-to-block, bug-audit, mockup, doc-pass, modernize, submission-gate, demo-video, security, theme-review, block-review, security-review, plugin-review, WPCS-conversion, and plugin-convert commands. |
 
 | Label | Command | Description |
 |---|---|---|
@@ -120,40 +120,42 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | Performance review | wp-performance | Cold full-file scan for unbounded queries, cache bypass, N+1 loops, and cron and asset cost. |
 | Demo content importer | wp-demo | Build a WP-CLI importer that fills an empty site with realistic demo content, tested on a throwaway SQLite site. |
 | Feature README | wp-feature-readme | Plain-English README for a theme or plugin: title, description, and a categorized feature list traced to real code. |
-| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
+| More... | - | WP-CLI scripts, block themes, classic-to-block migration, the theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, the plugin architecture review, the WPCS conversion, and the either-way plugin conversion. |
 
 | Label | Command | Description |
 |---|---|---|
 | WP-CLI fleet scripts | wp-cli | Write or review bash scripts that run a WP-CLI task on every site or one: dry run first, stub-tested. |
 | Block theme build or review | wp-block-theme | Build a full-site-editing block theme from a brief, or review one with file:line findings and a ship verdict. |
 | Classic to block theme | wp-classic-to-block | Assess a classic theme for a block theme move, or migrate it: theme.json, templates, and a companion plugin, keys kept. |
-| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
+| More... | - | The theme bug audit, theme mockups, the documentation pass, plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, the plugin architecture review, the WPCS conversion, and the either-way plugin conversion. |
 
 | Label | Command | Description |
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
 | Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
-| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
+| More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, the plugin architecture review, the WPCS conversion, and the either-way plugin conversion. |
 
 | Label | Command | Description |
 |---|---|---|
 | Modernize a plugin to PSR-12 | wp-modernize | WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested and tagged per phase, no behaviour change. |
 | WordPress.org submission gate | wp-submission | Ready for WordPress.org review? Guideline map, Plugin Check triage, readme check, one verdict, fixes, reviewer reply. |
 | Plugin demo video | wp-demo-video | Record an MP4 demo of a plugin's admin screens: source read, storyboard approved, clips per scene. |
-| More... | - | The security review, the theme standards review, the block code review, the exploit-path security review, and the plugin architecture review. |
+| More... | - | The security review, the theme standards review, the block code review, the exploit-path security review, the plugin architecture review, the WPCS conversion, and the either-way plugin conversion. |
 
 | Label | Command | Description |
 |---|---|---|
 | Security review | wp-security | 65-check scanner, then every input traced to its sink; CRITICAL / WARNING / INFO with file:line, CWE, and fixes. |
 | Theme standards review | wp-theme-review | Scanner plus confirmed findings for block, classic, hybrid, or child themes; CRITICAL / WARNING / INFO with file:line and fixes. |
 | Block code review | wp-block-review | Scanner plus confirmed findings for block.json, edit/save, deprecations, render, and Interactivity code; CRITICAL / WARNING / INFO with file:line and fixes. |
-| More... | - | The exploit-path security review and the plugin architecture review. |
+| More... | - | The exploit-path security review, the plugin architecture review, the WPCS conversion, and the either-way plugin conversion. |
 
 | Label | Command | Description |
 |---|---|---|
 | Exploit-path security review | wp-security-review | Scoped intake, grep scan, each candidate traced to its sink; CRITICAL only with a written exploit path, plus CWE and fixes. |
 | Plugin architecture review | wp-plugin-review | Context-aware read of every PHP file for lifecycle, hooks, APIs, and prefixing; CRITICAL / WARNING / INFO with fixes and a WordPress.org verdict. |
+| Convert a plugin to WPCS | wp-wpcs | PSR-12, PSR-4, and strict types back to WPCS, snake_case, and includes/; tested and tagged per phase, outward names kept. |
+| Convert a plugin, either way | wp-plugin-convert | Reads the code, confirms the direction, then runs the full /wp-modernize or /wp-wpcs procedure. |
 
 ### Design & Frontend (9 - page at 4)
 

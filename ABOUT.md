@@ -105,6 +105,14 @@ Reviews WordPress plugins, themes, and custom code for security holes. It first 
 
 Reviews how a WordPress plugin is built: its headers, activation and uninstall code, hooks, settings, REST routes, cron jobs, database tables, translations, and prefixes. It first works out whether the plugin is for WordPress.org, a private site, an mu-plugin, or a drop-in, because that changes what counts as a problem. A scanner finds likely problems, then it reads every PHP file, not just the ones with hits. Each finding is CRITICAL, WARNING, or INFO, with the file and line and a BAD/GOOD fix that uses the plugin's own prefix. The report ends with whether the plugin is ready for WordPress.org. Security problems get one line each and a pointer to wp-security-review.
 
+## wp-wpcs
+
+Converts a modern plugin to the WordPress Coding Standards, the reverse of wp-modernize. It moves code from PSR-12, PSR-4 namespaces, and strict types to a WPCS ruleset, snake_case names, and WordPress class files in includes/. It first asks what to build: prefixed global classes or namespaces kept, what happens to strict types, and which ruleset. The work runs in nine phases, and each phase is tested, committed, and tagged in git. Nothing visible from outside the plugin changes unless you choose an option that says so, and an upgrade test on the plugin's real PHP version confirms that an existing install still works.
+
+## wp-plugin-convert
+
+Converts a plugin in either direction, so you don't have to pick the command first. It reads the code, says which way the plugin looks set to go, and confirms that with you. It then runs the whole wp-modernize or wp-wpcs procedure. If a conversion was left unfinished, it picks that run back up instead of asking.
+
 ## html-design-styles
 
 Applies one of 53 named design styles to a page or component, such as bento, brutalist, vaporwave, kawaii, or glassmorphism. If you do not name a style, it shows a picker, and if your style name matches several entries, it asks you to choose one. Each style has a full spec covering colors, fonts, component patterns, and visual effects. The output is a single self-contained HTML file that uses the exact values from the spec.

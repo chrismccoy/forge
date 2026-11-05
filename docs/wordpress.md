@@ -1619,3 +1619,109 @@ Plugin architecture review only:
 - To change the code, use [`/wp-build`](#wp-builder-pro).
 
 The full procedure lives at [`lib/wp-plugin-review/SKILL.md`](../lib/wp-plugin-review/SKILL.md), the reference files under [`lib/wp-plugin-review/references/`](../lib/wp-plugin-review/references/), the scanner and its helpers under [`lib/wp-plugin-review/scripts/`](../lib/wp-plugin-review/scripts/), and the slash command at [`commands/wp-plugin-review.md`](../commands/wp-plugin-review.md).
+
+---
+
+## `wp-wpcs`
+
+Converts a modern WordPress plugin to the WordPress Coding Standards: from PSR-12, PSR-4 namespaces, and `strict_types` to a WPCS ruleset, snake_case names, and WordPress class and file names in `includes/` - without changing anything a site, a user, or another plugin can see, unless you choose an option that says so.
+
+```
+/wp-wpcs
+```
+
+A find-and-replace conversion breaks things the tests never see: a hook callback left with its old name, a class name stored in the database, a translated string that no longer matches, or a type removed where WordPress relied on the coercion. This tool works in nine phases and is the reverse of [`/wp-modernize`](#wordpress-modernize). Every phase runs the full test suite, compares each test's assertion count with the previous phase, commits, tags, and updates a progress log, so a long run can resume after a context reset.
+
+Intake decides the exact result: prefixed global classes or namespaces kept, `strict_types` removed, everything kept, or the PHP floor lowered, and the full `WordPress` ruleset, `WordPress-Extra`, or `WordPress-Core`. Option, meta, and transient keys, REST routes, hook names, the text domain, error codes, HTML output, and JS config keys stay as they were. Names WordPress has already stored keep working through aliases and wrappers, and an upgrade test on the plugin's real PHP floor proves it on a site that ran the old version.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wp-wpcs/SKILL.md` - the decisions, the hard rules, and the phase table - with intake, renaming rules, and nine phase files under `references/`, each read only when it is needed. Ten PHP scripts under `scripts/` do the work that must be exact, by reading PHP tokens rather than text: `token-proof.php` proves a change altered layout or comments only, `snake-case.php`, `flatten.php`, and `yoda.php` make the rewrites, `floor-scan.php` lists syntax newer than a target PHP version, `junit-compare.php` compares per-test assertion counts, and `surface.php` lists a plugin's outward-facing names so the final diff can prove none changed.
+
+## ✨ Features
+
+- 🧭 Reads the code first and asks what to build, with the inferred answer marked: prefix, layout, types, ruleset, autoloader, `@since` policy, and how to handle bugs
+- 🐘 Checks the PHP floor before any work: a syntax scan and `php -l` on a real binary show a wrong `Requires PHP:` up front
+- 🛟 Builds a safety net before any change: hook, REST, and settings wiring tests, plus golden copies of HTML and post output
+- 🔬 Proves the layout and docblock passes changed no code with a token-stream diff
+- 🔤 Renames camelCase to snake_case by tokens, only in the positions a name can really appear - never by find-and-replace
+- 🛡️ You decide on public names of objects passed to hooks; names that override WordPress, WP-CLI, or third-party methods keep their names
+- 📁 WordPress class and file names in `includes/`, shown for approval before anything moves
+- 🗄️ Aliases and wrappers for names stored in the database, and eager or lazy aliases for released plugins, with a report of what an alias can't cover
+- 🧹 Lint to zero with a provably identical change or a scoped `phpcs:ignore` with a reason for every report
+- 🔒 `strict_types` handled as you choose, with a cast wherever removing a type would change behaviour
+- 🌐 The `msgid` set and every `translators:` comment checked against the baseline
+- ✅ Final proof on the plugin's real PHP floor: real flows on block and classic themes, a smoke test with outbound HTTP blocked, and an upgrade test from the baseline version
+- 🏷️ A tag per phase and a resumable progress log; no comment mentions the conversion, and nothing is ever pushed
+
+## 🔄 How it works
+
+1. **Intake.** Reads the code, then asks its questions in four rounds.
+2. **Baseline and safety net.** Tests green, `wpcs-v0-baseline` tagged, then the chosen ruleset and the safety-net tests.
+3. **Layout and names.** `phpcbf` with a token-level proof, then snake_case names one class or group at a time.
+4. **Flatten.** The `includes/` tree you approved, with prefixed globals or namespaces kept.
+5. **Docs and lint.** Docblocks with the full ruleset, then lint to zero with reasoned ignores.
+6. **Types.** `strict_types` removed with types kept, or the PHP floor lowered, as you chose.
+7. **Verify and report.** Every check against the baseline on the floor PHP, the upgrade test, and a report of every ignore, alias, behaviour change, and decision left for you.
+
+## 🚀 How to use it
+
+```
+/wp-wpcs                                   ← uses the current directory or asks
+/wp-wpcs ~/plugins/acme-notes              ← that plugin
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"convert this WordPress plugin to WPCS"*, *"convert this plugin back to the WordPress Coding Standards"*, *"make this plugin pass phpcs --standard=WordPress"*, *"un-namespace this WordPress plugin"*, *"move the src/ classes into includes/"*
+
+Whole-plugin migrations only, and it works in place, so use a copy to keep the original. To go the other way use [`/wp-modernize`](#wordpress-modernize); to format a theme to the coding standard use [`/wp-format`](#wordpress-formatter); to add a feature or fix code use [`/wp-build`](#wp-builder-pro); to document code without changing it use [`/wp-doc-pass`](#wordpress-doc-pass).
+
+The full procedure lives at [`lib/wp-wpcs/SKILL.md`](../lib/wp-wpcs/SKILL.md), the phase files under [`lib/wp-wpcs/references/`](../lib/wp-wpcs/references/), the scripts under [`lib/wp-wpcs/scripts/`](../lib/wp-wpcs/scripts/), and the slash command at [`commands/wp-wpcs.md`](../commands/wp-wpcs.md).
+
+---
+
+## `wp-plugin-convert`
+
+Converts a WordPress plugin between coding styles, in either direction: from the WordPress Coding Standards to modern PHP, or from modern PHP back to WPCS.
+
+```
+/wp-plugin-convert
+```
+
+The two conversions have opposite rules, so this tool is a small router, not a third procedure. It works out which way the plugin should go, confirms that with you, then hands the whole run to [`/wp-modernize`](#wordpress-modernize) or [`/wp-wpcs`](#wp-wpcs). Each keeps its own phases, tags, log, and final report.
+
+## 📋 Technical Overview
+
+One slash command plus a short procedure file, `lib/wp-plugin-convert/SKILL.md`. It bundles nothing else: it loads `lib/wordpress-modernize/SKILL.md` or `lib/wp-wpcs/SKILL.md`, and only one of them per run, so the two sets of hard rules never meet.
+
+## ✨ Features
+
+- 🧭 Reads the code first: namespaces, `src/`, and `strict_types` point one way; prefixed classes, `includes/class-*.php`, and snake_case point the other
+- 🙋 Recommends a direction from what the code shows, and recommends neither when the signals are mixed
+- ⏭️ Skips the question when you already said which way
+- ♻️ Finds an unfinished run from its log and tags, and resumes that direction
+- 🔁 Round trips work: each direction keeps its own tags and log
+
+## 🔄 How it works
+
+1. **Check.** Confirms the folder is a WordPress plugin.
+2. **Resume.** Looks for a run in progress, and continues it if there is one.
+3. **Choose.** Reads the code, then uses the direction you named, or asks with a recommendation.
+4. **Load.** Reads that direction's procedure and follows it to its final report.
+
+## 🚀 How to use it
+
+```
+/wp-plugin-convert                         ← reads the plugin here and asks which way
+/wp-plugin-convert ~/plugins/acme-notes    ← that plugin
+/wp-plugin-convert to WPCS                 ← skips the direction question
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"convert this plugin"*, *"which way should this plugin be converted?"*, *"convert this plugin back to what it was"*
+
+If you already know the direction, [`/wp-modernize`](#wordpress-modernize) and [`/wp-wpcs`](#wp-wpcs) go straight there.
+
+The procedure lives at [`lib/wp-plugin-convert/SKILL.md`](../lib/wp-plugin-convert/SKILL.md) and the slash command at [`commands/wp-plugin-convert.md`](../commands/wp-plugin-convert.md).
