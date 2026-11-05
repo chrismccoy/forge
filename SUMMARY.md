@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 104 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 106 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 50 guided helpers · 53 full toolkits.
+**At a glance:** 1 quick win · 52 guided helpers · 53 full toolkits.
 
 ## Small Utils
 
@@ -30,6 +30,8 @@ These ask you a few questions (or take a short description), then produce a comp
 | `claudepuppy` | `/claudepuppy` | Takes a blog draft and a dog flavor (light, medium, or strong), asking for whichever is missing, then rewrites the post in The Claude Puppy dog-trainer voice with every fact and code block kept exact and any added sentence listed |
 | `human` | `/human` | Takes any text - pasted, a file, or a URL - and rewrites it as a casual first-person blog post in an invented persona's voice, keeping every fact and number, with a sincere voice for grave topics and a script that checks paragraph length, emphasis, and banned words |
 | `choose-your-adventure` | `/choose-your-adventure` | Asks for a story idea, length, tone, and content level in one message (or takes them after the command), then runs an interactive story where you are the protagonist - short scenes, 2-4 choices that change what happens next, and an ending that reflects the choices you made |
+| `latex-generator` | `/latex-generator` | Asks for the topic, audience, rigor, scope, approach, figures, format, bibliography, and files in one message, stops on false or open claims and infeasible scope, then writes one compilable math article, Beamer deck, or problem set with complete proofs and a self-check |
+| `math-tutor` | `/math-tutor` | Takes one math problem and picks the reply from what you send - a full worked solution, hints that stop short of the answer, a check that finds your first wrong line, a concept lesson, or just the answer, with practice answers kept in a final answer key |
 | `contract-framework` | `/draft-contract` | Writes a clear, fair freelance or consulting contract covering the work, the payment, and who owns the finished result, with anything legal flagged to check locally |
 | `readme-builder` | `/readme-builder` | Reads a whole project and writes one beginner friendly README in a fixed order, plain English, with hype words and long dashes kept out |
 | `tutorial-builder` | `/tutorial-builder` | Turns code or a topic into a step-by-step, hands-on tutorial that teaches, every code block runnable with its output shown, gated by a checklist and a yes/no quality gate |
@@ -178,14 +180,14 @@ And eighteen others are shortened or renamed:
 - `regex-tutor` → type `/explain-regex`
 - `code-explainer` → type `/explain-code`
 
-The other 65, including `/wp-security`, `/wp-theme-review`, `/wp-block-review`, `/wp-security-review`, `/wp-plugin-review`, `/wp-wpcs`, `/wp-plugin-convert`, `/tailwind-forge`, `/react-forge`, `/bash-forge`, `/python-forge`, `/retrospec`, `/readme-forge`, `/doc-pass`, and `/ffmpeg-forge`, use their own name as the command. Every tool has exactly one command.
+The other 67, including `/wp-security`, `/wp-theme-review`, `/wp-block-review`, `/wp-security-review`, `/wp-plugin-review`, `/wp-wpcs`, `/wp-plugin-convert`, `/tailwind-forge`, `/react-forge`, `/bash-forge`, `/python-forge`, `/retrospec`, `/readme-forge`, `/doc-pass`, and `/ffmpeg-forge`, use their own name as the command. Every tool has exactly one command.
 
-**Twelve pickers sit on top of the 104 commands:**
+**Twelve pickers sit on top of the 106 commands:**
 
 `/forge` walks you through every category, then the commands in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, `/forge-utils`, and `/forge-media` skip the category step
-and go straight to one of the eleven categories - 28, 9, 11, 6, 8, 3, 4, 18, 10, 6 and 1 commands
+and go straight to one of the eleven categories - 28, 9, 13, 6, 8, 3, 4, 18, 10, 6 and 1 commands
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a command name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -195,8 +197,8 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 **How each one gets what it needs from you:**
 
 - **Asks multiple-choice questions** (just pick from a menu): 71 commands - the easiest way to start
-- **Asks a few questions directly:** 5 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`, `choose-your-adventure`
-- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 28 - `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wp-security`, `wp-theme-review`, `wp-block-review`, `wp-plugin-review`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`, `seo-duel`, `git-forge`, `human`, `retrospec`
+- **Asks a few questions directly:** 6 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`, `choose-your-adventure`, `latex-generator`
+- **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 29 - `math-tutor`, `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wp-security`, `wp-theme-review`, `wp-block-review`, `wp-plugin-review`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`, `seo-duel`, `git-forge`, `human`, `retrospec`
 
 **Every tool runs only when you type its command:**
 

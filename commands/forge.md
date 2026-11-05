@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 104 commands in this plugin and then run it. This command
+Route the user to one of the 106 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -31,7 +31,7 @@ Each category also has its own command, which skips Step 1 entirely:
 |---|---|
 | `/forge-wordpress` | 28 WordPress commands |
 | `/forge-design` | 9 design and frontend commands |
-| `/forge-writing` | 11 writing and content commands |
+| `/forge-writing` | 13 writing and content commands |
 | `/forge-devops` | 6 DevOps and data commands |
 | `/forge-cloud` | 8 cloud and architecture commands |
 | `/forge-security` | 3 security commands |
@@ -57,7 +57,7 @@ such answer as a Step 0 direct hit.
 |---|---|
 | WordPress | Build, review, audit, format, fill, document, and script WordPress plugins, themes, and sites. 28 commands. |
 | Design & Frontend | Design styles, accessibility, design systems, CSS-to-Tailwind, page cloning, Tailwind and React project work, page screenshots and device mockups. 9 commands. |
-| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts, interactive stories. 11 commands. |
+| Writing & Content | Articles, tutorials, contracts, naming, language help, GitHub bios, book summaries, Claude Puppy rewrites, SEO draft duels, human-voice posts, interactive stories, LaTeX math documents, math tutoring. 13 commands. |
 | More... | DevOps, cloud, security, code cleanup, code, docs and diagrams, utilities, media. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which category?", header: "Category"
@@ -179,33 +179,35 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | React project work | react-forge | Components, hooks, state, forms, tests, and review in React 19, Next.js, React Router, or TanStack. |
 | Screenshot a page | screenshot-forge | Desktop, tablet, and mobile PNGs of a URL or a URL list, optionally in transparent device frames. |
 
-### Writing & Content (11 - page at 4)
+### Writing & Content (13 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Technical article | tech-blog-article | Front-page-quality technical article from topic, audience, angle, and length. |
 | Hands-on tutorial | tutorial-builder | Step-by-step tutorial built from code or a topic. |
 | Service contract | draft-contract | Plain-English eight-section service-agreement framework. |
-| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, SEO duel, human-voice, and interactive story commands. |
+| More... | - | Naming, language, GitHub bio, book summary, Claude Puppy, SEO duel, human-voice, interactive story, LaTeX document, and math tutor commands. |
 
 | Label | Command | Description |
 |---|---|---|
 | Name a product | name-domains | 10 brandable SaaS domain candidates, scored, in a locked A-D format. |
 | Translate or correct writing | language-tutor | Translate and explain a phrase, or correct and critique your writing. |
 | Write a GitHub bio | github-bio | Five GitHub profile bios in five styles from a six-question intake, each 160 characters or fewer. |
-| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, the human-voice rewriter, and the interactive story. |
+| More... | - | The book summary writer, the Claude Puppy rewriter, the SEO draft duel, the human-voice rewriter, the interactive story, the LaTeX document writer, and the math tutor. |
 
 | Label | Command | Description |
 |---|---|---|
 | Summarize a book | book-summary | Structured book summary: main ideas, checked quotes, takeaways, optional social post. |
 | Rewrite in Puppy voice | claudepuppy | Blog draft rewritten in The Claude Puppy dog-trainer voice, facts and code kept exact. |
 | Compare two SEO drafts | seo-duel | Two rewrites of one blog post scored on 10 SEO criteria in both orders: winner or merge plan, fixes, title and meta. |
-| More... | - | The human-voice rewriter and the interactive choose-your-own-adventure story. |
+| More... | - | The human-voice rewriter, the interactive story, the LaTeX document writer, and the math tutor. |
 
 | Label | Command | Description |
 |---|---|---|
 | Rewrite as a human blog post | human | Any text rewritten as a first-person blog post in an invented persona's voice, every fact kept. |
 | Play an interactive story | choose-your-adventure | Choose-your-own-adventure with you as the protagonist: 2-4 choices per scene, paced to your length, a real ending. |
+| Write a math document | latex-generator | Compilable LaTeX article, Beamer deck, or problem set from a ten-item intake, with complete proofs and a self-check. |
+| Tutor a math problem | math-tutor | One problem at your level: a worked solution, hints, a check of your work, or just the answer. |
 
 ### DevOps & Data (6 - page at 4)
 

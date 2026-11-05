@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  104 commands . 12 pickers . 0 skills . nothing auto-fires.
+  106 commands . 12 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -32,7 +32,8 @@
   |  ( 3 )  Writing & Content                                                    |
   |         Articles, tutorials, contracts, naming, language help, GitHub bios,  |
   |         book summaries, Claude Puppy rewrites, SEO duels, human-voice posts, |
-  |         interactive stories.  11 commands.                                   |
+  |         interactive stories, LaTeX math documents, math tutoring.            |
+  |         13 commands.                                                         |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
   |         DevOps, cloud, security, code cleanup, code, docs and diagrams,      |
@@ -381,7 +382,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Writing & Content  ( /forge-writing )  -  11 commands, 4 pages -------------
+--- Writing & Content  ( /forge-writing )  -  13 commands, 4 pages -------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/4) |
@@ -418,7 +419,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         Book summaries, Claude Puppy rewrites, SEO duels, human-voice blog   |
-  |         posts, and interactive stories.                                      |
+  |         posts, interactive stories, LaTeX documents, and math tutoring.      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -439,8 +440,8 @@
   |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Human-voice blog posts and interactive choose-your-own-adventure     |
-  |         stories.                                                             |
+  |         Human-voice blog posts, interactive stories, LaTeX math documents,   |
+  |         and math tutoring.                                                   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -455,6 +456,14 @@
   |  ( 2 )  Play an interactive story                 -> /choose-your-adventure  |
   |         Choose-your-own-adventure with you as the protagonist: 2-4 choices   |
   |         per scene, paced to your length, a real ending.                      |
+  |                                                                              |
+  |  ( 3 )  Write a math document                           -> /latex-generator  |
+  |         Compilable LaTeX article, Beamer deck, or problem set from a         |
+  |         ten-item intake, with complete proofs and a self-check.              |
+  |                                                                              |
+  |  ( 4 )  Tutor a math problem                                 -> /math-tutor  |
+  |         One problem at your level: a worked solution, hints, a check of      |
+  |         your work, or just the answer.                                       |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -899,7 +908,7 @@
    +-- Writing & Content ..... /forge-writing
    |    +-- tech-blog-article  tutorial-builder  draft-contract  name-domains
    |    +-- language-tutor  github-bio  book-summary  claudepuppy  seo-duel
-   |    +-- human  choose-your-adventure
+   |    +-- human  choose-your-adventure  latex-generator  math-tutor
    |
    +-- DevOps & Data ......... /forge-devops
    |    +-- docker-compose-architect  kubernetes-architect

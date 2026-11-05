@@ -125,6 +125,8 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `jq` | `/forge-devops` |
 | `kubernetes-architect` | `/forge-devops` |
 | `language-tutor` | `/forge-writing` |
+| `latex-generator` | `/forge-writing` |
+| `math-tutor` | `/forge-writing` |
 | `name-domains` | `/forge-writing` |
 | `page-cloner` | `/forge-design` |
 | `page-tailwindify` | `/forge-design` |

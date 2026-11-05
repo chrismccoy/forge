@@ -193,6 +193,14 @@ Rewrites any text as a personal, first-person blog post. It invents a persona th
 
 Runs an interactive choose-your-own-adventure where you are the main character. It asks for a story idea, a length, a tone, and a content level in one message, or you can give them right after the command. Each scene ends with two to four numbered choices, and each choice leads somewhere different. The story ends at the length you picked, resolves the main conflict, and reflects the choices you made.
 
+## latex-generator
+
+Writes one compilable mathematical LaTeX document: an article, a Beamer deck, or a problem set. It asks for anything missing from a ten-item intake in one message, then checks for problems before writing, such as a false or open claim or more content than the page budget can hold. It gives complete proofs at textbook and research rigor, compiles the result when TeX is installed, and ends with a self-check that flags anything it could not verify. Use it when you need a real math document, not a rough draft.
+
+## math-tutor
+
+Tutors one math problem at a time at your level. It reads what you send and picks the reply: a full worked solution for a bare problem, hints that stop short of the answer when you want to try first, a check that finds the first wrong line in your work, a short lesson for a concept question, or just the answer when that is all you ask for. Only a missing problem stops it; the level, method, and constraints get sensible defaults. It declines during a live exam and keeps practice answers in a final answer key. Use it when you want to learn the math or get unstuck, not for a one-off calculation.
+
 ## docker-compose-architect
 
 Designs a docker-compose stack for production use. It asks about your tech stack, database, network setup, and any constraints. The output includes networks, health checks, secrets passed as environment references, and a .env template. Use it when you need a compose file that is ready to run on a server.

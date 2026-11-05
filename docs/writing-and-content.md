@@ -640,3 +640,124 @@ During the story, reply with a choice number, your own action, an out-of-story q
 The full procedure lives at [`lib/choose-your-adventure/SKILL.md`](../lib/choose-your-adventure/SKILL.md) and the slash command at [`commands/choose-your-adventure.md`](../commands/choose-your-adventure.md).
 
 ---
+
+## `latex-generator`
+
+One compilable mathematical LaTeX document from a ten-item intake: an article, a Beamer deck, or a problem set. It writes nothing until every required answer is specific enough to act on, runs conflict checks before drafting, compiles when TeX is installed, and ends with a self-check that reports what it could not verify.
+
+```
+/latex-generator
+```
+
+Most "write this up in LaTeX" requests produce a document that guesses at the audience, overruns the length, says "it can be shown that" where a proof belongs, and has never been compiled. This tool collects the audience, rigor, scope, and format first. It refuses to fake mathematics: a false statement or an open problem is flagged and never gets a purported proof, even if you confirm. It builds to your budget, and cuts supporting material rather than requested results or needed proofs.
+
+The rules were written against real compiles, so they cover failures a clean log hides. Environments sharing a counter make `\cref` print "theorem 1.2" for a lemma with no warning, so the tool uses typed labels and checks the printed names. Beamer gets its own rules for predefined environments, overlay numbering, bibliography labels, and frame overflow.
+
+## Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/latex-generator/SKILL.md` holds the stop condition, the rules for accepting and asking for answers, the ten-item intake, the conflict checks, and follow-up passes. `lib/latex-generator/references/generation.md` loads once the intake clears, and holds the document structure, the Beamer and problem-set rules, the content rules, the compile step, the self-check, and the deliverable contract. The command pre-approves file edits and the TeX commands the compile step uses. Without TeX the tool still runs, but its checks are reasoning only and article page counts are marked as unverified estimates.
+
+## Features
+
+- Ten-item intake: TOPIC, AUDIENCE, RIGOR, SCOPE, APPROACH, VISUALIZATIONS, FORMAT, BIBLIOGRAPHY, EXTENSIONS (optional), FILES
+- Reads answers from the arguments and the conversation, and asks only for what is missing, all in one message
+- "Pick defaults" gets one concrete proposal to accept; the topic stays required
+- Four conflict checks, batched and rerun when an answer changes: topic validity, rigor vs. bibliography, bibliography vs. files, feasibility
+- Article or Beamer output, as a single `.tex` or a `.tex` plus `.bib`; HTML/MathJax is not supported
+- Page counts within about 15%, ranges landed inside, content and slide counts matched exactly
+- Cuts remove supporting material only, never a requested result, a figure, or a needed proof, and font size and margins stay alone
+- Complete proofs at standard and research rigor; labeled sketches at expository level only
+- Problem sets with or without solutions, with every problem solved in drafting either way
+- Compile in a temporary directory, with printed reference names checked in the PDF
+- A 13-item self-check, with `[N/A]` for items that do not apply and anything unresolved flagged
+
+## How it works
+
+1. **Intake.** Read answers from the arguments and the conversation. Ask for anything missing, vague, or unsupported in one message, and wait.
+2. **Conflict checks.** Run each check as soon as its fields are answered, present every conflict together, and rerun after any change.
+3. **Generate.** State the resolved answers, read the generation reference, and write the document.
+4. **Compile.** With a TeX engine, compile in a temporary directory, fix errors, and check overflow, printed reference names, and length.
+5. **Self-check.** Run the checklist, make targeted fixes, and recompile after every revision.
+6. **Deliver.** Write the file(s), with the checklist, compile result, compile instructions, exclusions, and any citation notice, then stop.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/latex-generator                                                  ← full intake
+/latex-generator Banach fixed point theorem, Beamer, 12 slides    ← asks only for the rest
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"write a LaTeX document on"*, *"typeset a proof of"*, *"write LaTeX lecture notes on"*, *"create a new problem set in LaTeX"*, *"make Beamer slides on"*
+
+After delivery, ask for an edit, a further format, or a new document. An edit reuses your answers, and a new document runs the full intake. For real compiles, install TeX first, for example `sudo apt install texlive-latex-extra texlive-science texlive-bibtex-extra latexmk biber`.
+
+The full procedure lives at [`lib/latex-generator/SKILL.md`](../lib/latex-generator/SKILL.md) and the slash command at [`commands/latex-generator.md`](../commands/latex-generator.md).
+
+---
+
+## `math-tutor`
+
+Tutors one math problem at a time, adapted to your level. The reply depends on what you send: a bare problem gets a full worked solution, a hint request gets hints, finished or unfinished work gets checked, and a follow-up gets a direct answer.
+
+```
+/math-tutor
+```
+
+Most math help from a chat model does one thing: it solves the problem. A student who wanted a hint gets the answer, and a student with one wrong line gets the whole solution rewritten. This tool picks one of ten reply modes from what you actually sent, using a first-match table. It solves the problem independently before judging any work, keeps hints short of the answer, and holds practice answers in a final `Answer key`.
+
+## Technical Overview
+
+One slash command plus its procedure file. The procedure file `lib/math-tutor/SKILL.md` holds intake, the mode table, every mode except Walkthrough, and the rules for all modes. `lib/math-tutor/references/walkthrough.md` loads only when Walkthrough is chosen, and holds the method glossary, a depth table for the low, standard, and high complexity tiers, the step granularity rule, and the 12 sections, so a hint or a work check stays light. The command pre-approves `Read` only and needs no scripts or external dependencies.
+
+## Features
+
+- Ten reply modes chosen by a first-match table: Resume, Follow-up, Ask for the work, Answer only, Partial check, Locate-only check, Error check, Concept, Hint first, and Walkthrough
+- Only a missing problem stops the reply. Level is inferred from the problem, the method is chosen for teaching value, and constraints default to none
+- Hint first gives two hints that get stronger, or one for a low-complexity problem. A hint qualifies only if you still need at least one more reasoning step
+- Partial check confirms the work so far, then gives the next hint only
+- Locate-only check names the first wrong line and the type of mistake, gives one hint, and shows corrected work only on request
+- Error check gives the first wrong line, what you did right, corrected work, a check of both answers, and a practice item aimed at the same mistake. Correct work is confirmed with a check and an extension item
+- Walkthrough has up to 12 sections: restatement, approach, numbered steps with misconception notes and a mid-solution check, final answer, intuition, why it works, practice, two conceptual multiple-choice questions, a memory aid, an optional alternate approach, a checklist, and the `Answer key`
+- Three complexity tiers set hint count and Walkthrough depth, so a one-step problem gets merged explanations and two practice items
+- Worksheets start on the named or first problem without asking, and end with a line naming the next one. A check across several problems gets a one-line verdict for each
+- Defective problems and problems clearly beyond the stated level are named instead of solved. A correct result of "no solution" or "all real numbers" is tutored normally
+- A student who says they are in a live exam gets no answers or hints, and an offer to go through the problems afterward
+- Constraints override default depth and format. Sections are compressed rather than dropped unless a constraint says otherwise
+- Plain text with a bold final answer in a terminal or unknown environment, and `\boxed{}` where LaTeX is requested or known to render
+
+## How it works
+
+1. **Intake.** Collect the problem, level, method, and constraints from the arguments and the conversation. Ask for the problem and stop only when it is missing and cannot be read from your work.
+2. **Pre-checks.** Name an ill-posed or mismatched problem instead of solving it. Decline answers and hints during a live exam.
+3. **Classify and solve.** Rate the problem low, standard, or high complexity. Solve it independently before judging work or writing hints.
+4. **Choose the mode.** Take the first matching row of the mode table, based on your latest message.
+5. **Reply.** Follow that mode's format. For Walkthrough, read the walkthrough reference first.
+6. **Silent QA.** Verify the reply and regenerate any affected steps before sending.
+
+## How to use it
+
+Two ways to invoke:
+
+**Slash command:**
+
+```
+/math-tutor Solve x^2 - 5x + 6 = 0               ← full Walkthrough
+/math-tutor Solve 3x + 5 = 20. Level: Algebra 1. ← with an optional input
+/math-tutor                                      ← asks for the problem
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"solve this"*, *"find the derivative of..."*, *"I'm stuck on this equation"*, *"give me a hint"*, *"walk me through this"*, *"is this right"*, *"where did I go wrong"*, *"check my work"*, *"my teacher marked this wrong"*
+
+During a session, send an attempt, ask for another hint, ask why a step works, say `just the answer`, or say `next`.
+
+The full procedure lives at [`lib/math-tutor/SKILL.md`](../lib/math-tutor/SKILL.md) and the slash command at [`commands/math-tutor.md`](../commands/math-tutor.md).
+
+---

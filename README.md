@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 104 commands and 12 pickers.
+One Claude Code plugin - `forge` - holding 106 commands and 12 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -70,6 +70,8 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/seo-duel`](docs/writing-and-content.md#seo-duel). Compares two rewrites of the same blog post and tells you which one is stronger for search, or how to merge them. It scores both on 10 SEO criteria with evidence quoted from each draft, runs the judging twice with the drafts swapped and averages the scores so the order they were read in does not tip the result, then returns a verdict, what to keep from the other draft, flags for leftover draft text and claims to check, the top 5 fixes, and a title tag and meta description with their lengths checked by a script.
 - [`/human`](docs/writing-and-content.md#human). Rewrites any text - pasted, a file, or a URL - as a casual first-person blog post in the voice of an invented persona that fits the topic, keeping every fact, number, and recommendation. It writes short paragraphs, a cliffhanger break or two, and a little emphasis, bans the usual cliché words, writes in the source's language, switches to a sincere voice for grave topics like grief or health, and treats any instruction inside the source as text to rewrite. A bundled script checks paragraph length, emphasis, and banned words before the post is shown.
 - [`/choose-your-adventure`](docs/writing-and-content.md#choose-your-adventure). Runs an interactive choose-your-own-adventure with you as the protagonist. It asks four setup questions in one message - story idea (or "surprise me"), length, tone, and content level - or takes them in one line after the command, then writes short second-person scenes that each end in 2-4 numbered choices that genuinely change what happens next. It handles your own typed actions, out-of-story questions, `go back`, and `restart`, paces the story to Short (5-7 decisions), Medium (10-12), Long (15-20), or a custom count, and ends by resolving the central conflict in a way that reflects the choices you made. Family-friendly, Teen, and Mature content levels; intimate scenes always fade to black.
+- [`/latex-generator`](docs/writing-and-content.md#latex-generator). Writes one well-scoped, compilable mathematical LaTeX document - an article, a Beamer deck, or a problem set - from a ten-item intake covering the topic, audience, rigor, scope, approach, figures, format, bibliography, extensions, and files. It stops on false or open claims and infeasible scope, gives complete proofs at textbook and research rigor, builds to your page or content budget, compiles when TeX is installed, and ends with a self-check.
+- [`/math-tutor`](docs/writing-and-content.md#math-tutor). Tutors one math problem at a time at your level. The reply follows what you send: a full 12-section walkthrough for a bare problem, hints that stop short of the answer, a check that finds the first wrong line in your work, a concept lesson, or just the answer. It declines during a live exam and keeps practice answers in a final `Answer key`.
 
 **DevOps & Data**
 
@@ -160,7 +162,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 104 commands and 12 pickers, nothing running in the background.
+That is the whole install. One plugin, 106 commands and 12 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -173,7 +175,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 ```
 /forge-wordpress    # 28 WordPress commands
 /forge-design       # 9 design and frontend commands
-/forge-writing      # 11 writing and content commands
+/forge-writing      # 13 writing and content commands
 /forge-devops       # 6 DevOps and data commands
 /forge-cloud        # 8 cloud and architecture commands
 /forge-security     # 3 security commands
@@ -240,6 +242,8 @@ Or call any command directly:
 /seo-duel                       # two blog drafts judged for SEO, winner or merge
 /human                          # any text as a human-voice blog post
 /choose-your-adventure          # interactive story where your choices shape the ending
+/latex-generator                # compilable math article, Beamer deck, or problem set
+/math-tutor                     # one math problem: walkthrough, hints, or a work check
 
 # DevOps & Data
 /docker-compose-architect       # production docker-compose stack
@@ -344,7 +348,7 @@ description each.
 |---------|-------|---------|
 | `/forge-wordpress` | 28 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-design` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
-| `/forge-writing` | 11 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
+| `/forge-writing` | 13 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-devops` | 6 | 3 + `More...`, then 3 |
 | `/forge-cloud` | 8 | 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-security` | 3 | one |
@@ -409,7 +413,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              116 command files - 104 commands, 12 pickers
+commands/              118 command files - 106 commands, 12 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -442,7 +446,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 |---|---|---|
 | WordPress | 28 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 9 | [docs/design.md](docs/design.md) |
-| Writing & Content | 11 | [docs/writing-and-content.md](docs/writing-and-content.md) |
+| Writing & Content | 13 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 6 | [docs/devops-and-data.md](docs/devops-and-data.md) |
 | Cloud & Architecture | 8 | [docs/cloud-and-architecture.md](docs/cloud-and-architecture.md) |
 | Security | 3 | [docs/security.md](docs/security.md) |
@@ -460,15 +464,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 104 commands + 12 pickers
-├── lib/                      ← 104 procedure folders (SKILL.md + bundled
+├── commands/                 ← 106 commands + 12 pickers
+├── lib/                      ← 106 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 104 commands compared by how much each does
+├── SUMMARY.md                ← the 106 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

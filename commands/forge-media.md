@@ -97,6 +97,8 @@ to ask. Take the row below and go to Step 2.
 | `jq` | `/forge-devops` |
 | `kubernetes-architect` | `/forge-devops` |
 | `language-tutor` | `/forge-writing` |
+| `latex-generator` | `/forge-writing` |
+| `math-tutor` | `/forge-writing` |
 | `mermaid-sequence` | `/forge-docs` |
 | `mermaid-to-ascii` | `/forge-docs` |
 | `name-domains` | `/forge-writing` |

@@ -106,6 +106,8 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `human` | `/forge-writing` |
 | `incident-report` | `/forge-cloud` |
 | `language-tutor` | `/forge-writing` |
+| `latex-generator` | `/forge-writing` |
+| `math-tutor` | `/forge-writing` |
 | `mermaid-sequence` | `/forge-docs` |
 | `mermaid-to-ascii` | `/forge-docs` |
 | `name-domains` | `/forge-writing` |

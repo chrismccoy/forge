@@ -1,9 +1,10 @@
 ================================================================================
-  FORGE  -  Writing & Content          ( /forge-writing )          11 commands, 4 pages
+  FORGE  -  Writing & Content          ( /forge-writing )          13 commands, 4 pages
 ================================================================================
   Articles, tutorials, contracts, naming, language help, GitHub profile bios,
   book summaries, Claude Puppy rewrites, SEO duels, human-voice blog posts,
-  interactive choose-your-own-adventure stories.
+  interactive choose-your-own-adventure stories, LaTeX math documents,
+  math tutoring.
 
   STEP 2 - pick a command
 
@@ -42,7 +43,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         Book summaries, Claude Puppy rewrites, SEO duels, human-voice blog   |
-  |         posts, and interactive stories.                                      |
+  |         posts, interactive stories, LaTeX documents, and math tutoring.      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -63,8 +64,8 @@
   |         orders: winner or merge plan, fixes, title and meta.                 |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         Human-voice blog posts and interactive choose-your-own-adventure     |
-  |         stories.                                                             |
+  |         Human-voice blog posts, interactive stories, LaTeX math documents,   |
+  |         and math tutoring.                                                   |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -79,6 +80,14 @@
   |  ( 2 )  Play an interactive story                 -> /choose-your-adventure  |
   |         Choose-your-own-adventure with you as the protagonist: 2-4 choices   |
   |         per scene, paced to your length, a real ending.                      |
+  |                                                                              |
+  |  ( 3 )  Write a math document                           -> /latex-generator  |
+  |         Compilable LaTeX article, Beamer deck, or problem set from a         |
+  |         ten-item intake, with complete proofs and a self-check.              |
+  |                                                                              |
+  |  ( 4 )  Tutor a math problem                                 -> /math-tutor  |
+  |         One problem at your level: a worked solution, hints, a check of      |
+  |         your work, or just the answer.                                       |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -352,5 +361,73 @@
   .--[Result]-- an ending built from your choices -----------------------------.
   |  Central conflict resolved . earlier choices referenced                    |
   |  . no sequel hooks . closes with "THE END".                                |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------- /latex-generator -
+  Every missing, vague, or unsupported field in ONE plain message (no menus).
+  Answers passed as arguments are not asked again.  Nothing is written until
+  every required field is answered and every flagged conflict is resolved.
+
+  .--[Topic]-- Q1 a specific result -------------------------------------------.
+  |  ___ e.g. Proof of the Spectral Theorem for compact operators              |
+  '----------------------------------------------------------------------------'
+  .--[Audience]-- Q2 who it is for, what they know ----------------------------.
+  |  ___ e.g. 3rd-year undergrads, know real analysis                          |
+  '----------------------------------------------------------------------------'
+  .--[Rigor]-- Q3 -------------------------------------------------------------.
+  |  ( ) Expository   ( ) Standard textbook   ( ) Research/journal             |
+  '----------------------------------------------------------------------------'
+  .--[Scope]-- Q4 pages, content count, or both -------------------------------.
+  |  ___ e.g. 6-8 pages, or 2 theorems and 3 lemmas, or 12 slides              |
+  '----------------------------------------------------------------------------'
+  .--[Approach]-- Q5 ----------------------------------------------------------.
+  |  ___ e.g. pure proof-based, computational, applied, mixed                  |
+  '----------------------------------------------------------------------------'
+  .--[Figures]-- Q6 -----------------------------------------------------------.
+  |  ( ) None   ( ) TikZ diagrams, described   ( ) 3D plot, described          |
+  '----------------------------------------------------------------------------'
+  .--[Format]-- Q7 ------------------------------------------------------------.
+  |  ( ) Article .tex   ( ) Beamer deck                                        |
+  '----------------------------------------------------------------------------'
+  .--[Bibliography]-- Q8 ------------------------------------------------------.
+  |  ( ) None   ( ) 3-5 real references, yours or picked for you               |
+  '----------------------------------------------------------------------------'
+  .--[Extensions]-- Q9 optional  (default: none) ------------------------------.
+  |  ___ e.g. pseudocode, error analysis, historical notes                     |
+  '----------------------------------------------------------------------------'
+  .--[Files]-- Q10 ------------------------------------------------------------.
+  |  ( ) Single .tex   ( ) .tex plus .bib                                      |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one document, built to budget ---------------------------------.
+  |  Conflict checks first . complete proofs . compiled when TeX               |
+  |  is installed . self-check, compile notes, and exclusions.                 |
+  '----------------------------------------------------------------------------'
+
+
+------------------------------------------------------------------ /math-tutor -
+  The problem comes from the argument, or is asked for in ONE plain message
+  (no menus).  Only a missing problem stops the reply; anything else left
+  out uses its default.
+
+  .--[Problem]-- Q1 the exact problem -----------------------------------------.
+  |  ___ e.g. Solve x^2 - 5x + 6 = 0                                           |
+  '----------------------------------------------------------------------------'
+  .--[Level]-- optional  (default: inferred from the problem) -----------------.
+  |  ___ e.g. middle school, high school algebra, calculus                     |
+  '----------------------------------------------------------------------------'
+  .--[Method]-- optional  (default: best fit for teaching) --------------------.
+  |  ( ) Algebraic   ( ) Geometric   ( ) Graphical   ( ) Numerical             |
+  '----------------------------------------------------------------------------'
+  .--[Constraints]-- optional  (default: none) --------------------------------.
+  |  ___ e.g. LaTeX only, max 8 steps, exam brevity, units required            |
+  '----------------------------------------------------------------------------'
+  .--[Reply]-- chosen from what you send, every turn --------------------------.
+  |  Bare problem: walkthrough . hint request: hints . your work: a            |
+  |  check . concept question: a lesson . just the answer: the answer.         |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- one problem at a time -----------------------------------------.
+  |  Hints stop short of the answer . practice answers in a final              |
+  |  Answer key . no answers or hints during a live exam.                      |
   '----------------------------------------------------------------------------'
 ================================================================================
