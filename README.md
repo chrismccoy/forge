@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 106 commands and 12 pickers.
+One Claude Code plugin - `forge` - holding 107 commands and 12 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -44,6 +44,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/wp-plugin-review`](docs/wordpress.md#wp-plugin-review). Reviews a WordPress plugin for architecture, lifecycle, API usage, and WordPress.org compliance. It sets the context first - WordPress.org, private, mu-plugin, or drop-in - because that changes what counts as a problem, runs a bundled scanner, then reads every PHP file, not just the ones with hits. Severity comes only from a fixed catalog, a "Not a Problem" list drops known false positives, and each finding has the line, CRITICAL, WARNING, or INFO, and a BAD/GOOD fix using the plugin's own prefix and text domain. The report ends with a WordPress.org readiness verdict, and security observations are listed in one line each for `/wp-security-review`.
 - [`/wp-wpcs`](docs/wordpress.md#wp-wpcs). Converts a modern WordPress plugin to the WordPress Coding Standards: PSR-12, PSR-4 namespaces, and strict types become a WPCS ruleset, snake_case names, and WordPress class files in `includes/`. Intake settles the layout, types, and ruleset, and nine tested and tagged phases finish with an upgrade test on the plugin's real PHP floor. Nothing visible from outside the plugin changes unless you choose it.
 - [`/wp-plugin-convert`](docs/wordpress.md#wp-plugin-convert). Converts a WordPress plugin in either direction. It reads the code, confirms which way to go, then runs the whole `/wp-modernize` or `/wp-wpcs` procedure, and it resumes an unfinished run. Each direction keeps its own phases, tags, and log.
+- [`/wp-terse`](docs/wordpress.md#wp-terse). Rewrites verbose PHPDoc and JSDoc in a WordPress plugin or theme as short, plain-English comments for someone new to the code. Comments that tools read, such as plugin headers, WP-CLI docs, `translators:` and `phpcs:` lines, stay as they are, and a token check proves no code changed.
 
 **Design & Frontend**
 
@@ -162,7 +163,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 106 commands and 12 pickers, nothing running in the background.
+That is the whole install. One plugin, 107 commands and 12 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -173,7 +174,7 @@ Then either browse the whole catalog:
 which asks for a category, then a command, then runs it. Or jump straight to one category:
 
 ```
-/forge-wordpress    # 28 WordPress commands
+/forge-wordpress    # 29 WordPress commands
 /forge-design       # 9 design and frontend commands
 /forge-writing      # 13 writing and content commands
 /forge-devops       # 6 DevOps and data commands
@@ -218,6 +219,7 @@ Or call any command directly:
 /wp-plugin-review               # plugin architecture, lifecycle, and WordPress.org review
 /wp-wpcs                        # PSR-12 and strict types back to WPCS, snake_case, includes/
 /wp-plugin-convert              # either direction: reads the code, confirms, runs the procedure
+/wp-terse                       # terse plain-English comments, tool-read comments kept, no code change
 
 # Design & Frontend
 /html-design-styles             # 53 named design styles with full specs
@@ -346,7 +348,7 @@ description each.
 
 | Picker | Commands | Screens |
 |---------|-------|---------|
-| `/forge-wordpress` | 28 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
+| `/forge-wordpress` | 29 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
 | `/forge-design` | 9 | 3 + `More...`, then 3 + `More...`, then 3 |
 | `/forge-writing` | 13 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 4 |
 | `/forge-devops` | 6 | 3 + `More...`, then 3 |
@@ -413,7 +415,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              118 command files - 106 commands, 12 pickers
+commands/              119 command files - 107 commands, 12 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -444,7 +446,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 
 | Group | Commands | Reference |
 |---|---|---|
-| WordPress | 28 | [docs/wordpress.md](docs/wordpress.md) |
+| WordPress | 29 | [docs/wordpress.md](docs/wordpress.md) |
 | Design & Frontend | 9 | [docs/design.md](docs/design.md) |
 | Writing & Content | 13 | [docs/writing-and-content.md](docs/writing-and-content.md) |
 | DevOps & Data | 6 | [docs/devops-and-data.md](docs/devops-and-data.md) |
@@ -464,15 +466,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 106 commands + 12 pickers
-├── lib/                      ← 106 procedure folders (SKILL.md + bundled
+├── commands/                 ← 107 commands + 12 pickers
+├── lib/                      ← 107 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 106 commands compared by how much each does
+├── SUMMARY.md                ← the 107 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

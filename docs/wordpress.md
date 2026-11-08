@@ -1036,7 +1036,7 @@ One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and 
 
 > *"add PHPDoc to every function in this plugin"*, *"the WordPress-Docs sniffs are failing, fix the docblocks"*, *"document this plugin's hooks"*, *"add JSDoc to the admin scripts"*, *"document my theme's templates and functions.php"*
 
-Comments only. To change or fix code use [`/wp-build`](#wp-builder-pro); for a plain-English feature README use [`/wp-feature-readme`](#wordpress-feature-readme); to format code to the coding standard use [`/wp-format`](#wordpress-formatter).
+Comments only. To change or fix code use [`/wp-build`](#wp-builder-pro); for a plain-English feature README use [`/wp-feature-readme`](#wordpress-feature-readme); to trim existing doc blocks into short plain-English comments use [`/wp-terse`](#wp-terse); to format code to the coding standard use [`/wp-format`](#wordpress-formatter).
 
 The full procedure lives at [`lib/wordpress-doc-pass/SKILL.md`](../lib/wordpress-doc-pass/SKILL.md), the references under [`lib/wordpress-doc-pass/references/`](../lib/wordpress-doc-pass/references/), the checker under [`lib/wordpress-doc-pass/scripts/checker/`](../lib/wordpress-doc-pass/scripts/checker/), and the slash command at [`commands/wp-doc-pass.md`](../commands/wp-doc-pass.md).
 
@@ -1725,3 +1725,53 @@ One slash command plus a short procedure file, `lib/wp-plugin-convert/SKILL.md`.
 If you already know the direction, [`/wp-modernize`](#wordpress-modernize) and [`/wp-wpcs`](#wp-wpcs) go straight there.
 
 The procedure lives at [`lib/wp-plugin-convert/SKILL.md`](../lib/wp-plugin-convert/SKILL.md) and the slash command at [`commands/wp-plugin-convert.md`](../commands/wp-plugin-convert.md).
+
+---
+
+## `wp-terse`
+
+Turn long doc blocks into short comments anyone can read. Point it at the files of a WordPress plugin or theme and it rewrites verbose PHPDoc and JSDoc as terse, plain-English comments for someone new to the code, keeps the comments that tools read, and proves that only comments changed.
+
+```
+/wp-terse
+```
+
+Doc blocks full of `@param`, `@return`, and `@since` lines are hard to read for anyone who didn't write them, but trimming them by hand risks deleting comments that are really code: WP-CLI reads its command docblocks while running, translation tools look for `translators:` comments, and linters obey `phpcs:` lines. This tool lists those first and leaves them alone unless you confirm after a warning. Everything else is rewritten in plain words that say only what the code shows, and comments that just repeat the code are deleted.
+
+## 📋 Technical Overview
+
+One slash command plus its procedure file `lib/wp-terse/SKILL.md`, which holds the role, the fresh-run rule, the list of protected comments, and the workflow, and two references read at the step that needs them: `references/intake-questions.md` (the six questions) and `references/conversion-rules.md` (writing rules, doc block rules, and syntax traps). It has no scripts: the checks run with PHP's own `php -l` and tokenizer.
+
+## ✨ Features
+
+- 💬 Six questions, one at a time: files, scope, hook comments, comment style, file header, and anything off limits
+- 🔒 Keeps comments that tools read - plugin and theme headers, WP-CLI docs, `translators:`, `phpcs:` and `eslint-` lines, `@ts-` and `@phpstan-` tags, `@dataProvider`, webpack hints, `@deprecated`, `TODO` / `FIXME`
+- 🚩 Keeps and flags any comment that looks machine-read but isn't on its list
+- ✍️ One short, true sentence where a name doesn't already say it, with no guessing about when something runs
+- 🧹 Deletes boilerplate tags and comments that only repeat the code, including old inline `//` comments
+- 🧩 Avoids syntax traps: no `?>` in a `//` comment, JSX `{/* */}` comments left alone
+- ✅ Backs up each file, edits by hand, compares PHP tokens, and runs `php -l`
+- 🔁 Every run starts fresh and asks every question again
+
+## 🔄 How it works
+
+1. **Intake.** The six questions, then read the files and list the comments that tools read.
+2. **Convert.** Back up each file and rewrite the doc blocks and inline comments by hand.
+3. **Verify.** Compare the code tokens with the backup, run `php -l`, and confirm every protected comment is still in place.
+4. **Report.** What was condensed, dropped, or kept, and why.
+
+## 🚀 How to use it
+
+```
+/wp-terse                                          ← asks which files to convert
+/wp-terse includes/class-importer.php              ← one file
+/wp-terse ~/plugins/acme-notes                     ← a whole plugin
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"make these PHPDoc blocks terse"*, *"convert the docblocks to plain English"*, *"simplify the code comments in this plugin"*, *"strip the @param tags and write short comments instead"*
+
+Comments only. For full documentation use [`/wp-doc-pass`](#wordpress-doc-pass); to format code to the coding standard use [`/wp-format`](#wordpress-formatter).
+
+The procedure lives at [`lib/wp-terse/SKILL.md`](../lib/wp-terse/SKILL.md), the references under [`lib/wp-terse/references/`](../lib/wp-terse/references/), and the slash command at [`commands/wp-terse.md`](../commands/wp-terse.md).

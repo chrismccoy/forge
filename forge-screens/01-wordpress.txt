@@ -1,12 +1,12 @@
 ================================================================================
-  FORGE  -  WordPress          ( /forge-wordpress )          28 commands, 9 pages
+  FORGE  -  WordPress          ( /forge-wordpress )         29 commands, 10 pages
 ================================================================================
   Build, review, format, and fill WordPress plugins and themes.
 
   STEP 2 - pick a command
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/9) |
+  | [Command]                                          Which command?  (pg 1/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Build a plugin from scratch                           -> /wp-plugin  |
   |         Full WordPress.org-ready plugin scaffold: OOP classes, blocks, REST, |
@@ -27,7 +27,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/9) |
+  | [Command]                                          Which command?  (pg 2/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Architect review                                      -> /wp-review  |
   |         Security, performance, and architecture review of a plugin or theme, |
@@ -47,7 +47,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/9) |
+  | [Command]                                          Which command?  (pg 3/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Menu icon picker                                  -> /wp-menu-icons  |
   |         Add a searchable Font Awesome icon picker to each Appearance > Menus |
@@ -68,7 +68,7 @@
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 4/9) |
+  | [Command]                                          Which command?  (pg 4/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Performance review                               -> /wp-performance  |
   |         Cold full-file scan for unbounded queries, cache bypass, N+1 loops,  |
@@ -88,14 +88,14 @@
   |         modernization, the WordPress.org submission gate, plugin demo        |
   |         videos, the security review, the theme standards review, the block   |
   |         code review, the exploit-path security review, the plugin            |
-  |         architecture review, the WPCS conversion, and the either-way plugin  |
-  |         conversion.                                                          |
+  |         architecture review, the WPCS conversion, the either-way plugin      |
+  |         conversion, and terse comments.                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 5/9) |
+  | [Command]                                          Which command?  (pg 5/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  WP-CLI fleet scripts                                     -> /wp-cli  |
   |         Write or review bash scripts that run a WP-CLI task on every site    |
@@ -114,14 +114,14 @@
   |         modernization, the WordPress.org submission gate, plugin demo        |
   |         videos, the security review, the theme standards review, the block   |
   |         code review, the exploit-path security review, the plugin            |
-  |         architecture review, the WPCS conversion, and the either-way plugin  |
-  |         conversion.                                                          |
+  |         architecture review, the WPCS conversion, the either-way plugin      |
+  |         conversion, and terse comments.                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 6/9) |
+  | [Command]                                          Which command?  (pg 6/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Theme bug audit                                    -> /wp-bug-audit  |
   |         Read every file, run ~160 checks, and test on throwaway sites across |
@@ -139,14 +139,14 @@
   |         Plugin modernization, the WordPress.org submission gate, plugin demo |
   |         videos, the security review, the theme standards review, the block   |
   |         code review, the exploit-path security review, the plugin            |
-  |         architecture review, the WPCS conversion, and the either-way plugin  |
-  |         conversion.                                                          |
+  |         architecture review, the WPCS conversion, the either-way plugin      |
+  |         conversion, and terse comments.                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 7/9) |
+  | [Command]                                          Which command?  (pg 7/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Modernize a plugin to PSR-12                       -> /wp-modernize  |
   |         WPCS to PSR-12, PSR-4 src/ folders, and strict PHP 8.1 types; tested |
@@ -163,13 +163,14 @@
   |  ( 4 )  More...                                                   -> page 8  |
   |         The security review, the theme standards review, the block code      |
   |         review, the exploit-path security review, the plugin architecture    |
-  |         review, the WPCS conversion, and the either-way plugin conversion.   |
+  |         review, the WPCS conversion, the either-way plugin conversion, and   |
+  |         terse comments.                                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 8/9) |
+  | [Command]                                          Which command?  (pg 8/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Security review                                     -> /wp-security  |
   |         65-check scanner, then every input traced to its sink; CRITICAL /    |
@@ -186,13 +187,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 9  |
   |         The exploit-path security review, the plugin architecture review,    |
-  |         the WPCS conversion, and the either-way plugin conversion.           |
+  |         the WPCS conversion, the either-way plugin conversion, and terse     |
+  |         comments.                                                            |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 9/9) |
+  | [Command]                                          Which command?  (pg 9/10) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Exploit-path security review                 -> /wp-security-review  |
   |         Scoped intake, grep scan, each candidate traced to its sink;         |
@@ -207,9 +209,22 @@
   |         PSR-12, PSR-4, and strict types back to WPCS, snake_case, and        |
   |         includes/; tested and tagged per phase, outward names kept.          |
   |                                                                              |
-  |  ( 4 )  Convert a plugin, either way                  -> /wp-plugin-convert  |
+  |  ( 4 )  More...                                                  -> page 10  |
+  |         The either-way plugin conversion and terse comments.                 |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                         Which command?  (pg 10/10) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Convert a plugin, either way                  -> /wp-plugin-convert  |
   |         Reads the code, confirms the direction, then runs the full           |
   |         /wp-modernize or /wp-wpcs procedure.                                 |
+  |                                                                              |
+  |  ( 2 )  Terse plain-English comments                           -> /wp-terse  |
+  |         Rewrites verbose PHPDoc / JSDoc as short plain-English comments;     |
+  |         tool-read comments kept, a token check proves no code changed.       |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -913,5 +928,36 @@
   .--[Result]-- one direction, run to its end ---------------------------------.
   |  Hands over to /wp-modernize or /wp-wpcs: that intake, those phases,       |
   |  tags, log, and final report.  Never both in one run.                      |
+  '----------------------------------------------------------------------------'
+
+-------------------------------------------------------------------- /wp-terse -
+  Files first, then five more questions, one at a time.  A path argument
+  answers the first question.  Every run starts fresh.
+
+  .--[Files]-- what to convert ------------------------------------------------.
+  |  ( ) the files I name   ( ) a plugin or theme folder                       |
+  |      read right away; every comment a tool reads is listed                 |
+  '----------------------------------------------------------------------------'
+  .--[Scope]-- which doc blocks -----------------------------------------------.
+  |  ( ) every doc block   ( ) skip trivial one-liners   ( ) skip hook         |
+  |      callbacks                                                             |
+  '----------------------------------------------------------------------------'
+  .--[Hooks]-- add_action / do_action comments --------------------------------.
+  |  ( ) short note: what it is for, when it runs   ( ) drop   ( ) leave as is |
+  '----------------------------------------------------------------------------'
+  .--[Style]-- comment form ---------------------------------------------------.
+  |  ( ) // line comments only   ( ) short /* */ blocks allowed                |
+  |      comments that tools read keep their form either way                   |
+  '----------------------------------------------------------------------------'
+  .--[Header]-- top of the file -----------------------------------------------.
+  |  ( ) keep exactly   ( ) simplify   plugin and theme headers always stay    |
+  '----------------------------------------------------------------------------'
+  .--[Off limits]-- anything else to leave alone ------------------------------.
+  |  free text: REST docs, @since / @package for a docs generator, ...         |
+  '----------------------------------------------------------------------------'
+  .--[Result]-- comments only, checked ----------------------------------------.
+  |  Short plain-English comments; boilerplate tags and restating comments     |
+  |  gone.  Tool-read comments kept, or removed only after a warning and       |
+  |  your yes.  Backup first, PHP tokens compared, php -l run.                 |
   '----------------------------------------------------------------------------'
 ================================================================================

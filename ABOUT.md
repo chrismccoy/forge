@@ -424,3 +424,7 @@ Explains a macOS crash report in plain English. It reads .ips and .crash files, 
 ## ffmpeg-forge
 
 Writes and runs FFmpeg and ffprobe commands for converting, compressing, trimming, joining, and fixing video and audio. It also covers loudness, subtitles and Whisper captions, quality checks, restoration, GPU encoding, and effects such as transitions, color grades, glitch art, karaoke, and kinetic captions. It probes your file and checks what your FFmpeg build supports before it writes a command. It never overwrites an existing file, and it checks the output instead of trusting the exit code.
+
+## wp-terse
+
+Rewrites the long doc blocks in a WordPress plugin or theme as short, plain-English comments that someone new to the code can follow. It asks six questions first, one at a time. Comments that tools read, such as plugin headers, WP-CLI command docs, translators notes, and lint instructions, stay exactly as they are unless you confirm after a warning. It backs up each file and checks that only comments changed.
