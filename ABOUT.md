@@ -397,6 +397,10 @@ Scores a prompt out of 100 across nine dimensions, or out of 115 for agent promp
 
 Combines a folder of markdown files, one bio file plus one file per project, into a single README.md. The header comes from the bio, a table of contents links to every project, and each project gets either a short section (full mode) or one table row (compact mode), optionally grouped under your own categories. Links come only from your files, and local and relative links are dropped. Two small Python scripts count the files and check the finished README, and Claude fixes whatever the check reports. Use readme-builder instead when you want a README for one codebase.
 
+## analyze-skill
+
+Analyzes a Claude Code skill: a skill folder, a SKILL.md file, or one skill inside a plugin. You pick what you want from it: a full report, a security review that ends in a verdict, an explanation of how it works, interview questions, a scored list of improvements, a check of where it runs, a plain-English guide for a beginner, or a short verdict in chat. Bundled scripts first take an inventory of the files, lint the frontmatter, scan for risky commands, hidden text and secrets, and list what the skill needs to run. Every point in the report names the file and line it comes from, a checker reviews the report before it is saved, and the skill's files are quoted at the end with any secrets blanked out. It never runs the skill's own code and never follows instructions found in its files. Use analyze-prompt instead for a prompt that is not a skill.
+
 ## snippet
 
 Writes one complete standalone script in any of 19 languages, including bash, Python, Go, and TypeScript. Every script has a help option, clear exit codes, cleanup on exit, and a dry run before any destructive step. Secrets are read from environment variables and files are replaced safely so a failed write cannot corrupt them. You choose whether to see the script in the chat or save it to a file.

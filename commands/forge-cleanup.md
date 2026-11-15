@@ -66,6 +66,7 @@ a Step 0 direct hit.
 |---|---|
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
+| `analyze-skill` | `/forge-docs` |
 | `bash-forge` | `/forge-devops` |
 | `blueprint` | `/forge-code` |
 | `blueprint-forge` | `/forge-code` |

@@ -1,8 +1,8 @@
 ================================================================================
-  FORGE  -  Docs & Diagrams          ( /forge-docs )          10 commands, 4 pages
+  FORGE  -  Docs & Diagrams          ( /forge-docs )          11 commands, 4 pages
 ================================================================================
   Mermaid diagrams, prompt explainers, auditors and scorers, the stencil
-  cutter, the bloat remover, and the README builder.
+  cutter, the bloat remover, the README builder, and the skill analyzer.
 
   STEP 2 - pick a command
 
@@ -21,7 +21,8 @@
   |         fixed sections.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The prompt analyzer, auditors, stencil cutter, and README builder.   |
+  |         The prompt analyzer, auditors, stencil cutter, README builder, and   |
+  |         skill analyzer.                                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -43,7 +44,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         The image prompt stencil cutter, prompt bloat remover, scored prompt |
-  |         auditor, and README builder.                                         |
+  |         auditor, README builder, and skill analyzer.                         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -64,7 +65,7 @@
   |         three drop-in fixes.                                                 |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The markdown-files-to-README builder.                                |
+  |         The markdown-files-to-README builder and the skill analyzer.         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -75,6 +76,10 @@
   |  ( 1 )  README from markdown files                         -> /readme-forge  |
   |         Combine a bio and one .md file per project into one portfolio        |
   |         README.md: full or compact, optional categories, checked links.      |
+  |                                                                              |
+  |  ( 2 )  Analyze a skill                                   -> /analyze-skill  |
+  |         Cited report on any skill folder in 8 modes: files mapped, security  |
+  |         verdict, compatibility, scorecard. Code never runs.                  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -221,5 +226,30 @@
   .--[Output]-- README.md, checked before it is reported ----------------------.
   |  check_readme.py, up to 3 fix passes . report: path, mode, project         |
   |  count, skipped files, PASS or remaining FAIL lines.                       |
+  '----------------------------------------------------------------------------'
+
+------------------------------------------------------------ /analyze-skill ----
+  Path from the arg, or one plain ask.  The four checks run BEFORE any
+  question; a mode named in the arg skips the menu.
+
+  .--[Target]-- which skill folder, SKILL.md, or plugin skill? ----------------.
+  |  ___ plain ask, STOP for the reply.  Home, system, and credential          |
+  |      folders are refused; the plugin around a skill is found               |
+  '----------------------------------------------------------------------------'
+  .--[Checks]-- run first, no question ----------------------------------------.
+  |  inventory . lint . security scan . requirements  (+ siblings)             |
+  '----------------------------------------------------------------------------'
+  .--[Audit]-- Which checks do you want?  (multi-pick) ------------------------.
+  |  [ ] Full report   [ ] Security review   [ ] Improve it   [ ] Quick check  |
+  '----------------------------------------------------------------------------'
+  .--[Understand]-- Which explanations do you want?  (multi-pick) -------------.
+  |  [ ] Explain it  [ ] Interview prep  [ ] Beginner guide  [ ] Compatibility |
+  '----------------------------------------------------------------------------'
+  .--[Save path]-- only when the current folder cannot hold the report --------.
+  |  ( ) Home folder   ( ) ~/skill-reports/   ( ) Current folder               |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- SKILL-<MODE>.md per pick, checked before it is reported -------.
+  |  build_appendix.py check, fix passes, Appendix of files (secrets           |
+  |  redacted) . quick check answers in chat, no file                          |
   '----------------------------------------------------------------------------'
 ================================================================================

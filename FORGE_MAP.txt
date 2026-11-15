@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  107 commands . 12 pickers . 0 skills . nothing auto-fires.
+  108 commands . 12 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -76,7 +76,7 @@
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils, README      |
-  |         builder.  10 commands.                                               |
+  |         builder, skill analyzer.  11 commands.                               |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
   |         Utilities, media.                                                    |
@@ -765,7 +765,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Docs & Diagrams  ( /forge-docs )  -  10 commands, 4 pages ------------------
+--- Docs & Diagrams  ( /forge-docs )  -  11 commands, 4 pages ------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/4) |
@@ -782,7 +782,8 @@
   |         fixed sections.                                                      |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         The prompt analyzer, auditors, stencil cutter, and README builder.   |
+  |         The prompt analyzer, auditors, stencil cutter, README builder, and   |
+  |         skill analyzer.                                                      |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -804,7 +805,7 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 3  |
   |         The image prompt stencil cutter, prompt bloat remover, scored prompt |
-  |         auditor, and README builder.                                         |
+  |         auditor, README builder, and skill analyzer.                         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -825,7 +826,7 @@
   |         three drop-in fixes.                                                 |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 4  |
-  |         The markdown-files-to-README builder.                                |
+  |         The markdown-files-to-README builder and the skill analyzer.         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -836,6 +837,10 @@
   |  ( 1 )  README from markdown files                         -> /readme-forge  |
   |         Combine a bio and one .md file per project into one portfolio        |
   |         README.md: full or compact, optional categories, checked links.      |
+  |                                                                              |
+  |  ( 2 )  Analyze a skill                                   -> /analyze-skill  |
+  |         Cited report on any skill folder in 8 modes: files mapped, security  |
+  |         verdict, compatibility, scorecard. Code never runs.                  |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -950,7 +955,7 @@
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt
    |    +-- rank-prompt  prompt-rank-table  prompt-stencil  prompt-bloat
-   |    +-- prompt-audit  readme-forge
+   |    +-- prompt-audit  readme-forge  analyze-skill
    |
    +-- Utilities ............. /forge-utils
    |    +-- snippet  session-stats  token-audit  vgademo  fix-formula

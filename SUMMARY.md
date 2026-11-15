@@ -1,8 +1,8 @@
 # Toolkit Summary - Tool Analysis
 
-A quick guide to what's in the `forge` plugin and how its 107 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
+A quick guide to what's in the `forge` plugin and how its 108 commands compare. Each tool is sorted into one of three groups by **how much it does** - not by how good it is. A "quick win" tool can be just as useful as a "full toolkit" one; it just does a smaller, more focused job.
 
-**At a glance:** 1 quick win · 53 guided helpers · 53 full toolkits.
+**At a glance:** 1 quick win · 53 guided helpers · 54 full toolkits.
 
 ## Small Utils
 
@@ -129,6 +129,7 @@ The biggest tools. They run multi-step workflows, generate whole sets of files, 
 | `react-forge` | `/react-forge` | React 19 project work - components, hooks, state, forms with Zod, TypeScript, Tailwind and shadcn/ui, testing, performance, and code review, plus routing, caching, middleware, and auth for Next.js, React Router, and TanStack - reading your versions and conventions first, guarding every mutating endpoint with auth, validation, and idempotency rules, with eight generation workflows, four checker scripts, and three Next.js scripts |
 | `retrospec` | `/retrospec` | Reads an existing app's code and writes a Product Requirements Document a product manager can follow - every page's fields, interactions, and API calls, every enum value, and how the pages link, in business language, with unknowns marked `[TBC]` instead of guessed, stubbed APIs labelled `Mock`, and two scripts that find routes and endpoints and scaffold the `prd/` folder |
 | `readme-forge` | `/readme-forge` | Combines a bio file and one markdown file per project into one portfolio README - full or compact mode, optional categories, links only from your files - with a script that takes the inventory and another that checks the result |
+| `analyze-skill` | `/analyze-skill` | Analyzes any Claude Code skill folder in one of eight modes - a full report, a security verdict, an explanation, interview questions, a scored improvement plan, a compatibility check, a beginner guide, or a 10-line chat verdict - with bundled checks run first, every claim cited to a `path:line`, a validator run before saving, and the skill's files quoted with secrets redacted. The skill's code never runs |
 | `doc-pass` | `/doc-pass` | Documents a whole codebase in any of 19 languages - doc comments on every file, type, function, route, and handler - and proves with a bundled checker, your own tests, and your own linters that no code changed, then ranks the bugs it noticed without fixing them; also runs as a read-only bug check |
 | `ffmpeg-forge` | `/ffmpeg-forge` | FFmpeg and ffprobe work for 7.1 LTS and 8.x - converting, compressing, trimming, loudness, subtitles and Whisper captions, quality checks, restoration, GPU encodes, and effects - that probes the input and the build first, never overwrites a file, and re-probes the output, with 40 references and 11 scripts |
 
@@ -181,14 +182,14 @@ And eighteen others are shortened or renamed:
 - `regex-tutor` → type `/explain-regex`
 - `code-explainer` → type `/explain-code`
 
-The other 68, including `/wp-security`, `/wp-theme-review`, `/wp-block-review`, `/wp-security-review`, `/wp-plugin-review`, `/wp-wpcs`, `/wp-plugin-convert`, `/wp-terse`, `/tailwind-forge`, `/react-forge`, `/bash-forge`, `/python-forge`, `/retrospec`, `/readme-forge`, `/doc-pass`, and `/ffmpeg-forge`, use their own name as the command. Every tool has exactly one command.
+The other 69, including `/wp-security`, `/wp-theme-review`, `/wp-block-review`, `/wp-security-review`, `/wp-plugin-review`, `/wp-wpcs`, `/wp-plugin-convert`, `/wp-terse`, `/tailwind-forge`, `/react-forge`, `/bash-forge`, `/python-forge`, `/retrospec`, `/readme-forge`, `/doc-pass`, `/analyze-skill`, and `/ffmpeg-forge`, use their own name as the command. Every tool has exactly one command.
 
-**Twelve pickers sit on top of the 107 commands:**
+**Twelve pickers sit on top of the 108 commands:**
 
 `/forge` walks you through every category, then the commands in it. `/forge-wordpress`,
 `/forge-design`, `/forge-writing`, `/forge-devops`, `/forge-cloud`, `/forge-security`,
 `/forge-cleanup`, `/forge-code`, `/forge-docs`, `/forge-utils`, and `/forge-media` skip the category step
-and go straight to one of the eleven categories - 29, 9, 13, 6, 8, 3, 4, 18, 10, 6 and 1 commands
+and go straight to one of the eleven categories - 29, 9, 13, 6, 8, 3, 4, 18, 11, 6 and 1 commands
 respectively. Lists longer than four
 are paged behind a `More...` option, since that is the picker's limit. Passing a command name
 skips the questions entirely - `/forge-wordpress wp-format ~/themes/mytheme` runs that tool
@@ -197,7 +198,7 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 **How each one gets what it needs from you:**
 
-- **Asks multiple-choice questions** (just pick from a menu): 72 commands - the easiest way to start
+- **Asks multiple-choice questions** (just pick from a menu): 73 commands - the easiest way to start
 - **Asks a few questions directly:** 6 - `html-to-wordpress-theme`, `github-bio`, `book-summary`, `claudepuppy`, `choose-your-adventure`, `latex-generator`
 - **Just works from what you point it at** (a file path, URL, paste, or your current session; asks one plain question only when you pass nothing): 29 - `math-tutor`, `changelog-generator`, `docblock-rewrite`, `mermaid-to-ascii`, `session-stats`, `wordpress-architect-review`, `wordpress-performance`, `wp-security`, `wp-theme-review`, `wp-block-review`, `wp-plugin-review`, `wordpress-plugin-submission`, `design-system`, `tailwind-gut`, `mermaid-generator`, `prompt-dummy`, `prompt-summary`, `readme-emoji`, `page-cloner`, `page-tailwindify`, `wordpress-grade`, `script-refactor`, `blueprint-forge`, `prompt-bloat`, `prompt-audit`, `seo-duel`, `git-forge`, `human`, `retrospec`
 
@@ -205,4 +206,4 @@ the right command and stops. Every tool's write-up lives in the `docs/` file for
 
 None of these start on their own. Nothing here is registered as a skill, so a tool can't fire just because you typed a certain phrase, clash with another plugin that answers the same kind of request, or take up space in Claude's memory while you work on something else. Run `/forge` to browse the whole catalog, `/forge-wordpress` / `/forge-design` / `/forge-writing` / `/forge-devops` / `/forge-cloud` / `/forge-security` / `/forge-cleanup` / `/forge-code` / `/forge-docs` / `/forge-utils` / `/forge-media` to browse one category, or type the tool's own command directly.
 
-Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 107 commands here.
+Accessibility is a good example. Those tools are common, so if you have another one installed, two of them might both jump on "make this accessible" and you can't tell which one answered. Typing `/accessibility-audit` settles it, and the same is true for every one of the 108 commands here.

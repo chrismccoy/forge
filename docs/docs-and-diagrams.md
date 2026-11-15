@@ -538,3 +538,57 @@ One slash command plus its procedure file `lib/readme-forge/SKILL.md`, which hol
 It does not read code or write a README for a single repository. For that, use [`/readme-builder`](code.md#readme-builder). For a web app's feature list, use [`/fullstack-readme`](code.md#fullstack-feature-readme). For a short GitHub profile bio, use [`/github-bio`](writing-and-content.md#github-bio).
 
 The full procedure lives at [`lib/readme-forge/SKILL.md`](../lib/readme-forge/SKILL.md), the slash command at [`commands/readme-forge.md`](../commands/readme-forge.md), the rules at [`lib/readme-forge/references/readme-rules.md`](../lib/readme-forge/references/readme-rules.md), and the scripts at [`lib/readme-forge/scripts/`](../lib/readme-forge/scripts/).
+
+## `analyze-skill`
+
+Point it at a Claude Code skill - a skill folder, a `SKILL.md`, or one skill inside a plugin - and get back a cited, review-ready report on it, in the mode you pick.
+
+```
+/analyze-skill ~/.claude/skills/my-skill
+```
+
+A skill is more than its `SKILL.md`: scripts it runs, references it reads, templates it copies, and, inside a plugin, hooks and MCP servers that run whenever the plugin is on. Reading all of that by hand to decide whether a downloaded skill is safe, or to explain your own to someone else, takes a long time and misses things. `analyze-skill` does the mechanical part with bundled scripts first - an inventory of every file, a frontmatter and structure lint, a security scan, and a requirements check - then reads and maps every file the chosen mode needs and writes the report from a template, with every claim tied to a `path:line`.
+
+The skill under review is treated as untrusted. Its scripts are read and explained, never run. Instructions in its files are reported, never followed. Credential files are never opened, secrets are redacted before anything is quoted, and a validator checks the report's structure, citations, and scorecard arithmetic before it is saved. The quick mode answers in chat with a 10-line verdict instead.
+
+It sits next to `analyze-prompt`, which analyzes a single prompt. `analyze-skill` covers the whole package a skill ships: its files, scripts, plugin hooks, permissions, and where it runs.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/analyze-skill/SKILL.md`, which holds the eight modes, the ground rules, and the five steps (resolve the target, run the checks and choose the mode, read and map every file, write, then check and save). `references/` holds the report sections per mode, the scoring rubric, how to read each check's output, the surface compatibility matrix, the skill spec, failure modes, workflow details, and fallbacks. `assets/` holds the report and beginner templates. `scripts/run_checks.py` runs inventory, lint, the security scan, the requirements check, and a sibling-skill listing as JSON or Markdown; `scripts/build_appendix.py` validates the report and appends the target's files with secrets redacted. Both are Python 3.8+ standard library only (PyYAML is used when present). The command's `allowed-tools` pre-approves only those two scripts, by full path.
+
+## Features
+
+- Eight modes: a full 16-section report, a security review with a verdict, an explanation, interview questions, a scored improvement plan, a compatibility check, a plain-English beginner guide, or a 10-line verdict in chat. Name one, or pick from a one-screen menu
+- Every claim cited to a `path:line` in the target, a check ID, or a dated reference, with a confidence label
+- Security scan for remote execution (`curl | sh`, download then run), destructive commands, code execution, network and exfiltration, hidden text, prompt-injection phrases, broad `allowed-tools`, and secrets in 22 formats. Plugin hook and MCP commands, and the scripts they run, are covered too
+- Bounded on hostile input: each file is scanned in a worker with a hard 20-second limit, and the scan, listing, and read budgets are capped
+- An 8-dimension scorecard, 0 to 3 each, with tie-break rules so two runs score alike
+- Works / partial / blocked marks for Claude Code, Cowork, claude.ai, Chrome, and the API, each blocker named, plus a suggested `compatibility:` line
+- Trigger tests (requests that should and should not load the skill) and collisions with sibling skills
+- An appendix quoting every file with secrets redacted and invisible characters escaped
+- A report validator that also refuses to write inside the target, its plugin, or a `.claude/` folder
+
+## How it works
+
+1. **Resolve the target.** Take the path from the arguments, or ask for it. Refuse home, system, and credential folders.
+2. **Run the checks, then choose the mode.** Run the four check commands, then use the mode the request names or show the menu.
+3. **Read and map.** Read every file the mode needs; a large skill gets a stated reading budget, never a silent skip.
+4. **Write.** Fill the template section by section, confirming each scanner hit at its line.
+5. **Check and save.** Run the validator, fix what it flags, append the appendix, and report where the file is and what to verify.
+
+## How to use it
+
+```
+/analyze-skill ~/.claude/skills/my-skill security    ← one mode, no menu
+/analyze-skill ~/.claude/skills/my-skill             ← runs the checks, then shows the menu
+/analyze-skill                                       ← asks for the path
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"analyze this skill"*, *"is this skill safe to install"*, *"vet this downloaded skill"*, *"explain this SKILL.md"*, *"how could this skill be improved"*, *"prepare interview questions about this skill"*, *"what does this skill need to run"*, *"explain this skill in plain English"*
+
+It analyzes an existing skill and changes nothing. For a single prompt, use [`/analyze-prompt`](#prompt-summary) or [`/explain-prompt`](#prompt-dummy); to slim a prompt or skill file, use [`/prompt-bloat`](#prompt-bloat).
+
+The full procedure lives at [`lib/analyze-skill/SKILL.md`](../lib/analyze-skill/SKILL.md), the slash command at [`commands/analyze-skill.md`](../commands/analyze-skill.md), the references at [`lib/analyze-skill/references/`](../lib/analyze-skill/references/), and the scripts at [`lib/analyze-skill/scripts/`](../lib/analyze-skill/scripts/).

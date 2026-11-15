@@ -82,6 +82,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Tool | Owned by |
 |---|---|
 | `analyze-prompt` | `/forge-docs` |
+| `analyze-skill` | `/forge-docs` |
 | `bash-forge` | `/forge-devops` |
 | `blueprint` | `/forge-code` |
 | `blueprint-forge` | `/forge-code` |
