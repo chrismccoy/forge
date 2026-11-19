@@ -138,6 +138,7 @@ answer as a Step 0 direct hit.
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `token-audit` | `/forge-utils` |
+| `tui-forge` | `/forge-code` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |

@@ -357,6 +357,10 @@ Writes a Product Requirements Document for an app that already exists, by readin
 
 Adds doc comments to every file in a codebase, in any of 19 popular languages, without changing any code. Every file, type, function, route, and handler gets a full comment in the style that language uses, plus short notes where the logic is not obvious. A bundled checker compares every file before and after and fails if anything other than a comment changed, including the special comments that tools rely on, such as lint switches, build tags, and doctests. Your own tests and code-style tools run before and after in a scratch copy, and their results must match. Any bugs it notices come back as a ranked list it does not fix. It can also run as a read-only bug check that changes nothing. Use wp-doc-pass instead for a WordPress plugin or theme.
 
+## tui-forge
+
+Helps with apps that run inside a terminal window: full-screen tools, dashboards, progress bars, and interactive prompts, in Rust, Go, Python, JavaScript, C#, or C. It picks the right part of its guide for your question, whether that is choosing a framework, fixing slow or garbled keys, getting colors right inside tmux, lining up emoji in tables, or writing tests that run without a real terminal. Its example code always puts the terminal back the way it was, even after a crash or when the window is closed. If an app already left your terminal broken, it gives you one line to paste that fixes it.
+
 ## mermaid-to-ascii
 
 Converts a Mermaid diagram file into an ASCII diagram that displays correctly in a terminal or plain text file. It supports sequence diagrams, flowcharts, class diagrams, state diagrams, ER diagrams, and Gantt charts. The result is saved as a .txt file with the same name as the source. Use it when you need a diagram in a place that cannot render Mermaid.

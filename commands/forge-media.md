@@ -134,6 +134,7 @@ to ask. Take the row below and go to Step 2.
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
 | `token-audit` | `/forge-utils` |
+| `tui-forge` | `/forge-code` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |

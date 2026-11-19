@@ -154,6 +154,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
 | `token-audit` | `/forge-utils` |
+| `tui-forge` | `/forge-code` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `vgademo` | `/forge-utils` |

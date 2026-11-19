@@ -1129,3 +1129,103 @@ OK: 8 files fully documented
 For a WordPress plugin or theme use [`/wp-doc-pass`](wordpress.md#wordpress-doc-pass); to turn existing docblocks into one-line plain-English comments use [`/docblock-rewrite`](#docblock-rewrite); for a beginner README use [`/readme-builder`](#readme-builder); for developer onboarding docs use [`/explain-my-code`](#explain-my-code).
 
 The full procedure lives at [`lib/doc-pass/SKILL.md`](../lib/doc-pass/SKILL.md), the reference files under [`lib/doc-pass/references/`](../lib/doc-pass/references/), the checker under [`lib/doc-pass/scripts/`](../lib/doc-pass/scripts/), and the slash command at [`commands/doc-pass.md`](../commands/doc-pass.md).
+
+## `tui-forge`
+
+Terminal UI work in one command: design, build, style, debug, test, and ship full-screen TUIs, progress bars and spinners, REPLs, and prompts, and fix a terminal an app left broken.
+
+```
+/tui-forge
+```
+
+Most TUI advice covers the happy path and stops there. Real apps break on the paths nobody tests:
+- a panic leaves the shell with no echo
+- `kill <pid>` leaves raw mode and the alternate screen on
+- closing the terminal window leaves a process spinning at 100% CPU
+- handing off to `$EDITOR` lets a Ctrl-C meant for the editor kill the app
+- Esc takes a second inside tmux, and pasted text arrives wrapped in `^[[200~`
+
+`/tui-forge` handles those paths explicitly:
+- one canonical setup and teardown order
+- terminal restore on every exit path: normal quit, errors, panics, failed partial setup, Ctrl-C, Ctrl-\, SIGTERM, SIGHUP, a closed terminal even when SIGHUP never arrives, `$EDITOR` handoff, and test failures
+- a single recovery line for a terminal that is already broken
+
+The procedure is a router. It identifies the environment, sorts the request into 1-2 of 11 domains with a routing table and tie-breaks, and reads only the matching guide. A guide pulls a deeper reference only when the task needs it. New apps, full audits, and production readiness reviews start from a cross-domain playbook with an audit map and a production checklist. When exact framework APIs matter, it fetches current docs instead of trusting dated notes.
+
+## Technical Overview
+
+One slash command plus its procedure folder. `lib/tui-forge/SKILL.md` holds the operating protocol, the routing table, and the tie-breaks. `core/expert-playbook.md` is the cross-domain primer with the audit map and production checklist. `domains/<domain>/GUIDE.md` holds 11 compact domain guides, and `domains/<domain>/references/` holds 25 deep dives, loaded on demand. The domains are:
+- fundamentals and framework choice
+- framework recipes
+- terminal standards and escape sequences
+- rendering, layout, performance, and signals
+- visual design
+- input handling
+- Unicode, color, and accessibility
+- testing and debugging
+- troubleshooting
+- platform compatibility
+- widgets, state, security, and distribution
+
+The folder is 38 Markdown files with no scripts. The command's `allowed-tools` pre-approves read-only tools only. Running a TUI headlessly in tmux, or running anything else, asks first.
+
+Every code sample was built from the procedure text and driven through a PTY matrix:
+- **Cases:** quit key, Ctrl-C, external TERM/HUP/INT/QUIT, terminal close with and without SIGHUP, piped stdin, and the editor-handoff cases.
+- **Versions:**
+  - Rust: ratatui 0.29/0.30 and crossterm 0.29, compiled against stub crates
+  - Go: Bubble Tea v1.3.0 and v1.3.10, tcell v2.13
+  - Python: prompt_toolkit 3.0.53, Textual 3.7 and 8.2
+  - Node: Ink 4 through 8
+  - C: ncurses under C99/C11/C17
+- **Result:** every case gave the expected exit status and restored every mode.
+
+## Features
+
+- One router, 11 domains, 25 references. It reads only the guide or reference a request needs
+- Tie-breaks for the cases that are easy to confuse:
+  - paste markers inside the app vs left in the shell after exit
+  - one key misbehaving vs all input ignored
+  - Esc slow only in tmux
+  - drawing defects vs a broken terminal
+- A canonical setup and teardown order and a canonical restore-on list, stated once and referenced everywhere
+- Complete code samples that restore the terminal on every exit path:
+  - Rust: Ratatui + Crossterm guard with a panic hook, signal thread, hangup watchdog, and `$EDITOR` handoff
+  - Go: Bubble Tea v1.3+ skeleton and a tcell snippet
+  - Python: prompt_toolkit REPL, curses wrapper, Textual worker and test pattern, inline progress bar
+  - C: ncurses wrapper
+  - Node: raw-mode cleanup and an Ink component
+- A copy-paste recovery line for a stuck terminal (sh and PowerShell), ordered so it can be typed blind
+- Headless observation without a human terminal: a private-socket tmux recipe, `script(1)` byte capture, and a POSIX leaked-mode checker
+- Detection rules for color, truecolor, `NO_COLOR`, `FORCE_COLOR`, `CI`, and tmux, with the precedence spelled out
+- Accessibility built in: no meaning by color alone, plain and screen-reader fallbacks, reduced motion, keyboard-only operation
+- Escape-injection security: untrusted text is sanitized before it reaches the terminal
+
+## How it works
+
+1. **Intake.** Take the task from the argument. Otherwise ask: build a new TUI, fix a broken terminal, choose a framework, or test or audit a TUI.
+2. **Route.** Match the request against the routing table and tie-breaks. Most requests hit 1-2 domains; new apps and audits start from the playbook.
+3. **Load on demand.** Read each matched domain guide, then a reference only when the guide points there or the task needs that depth.
+4. **Apply the operating protocol.**
+   - Choose the right abstraction.
+   - Restore terminal state on every exit path.
+   - Render from state.
+   - Measure text in display cells.
+   - Design for accessibility.
+   - Test through a PTY, never with a TUI in the foreground shell.
+5. **Check current docs** when exact framework APIs or versions matter, and run the production checklist before shipping.
+
+## How to use it
+
+```
+/tui-forge                                              ← pick a task from the menu
+/tui-forge Ratatui app breaks the terminal on panic     ← straight to the matching guides
+/tui-forge Textual or Bubble Tea for a log dashboard?   ← framework choice
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"my terminal is broken after the app crashed"*, *"the TUI froze"*, *"Esc is slow in tmux"*, *"I see ^[[200~ when I paste"*, *"colors look wrong in tmux"*, *"columns misalign with emoji"*, *"the screen flickers"*, *"write PTY tests for my TUI"*, *"add a progress bar to my CLI"*
+
+For one standalone script use [`/snippet`](utilities.md#prompt-snippet); for general Python project work use [`/python-forge`](#python-forge); for shell scripts use [`/bash-forge`](devops-and-data.md#bash-forge).
+
+The full procedure lives at [`lib/tui-forge/SKILL.md`](../lib/tui-forge/SKILL.md), the playbook at [`lib/tui-forge/core/expert-playbook.md`](../lib/tui-forge/core/expert-playbook.md), the domain guides and references under [`lib/tui-forge/domains/`](../lib/tui-forge/domains/), and the slash command at [`commands/tui-forge.md`](../commands/tui-forge.md).

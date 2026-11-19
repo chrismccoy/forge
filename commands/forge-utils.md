@@ -143,6 +143,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | `tech-blog-article` | `/forge-writing` |
 | `terraform` | `/forge-cloud` |
 | `threat-model` | `/forge-security` |
+| `tui-forge` | `/forge-code` |
 | `tutorial-builder` | `/forge-writing` |
 | `unslop` | `/forge-cleanup` |
 | `wp-block-review` | `/forge-wordpress` |

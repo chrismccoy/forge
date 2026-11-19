@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  108 commands . 12 pickers . 0 skills . nothing auto-fires.
+  109 commands . 12 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -72,7 +72,8 @@
   |  ( 2 )  Code                                                                 |
   |         Blueprints, tests, onboarding docs, diagrams, READMEs, changelogs,   |
   |         refactors, regex teardowns, script refactors, explanations, Python   |
-  |         project work, codebase PRDs, doc passes.  18 commands.               |
+  |         project work, codebase PRDs, doc passes, terminal UI work.           |
+  |         19 commands.                                                         |
   |                                                                              |
   |  ( 3 )  Docs & Diagrams                                                      |
   |         Mermaid diagrams, prompt explainers, auditors, stencils, README      |
@@ -633,10 +634,10 @@
   '------------------------------------------------------------------------------'
 
 
---- Code  ( /forge-code )  -  18 commands, 6 pages -----------------------------
+--- Code  ( /forge-code )  -  19 commands, 7 pages -----------------------------
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 1/6) |
+  | [Command]                                           Which command?  (pg 1/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  App blueprint                                         -> /blueprint  |
   |         12-section app blueprint, fact-checked review, scaffold, spikes.     |
@@ -653,13 +654,13 @@
   |         Diagrams, READMEs, changelogs, refactors, SQL review, docblocks,     |
   |         annotations, feature READMEs, regex teardowns, script refactors,     |
   |         codebase blueprints, code explanations, Python project work, PRDs    |
-  |         from code, doc passes.                                               |
+  |         from code, doc passes, terminal UI work.                             |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 2/6) |
+  | [Command]                                           Which command?  (pg 2/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Codebase to Mermaid                         -> /codebase-to-mermaid  |
   |         Validated Mermaid diagrams of a codebase with file:line citations.   |
@@ -675,13 +676,13 @@
   |         Refactoring plans, SQL review, docblocks, teaching annotations,      |
   |         feature READMEs, regex teardowns, script refactors, codebase         |
   |         blueprints, code explanations, Python project work, PRDs from code,  |
-  |         doc passes.                                                          |
+  |         doc passes, terminal UI work.                                        |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 3/6) |
+  | [Command]                                           Which command?  (pg 3/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactoring plan                                       -> /refactor  |
   |         Evidence-first refactoring analysis with file:line citations. Read-  |
@@ -698,13 +699,14 @@
   |  ( 4 )  More...                                                   -> page 4  |
   |         The teaching annotator, full stack feature READMEs, the regex tutor, |
   |         safe script refactors, codebase blueprints, the code explainer,      |
-  |         Python project work, PRDs from code, and doc passes.                 |
+  |         Python project work, PRDs from code, doc passes, and terminal UI     |
+  |         work.                                                                |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 4/6) |
+  | [Command]                                           Which command?  (pg 4/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Annotate code for teaching                         -> /code-teacher  |
   |         Return a script with a header block and line-by-line comments        |
@@ -720,13 +722,14 @@
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 5  |
   |         Safe script refactors, codebase blueprints with rebuilds, the code   |
-  |         explainer, Python project work, PRDs from code, and doc passes.      |
+  |         explainer, Python project work, PRDs from code, doc passes, and      |
+  |         terminal UI work.                                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 5/6) |
+  | [Command]                                           Which command?  (pg 5/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Refactor a script safely                        -> /script-refactor  |
   |         Clean up bash and Python scripts an agent runs without changing      |
@@ -741,13 +744,14 @@
   |         summary, interview prep, or line by line.                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 6  |
-  |         Python project work, PRDs from code, and doc passes.                 |
+  |         Python project work, PRDs from code, doc passes, and terminal UI     |
+  |         work.                                                                |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
 
   .------------------------------------------------------------------------------.
-  | [Command]                                           Which command?  (pg 6/6) |
+  | [Command]                                           Which command?  (pg 6/7) |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Python project work                                -> /python-forge  |
   |         uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV,    |
@@ -760,6 +764,19 @@
   |  ( 3 )  Document a codebase                                    -> /doc-pass  |
   |         Doc comments on every file and function in 19 languages; a checker   |
   |         proves no code changed. Bugs ranked, not fixed.                      |
+  |                                                                              |
+  |  ( 4 )  More...                                                   -> page 7  |
+  |         Terminal UI work.                                                    |
+  |                                                                              |
+  |  [Other] type a command name .............................................   |
+  '------------------------------------------------------------------------------'
+
+  .------------------------------------------------------------------------------.
+  | [Command]                                           Which command?  (pg 7/7) |
+  |------------------------------------------------------------------------------|
+  |  ( 1 )  Terminal UI work                                      -> /tui-forge  |
+  |         Build, debug, test, and ship TUIs in Ratatui, Textual, Bubble Tea,   |
+  |         Ink, and more; terminal restored on every exit path.                 |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -950,7 +967,7 @@
    |    +-- readme-builder  changelog-generator  refactor  explain-sql
    |    +-- docblock-rewrite  code-teacher  fullstack-readme  explain-regex
    |    +-- script-refactor  blueprint-forge  explain-code  python-forge
-   |    +-- retrospec  doc-pass
+   |    +-- retrospec  doc-pass  tui-forge
    |
    +-- Docs & Diagrams ....... /forge-docs
    |    +-- mermaid-to-ascii  mermaid-sequence  explain-prompt  analyze-prompt
