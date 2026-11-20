@@ -1,6 +1,6 @@
 # My Custom Made Skills
 
-One Claude Code plugin - `forge` - holding 109 commands and 12 pickers.
+One Claude Code plugin - `forge` - holding 110 commands and 12 pickers.
 
 Nothing here auto-triggers. Every tool is reached by typing its command, and each
 command loads its own procedure file at that moment. No skill in this plugin can fire
@@ -151,6 +151,7 @@ to a category with `/forge-wordpress`, `/forge-design`, `/forge-writing`, `/forg
 - [`/vgademo`](docs/utilities.md#vgademo). Generates a retro 1990s-style assembly graphics demo (MS-DOS, boot sector, or BIOS) after a few multiple-choice questions.
 - [`/fix-formula`](docs/utilities.md#excel-formula-troubleshooter). Fixes broken Excel or Google Sheets formulas - names the real cause, returns a corrected formula, and explains it in plain English.
 - [`/crash-report`](docs/utilities.md#crash-report). Explains a macOS crash report in plain English - what happened, the core issue, why it happened, why it crashed that way, and a fix for the developer and one for the user. Every claim has to name the field, thread, or line in the report that backs it up.
+- [`/appointment-prep`](docs/utilities.md#appointment-prep). Prepares you, or someone you care for, for a doctor, dentist, physio, or specialist appointment. It checks for emergency signs first and, if it finds any, tells you to call for help now instead of waiting. Otherwise it writes a summary to read to the doctor in about 60 seconds, the details the doctor will probably ask about, five questions to ask, a 7-day symptom diary, and checklists for during and after the visit, in any language. It never names a diagnosis, never advises changing a medicine, and marks anything you did not say as `[to fill in]` instead of inventing it.
 
 **Media**
 
@@ -165,7 +166,7 @@ In any Claude Code session, run:
 /plugin install forge@forge
 ```
 
-That is the whole install. One plugin, 109 commands and 12 pickers, nothing running in the background.
+That is the whole install. One plugin, 110 commands and 12 pickers, nothing running in the background.
 
 Then either browse the whole catalog:
 
@@ -185,7 +186,7 @@ which asks for a category, then a command, then runs it. Or jump straight to one
 /forge-cleanup      # 4 code-cleanup commands
 /forge-code         # 19 code commands
 /forge-docs         # 11 docs and diagram commands
-/forge-utils        # 6 utilities
+/forge-utils        # 7 utilities
 /forge-media        # 1 media command
 ```
 
@@ -319,6 +320,7 @@ Or call any command directly:
 /vgademo                        # sizecoded 1990s assembly demo
 /fix-formula                    # debug a broken Excel or Sheets formula
 /crash-report                   # diagnose a macOS .ips or .crash report
+/appointment-prep               # prep for a doctor visit: emergency check, summary, questions
 
 # Media
 /ffmpeg-forge                   # convert, trim, loudness, subtitles, QC, GPU encodes, effects
@@ -361,7 +363,7 @@ description each.
 | `/forge-cleanup` | 4 | one |
 | `/forge-code` | 19 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 1 |
 | `/forge-docs` | 11 | 3 + `More...`, then 3 + `More...`, then 3 + `More...`, then 2 |
-| `/forge-utils` | 6 | 3 + `More...`, then 3 |
+| `/forge-utils` | 7 | 3 + `More...`, then 4 |
 | `/forge-media` | 1 | none - it runs the command directly |
 
 
@@ -419,7 +421,7 @@ moment - see below.
 .claude-plugin/
   marketplace.json     one plugin entry
   plugin.json          the forge plugin manifest
-commands/              121 command files - 109 commands, 12 pickers
+commands/              122 command files - 110 commands, 12 pickers
 lib/<tool>/
   SKILL.md             the tool's procedure, read only when its command runs
   references/          deep detail, loaded on demand by the procedure
@@ -459,7 +461,7 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 | Code Cleanup | 4 | [docs/code-cleanup.md](docs/code-cleanup.md) |
 | Code | 19 | [docs/code.md](docs/code.md) |
 | Docs & Diagrams | 11 | [docs/docs-and-diagrams.md](docs/docs-and-diagrams.md) |
-| Utilities | 6 | [docs/utilities.md](docs/utilities.md) |
+| Utilities | 7 | [docs/utilities.md](docs/utilities.md) |
 | Media | 1 | [docs/media.md](docs/media.md) |
 
 
@@ -470,15 +472,15 @@ Every tool's full write-up - what it does, how it works, how to use it - lives i
 ├── .claude-plugin/
 │   ├── marketplace.json      ← marketplace manifest (one entry: forge)
 │   └── plugin.json           ← the forge plugin manifest
-├── commands/                 ← 109 commands + 12 pickers
-├── lib/                      ← 109 procedure folders (SKILL.md + bundled
+├── commands/                 ← 110 commands + 12 pickers
+├── lib/                      ← 110 procedure folders (SKILL.md + bundled
 │                                references/scripts/assets/examples). NOT a skills/ dir,
 │                                so nothing auto-loads; each is read only when
 │                                its command runs.
 ├── docs/                     ← full write-up for each command group (linked above)
 ├── forge-screens/            ← ASCII screen maps + generated PNGs of every menu
 ├── FORGE_MAP.txt             ← the whole catalog on one screen
-├── SUMMARY.md                ← the 109 commands compared by how much each does
+├── SUMMARY.md                ← the 110 commands compared by how much each does
 └── README.md                 ← this file
 ```
 

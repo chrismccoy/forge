@@ -1,7 +1,7 @@
 ================================================================================
   FORGE  -  command-only toolkit  -  screen map
 ================================================================================
-  109 commands . 12 pickers . 0 skills . nothing auto-fires.
+  110 commands . 12 pickers . 0 skills . nothing auto-fires.
   Every screen below is an AskUserQuestion menu (caps at 4 options; longer
   lists page behind "More...").  The built-in [Other] field always lets you
   type a command name directly, which jumps straight to that command.
@@ -89,8 +89,8 @@
   | [Category]                                        Which category?  (pg 4/4)  |
   |------------------------------------------------------------------------------|
   |  ( 1 )  Utilities                                                            |
-  |         Scripts, session stats, token grades, VGA demos, formulas, crashes.  |
-  |         6 commands.                                                          |
+  |         Scripts, session stats, token grades, VGA demos, formulas, crashes,  |
+  |         appointment prep.  7 commands.                                       |
   |                                                                              |
   |  ( 2 )  Media                                                                |
   |         FFmpeg and ffprobe: convert, compress, trim, loudness, subtitles,    |
@@ -863,7 +863,7 @@
   '------------------------------------------------------------------------------'
 
 
---- Utilities  ( /forge-utils )  -  6 commands, 2 pages ------------------------
+--- Utilities  ( /forge-utils )  -  7 commands, 2 pages ------------------------
 
   .------------------------------------------------------------------------------.
   | [Command]                                           Which command?  (pg 1/2) |
@@ -881,7 +881,8 @@
   |         output, weighted overall.                                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Demoscene intros, spreadsheet formulas, macOS crash reports.         |
+  |         Demoscene intros, spreadsheet formulas, macOS crash reports,         |
+  |         appointment prep.                                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -898,6 +899,10 @@
   |  ( 3 )  Analyze a macOS crash                              -> /crash-report  |
   |         Diagnose a .ips or .crash report in six plain-English sections,      |
   |         every claim cited.                                                   |
+  |                                                                              |
+  |  ( 4 )  Prepare for a doctor visit                     -> /appointment-prep  |
+  |         Emergency check first, then a 60-second doctor summary, five         |
+  |         questions, a symptom diary. Never diagnoses.                         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -976,7 +981,7 @@
    |
    +-- Utilities ............. /forge-utils
    |    +-- snippet  session-stats  token-audit  vgademo  fix-formula
-   |    +-- crash-report
+   |    +-- crash-report  appointment-prep
    |
    +-- Media ................. /forge-media
         +-- ffmpeg-forge

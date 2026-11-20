@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge - catalog picker
 
-Route the user to one of the 109 commands in this plugin and then run it. This command
+Route the user to one of the 110 commands in this plugin and then run it. This command
 is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -38,7 +38,7 @@ Each category also has its own command, which skips Step 1 entirely:
 | `/forge-cleanup` | 4 code-cleanup commands |
 | `/forge-code` | 19 code commands |
 | `/forge-docs` | 11 docs and diagram commands |
-| `/forge-utils` | 6 utilities |
+| `/forge-utils` | 7 utilities |
 | `/forge-media` | 1 media command |
 
 If the user's input clearly names one category and no specific tool, mention the matching
@@ -82,7 +82,7 @@ such answer as a Step 0 direct hit.
 
 | Label | Description |
 |---|---|
-| Utilities | Standalone scripts, session stats, token grades, VGA demos, formulas, macOS crashes. 6 commands. |
+| Utilities | Standalone scripts, session stats, token grades, VGA demos, formulas, macOS crashes, appointment prep. 7 commands. |
 | Media | FFmpeg and ffprobe: convert, compress, trim, loudness, subtitles, quality checks, GPU encodes, video effects. 1 command. |
 | Back to page 1 | Return to the first category page. |
 
@@ -343,20 +343,21 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 | README from markdown files | readme-forge | Combine a bio and one .md file per project into one portfolio README.md: full or compact, optional categories, checked links. |
 | Analyze a skill | analyze-skill | Cited report on any skill folder in 8 modes: files mapped, security verdict, compatibility, scorecard. Code never runs. |
 
-### Utilities (6 - page at 4)
+### Utilities (7 - page at 4)
 
 | Label | Command | Description |
 |---|---|---|
 | Write a standalone script | snippet | Production script in any of 19 languages: help, exit codes, cleanup, dry run, atomic writes. |
 | Session stats | session-stats | Render this Claude Code session's stats as a standalone dark-theme HTML page. |
 | Grade token efficiency | token-audit | Turn four token counts into an A-F report card: input, cache, output, weighted overall. |
-| More... | - | Demoscene intros, spreadsheet formulas, macOS crash reports. |
+| More... | - | Demoscene intros, spreadsheet formulas, macOS crash reports, appointment prep. |
 
 | Label | Command | Description |
 |---|---|---|
 | VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
 | Fix a spreadsheet formula | fix-formula | Debug and fix a broken Excel or Google Sheets formula. |
 | Analyze a macOS crash | crash-report | Diagnose a .ips or .crash report in six plain-English sections, every claim cited. |
+| Prepare for a doctor visit | appointment-prep | Emergency check first, then a 60-second doctor summary, five questions, a symptom diary. Never diagnoses. |
 
 ### Media (1)
 

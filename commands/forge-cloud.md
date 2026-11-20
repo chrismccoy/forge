@@ -86,6 +86,7 @@ user type a name directly - treat any such answer as a Step 0 direct hit.
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
 | `analyze-skill` | `/forge-docs` |
+| `appointment-prep` | `/forge-utils` |
 | `bash-forge` | `/forge-devops` |
 | `blueprint` | `/forge-code` |
 | `blueprint-forge` | `/forge-code` |

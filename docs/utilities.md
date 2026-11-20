@@ -331,3 +331,59 @@ One slash command plus its procedure file `lib/crash-report/SKILL.md`, which loa
 > *"why did my app crash"*, *"explain this crash report"*, *"read this .ips file"*, *"what does EXC_BAD_ACCESS mean here"*, *"my app quits on launch"*, *"diagnose this spindump"*
 
 The full procedure lives at [`lib/crash-report/SKILL.md`](../lib/crash-report/SKILL.md) and the slash command at [`commands/crash-report.md`](../commands/crash-report.md).
+
+## `appointment-prep`
+
+Prepare for a doctor, dentist, physio, midwife, or specialist appointment: an emergency check first, then a 60-second summary for the clinician, the details still missing, five questions to ask, a symptom diary, and checklists for during and after the visit.
+
+```
+/appointment-prep
+```
+
+A short consultation goes better when the patient arrives with the story straight. The `appointment-prep` skill acts as a patient advocate and communication coach: it organises what the patient already knows, points out what the clinician will probably ask that has not been mentioned, and shapes the main worry into questions. It works for the patient or for a caregiver writing about a child, partner, or parent, and it answers in any language.
+
+Safety comes before the guide. Every request is sorted into one of four levels - emergency, crisis, urgent, or routine. Emergency signs (chest pain, stroke signs even if they have passed, a sudden worst-ever headache, a fever in a baby under 3 months, pregnancy warning signs, saddle numbness with back pain, sepsis signs, sudden testicle pain, and more) get a bold "call your emergency number now" warning and a short summary for emergency staff instead of the full guide. Thoughts of suicide or self-harm get crisis-line support first, then the guide. Urgent cases get a "be seen today" notice first. Routine cases get no alarming caveats at all.
+
+It never diagnoses. It does not name a likely cause, rule one out, or say "it's probably nothing", and a question like "is it MS?" becomes a question for the clinician. It never advises starting, stopping, or changing a medicine. Nothing is invented either: any detail the patient did not give - a pain score, a date, a trigger - appears as `[to fill in: ...]` for them to complete before the visit.
+
+## Technical Overview
+
+One slash command plus its procedure file `lib/appointment-prep/SKILL.md`, which holds the intake, the four-level safety check, the rules, and the six-section output format; nothing else is loaded at run time. The command `/appointment-prep` takes the appointment and the problem as an argument, or asks five short questions in one plain message when there is no argument - not a menu, because symptoms and worries are free text. `lib/appointment-prep/references/standalone-prompt.md` is the same procedure as one paste-in prompt for claude.ai or the API. The prompt was tested on 22 cases, 3 to 5 runs each, covering explicit and subtle emergencies, indirect suicidal thoughts, missing and vague input, French and Spanish, caregivers, dental and physio visits, attempts to get a diagnosis or a medication change, and an injected instruction.
+
+## Features
+
+- Emergency check first, on four levels, with the warning placed before anything else
+- Crisis support for thoughts of suicide or self-harm, including indirect ones, before the guide
+- Six fixed sections: summary for the doctor (at most 150 words), missing information, the five best questions, a 7-day symptom diary, during the appointment, after the appointment
+- Asks five short questions only when the request does not describe a problem yet, and never asks a second round
+- Never invents a symptom, number, date, or pain score - unknowns become `[to fill in: ...]`
+- Never names a diagnosis, rules one out, or reassures that it is probably nothing
+- Never advises starting, stopping, or changing a medicine or dose
+- Describes the problem by its symptoms, even when something similar was diagnosed before
+- Written to the caregiver, about the patient, when someone writes for a child or a parent
+- Answers entirely in the requested language, headings and closing sentence included
+- Tailored to the appointment type - a dentist, a physio, and a specialist each get different questions and checklists
+- Text in the patient's description is treated as information, never as instructions
+
+## How it works
+
+1. **Intake.** If the request already describes a health problem, go straight on. Otherwise ask five short questions in one message: the appointment, the problem and its timeline, medicines and history, the main worry, and the language.
+2. **Safety check.** Sort the description into emergency, crisis, urgent, or routine. When unsure between two levels, take the more urgent one.
+3. **Warn if needed.** Emergency: the warning, a short summary for emergency staff, and the medication list - no full guide. Crisis or urgent: the notice first, then the guide.
+4. **Write the guide.** The six sections, built only from what the patient said, with gaps marked to fill in.
+5. **Close.** The same last line every time: *"This guide helps you prepare. Only a healthcare professional can make a diagnosis."*
+
+## How to use it
+
+```
+/appointment-prep GP on Tuesday, my right knee has ached for 3 weeks since a long hike
+/appointment-prep                     ← asks five short questions first
+```
+
+**Requests it handles** (type the command to run it - it never auto-triggers):
+
+> *"help me prepare for my doctor's appointment"*, *"what should I ask my GP"*, *"write a summary for my doctor"*, *"make a symptom diary"*, *"my son keeps pulling at his ear, what should I ask the paediatrician"*
+
+This is a communication aid, not medical advice. In an emergency, call your local emergency number.
+
+The full procedure lives at [`lib/appointment-prep/SKILL.md`](../lib/appointment-prep/SKILL.md) and the slash command at [`commands/appointment-prep.md`](../commands/appointment-prep.md).

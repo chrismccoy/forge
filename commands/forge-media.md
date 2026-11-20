@@ -62,6 +62,7 @@ to ask. Take the row below and go to Step 2.
 | `accessibility-audit` | `/forge-design` |
 | `analyze-prompt` | `/forge-docs` |
 | `analyze-skill` | `/forge-docs` |
+| `appointment-prep` | `/forge-utils` |
 | `bash-forge` | `/forge-devops` |
 | `blueprint` | `/forge-code` |
 | `blueprint-forge` | `/forge-code` |

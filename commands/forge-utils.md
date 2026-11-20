@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # /forge-utils - Utilities picker
 
-Route the user to one of the 6 Utilities commands and run it. Standalone scripts, session stats, token-efficiency grades, demoscene intros, spreadsheet formulas, macOS crash reports.
+Route the user to one of the 7 Utilities commands and run it. Standalone scripts, session stats, token-efficiency grades, demoscene intros, spreadsheet formulas, macOS crash reports, healthcare appointment prep.
 This command is a launcher only: it never performs the work itself.
 
 User input: $ARGUMENTS
@@ -39,7 +39,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | Write a standalone script | snippet | Production script in any of 19 languages: help, exit codes, cleanup, dry run, atomic writes. |
 | Session stats | session-stats | Render this Claude Code session's stats as a standalone dark-theme HTML page. |
 | Grade token efficiency | token-audit | Turn four token counts into an A-F report card: input, cache, output, weighted overall. |
-| More... | - | Demoscene intros, spreadsheet formulas, macOS crash reports. |
+| More... | - | Demoscene intros, spreadsheet formulas, macOS crash reports, appointment prep. |
 
 **Page 2** (only if `More...` was chosen) - question: "Which command?", header: "Command"
 
@@ -48,6 +48,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 | VGA demo | vgademo | Sizecoded 1990s-style assembly demoscene production. |
 | Fix a spreadsheet formula | fix-formula | Debug and fix a broken Excel or Google Sheets formula. |
 | Analyze a macOS crash | crash-report | Diagnose a .ips or .crash report in six plain-English sections, every claim cited. |
+| Prepare for a doctor visit | appointment-prep | Emergency check first, then a 60-second doctor summary, five questions, a symptom diary. Never diagnoses. |
 
 ## Step 2 - run it
 

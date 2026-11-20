@@ -1,7 +1,8 @@
 ================================================================================
-  FORGE  -  Utilities          ( /forge-utils )          6 commands, 2 pages
+  FORGE  -  Utilities          ( /forge-utils )          7 commands, 2 pages
 ================================================================================
-  Standalone scripts, session stats, token grades, VGA demos, formulas, crashes.
+  Standalone scripts, session stats, token grades, VGA demos, formulas, crashes,
+  appointment prep.
 
   STEP 2 - pick a command
 
@@ -21,7 +22,8 @@
   |         output, weighted overall.                                            |
   |                                                                              |
   |  ( 4 )  More...                                                   -> page 2  |
-  |         Demoscene intros, spreadsheet formulas, macOS crash reports.         |
+  |         Demoscene intros, spreadsheet formulas, macOS crash reports,         |
+  |         appointment prep.                                                    |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -38,6 +40,10 @@
   |  ( 3 )  Analyze a macOS crash                              -> /crash-report  |
   |         Diagnose a .ips or .crash report in six plain-English sections,      |
   |         every claim cited.                                                   |
+  |                                                                              |
+  |  ( 4 )  Prepare for a doctor visit                     -> /appointment-prep  |
+  |         Emergency check first, then a 60-second doctor summary, five         |
+  |         questions, a symptom diary. Never diagnoses.                         |
   |                                                                              |
   |  [Other] type a command name .............................................   |
   '------------------------------------------------------------------------------'
@@ -174,5 +180,22 @@
   |  ( ) Paste it   ( ) Give a path   ( ) Latest DiagnosticReports             |
   |      follow-up path/paste request is a plain prompt, not a menu            |
   |      reads .ips, .crash, hang, spindump, sample, Console excerpt           |
+  '----------------------------------------------------------------------------'
+
+
+---------------------------------------------------------- /appointment-prep ---
+  The request itself is the input.  A described problem skips the questions;
+  anything still missing becomes [to fill in] in the guide.
+
+  .--[Questions]-- only when no problem is described yet ----------------------.
+  |  ___ one plain message, not a menu: appointment . problem and timeline .   |
+  |      medicines and history . main worry . language.  Any can be skipped.   |
+  '----------------------------------------------------------------------------'
+  .--[Safety]-- runs first, no question ---------------------------------------.
+  |  emergency . crisis . urgent . routine   (unsure -> the more urgent one)   |
+  '----------------------------------------------------------------------------'
+  .--[Output]-- emergency: warning + short summary for staff, no guide --------.
+  |  otherwise 6 sections: doctor summary . missing info . 5 questions .       |
+  |  symptom diary . during . after.  Ends with the diagnosis disclaimer.      |
   '----------------------------------------------------------------------------'
 ================================================================================

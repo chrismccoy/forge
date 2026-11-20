@@ -429,6 +429,10 @@ Debugs and fixes a broken Excel or Google Sheets formula. You give it the formul
 
 Explains a macOS crash report in plain English. It reads .ips and .crash files, hang reports, spindumps, and Console.app output. The explanation has six sections: what happened, the main problem, why it happened, why it crashed that way, the fix for developers, and the fix for users. Every claim is tied to a specific field in the report.
 
+## appointment-prep
+
+Helps you prepare for a doctor, dentist, physio, or other healthcare appointment, for yourself or for someone you care for. If you have not described the problem yet, it asks five short questions first. It checks for emergency signs before anything else, and if it finds any it tells you to call for help instead of waiting. Otherwise it writes a short summary to read to the doctor, the details the doctor will probably ask about, five questions to ask, a 7-day symptom diary, and checklists for during and after the visit. It never names a diagnosis, never tells you to change a medicine, and never makes up details you did not give.
+
 ## ffmpeg-forge
 
 Writes and runs FFmpeg and ffprobe commands for converting, compressing, trimming, joining, and fixing video and audio. It also covers loudness, subtitles and Whisper captions, quality checks, restoration, GPU encoding, and effects such as transitions, color grades, glitch art, karaoke, and kinetic captions. It probes your file and checks what your FFmpeg build supports before it writes a command. It never overwrites an existing file, and it checks the output instead of trusting the exit code.
