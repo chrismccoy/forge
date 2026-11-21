@@ -1,6 +1,6 @@
 ---
-description: Documentation-only pass over a whole codebase in any of 19 languages (JS / TS, PHP, Python, Go, Rust, Ruby, Java, Kotlin, C#, Swift, C / C++, Dart, Elixir, Erlang, Haskell, Clojure, Lua, Perl, PowerShell) - full doc comments on every file, type, member, function, route, and handler, plus inline "why" comments. A bundled checker proves no code changed and every directive, doctest, and license header stayed byte-identical; bugs found along the way are ranked, not fixed. Also runs as a read-only bug check.
-argument-hint: [optional project path, plus a scope like "application code only" or a mode like "bug check only"]
+description: Documentation-only pass over a whole codebase in any of 19 languages (JS / TS, PHP, Python, Go, Rust, Ruby, Java, Kotlin, C#, Swift, C / C++, Dart, Elixir, Erlang, Haskell, Clojure, Lua, Perl, PowerShell) - full doc comments on every file, type, member, function, route, and handler, plus inline "why" comments. A bundled checker proves no code changed and every directive, doctest, and license header stayed byte-identical; bugs found along the way are ranked, not fixed. Also runs as a read-only bug check. Full comments by default, or terse: one-line comments on the public API only.
+argument-hint: [optional project path, plus a scope like "application code only" or a mode like "bug check only", or "terse"]
 allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Task, Bash(git status:*), Bash(git log:*), Bash(git diff:*), Bash(find:*), Bash(wc:*), Bash(df -h:*), Bash(cp -r ${CLAUDE_PLUGIN_ROOT}/lib/doc-pass/scripts *), Bash(chmod -R u+w *), Bash(npm ci:*), Bash(node */checker/verify.mjs *), Bash(node */checker/coverage.mjs *), Bash(node */checker/selftest.mjs *)
 disable-model-invocation: true
 ---
@@ -20,13 +20,14 @@ User input: $ARGUMENTS
 
 ## Intake Procedure
 
-Infer what you can from `$ARGUMENTS`: a path sets the project; "application code only", "no tests", or "client code" set the scope; "bug check only", "find bugs", or "read only" set the bug-check mode, and "skip bug report" sets doc pass only. Ask for anything missing with `AskUserQuestion`, **one question at a time**, exactly as the procedure's step 0 lists them:
+Infer what you can from `$ARGUMENTS`: a path sets the project; "application code only", "no tests", or "client code" set the scope; "bug check only", "find bugs", or "read only" set the bug-check mode, and "skip bug report" sets doc pass only. "terse", "short comments", or any request to shorten, trim, or condense comments sets the Style to Terse; "full" sets Full. Ask for anything missing with `AskUserQuestion`, **one question at a time**, exactly as the procedure's step 0 lists them:
 
 1. **Project path** (required) - offer the current directory when it holds a project manifest, plus any folders one level down that do, plus "Other". Skip when `$ARGUMENTS` named a readable project path.
 2. **Scope** (multi-select) - `Application code`, `Client code (components, pages, browser scripts)`, `Tests and test helpers`, `Scripts and tooling`. Default is all four.
 3. **Mode** - `Doc pass + bug report (Recommended)`, `Doc pass only`, `Bug check only`.
+4. **Style** (single-select, asked whenever the request does not settle it, even when a path was given) - `Full (Recommended)`, `Terse`. Terse means one-line plain-English doc comments on the file header and public API only, with boilerplate tags removed unless a tool reads their types, and checker enforcement.
 
-The procedure then asks only when needed: whether to continue with uncommitted changes, whether new summaries may flow into a comment-reading tool's output, whether to install missing dependencies or toolchains in a folder you choose, and which packages to do when the project is over about 20,000 lines.
+The procedure then asks only when needed: in terse style, whether to accept higher counts for doc-requiring lint rules, and what to do with JS `@typedef` / `@callback` blocks; whether to continue with uncommitted changes, whether new summaries may flow into a comment-reading tool's output, whether to install missing dependencies or toolchains in a folder you choose, and which packages to do when the project is over about 20,000 lines.
 
 ## Validation Before Writing
 

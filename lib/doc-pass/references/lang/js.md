@@ -21,6 +21,17 @@ These apply on top of the core rules to `.js`, `.jsx`, `.mjs`, `.cjs`, `.ts`, `.
 - In JSX, a `{/* … */}` child is allowed only where a JSX expression container already exists; never add one.
 - The file header is a `/** … */` block. In a component it goes at the top of the first `<script>` block that has code. When the file starts with a test-runner pragma docblock (`@jest-environment`, `@vitest-environment`), add the summary to that docblock instead of stacking a second one, and keep the pragma line exactly.
 
+### Terse form
+
+The form is in the style files (`js-style-jsdoc.md`, `js-style-tsdoc.md`). `--terse` scans only public declarations:
+
+- **Public:** an `export` form, `export =`, a `declare` statement, a `module.exports` / `exports.x` assignment (or `Foo.x = …` on an exported `Foo`), a name exported elsewhere (`export { a, b as c }`, `export default a`, `module.exports = { a }`), and every declaration in a `.d.ts`. Members of a public class, interface or object type are public too.
+- **Wrappers and globals:** a name inside a wrapper call is public: `export default memo( Comp )`, and `connect( … )( Comp )` (every identifier in the call, so `mapState` too). A top-level `window.x`, `globalThis.x` or `self.x` assignment is public.
+- **Private:** anything under a function body, a `private` / `protected` / `#name` member, a non-exported statement of a non-`declare` namespace, and every binding in a Vue or Svelte `<script setup>` (nothing is exported there). A private first statement does not claim the file header comment.
+- **Always required:** handler registrations (`app.get( … )`, `emitter.on( … )`, `fastify.addHook( … )`, and the others in Coverage), exported or not: one line with the method, path and auth. A route registration's comment describes the route; its `req` / `res` get no tags (existing typed ones stay when checked types are on).
+- **Frameworks:** Next.js route handlers and `export const metadata` / `config` / `dynamic` are exports, so they need the line. Vue options-API methods and `export default { fetch() {} }` methods are members of an export. Test callbacks need none.
+- **Doc-requiring lint rules** that terse raises: `jsdoc/require-jsdoc` (private functions stay bare), `jsdoc/require-param`, `jsdoc/require-returns`. Name them for the Terse prompt in step 1.
+
 ### Coverage
 
 - Every class, interface, type alias, enum and named TypeScript `namespace`, and every member of an interface or of an object type alias at the top level of a file (props interfaces included).

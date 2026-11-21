@@ -17,6 +17,13 @@
 - Symbol links: ` ``TypeName`` `, ` ``TypeName/method(_:)`` `, only to symbols that exist.
 - Never repeat types. Say what they cannot: when `nil` is returned, units, ranges, the actor or thread a callback runs on, and for `async` functions whether they suspend across actors and how cancellation ends them.
 
+### Terse form
+
+- **Form:** a one-line `///`: `/// Loads the note.`. No `- Parameter`, `- Parameters:`, `- Returns:` or `- Throws:` lines (`TERSE TAG ADDED`); say the error in the sentence. Callouts (`- Important:`, `- Warning:`) only where they carry weight.
+- **Public:** keyword only. `public` and `open` declarations; a requirement of a public protocol; a member with no access keyword inside a `public extension`. `internal`, `package`, `fileprivate`, `private` and no keyword are not public. An `extension` itself needs no comment.
+- **DocC:** a one-sentence summary is a valid abstract, and symbol links (` ``TypeName`` `) must still resolve.
+- **Doc-requiring lint rules** that terse raises: none. SwiftLint `missing_docs` (opt-in) checks public API, which terse covers, so it does not rise.
+
 ### Coverage
 
 - Every class, struct, enum, actor and protocol; every function, initializer, type alias and protocol requirement; every property at file level or in a type or protocol body. Local variables need none.

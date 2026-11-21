@@ -1118,6 +1118,7 @@ OK: 8 files fully documented
 /doc-pass                        ← full intake
 /doc-pass src/                   ← document one folder of the project
 /doc-pass ~/code/api bug check only   ← ranked bug list, nothing changed
+/doc-pass src/ terse            ← one-line comments on the public API
 ```
 
 **Requests it handles** (type the command to run it - it never auto-triggers):

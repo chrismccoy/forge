@@ -24,6 +24,15 @@ Docstrings (a plain string that is the first statement of a module, class or fun
 - **Comments a tool reads.** A docstring sets runtime `__doc__`. `help()`, Sphinx autodoc, Click / Typer help, `argparse` descriptions from `__doc__`, Django admindocs, DRF schemas, FastAPI OpenAPI and graphene / strawberry schemas publish it. Write them for the end reader: no internal notes or file paths.
 - **Docstrings that are code.** PLY reads each `t_*` / `p_*` function's docstring as its token regex or grammar rule, and docopt parses the module docstring as the command-line spec. The checker freezes every docstring in a file that imports `ply` (a vendored copy, `from .ply import yacc`, too) or calls `lex.lex(` / `yacc.yacc(` / `TOKEN(`, and the module docstring in one that imports `docopt`: never add, edit or remove them. Document those functions with `#` comments above them, and the file with a `#` block before its first statement; the main session lists the file in `line-docs.txt`, so coverage counts those comments as the docs and the header.
 
+### Terse form
+
+- **Form:** a one-line docstring, never a `#` comment: `"""Return the order total."""`. `help()`, Sphinx, Click / Typer, FastAPI and DRF read docstrings. A second sentence only for a side effect, an error path or a why. No `Args:`, `Returns:`, `Raises:`, `:param`, `:return:`, `:returns:`, `:raises`, or a bare `Parameters` / `Returns` heading (they print `TERSE TAG ADDED`); say the exception in the sentence.
+- **Public:** a module-level class or function listed in `__all__` when it is a literal list or tuple of strings (assigned, `+=`, `.extend()` or `.append()`). A non-literal `__all__` (`__all__ = PUBLIC`, a comprehension) falls back to the underscore rule: public unless the name starts with `_`. With no `__all__`, or a non-literal one, the underscore rule applies.
+- **Members:** a method or nested class of a public class is public unless its name starts with `_`. `__init__` is public; every other dunder is private. A function defined inside a function is private.
+- **`#` comments:** an inline `#` why-comment is not a doc comment unless it sits directly above a `def` or `class`, where it counts toward the line limit. A one-line body (`def f(): ...`) takes a `#` comment above it, as in full style.
+- **Frozen:** PLY and docopt docstrings stay as they are.
+- **Doc-requiring lint rules** that terse raises: pydocstyle and ruff `D105` (magic methods: every dunder but `__init__`, such as `__call__`, is private in terse) and `D417` when an existing `Args:` section shrinks.
+
 ### Coverage
 
 - A module docstring on every file: the first statement is a docstring (a frozen license docstring counts).

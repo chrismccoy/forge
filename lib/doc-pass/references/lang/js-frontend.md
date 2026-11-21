@@ -45,3 +45,12 @@
 - `inject()` fields need no doc comment, like constructor injection.
 - Services: `providedIn` scope, what they inject, and the observables or signals they expose (when they emit, whether they complete, whether they replay).
 - Functional guards, resolvers and interceptors (`CanActivateFn`, `ResolveFn`, `HttpInterceptorFn`): what they read, what they allow, redirect to or add to requests, and the errors they map.
+
+### Terse form
+
+Area notes only. The public rule, wrappers and lint rules are in `js.md`; the form is in the style files.
+
+- **Components:** an exported component gets one sentence on what it renders and which props it takes: `/** Card for one note: shows the title, calls onOpen. */`. An exported props interface is public, so each member needs a one-line comment; a props interface that is not exported needs none. A wrapped component is documented at the export in `export const Card = memo( … )`; with `const Card = …; export default memo( Card )` the comment goes on the `Card` declaration. A custom hook starts its one line with what it returns.
+- **Vue and Svelte `<script setup>`:** every binding there is private, so the component needs only its header line. In an options-API component, the exported object and its methods are public.
+- **Angular:** an exported class is public and its `private` and `protected` members are private; each `@Input`, `@Output` and method of it needs a line. `inject()` fields need none.
+- **Always required:** a handler registration with a body (`emitter.on`, `store.subscribe`, `addEventListener`) keeps one line; the scan covers `on` and `subscribe`, and `addEventListener` is checked by reading. Effects, watchers and security sinks keep their inline why-comments.

@@ -45,3 +45,13 @@ These frameworks route by file path, export functions with reserved names, and s
 - **Pages and endpoints:** a page under `src/pages/` documents its URL (file-system route, `[slug]` / `[...rest]` params) and `getStaticPaths()` (what it enumerates, and the `props` it passes). An endpoint (`src/pages/**/*.ts` exporting `GET`, `POST` …) is a route: method, path, inputs and response.
 - **Content and config:** `src/content.config.ts` (or `src/content/config.ts`) collections and their zod schemas form shared shapes; `astro.config.mjs` integrations and `import.meta.env` / `astro:env` reads follow the env map.
 - **Islands:** `client:load`, `client:idle`, `client:visible` directives are markup: leave them, and say in the island component's own header when it hydrates.
+
+### Terse form
+
+Area notes only. The public rule, wrappers and lint rules are in `js.md`; the form is in the style files.
+
+- **Route files:** the header is one line naming the URL (worked out from the path) and where the file runs: `/** Page for /notes/:id, rendered on the server. */`.
+- **Reserved exports:** `loader`, `action`, `load`, `generateMetadata`, `GET` and the rest are exports, so each needs one line naming its role. A server action or form action is a public endpoint: one sentence for what it changes and the auth it checks.
+- **Directives:** `'use client'` and `'use server'` stay exactly where they are; the header may sit above them.
+- **Nuxt and Astro:** bindings in a Nuxt `<script setup>` are not exports, so such a page needs only its header line. Astro frontmatter is plain TypeScript: `export const prerender` and `export async function getStaticPaths` are public and need a line, and a page with no exports needs only its header. Nuxt `defineEventHandler` default exports and `server/api` handlers need one line naming method and path.
+- **Middleware:** one line with the paths it runs on and what it blocks or redirects.

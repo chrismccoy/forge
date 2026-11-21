@@ -16,6 +16,15 @@
 - `;;` for comments on their own line, `;` for trailing comments. Never edit inside a `(comment …)` rich-comment form or a `#_` discarded form: both are code.
 - File header: the `ns` docstring. A file without `ns` (a script) gets `;;` lines at the top, after any shebang.
 
+### Terse form
+
+- **Form:** a one-line docstring in its usual place: `(defn total "Returns the order total." [order] …)`, on its own line between the name and the vector when they are on separate lines. No argument lists in the text; say the thrown `ex-info` in the sentence. `defrecord`, `deftype` and `definterface` take one `;;` line above them.
+- **Public:** every definition form except `defn-` and a name with `^:private` or `^{:private true}` metadata before it. `defmacro`, `defmulti`, `defprotocol`, `defrecord` and `deftype` are public.
+- **Private:** `defn-` and `^:private` definitions get a `;;` comment only when the name does not say what they do.
+- **Inline why-comments:** a `;;` block counts as a doc comment only as the file header or directly above a definition the scan covers, so a why-comment inside a body is free. A `:doc` in metadata is code and stays.
+- **Doc tools:** `clojure.repl/doc` and cljdoc print the docstring.
+- **Doc-requiring lint rules** that terse raises: none. clj-kondo `:missing-docstring` covers public vars only, which terse already documents.
+
 ### Coverage
 
 - Every top-level `defn`, `defn-`, `defmacro`, `defmulti`, `defprotocol`, `defrecord`, `deftype`, `definterface`, and project definers (`rum/defc*`), including those inside a top-level reader conditional. `def` / `defonce` values are optional: document the ones whose purpose the name does not say.

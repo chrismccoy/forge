@@ -29,6 +29,15 @@
 - **`# :nodoc:`** after a `class`, `module` or `def` line hides it from RDoc and YARD. It is frozen; on the same line it does not count as the doc comment.
 - **Inline comments:** `#` full sentences ending in a period, one space after `#`.
 
+### Terse form
+
+- **Form:** one `#` line directly above the `class`, `module` or `def`: `# Returns the cards the user can see.`. No `@param` or `@return` tags, even under YARD; say the raise in the sentence. Never `=begin` / `=end`.
+- **Public:** every `class` and `module`. A `public def x` / `private def x` wrapper decides first. Otherwise the last `public :x` / `private :x` / `protected :x` call naming the method wins (`protected` hides it). Otherwise the section decides: after a bare `private` or `protected` it is private, and a bare `public` reopens. A `def self.x` follows only `private_class_method` / `public_class_method`.
+- **`# :nodoc:`** stays and does not count as the doc comment.
+- **Inline why-comments:** `#` lines. A `#` block is a doc comment only as the file header or directly above a declaration the scan covers, so a why-comment elsewhere is free.
+- **Rails:** `rubocop-rails-omakase` style fits; one short sentence that says why. Callbacks and routes get their one line where Coverage requires it.
+- **Doc-requiring lint rules** that terse raises: `Style/DocumentationMethod` with `RequireForNonPublicMethods: true`. `Style/Documentation` stays clean, since terse documents every class and module.
+
 ### Coverage
 
 - A doc comment on every `class`, `module`, `def` and `def self.x` (methods inside `class << self` and concern blocks included).

@@ -17,6 +17,14 @@
 - Classes and their members (PowerShell 5+): `#` comments above each, since comment-based help does not cover them.
 - File header: a script-level `<# .SYNOPSIS … #>` block at the top of the file (after `#Requires` lines), or `#` lines.
 
+### Terse form
+
+- **Form:** a comment-based help block with `.SYNOPSIS` only: `<#` on its own line, `.SYNOPSIS` with one line of text below it, `#>`. No new `.PARAMETER`, `.EXAMPLE`, `.INPUTS`, `.OUTPUTS` or `.NOTES`; the keyword lines already in a block stay. Classes, enums and their members get one `#` line above them.
+- **Public:** a top-level function is public when the nearest `.psd1` (searched from the file's folder up to the scanned folder) has a `FunctionsToExport` list that names it, or an `Export-ModuleMember -Function` call does. With no list, every function is public. A non-literal argument (`$names`, `(Get-Command …).Name`) or `'*'` makes every function public. A function nested inside another function is private; classes, enums and class members are always public.
+- **Where a comment counts:** a `<# #>` block is a doc comment wherever it sits. A `#` comment counts as a doc only as the file header or directly above a declaration, so inline why-comments are free.
+- **Header:** a script-level `<# .SYNOPSIS … #>` block of one line, after any `#Requires` lines.
+- **Doc-requiring lint rules** that terse raises: none. PSScriptAnalyzer `PSProvideCommentHelp` covers exported functions by default, which terse already documents.
+
 ### Coverage
 
 - Every `function` and `filter`, every `class` and `enum`, every class method and property.

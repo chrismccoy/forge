@@ -18,6 +18,13 @@
 - Never repeat types. Say what they cannot: when `null` is returned, units, ranges, what a faulted `Task` means, cancellation.
 - `<include …/>` lines are frozen: keep existing ones, never add one. `<inheritdoc/>` lines are kept: keep existing ones; a new one is allowed, but an interface implementation should get its own short `<summary>`.
 
+### Terse form
+
+- **Form:** `/// <summary>Loads the note.</summary>` on one line, no `<param>`, `<returns>` or `<exception>` (they print `TERSE TAG ADDED`); say the exception in the sentence. `<remarks>` only when the detail is needed. `<include />` and `<inheritdoc/>` lines stay.
+- **Public:** keyword only. A member or type is public when it has `public` or `protected` and no `private`; `private protected` is private. No keyword means `internal` or `private`, which is not public. An interface member with no `private` is public.
+- **Compiler warnings:** with `GenerateDocumentationFile`, CS1573 fires when some `<param>` tags exist and others are missing, so drop all of them on a member, never some. XML must stay well formed and a `cref` must resolve.
+- **Doc-requiring lint rules** that terse raises: CS1591 reports only externally visible members, which terse covers, so it does not rise. StyleCop `SA1600` (docs on `internal` elements by default) rises, and so do `SA1611` and `SA1615` (param and returns docs).
+
 ### Coverage
 
 - Every class, struct, interface, enum, record and delegate; every method, constructor, property, field and event, private members included (wider than CS1591).

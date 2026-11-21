@@ -1,6 +1,6 @@
 ---
-description: Documentation-only pass over a WordPress plugin or theme (classic, block, or child) - full PHPDoc / JSDoc on every file, class, function, closure, property, constant, hook, template, and block pattern, plus inline "why" comments, in the project's own coding standard (WPCS, PSR-12, or legacy). A bundled checker proves no code changed, and bugs found along the way are reported, not fixed.
-argument-hint: [optional path to the plugin or theme, plus "php only", "no tests", or "skip bug report"]
+description: Documentation-only pass over a WordPress plugin or theme (classic, block, or child) - full PHPDoc / JSDoc on every file, class, function, closure, property, constant, hook, template, and block pattern, plus inline "why" comments, in the project's own coding standard (WPCS, PSR-12, or legacy). A bundled checker proves no code changed, and bugs found along the way are reported, not fixed. Full docs by default, or terse: one-line docblocks on the public API only.
+argument-hint: [optional path to the plugin or theme, plus "php only", "no tests", "skip bug report", or "terse"]
 allowed-tools: AskUserQuestion, Read, Write, Edit, Glob, Grep, Task, Bash(git status:*), Bash(git log:*), Bash(git tag:*), Bash(git diff:*), Bash(find:*), Bash(wc:*), Bash(php -l:*), Bash(node --check:*), Bash(cp -r ${CLAUDE_PLUGIN_ROOT}/lib/wordpress-doc-pass/scripts/checker *), Bash(chmod -R u+w *), Bash(npm install:*), Bash(node */checker/verify.mjs *), Bash(node */checker/coverage.mjs *)
 disable-model-invocation: true
 ---
@@ -20,13 +20,14 @@ User input: $ARGUMENTS
 
 ## Intake Procedure
 
-Infer what you can from `$ARGUMENTS`: a path sets the plugin or theme; "php only", "js only", or "no tests" set the scope; "skip bug report" turns the bug list off. Ask for anything missing with `AskUserQuestion`, **one question at a time**, exactly as the procedure's step 0 lists them:
+Infer what you can from `$ARGUMENTS`: a path sets the plugin or theme; "php only", "js only", or "no tests" set the scope; "skip bug report" turns the bug list off; "terse", "short comments", or any request to shorten, trim, or condense comments sets the Style to Terse, and "full" sets Full. Ask for anything missing with `AskUserQuestion`, **one question at a time**, exactly as the procedure's step 0 lists them:
 
 1. **Project path** (required) - offer the current directory when it holds a plugin header (`Plugin Name:`) or a theme header (`style.css` with `Theme Name:`), plus any plugin or theme folders one level down, plus "Other". Skip when `$ARGUMENTS` named a readable plugin or theme path.
 2. **Scope** (multi-select) - `Plugin PHP (src, root, views/templates)` for a plugin, or `Theme PHP (functions.php, inc/, templates, template parts, patterns)` for a theme, then `JS assets (JSDoc)` and `Tests / test harness`. Default is all three.
 3. **Bug report** - `Report bugs/smells found, don't fix (Recommended)`, `Skip bug report`.
+4. **Style** (single-select, asked whenever the request does not settle it, even when a path was given) - `Full (Recommended)`, `Terse`. Terse means one-line docblocks on the file header and public API only, with boilerplate tags removed unless PHPStan, Psalm, or a JS type checker reads their types, and checker enforcement.
 
-The procedure then asks at most three more questions, only when needed: plugin or theme when a folder has both headers, whether to continue with uncommitted changes in the project, and the `@since` policy when no version history is available (never under PSR-12).
+The procedure then asks a few more questions, only when needed: plugin or theme when a folder has both headers, whether to continue with uncommitted changes in the project, and the `@since` policy when no version history is available (never under PSR-12), and, in terse style, whether to accept higher counts for doc-requiring lint rules and what to do with JS `@typedef` / `@callback` blocks.
 
 ## Validation Before Writing
 

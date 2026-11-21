@@ -8,3 +8,10 @@ Match what is there. Consistency with the surrounding code beats any external st
 - **Old-style classes** (PHP 4-style constructors, `var` properties, static singletons): document them as they are. Never "fix" `var` to `public`, because that's a code change. Mention deprecated patterns as smells in the report.
 - **Mixed-standard files:** follow each file's own dominant style. Don't normalize the whole project to one style. Note the inconsistency in the report.
 - Keep accurate legacy comments if rewriting them would add nothing. `#` comments may stay `#` when the file uses them.
+
+### Terse form
+
+- **Form:** a one-line docblock in the surrounding voice (a file that uses `#` comments or no summary period keeps that form). No `@param`, `@return` or `@throws`, unless checked types keep them. Procedural code gets its line on every function, with the hook in it only when the registration does not show it (`Hooked to 'admin_menu'.`); existing `@global` lines stay, and none is added.
+- **Old-style classes** (`var`, PHP 4 constructors) are documented as they are, one line each; the code stays.
+- **Doc-requiring lint rules:** none by default (profile C has no ruleset). When a ruleset exists, follow the profile A list.
+- Consistency still wins: in a mixed file, condense in the file's own style and leave accurate short comments as they are.

@@ -644,8 +644,9 @@
   '----------------------------------------------------------------------------'
 
 ----------------------------------------------------------------- /wp-doc-pass -
-  Project first, then scope, then the bug report, one at a time.  A path
-  argument sets the plugin or theme; "php only" or "no tests" sets the scope.
+  Project first, then scope, bug report and style, one at a time.  A path
+  argument sets the plugin or theme; "php only" or "no tests" sets the scope;
+  "terse" sets the style.
 
   .--[Project]-- the plugin or theme to document ------------------------------.
   |  ( ) the current directory   ( ) a plugin or theme folder found below      |
@@ -658,6 +659,9 @@
   '----------------------------------------------------------------------------'
   .--[Bug report]-- found along the way ---------------------------------------.
   |  ( ) report, don't fix (Recommended)   ( ) skip the bug report             |
+  '----------------------------------------------------------------------------'
+  .--[Style]-- how much to write ----------------------------------------------.
+  |  ( ) Full (Recommended)   ( ) Terse: one-line docblocks, public API only   |
   '----------------------------------------------------------------------------'
   .--[Only if needed]-- asked once each ---------------------------------------.
   |  both headers found:   ( ) document the plugin   ( ) the theme             |

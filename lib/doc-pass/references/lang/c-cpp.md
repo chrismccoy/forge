@@ -16,6 +16,16 @@
 - Each file: a `/** @file … */` header saying what it declares or implements.
 - Never repeat types. Say units, ranges, whether a pointer may be `NULL`, buffer sizes in bytes or elements.
 
+### Terse form
+
+- **Form:** one line in a Doxygen form: `/** Returns the order total in cents. */` (or `///`). No `@param`, `@return` or `@throws`, nor their `\` forms (they print `TERSE TAG ADDED`); put units, `NULL` meaning or ownership in the sentence when it matters. A `///` line is already a brief. In `/** */`, without `JAVADOC_AUTOBRIEF` or `QT_AUTOBRIEF`, start with `@brief` so Doxygen shows it as the brief: `/** @brief Returns the order total. */`. File header: `/** @file` then ` * @brief Order totals. */` (a bare `@file Order totals.` would take the first word as the file name).
+- **Public in a header** (`.h`, `.hh`, `.hpp`, `.hxx`, `.ipp`, `.inl`): every declaration, except a class member in a `private:` section. `protected:` counts as public. A `struct` or `union` member is public before any access label; a `class` member with no label is private.
+- **Public in a source file:** only a function definition that is not `static` and is not inside an anonymous namespace. Types, macros and `static` functions there are private.
+- **Private member prototypes:** a private member prototype in a class body needs no comment, and it exempts only its qualified out-of-line definition (`Store::save`) from needing one.
+- **Inline why-comments:** `//` and `/* */` are not doc forms in C and C++, so they are free. Only `/** */`, `/*! */`, `///` and `//!` count against the line limit.
+- **Doc tools:** Doxygen and editor hovers show the brief. `-Wdocumentation` checks `@param` names only where the tags exist, so it stays clean.
+- **Doc-requiring lint rules** that terse raises: Doxygen `WARN_NO_PARAMDOC` when enabled (a documented function with undocumented parameters), and `WARN_IF_INCOMPLETE_DOC`, which is on by default: drop all of a function's `@param` lines or none, never some.
+
 ### Coverage
 
 - At file scope, in a `namespace` body, inside `#if` / `#ifdef` blocks, or after `template<…>` (the doc goes above the `template` line): function definitions; function prototypes in `.h`, `.hh`, `.hpp`, `.hxx`; `struct`, `union`, `enum` and `class` with a body; `typedef`s; `#define` macros.

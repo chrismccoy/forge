@@ -1030,6 +1030,7 @@ One slash command plus its procedure file `lib/wordpress-doc-pass/SKILL.md` and 
 /wp-doc-pass ~/plugins/acme-notes                  ← the whole plugin
 /wp-doc-pass ~/plugins/acme-notes php only         ← skip JS and tests
 /wp-doc-pass ~/themes/acme-blog                    ← the whole theme
+/wp-doc-pass ~/plugins/acme-notes terse            ← one-line docblocks on the public API
 ```
 
 **Requests it handles** (type the command to run it - it never auto-triggers):

@@ -16,6 +16,15 @@
 - Private functions (`defp`, `defmacrop`, `defguardp`): `@doc` on them is discarded with a warning, so describe them with `#` comments directly above the first clause.
 - File header: the `@moduledoc` of the file's module (one module per file is the convention). A script without a module (`config/*.exs`, `test_helper.exs`, `.formatter.exs`) gets `#` lines at the top.
 
+### Terse form
+
+- **Form:** a one-line attribute: `@doc "Returns the order total."`, `@moduledoc "Order helpers."`, `@typedoc "An order id."`. The checker counts a string attribute. A heredoc's prose lines count toward the line limit, so new docs use the one-line form. No `## Options` lists or `## Examples` sections in new text; say the error in the sentence. Doctests (`iex>`) stay frozen.
+- **Public:** every module and protocol, every `def`, `defmacro`, `defguard` and `defdelegate`, and every `@type`, `@opaque`, `@callback` and `@macrocallback`. Private is `defp`, `defmacrop`, `defguardp` and `@typep`.
+- **`@doc false`:** counts as documented. It is code: never add, remove or change one.
+- **Private functions:** a `#` comment directly above the first clause, only when the name does not say what the function does. A `#` line counts as a doc comment only as the file header or directly above a declaration the scan covers, so an inline why-comment is free.
+- **Doc tools:** ExDoc and `h` in IEx show the first paragraph, so one line is enough.
+- **Doc-requiring lint rules** that terse raises: none. Credo `Credo.Check.Readability.ModuleDoc` stays clean, since terse documents every module.
+
 ### Coverage
 
 - Every `defmodule` and `defprotocol` (`@moduledoc` as the first thing in the body), every public `def`, `defmacro`, `defguard`, `defdelegate` (`@doc`), every `@type` / `@opaque` (`@typedoc`), every `@callback` / `@macrocallback` (`@doc` before it), and every `defp` / `defmacrop` / `defguardp` (`#` comment).

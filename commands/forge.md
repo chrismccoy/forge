@@ -133,7 +133,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 |---|---|---|
 | Theme bug audit | wp-bug-audit | Read every file, run ~160 checks, and test on throwaway sites across PHP versions; a verified bug list in audit/. |
 | Theme mockup in a design style | wp-mockup | Clickable static HTML mockup of a classic theme in one of 53 named styles, ready for /wp-theme. |
-| Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard; a checker proves no code changed. |
+| Plugin and theme documentation pass | wp-doc-pass | Full PHPDoc / JSDoc on every function, hook, template, and file of a plugin or theme, in its own standard, full or terse; a checker proves no code changed. |
 | More... | - | Plugin modernization, the WordPress.org submission gate, plugin demo videos, the security review, the theme standards review, the block code review, the exploit-path security review, the plugin architecture review, the WPCS conversion, the either-way plugin conversion, and terse comments. |
 
 | Label | Command | Description |
@@ -308,7 +308,7 @@ option description. Page at 4 with a trailing `More...` exactly as in Step 1.
 |---|---|---|
 | Python project work | python-forge | uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV, FFmpeg; init and test workflows, four analysis scripts. |
 | Codebase to PRD | retrospec | Reverse-engineer a codebase into a business-readable PRD: pages, fields, interactions, enums, APIs. |
-| Document a codebase | doc-pass | Doc comments on every file and function in 19 languages; a checker proves no code changed. Bugs ranked, not fixed. |
+| Document a codebase | doc-pass | Doc comments on every file and function in 19 languages, full or terse; a checker proves no code changed. Bugs ranked, not fixed. |
 | More... | - | Terminal UI work. |
 
 | Label | Command | Description |

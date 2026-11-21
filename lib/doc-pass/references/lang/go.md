@@ -23,6 +23,14 @@
 - **Inline comments:** `//` full sentences ending in a period.
 - **godot with `capital: true`** (in `.golangci.yml` / `.golangci.yaml`): every sentence must start with a capital letter; only the first word of a doc comment is exempt, since it is the declaration's name. So a later sentence or paragraph never starts with a lowercase identifier. Write `The ctx argument is ...`, not `ctx is ...`. Adding a summary above an existing comment turns its lowercase first line into a later paragraph, which godot then flags: reword that line too (`It locks the queue itself.`).
 
+### Terse form
+
+- **Form:** unchanged, because the style is already terse: a `//` block starting with the name, `// NewServer returns a Server that ...`. One sentence is enough; add a second only for a side effect, an error path or a why. Go has no tag boilerplate, so the checker has no tag rule for it.
+- **Public:** a `func` or method whose name starts with an upper-case letter (the receiver's own visibility is not read). A `type`, `const` or `var` declaration is public when any name in it starts upper-case, so a grouped `const ( ... )` needs its group comment when one name is exported. Unexported names get a comment only when the name does not say what they do.
+- **Inline why-comments:** write `//` lines. A multi-line `/* */` block with more than three prose lines inside a body counts as a doc comment in terse style and fails `LONG DOC COMMENT`. A `//` block is a doc comment only as the file header or directly above a declaration that needs one.
+- **Kept:** the package doc stays one per directory; `//go:` directives and `Deprecated:` paragraphs stay as in full style.
+- **Doc-requiring lint rules** that terse raises: none for exported names, since each still has its comment. `revive` `exported` and `staticcheck` `ST1020` to `ST1022` flag a comment that does not start with the name, so keep that form.
+
 ### Coverage
 
 - **Required:** every top-level `func` and method, exported or not, and every top-level `type`, `const` and `var` declaration (a grouped `const ( ... )` needs a comment on the group).

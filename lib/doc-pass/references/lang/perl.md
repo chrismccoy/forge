@@ -4,7 +4,7 @@
 
 - In scope: `.pm`, `.pl`, `.t`, `.psgi`, `.cgi`. The checker reads them with its own lexer (`lexers.mjs`): no tree-sitter grammar ships as wasm. The lexer knows POD blocks (`=head1` … `=cut`), `#` comments (not `$#array`), quoted strings, the quote-like operators (`q qq qw qr m s tr y` with any delimiter, including `s{…}{…}` and `m,…,`), regex versus division by context, heredocs (`<<"END"`, `<<~END`, `<<'END'`), file tests (`-s $file`), and `__END__` / `__DATA__` sections. It groups statements by `;` and by the `}` that closes a top-level `sub`, `package` or block.
 - Out of scope: `blib/`, `local/`, `CPAN/` and other bundled third-party module trees, XS (`.xs`) and generated `.c`, `Makefile.PL` output, Template Toolkit / Mason templates (even when named `.js` or `.html`).
-- Syntax check: `perl -c <file>` with the project's `-I` paths before and after (it compiles `BEGIN` blocks and `use` statements: run it only where loading the modules is safe). Baseline: `perlcritic` (no new violations; `Documentation::RequirePodSections` should go down), `podchecker <file>` (no new errors), `perltidy --assert-tidy` only if the project uses it. Tests: `prove -l t/`.
+- Syntax check: `perl -c <file>` with the project's `-I` paths before and after (it compiles `BEGIN` blocks and `use` statements: run it only where loading the modules is safe). Baseline: `perlcritic` (no new violations; `Documentation::RequirePodSections` should go down), `podchecker <file>` (no new errors), `perltidy --assert-tidy` only if the project uses it. Tests: `prove -l t/`. Terse style: `RequirePodSections` may rise instead (see Terse form).
 
 ### Doc comment style
 
@@ -13,6 +13,14 @@
 - `=head2 name` (or `=item name` inside `=over` / `=back`) names the sub; the coverage scan accepts that line anywhere in the file. Describe arguments in order (Perl has no signature types in most code: say which are hashrefs, arrayrefs, callbacks, and what keys a hashref takes), the return value in scalar and list context when they differ, and what dies (`die`, `croak`) or returns `undef`.
 - Private helpers (`_name`) and small subs: `#` comment lines directly above `sub`.
 - File header: the module POD (`=head1 NAME`, `Module::Name - summary`, then `=head1 SYNOPSIS` and `=head1 DESCRIPTION`), or `#` prose lines at the top, after the shebang and license. When a file starts with `package` and puts the license under it, put the header after both. Never break a `=cut`: removing one turns the following code into documentation, and adding one inside POD turns prose into code (the checker reports either as `CODE CHANGED`).
+
+### Terse form
+
+- **Form:** a POD block with one line: `=head2 add( $a, $b )`, a blank line, `Returns the sum.`, a blank line, `=cut`. Say what dies or returns `undef` in the sentence. Header: `=head1 NAME` and one line, `Module::Name - summary`. Never break a `=cut`.
+- **Public:** a top-level `sub` whose name (the part after the last `::`) does not start with `_`.
+- **Private helpers:** one `#` line directly above `sub`, only when the name does not say what it does.
+- **Where a comment counts:** POD is a doc comment wherever it sits, including after `__END__`. A `#` comment counts as a doc only as the file header or directly above a `sub`, so inline why-comments are free.
+- **Doc-requiring lint rules** that terse raises: `Documentation::RequirePodSections` when enabled (severity 2, or on in `.perlcriticrc`): a file that gains terse POD is checked for its required sections, so add them or leave it off. `podchecker` looks at POD structure, which terse keeps.
 
 ### Coverage
 

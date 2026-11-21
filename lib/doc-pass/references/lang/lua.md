@@ -14,6 +14,14 @@
 - Say which OpenResty phase a function may run in (`init`, `init_worker`, `access`, `header_filter`, `body_filter`, `log`, timers) when it uses `ngx.*` APIs that are phase-restricted (cosockets are not available in `init` / `header_filter` / `body_filter` / `log`).
 - File header: a `---` block at the top with a summary and `@module name` (LDoc), after any shebang.
 
+### Terse form
+
+- **Form:** one LDoc line: `--- Returns the order total.`. No new `@param`, `@return`, `@treturn` or `@raise` lines (`TERSE TAG ADDED`); say the error in the sentence. An existing LDoc `@param`, `@return`, `@tparam` or `@treturn` line stays (its first words, or type and name, are kept; the description may shrink). LuaLS `---@param`, `---@return`, `---@class` and the rest always stay, in both styles.
+- **Public:** a function on the table the file returns (`function M.x`, `function M:x`, `M.x = function`), a function held by a returned table literal, and a global function. `local function x` followed by `M.x = x` on the returned table is public too. Any other `local function` is private.
+- **Inline why-comments:** write plain `--` lines. A `---` line and a `--[[ … ]]` block are doc forms wherever they sit, and count against the line limit.
+- **Header:** one `---` line, then `-- @module orders` (LDoc): `--- Order helpers.`. `@module` is a Kept line and does not count. After any shebang.
+- **Doc-requiring lint rules** that terse raises: none. luacheck has no doc rule.
+
 ### Coverage
 
 - Every top-level function: `function M.f()`, `function M:f()`, `local function f()`, `M.f = function …`, `local f = function …`.

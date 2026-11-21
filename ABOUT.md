@@ -70,7 +70,7 @@ Builds a clickable static HTML mockup of a classic theme in one of 53 named desi
 
 ## wp-doc-pass
 
-Adds documentation to every part of a plugin or theme without changing any code. It writes PHPDoc and JSDoc blocks for every file, class, function, hook, and template, plus inline comments that explain why the code does what it does. It follows the project's existing coding standard, whether that is WPCS, PSR-12, or an older style. A bundled checker compares the code before and after to prove that only comments changed.
+Adds documentation to every part of a plugin or theme without changing any code. It writes PHPDoc and JSDoc blocks for every file, class, function, hook, and template, plus inline comments that explain why the code does what it does. It follows the project's existing coding standard, whether that is WPCS, PSR-12, or an older style. A bundled checker compares the code before and after to prove that only comments changed. You can choose full docs or a terse style with one-line comments on the public API only.
 
 ## wp-modernize
 
@@ -355,7 +355,7 @@ Writes a Product Requirements Document for an app that already exists, by readin
 
 ## doc-pass
 
-Adds doc comments to every file in a codebase, in any of 19 popular languages, without changing any code. Every file, type, function, route, and handler gets a full comment in the style that language uses, plus short notes where the logic is not obvious. A bundled checker compares every file before and after and fails if anything other than a comment changed, including the special comments that tools rely on, such as lint switches, build tags, and doctests. Your own tests and code-style tools run before and after in a scratch copy, and their results must match. Any bugs it notices come back as a ranked list it does not fix. It can also run as a read-only bug check that changes nothing. Use wp-doc-pass instead for a WordPress plugin or theme.
+Adds doc comments to every file in a codebase, in any of 19 popular languages, without changing any code. Every file, type, function, route, and handler gets a full comment in the style that language uses, plus short notes where the logic is not obvious. A bundled checker compares every file before and after and fails if anything other than a comment changed, including the special comments that tools rely on, such as lint switches, build tags, and doctests. Your own tests and code-style tools run before and after in a scratch copy, and their results must match. Any bugs it notices come back as a ranked list it does not fix. It can also run as a read-only bug check that changes nothing, or write terse one-line comments on the public API instead of full ones. Use wp-doc-pass instead for a WordPress plugin or theme.
 
 ## tui-forge
 

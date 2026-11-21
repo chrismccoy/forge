@@ -55,3 +55,12 @@
 
 - A CLI entry: the command, its flags and arguments, exit codes, and what it reads and writes. Help text built by `commander` / `yargs` / `oclif` is code (string literals): never touch it, and never duplicate it in comments beyond a one-line summary.
 - One-off scripts (`scripts/*.js`, `demo/*.js`): the header says what the script does, how to run it, and what it needs installed or running.
+
+### Terse form
+
+Area notes only. The public rule, wrappers and lint rules are in `js.md`; the form is in the style files.
+
+- **Routes:** each registration (`app.get`, `router.post`, `fastify.route`, `queue.process`) keeps one comment naming the method, the full path and the auth: `/** GET /api/notes/:id, needs a signed-in user. */`. It is required exported or not, and `req` and `res` get no tags (existing typed ones stay when checked types are on).
+- **Middleware and handlers:** a middleware factory or error handler gets one sentence on what it checks or maps. A job processor names the job and its payload in one line.
+- **NestJS:** a controller method and a provider method are members of an exported class, so each needs its one line (method, path, guards for a handler). DTO and entity properties get one line each. `@nestjs/swagger` with `introspectComments: true` publishes that line, so write it for the API reader.
+- **Generated text:** `.describe( '…' )` strings, route `schema` descriptions and schema text stay untouched, as in full style.

@@ -14,6 +14,15 @@
 - Comment levels follow the Emacs convention: `%%%` for file and section headers, `%%` for comments on their own line, `%` at the end of a line.
 - File header: a prose comment block above `-module(…)` (often under the license block), or a `-moduledoc` attribute. A `.hrl` gets one at the top; an `.escript` gets one after its `#!` line, its `%% -*- erlang -*-` mode line and its `%%!` emulator-flags line (the checker keeps `#!` on line 1 and `%%!` on its line).
 
+### Terse form
+
+- **Form:** one EDoc line: `%% @doc Returns the order total.`, and `%%% @doc Order helpers.` above `-module(…)`. No `@param`, `@returns` or `@throws`; say the error tuple in the sentence. A `-doc` or `-moduledoc` attribute is code and stays as it is.
+- **Public:** a function whose name is exported with any arity (every function under `-compile(export_all)`), a type in `-export_type`, and every `-callback`. Everything in a `.hrl` is public, and so is an escript's `main`. A function that is not exported, and every `-record` in a `.erl`, is private.
+- **Private forms:** a `%%` comment only when the name does not say what they do.
+- **Inline why-comments:** a `%%` block counts as a doc comment only as the file header or directly above a form the scan covers (above its `-spec` too). A `%%` comment inside a function body is free.
+- **Frozen:** `@private`, `@hidden`, `@deprecated` and `@equiv` lines stay.
+- **Doc-requiring lint rules** that terse raises: none.
+
 ### Coverage
 
 - Every function (the first form of each name; a form right after one with the same name, a different arity delegating to it, is exempt), and every `-type`, `-opaque`, `-callback` and `-record`.

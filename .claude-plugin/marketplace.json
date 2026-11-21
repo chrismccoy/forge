@@ -10,7 +10,7 @@
       "name": "forge",
       "source": "./",
       "description": "One hundred and ten commands in one plugin, sorted into eleven categories: WordPress, design and frontend, writing and content, DevOps and data, cloud and architecture, security, code cleanup, code, docs and diagrams, utilities, and media. Nothing auto-triggers - every toolkit is reached by an explicit slash command, and each command loads its own procedure file on invocation. Run /forge for a category-then-item picker, or call any command directly.",
-      "version": "1.41.0"
+      "version": "1.41.4"
     }
   ]
 }

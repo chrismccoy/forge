@@ -18,6 +18,14 @@
 - Never repeat types. Say what they cannot: when `null` is returned, units, ranges, thread confinement, and a `suspend` function's dispatcher and cancellation.
 - With spring-javaformat (its Maven or Gradle plugin, or `.springjavaformatconfig`), the validate step reflows Javadoc: fill each line to the limit (90 columns by default) before breaking, or the check fails. If the check still fails, leave the comment as it is and say so in your report: the main session repairs it in final verification (SKILL.md step 4, item 7).
 
+### Terse form
+
+- **Form:** a one-line `/** … */`: `/** Loads the note by ID. */`. No `@param`, `@return` or `@throws` (Javadoc) and no `@param`, `@return`, `@property` or `@throws` (KDoc); say the exception in the sentence. The checker does not flag a new KDoc `@property` line, so that rule is checked by reading. `//` and `///` never count.
+- **Java public:** keyword only. A declaration is public when it has `public` or `protected` and no `private`, or is a member of an interface or annotation type that is not `private`. Package-private (no keyword) is not public, including a top-level class with no keyword.
+- **Kotlin public:** the default, unless the declaration is `private` or `internal`. `protected` counts as public. Overrides and `@Test` methods are exempt as in full style.
+- **Javadoc layout:** `{@code a < b}` and `&lt;` escapes still apply to a one-liner; with spring-javaformat, fill the line as usual.
+- **Doc-requiring lint rules** that terse raises: Checkstyle `JavadocMethod` (it wants `@param`, `@return` and `@throws`) and, for package-private and `private` members left bare, Checkstyle's missing-Javadoc checks.
+
 ### Coverage
 
 - Java: every class, interface, enum, record and annotation type; every method, constructor and field. Exempt: members annotated `@Override`, `@Test`, `@ParameterizedTest`, `@RepeatedTest`, `@TestFactory`, `@BeforeEach`, `@AfterEach`, `@BeforeAll`, `@AfterAll`, `@Before` or `@After`, and a constructor whose body only stores its parameters (`this.repo = repo;`), as injected-dependency constructors do.

@@ -83,7 +83,7 @@ the user type a name directly - treat any such answer as a Step 0 direct hit.
 |---|---|---|
 | Python project work | python-forge | uv projects, asyncio, typing, FastAPI, pytest, CI, Modal, OpenCV, FFmpeg; init and test workflows, four analysis scripts. |
 | Codebase to PRD | retrospec | Reverse-engineer a codebase into a business-readable PRD: pages, fields, interactions, enums, APIs. |
-| Document a codebase | doc-pass | Doc comments on every file and function in 19 languages; a checker proves no code changed. Bugs ranked, not fixed. |
+| Document a codebase | doc-pass | Doc comments on every file and function in 19 languages, full or terse; a checker proves no code changed. Bugs ranked, not fixed. |
 | More... | - | Terminal UI work. |
 
 **Page 7** (only if `More...` was chosen a sixth time) - question: "Which command?", header: "Command"

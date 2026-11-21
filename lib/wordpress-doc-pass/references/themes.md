@@ -52,3 +52,10 @@ These rules apply when the project is a theme (classic, block, hybrid or child).
 - **Patterns in PHP:** the markup outside `<?php ?>` is code, byte for byte, including its `<!-- wp:… -->` comments. Add comments only inside existing PHP blocks. A gettext call with placeholders there still needs its `translators:` comment.
 - **Theme hooks:** custom `do_action` / `apply_filters` calls in templates follow the Hooks rule. Inside a template, the hook docblock goes in the PHP block before the call, using the mid-line form from the Hard rule when the block opens inside an HTML line.
 - **Bug report additions for themes:** unescaped output in templates; a missing or wrong text domain; unprefixed functions, classes, globals or handles; scripts and styles printed directly instead of enqueued; `get_template_directory*()` and `get_stylesheet_directory*()` mixed up in code that a child theme must be able to override; a missing `wp_head()`, `wp_footer()` or `wp_body_open()`; and functions deprecated for the theme's `Requires at least` version.
+
+### Terse form
+
+- **Template files** (hierarchy files, parts, page templates, patterns in PHP): the header names the template (`Single post template.`) and lists the variables it reads, one `@var type $name Description.` line each, or the `$args` hash for a part. The handbook `@link` and the description are optional for new headers; an existing `@link` is Kept. Header fields stay exactly as they are.
+- **Functions** (`functions.php`, `inc/`, template tags, Customizer callbacks, pluggable functions): one line. Name what a setup function registers only when the function name does not say it. Keep the pluggable note in one place: say it once in the file header.
+- **Template tags:** the one line states the output and who escapes it, with the fixed phrases from above (`All output is escaped here.`); that is a safety fact, not boilerplate, and it stays.
+- **Theme hooks** keep the full hook docblock, as in the rules. Child theme overrides say so in the one line.

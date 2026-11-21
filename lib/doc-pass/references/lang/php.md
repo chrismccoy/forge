@@ -27,6 +27,15 @@ PHPDoc on declarations, `//` for why-comments. Static analysers, IDE helpers and
 - **File docblock:** after `<?php`, above `declare(strict_types=1);`, `namespace` and `use`. An existing `/* … */` license block stays first (checked by reading).
 - **Inline:** `//` full sentences. Never start a `#` comment with `[` (`#[` is an attribute). Never write `?>` in a `//` or `#` comment: it ends PHP mode. Never comment inside a heredoc or nowdoc.
 
+### Terse form
+
+- **Form:** a one-line docblock, `/** Gets the invoice total. */`, in the project's voice. No `@param`, `@return` or `@throws`, unless checked types keep them (below); say the exception in the sentence.
+- **Public:** classes, interfaces, traits, enums and functions always. A method, property or constant is public unless it is `private` or `protected` (unlike Java, `protected` is not public here). A constructor that only has promoted parameters and an empty body is exempt.
+- **Typed tags:** PHPStan, Larastan or Psalm configured means `--checked-types` is on, so an existing `@param`, `@return`, `@var` or `@throws` with a type stays (one line, description may shrink). Never add one. Without those tools the typed boilerplate goes.
+- **Always stay:** class tags `@property*`, `@method`, `@mixin`, `@template*`, `@extends`, `@implements`, and `@phpstan-type` / `@psalm-type` with their `-import-type` forms (IDE helpers and analysers read them).
+- **Laravel / Symfony:** a route or command handler registration still gets its one line (method, path, auth). Framework config properties (`$fillable`, `$casts`, `$table`) need none.
+- **Doc-requiring lint rules** that terse raises: PHPCS `Squiz.Commenting.*` (the function, variable and class comment sniffs), for private and protected members left bare and for the dropped `@param` / `@return` lines.
+
 ### Coverage
 
 - **File header:** a `/**` docblock between `<?php` and the first statement. When that statement is a class, interface, trait, enum or function, two docblocks must sit there. `/*` and `//` do not count.

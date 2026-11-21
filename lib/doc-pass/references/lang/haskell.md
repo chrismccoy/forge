@@ -14,6 +14,14 @@
 - Section headings (`-- * Section`, `-- ** Sub`) and named chunks (`-- $name`) in export lists shape the generated page: keep them and their order (checked by reading).
 - File header: the module Haddock before `module` (`{- | Module : … Copyright : … License : … -}` blocks are frozen whole because they hold the copyright: add nothing to them), or a `-- |` description. A file without one gets `-- |` lines directly above `module`.
 
+### Terse form
+
+- **Form:** one Haddock line: `-- | Returns the order total.`. No `-- ^` argument comments unless the file already has them; say the exception or effect in the sentence. `{- | … -}` blocks only where they already exist. Keep `-- *` section headings and `-- $name` chunks.
+- **Public:** a signature whose name is in the module's export list, and a `data`, `newtype`, `type` or `class` whose type name is. `T(..)` and `T(A, B)` entries cover the constructors and methods. With no export list, or no `module` line, every top-level name is public.
+- **Private declarations:** a plain `--` comment only when the name does not say what they do. A plain `--` is never Haddock, so inline why-comments are free.
+- **Frozen:** pragmas, doctests (`-- >>>`) and the Haddock module header with copyright stay as in full style.
+- **Doc-requiring lint rules** that terse raises: none. Haddock coverage counts exported names, which terse already documents.
+
 ### Coverage
 
 - Every top-level type signature (one comment covers `a, b :: T`), and every `data`, `newtype`, `type` and `class` declaration. `type family` / `data instance` / `instance` declarations are exempt.

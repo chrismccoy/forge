@@ -7,3 +7,11 @@
 - **ES5 / jQuery legacy:** document `var`-style functions, `$.fn` plugins (`@memberof jQuery.fn`), and `$(document).ready` / `$(function () {…})` bodies. Don't suggest ES6 rewrites in comments.
 - **TypeScript (`.ts` / `.tsx`):** use TSDoc-style comments. **Don't repeat types already in the signature.** Write `@param name - Description.` without `{Type}` and `@returns Description.`, per TSDoc. Use `@remarks`, `@example` and `@throws` as needed.
 - **Inline comments:** `//` full sentences ending with a period, explaining why: escaping before `.html()` / `innerHTML` / `dangerouslySetInnerHTML`, race or stale-response guards, debouncing, sequencing, and fallbacks.
+
+### Terse form
+
+- **Form:** one line, `/** Loads the note by ID. */`. A second sentence only for a side effect, an error path, a capability or nonce requirement, or a why. No `@param`, `@return` or `@throws`: say the thrown error in the sentence. `@since` lines already present stay and do not count toward the line limit.
+- **Public:** a function, class or method that is exported, attached to a global or namespace, or registered (`registerBlockType`, `registerStore`, REST calls, `$.fn` plugins, event handlers). Local helpers need a comment only when the name does not say what they do.
+- **Checked JS** (`// @ts-check`, `checkJs: true`, or TypeScript with a `tsconfig.json`): an existing typed `@param {T} name` or `@returns {T}` stays, one line; never add one (`TERSE TAG ADDED`). Unchecked JS drops all of them. TypeScript with TSDoc: one line, no `@param` or `@returns`.
+- **Always stay:** `@type`, `@template`, `@satisfies`, `@this`, `@enum`, `@augments`, `@extends`, `@implements`, `@import`, `@overload`, and the Typedefs answer for `@typedef` / `@callback` blocks (a typedef on the shared shapes list stays). Block attribute and localized-config typedefs follow the answer unless they are on the list.
+- **Doc-requiring lint rules** that terse raises: `jsdoc/require-param` (a kept docblock with parameters but no `@param` lines), per upstream `@wordpress/eslint-plugin` `configs/jsdoc.js`; check with `eslint --print-config <file>`. `jsdoc/require-returns` is off there, and the `-type` / `-name` rules only check existing tags, so they cannot rise. A project that turns on `require-jsdoc` or `require-description` adds those. Step 1 asks the user once whether to accept them.

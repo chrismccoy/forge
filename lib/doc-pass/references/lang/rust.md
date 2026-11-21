@@ -21,6 +21,15 @@
 - **`// SAFETY:` comments:** every `unsafe { }` block gets one directly above, saying why each invariant holds. Keep an existing `SAFETY:` line exactly as it is (the checker compares it byte for byte); add new facts on new `//` lines after it.
 - **Inline comments:** `//` full sentences ending in a period.
 
+### Terse form
+
+- **Form:** a one-line `///` above the item, `/// Returns the merge base of two commits.`. Never a `# Errors`, `# Returns`, `# Arguments` or `# Panics` heading (`TERSE TAG ADDED`): say the failure in the sentence. Never add a fenced or indented block (doctests stay frozen).
+- **Public:** plain `pub` only; `pub(crate)`, `pub(super)` and `pub(in …)` are private. A `pub` item inside a private module is still reported. Trait items follow their trait, enum variants and their fields follow their enum, and `macro_rules!` is public only with `#[macro_export]`. A `#[cfg(test)]` module is skipped.
+- **Header:** the crate or module `//!` line, one line.
+- **`# Safety`:** keep an existing one on `unsafe fn`; a `// SAFETY:` comment above an `unsafe { }` block stays as a why-comment.
+- **Doc tools:** `cargo doc` and rustdoc read `///`; a one-line summary is enough. Keep intra-doc links to items in scope only.
+- **Doc-requiring lint rules** that terse raises: rustc `missing_docs` reports only publicly reachable items, and terse covers a superset, so it stays clean. What rises: `clippy::missing_docs_in_private_items`, and `clippy::missing_errors_doc`, `missing_panics_doc`, `missing_safety_doc` when a heading goes.
+
 ### Coverage
 
 - **Required** (private items too): every `fn` (free, inherent method, trait method declaration, nested fn), `struct`, `enum`, `union`, `trait`, `type` alias, `const`, `static`, inline `mod { }`, `macro_rules!`, every named struct field and every enum variant.

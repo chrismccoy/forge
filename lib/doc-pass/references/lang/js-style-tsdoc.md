@@ -9,3 +9,11 @@
 - **Overloads:** a doc comment on each overload signature; none on the implementation.
 - **Declaration files:** document every `declare` function, variable, class, interface and member, and each member a `declare module` / `declare global` augmentation adds (`Request.user`, `Window.__APP_STATE__`, `ImportMetaEnv.VITE_API_URL`).
 - **Inline comments:** `//` full sentences ending in a period.
+
+### Terse form
+
+- **Form:** one line, `/** Loads the note by ID. */`. The types are already in the signature. A second sentence only for a side effect, an error path, auth or a why. No `@param`, `@returns` or `@throws`.
+- **Strict TSDoc** (`tsdoc/syntax`, `tsdoc.json`): a one-line summary has no tags, so it passes. Never add `@param name -` lines; an existing one may go.
+- **Always stay:** `@template`, `@satisfies`, `@this`, `@enum`, `@extends`, `@implements`, `@import`, `@overload`. Typedef tags occur in JS comments: follow the Typedefs answer there.
+- **Public** in `.ts`: every `export` form and every member of a public class, interface or object type; `private`, `protected` and `#name` members and unexported declarations need a comment only when the name does not say what they do. Every declaration in a `.d.ts` is public. The rest is in `js.md`.
+- **Doc tools:** TypeDoc and API Extractor read the summary line; release tags (`@public`, `@beta`, `@internal`) and `@deprecated` are frozen.

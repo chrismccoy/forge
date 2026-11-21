@@ -17,6 +17,14 @@
 - Constructors: document the unnamed constructor only when it does more than store its arguments; named and factory constructors say how they differ.
 - No file header is scanned by `dart analyze`, but every file gets one here: plain `//` lines at the top, separated from the first import by a blank line. Never a `///` block at the top of the file: `dangling_library_doc_comments` warns on a `///` that isn't attached to a declaration or a `library;` directive. When the file already has `library;`, a `///` library doc above it is the header.
 
+### Terse form
+
+- **Form:** one `///` line: `/// Returns the order total.`. Dart has no tag lines, so there is nothing to drop; name a parameter in `[brackets]` only where the sentence needs it. The file header stays one plain `//` line, never a `///` block.
+- **Public:** a declaration whose name does not start with `_`, inside no type whose name starts with `_`. Members of a `_Private` class, mixin, extension, extension type or enum are private, and so is a named constructor such as `Store._internal()`.
+- **Inline why-comments:** `//` is not a doc form in Dart, so a why-comment is free anywhere. Private names get one only when the name does not say what they do.
+- **Kept:** dartdoc directives (`{@template}`, `{@macro}`, `@nodoc`) and `// ignore:` lines stay as in full style.
+- **Doc-requiring lint rules** that terse raises: none. `public_member_api_docs` covers only public members, which terse already documents.
+
 ### Coverage
 
 - Every class (including `abstract`, `sealed`, `base`, `interface`, `final`, `mixin class`), mixin, extension, extension type, enum and `typedef`; every top-level function and variable; every method, getter, setter, operator, field and constructor in a class, mixin, extension or enum body.
